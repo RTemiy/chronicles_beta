@@ -2874,7 +2874,7 @@ Game.Scenes.A_Part01[42] =
 `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[43].Begin(); }],
-    background: 'Backgrounds/Near_Lighthous',
+    background: 'Backgrounds/Near_Lighthouse',
   });
 
 Game.Scenes.A_Part01[43] =
