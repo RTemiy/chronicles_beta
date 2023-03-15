@@ -1026,6 +1026,7 @@ tf {
     width: 80vw;
     max-width: 325px;
     hyphens: auto;
+    -webkit-hyphens: auto;
 }
 
 tf>p{
@@ -1033,6 +1034,8 @@ tf>p{
     margin-bottom: 0px;
     text-align-last: left;
     word-spacing: -0.05em;
+    hyphens: auto;
+    -webkit-hyphens: auto;
 }
 #timerP {
     display: none;
