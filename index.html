@@ -1,9 +1,10 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="ru">
 
 <head>
     <link rel="icon" href="favicon.png">
-    <link rel="manifest" href="manifest.json">
+    <link rel="canonical" href="https://rtemiy.github.io/Chronicles/"/>
+    <link rel="manifest" href="/Chronicles/manifest.webmanifest">
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width,height=device-height, initial-scale=1; user-scalable=0;" />
     <meta name="theme-color" content="black">
@@ -11,7 +12,25 @@
     <meta name="description" content="Chronicles | Твой выбор — бесплатная многовариативная новелла">
     <link rel="apple-touch-icon" href="favicon.png">
     <title>Chronicles | Твой выбор</title>
-</head>
+
+        <script src="./Hyphenopoly_Loader.js"></script>
+        <script>
+            Hyphenopoly.config({
+                require: {
+                    "ru": "безоговорочный",
+                },
+                paths: {
+                    patterndir: "./patterns/",
+                    maindir: "./"
+                },
+                setup: {
+                    selectors: {
+                        "#tf": {},
+                        "p": {}
+                    }
+                }
+            });
+        </script>
 
 <body>
 
