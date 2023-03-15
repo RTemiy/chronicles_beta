@@ -1025,9 +1025,7 @@ tf {
     padding-left: 10%;
     width: 80vw;
     max-width: 325px;
-    text-align-last: left;
-    word-spacing: -0.05em;
-    text-justify: distribute;
+    hyphens: auto;
 }
 
 tf>p{
@@ -1035,7 +1033,6 @@ tf>p{
     margin-bottom: 0px;
     text-align-last: left;
     word-spacing: -0.05em;
-    text-justify: distribute;
 }
 #timerP {
     display: none;
