@@ -15141,7 +15141,7 @@ Game.Scenes.FifthPart[176] = new Scene({
             `,
   background: "Backgrounds/Lake",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[180].Begin();}],
+  buttonaction: [() => { Game.Scenes.FifthPart[180].Begin(); Game.Sounds.Play('Music','Lake');}],
 });
 
 Game.Scenes.FifthPart[177] = new Scene({
@@ -15181,6 +15181,183 @@ Game.Scenes.FifthPart[180] = new Scene({
   background: "Persons/Neitan_New",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[181].Begin();}],
+});
+
+Game.Scenes.FifthPart[181] = new Scene({
+  text: `
+    Мне показалось, что он боялся услышать дальнейшее, но в реальности сказал:
+    <p>- Все, что хочешь, - он отвел взгляд в сторону бушующей воды. 
+    <p>“Нет смысла увиливать. Спрошу прямо.
+            `,
+  background: "Persons/Neitan_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[182].Begin();}],
+});
+
+Game.Scenes.FifthPart[182] = new Scene({
+  text: `
+    - Кто такой Эдвард? 
+    <p>- Почему ты так хочешь это знать? - Нэйтан недовольно вздохнул.
+    <p>- Твоя реакция на обычное имя меня заинтересовала, не более.
+            `,
+  background: "Persons/Neitan_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[183].Begin();}],
+});
+
+Game.Scenes.FifthPart[183] = new Scene({
+  text: `
+    Профессор на секунду задумался, затем ответил: 
+    <p>- Это мой предок. Я удивился и растерялся, когда ты назвала это имя, видимо где-то на задворках сознания о нем сохранилась память. И я убедился в этом, изучив некоторые источники. 
+    <p>- Значит, это правда. Ваш предок жил в эпоху Николы Теслы?
+            `,
+  background: "Persons/Neitan_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[184].Begin();}],
+});
+
+Game.Scenes.FifthPart[184] = new Scene({
+  text: `
+    - Правда. Но почему тебя это так интересует? Откуда ты вообще узнала о его существовании? 
+    <p>- Дело в подготовке к эссе, которое вы когда-то задавали. Я случайно обнаружила фотографию Теслы на неком приеме…  Мне даже не верится, что бывают настолько похожие люди.
+            `,
+  background: "Persons/Neitan_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[185].Begin();}],
+});
+
+Game.Scenes.FifthPart[185] = new Scene({
+  text: `
+    - Вот оно как, - Нэйтан посмотрел на меня так, как будто бы для себя он все отчетливо понял.- Надеюсь, наши недопонимания исчезли?
+    <p>“А исчезли ли? Ложь это или правда, я вряд ли сейчас узнаю. Однако даже от такого ответа мне стало чуточку легче. По крайне мере он пошел на контакт и не настроен враждебно.”
+            `,
+  background: "Persons/Neitan_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[186].Begin();}],
+});
+
+Game.Scenes.FifthPart[186] = new Scene({
+  text: `
+    - Спасибо, профессор. Спасибо, что согласились на эту поездку. Я чувствую себя гораздо лучше. 
+    <p>Он кивнул, возвращая свое внимание к озеру. Присмотревшись к нему, можно было заметить легкую облегченность во взгляде. Будто бы один тяжелый груз покинул его крепкие плечи.
+            `,
+  background: "Persons/Neitan_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[187].Begin();}],
+});
+
+Game.Scenes.FifthPart[187] = new Scene({
+  text: `
+    Мы немного постояли, слушая, как волны бьются о берег, как завывает ветер, холодным воздухом лаская нашу кожу. 
+    <p>Вскоре, Нэйтан ушел в сторону машины, давая мне немного времени, чтобы побыть наедине.
+            `,
+  background: "Backgrounds/Lake",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[188].Begin();}],
+});
+
+Game.Scenes.FifthPart[188] = new Scene({
+  text: `
+    Я двинулась следом, но что-то привлекло мое внимание. Некие резкие движения среди деревьев. А затем мелькающий маленький силуэт, который медленными шагами шел мне навстречу.
+            `,
+  background: "Backgrounds/Lake",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[190].Begin();}],
+});
+
+Game.Scenes.FifthPart[190] = new Scene({
+  text: `
+    Я подошла ближе и разглядела собаку. 
+            `,
+  background: "Persons/Dog_Dirty",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[191].Begin();}],
+});
+
+Game.Scenes.FifthPart[191] = new Scene({
+  text: `
+    Продрогшая, грязная, но с преданными горящими глазами. Я аккуратно протянула ей руку и на мое удивление животное отозвалось. Собака тронула меня мокрым носом и жалобно заскулила. 
+    <p>Я погладила пса и обратила внимание, что на его шее висел ошейник. 
+    <p>- Так тебя зовут, Чарли, дружок. Что же мне с тобой делать?
+            `,
+  background: "Persons/Dog_Dirty",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[192].Begin();}],
+});
+
+Game.Scenes.FifthPart[192] = new Scene({
+  text: `
+    Ко мне присоединился Нэйтан. Он сел на корточки рядом со мной и ласково погладил собаку. 
+    <p>- Вот так чудо, откуда же он тут взялся? Неужели потерялся? 
+    <p>- Профессор, нам нельзя его здесь оставлять, - я не обратила внимание на слова Нэйтана, ведь мною руководила жалость и желание спасти бедное животное.
+            `,
+  background: "Persons/Neitan_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[193].Begin();}],
+});
+
+Game.Scenes.FifthPart[193] = new Scene({
+  text: `
+    - Я понимаю… Должно быть его хозяева очень переживают. 
+    <p>- Я могла бы временно приютить его, думаю, родители не будут против. 
+    <p>- Давай попробуем для начала отвезти его к машине. 
+            `,
+  background: "Persons/Neitan_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[194].Begin();}],
+});
+
+Game.Scenes.FifthPart[194] = new Scene({
+  text: `
+    Нэйтан начал не спеша двигаться в сторону машины, увлекая за собой собаку. Пес сначала стоял в недоумении, но все же последовал за мужчиной на дрожащих лапах.
+    <p>Мы благополучно добрались до места назначения и разместились на заднем сидении. Профессор предусмотрительно постелил плед, чтобы согреть животное.
+    <p>“Ну и не испачкать салон его автомобиля, конечно.” 
+            `,
+  background: "Persons/Dog_Dirty",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[195].Begin();}],
+});
+
+Game.Scenes.FifthPart[195] = new Scene({
+  text: `
+    Я и не заметила, как прильнула к окошку и сладко задремала. Всю дорогу я мирно посапывала, а Чарли аккуратно положил свою мордочку мне на колени, греясь и отдыхая.
+            `,
+  background: "Backgrounds/Car",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[196].Begin();}],
+});
+
+Game.Scenes.FifthPart[196] = new Scene({
+  text: `
+    Когда машина остановилась, Нэйтан аккуратно дотронулся до моего плеча, чтобы разбудить. 
+    <p>- $Имя Игрока$, приехали… 
+    <p>Я нехотя открыла глаза. Собрала свой рюкзак и ласково позвала Чарли в сторону дома. 
+            `,
+  background: "Persons/Neitan_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[197].Begin();}],
+});
+
+Game.Scenes.FifthPart[197] = new Scene({
+  text: `
+    Нэйтан помог мне выбраться и сказал напоследок: 
+    <p>- Я чудесно провел время, благодарю тебя за поездку. Удачи вам с Чарли, надеюсь, с ним все будет в порядке. Обязательно осмотри его хорошенько, при необходимости - сходите к ветеринару. И если удастся, поищи хозяина. 
+    <p>- Ты не останешься?
+            `,
+  background: "Persons/Neitan_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[198].Begin();}],
+});
+
+Game.Scenes.FifthPart[198] = new Scene({
+  text: `
+    - Мне нужно срочно явиться в университет, - Нэйтан взглянул на наручные часы. - Извини, что так резко покидаю тебя. 
+    <p>- Все в порядке, - я улыбнулась. - Удачи, профессор. 
+    <p>Когда он уехал, мы с собакой зашли в дом.
+            `,
+  background: "Persons/Neitan_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[199].Begin();}],
 });
 Game.Scenes.Prologue = [];
 
