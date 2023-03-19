@@ -14854,9 +14854,11 @@ Game.Scenes.FifthPart[149] = new Scene({
   buttonaction: [() => { Game.Scenes.FifthPart[151].Begin();}],
   condition: function () {
     if(Game.Attitudes.GoStudy.Get()>=1){
-      this.buttonaction[0] = () => { Game.Scenes.FifthPart[150].Begin();}
-      Game.Message('Нэйтан гордится вашим стремлением к знаниям');
-      Game.Attitudes.Neitan.Add(1);
+      this.buttonaction[0] = () => {
+        Game.Scenes.FifthPart[150].Begin();
+        Game.Message('Нэйтан гордится вашим стремлением к знаниям');
+        Game.Attitudes.Neitan.Add(1);
+      }
     }
     else{
       this.buttonaction[0] = () => { Game.Scenes.FifthPart[151].Begin();}
@@ -14928,18 +14930,6 @@ Game.Scenes.FifthPart[155] = new Scene({
 });
 
 Game.Scenes.FifthPart[156] = new Scene({
-  text: `
-    Мы подошли к берегу, где не на шутку разыгрались волны.
-    <p>Я обхватила себя руками, осознавая, что мне безумно нравится окружающий пейзаж. Да, он был по-своему мрачный, но природа от этого не становилась менее привлекательной. Нет. Это была стихия, которая не может быть ни кем контролируема.
-    <p>- Это потрясающе…
-
-            `,
-  background: "Backgrounds/Lake",
-  buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[157].Begin();}],
-});
-
-Game.Scenes.FifthPart[157] = new Scene({
   text: `
     Мы подошли к берегу, где не на шутку разыгрались волны.
     <p>Я обхватила себя руками, осознавая, что мне безумно нравится окружающий пейзаж. Да, он был по-своему мрачный, но природа от этого не становилась менее привлекательной. Нет. Это была стихия, которая не может быть ни кем контролируема.
