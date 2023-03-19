@@ -282,7 +282,7 @@ class Attitude {
 
         if (this.attitude >= 1) this.textinfo.innerHTML = '<emoji>😌</emoji><a>' + this.name;
 
-        if (this.attitude >= 5) this.textinfo.innerHTML = '<emoji>😏</emoji><a>' + this.name;
+        if (this.attitude >= 6) this.textinfo.innerHTML = '<emoji>😏</emoji><a>' + this.name;
 
         if (this.attitude >= 10) this.textinfo.innerHTML = '<emoji>🥰</emoji><a>' + this.name;
         
@@ -358,8 +358,18 @@ class Scene {
         var t = this.buttonaction + '';
         if (this.background == '') PictureField.style.display = 'none';
         else {
-            PictureField.src = ROOTPATH + 'pictures/' + this.background + '.png';
-            PictureField.style.display = 'block';
+            if(this.background != LastSlide.background()){
+                PictureField.classList.remove('fade-in');
+                setTimeout(() => {
+                    PictureField.src = ROOTPATH + 'pictures/' + this.background + '.png';
+                    PictureField.style.display = 'block';
+                    PictureField.classList.add('fade-in');
+                    },100);
+            }
+            else {
+                PictureField.src = ROOTPATH + 'pictures/' + this.background + '.png';
+                PictureField.style.display = 'block';
+            }
         }
         if (this.condition) this.condition();
         TextField.innerHTML = this.text.replace("$Имя Игрока$", Game.PlayerName);
@@ -456,7 +466,6 @@ class Scene {
         else {
             PictureField.style.display = 'block';
             BorderField.style.display = 'block';
-            PictureField.setAttribute('class', 'fade-in');
             BorderField.setAttribute('class', 'fade-in');
             TextField.setAttribute('class', 'fade-in');
             setTimeout(() => { TextField.setAttribute('class', 'show'); }, 1000);
@@ -1330,6 +1339,11 @@ LastSlide.text = function () {
     return this.lastslide[this.lastslide.length-2].text;
 };
 
+LastSlide.background = function () {
+  if(this.lastslide.length>2) {
+    return this.lastslide[this.lastslide.length - 2].background;
+  }
+};
 /** После старта проверяем были ли приняты правила, а также устанавливаем настройки */
 Game.Settings.Launch = function () {
     document.addEventListener('contextmenu', event => event.preventDefault());
