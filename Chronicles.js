@@ -22,11 +22,11 @@ const ROOTPATH = '';
 //Game Variables
 const Game = {};
 //Attitudes Conditions Items
-Game.Attitudes = {};
+Game.Stats = {};
 Game.HideAllAttitudes = function () {
-    for (let prop in Game.Attitudes) {
-        Game.Attitudes[prop].show = false;
-        Game.Attitudes[prop].Hide();
+    for (let prop in Game.Stats) {
+        Game.Stats[prop].show = false;
+        Game.Stats[prop].Hide();
     }
     InfoText.innerHTML='';
     InfoArticle.innerHTML='';
@@ -152,164 +152,6 @@ class Achievement {
 
     Hide(){
         this.a.style.display = 'none';
-    }
-}
-
-/** Класс "отношений" (переменных) на которые могут повлият игроки */
-
-class Attitude {
-
-    /**
-     * @param {Object} info Объект с параметрами "отношений"
-     * @param {string} info.name Имя или название
-     * @param {number|undefined} info.attitude Начальное значение
-     * @param {string|undefined} info.title Краткое описание
-     * @param {string|undefined} info.text Полное описание
-     * @param {string|undefined} info.type Тип
-     * @param {string|undefined} info.picture Картинка
-     * @param {boolean|undefined} info.show Показать изначально в нивентаре?
-     * @param {string} info.story История к которой привязан стат
-     */
-
-    constructor(info) {
-        this.name = info.name || '';
-        this.attitude = info.attitude || 0;
-        this.title = info.title || '';
-        this.text = info.text || '';
-        this.type = info.type || 'Person';
-        this.picture = info.picture || '';
-        this.show = info.show || false;
-        this.story = info.story;
-        this.CreateTable();
-    }
-
-    /** Добавляем значение. Если добавили значение к "отношению" и если это не выбор, то он появляется в инвентаре, если предмет, то если равен нулю, то исчезает
-     *  @param {number} v Значение
-     */
-
-    Add(v) {
-        if(this.type != 'Choice') {
-            OpenInventoryButton.setAttribute('class', 'blink');
-        }
-
-        this.show = true;
-        this.attitude += v;
-        if (this.type == 'Choice') {
-            Game.SendData('выбирает '+this.name+': '+this.attitude);
-        }
-        if (this.picture != '') {
-            this.container.style.display = 'inline-block';
-            if (this.type == 'Person') {
-                this.SetEmoji();
-            }
-            if (this.type == 'Item') {
-                this.SetAmount();
-            }
-           
-        }
-
-        if (this.type == 'Item' && this.attitude <= 0) this.container.style.display = 'none';
-
-    }
-
-    /** Устанавливает конкретное значение
-     * @param {number} a Значение
-     */
-
-    Set(a) {
-        this.attitude = a;
-        this.Add(0);
-    }
-
-    SetName(a){
-    this.name = a;
-    this.SetEmoji();
-    }
-
-    /** Получаем значение */
-
-    Get() {
-        return (this.attitude);
-    }
-
-    /** Создаём и добавляем элементы в инвентарь */
-
-    CreateTable() {
-        if (this.picture != '') {
-            this.container = document.createElement('cont');
-            this.container.id = 'atttablecell';
-            this.container.style.display = 'none';
-            this.textinfo = document.createElement('te');
-            this.cell = document.createElement('img');
-            this.container.appendChild(this.cell);
-            this.container.appendChild(this.textinfo);
-            this.cell.src = ROOTPATH+'pictures/' + this.picture + '.png';
-            if (this.type == 'Person') {
-                this.cell.id = 'atttablecellpict';
-                AttitudeTableField.appendChild(this.container);
-            }
-            if (this.type == 'Item') {
-                this.cell.id = 'itemtablecellpict';
-                Inventory.appendChild(this.container);
-            }
-            this.container.addEventListener('click', () => {
-                setTimeout(() => {
-                    InfoPicture.setAttribute('class', 'show');
-                    InfoText.setAttribute('class','show');
-                    InfoArticle.setAttribute('class','show');
-                    }, 0);
-                setTimeout(() => {
-                    InfoPicture.src = ROOTPATH + 'pictures/' + this.picture + '.png';
-                    InfoPicture.setAttribute('class', 'typewriter');
-                    InfoText.setAttribute('class','typewriter');
-                    InfoArticle.setAttribute('class','typewriter');
-                    InfoText.innerHTML = this.title;
-                    InfoArticle.innerHTML = '<hr>' + this.text;
-                    }, 5);
-
-
-            });
-
-        }
-    }
-
-    /** Устанавливаем эмодзи в зависимости от значения */
-
-    SetEmoji() {
-        if (this.attitude <= -1) this.textinfo.innerHTML = '<emoji>🙁</emoji><a>' + this.name;
-
-        if (this.attitude == 0) this.textinfo.innerHTML = '<emoji>😶</emoji><a>' + this.name;
-
-        if (this.attitude >= 1) this.textinfo.innerHTML = '<emoji>😌</emoji><a>' + this.name;
-
-        if (this.attitude >= 6) this.textinfo.innerHTML = '<emoji>😏</emoji><a>' + this.name;
-
-        if (this.attitude >= 10) this.textinfo.innerHTML = '<emoji>🥰</emoji><a>' + this.name;
-        
-    }
-
-    /** Добавляем элемент отображения количества предмета */
-
-    SetAmount() {
-        if(this.attitude>=2) {
-            this.textinfo.innerHTML = '<amount>' + this.attitude + '</amount><a>' + this.name;
-        }
-        else{
-            this.textinfo.innerHTML = '<amount>' + '</amount><a>' + this.name;
-        }
-    }
-
-    /** Прячем элемент */
-
-    Hide() {
-        try {
-            this.attitude = 0;
-            this.container.style.display = 'none';
-            
-        } catch (error) {
-
-        }
-
     }
 }
 /** Класс сцены - текст, картинка, текст кнопок, действия кнопок, активность кнопок, дополнительное действие */
@@ -471,6 +313,164 @@ class Scene {
             setTimeout(() => { TextField.setAttribute('class', 'show'); }, 1000);
 
         }
+    }
+}
+
+/** Класс "отношений" (переменных) на которые могут повлият игроки */
+
+class Stat {
+
+    /**
+     * @param {Object} info Объект с параметрами "отношений"
+     * @param {string} info.name Имя или название
+     * @param {number|undefined} info.attitude Начальное значение
+     * @param {string|undefined} info.title Краткое описание
+     * @param {string|undefined} info.text Полное описание
+     * @param {string|undefined} info.type Тип
+     * @param {string|undefined} info.picture Картинка
+     * @param {boolean|undefined} info.show Показать изначально в нивентаре?
+     * @param {string} info.story История к которой привязан стат
+     */
+
+    constructor(info) {
+        this.name = info.name || '';
+        this.attitude = info.attitude || 0;
+        this.title = info.title || '';
+        this.text = info.text || '';
+        this.type = info.type || 'Person';
+        this.picture = info.picture || '';
+        this.show = info.show || false;
+        this.story = info.story;
+        this.CreateTable();
+    }
+
+    /** Добавляем значение. Если добавили значение к "отношению" и если это не выбор, то он появляется в инвентаре, если предмет, то если равен нулю, то исчезает
+     *  @param {number} v Значение
+     */
+
+    Add(v) {
+        if(this.type != 'Choice') {
+            OpenInventoryButton.setAttribute('class', 'blink');
+        }
+
+        this.show = true;
+        this.attitude += v;
+        if (this.type == 'Choice') {
+            Game.SendData('выбирает '+this.name+': '+this.attitude);
+        }
+        if (this.picture != '') {
+            this.container.style.display = 'inline-block';
+            if (this.type == 'Person') {
+                this.SetEmoji();
+            }
+            if (this.type == 'Item') {
+                this.SetAmount();
+            }
+           
+        }
+
+        if (this.type == 'Item' && this.attitude <= 0) this.container.style.display = 'none';
+
+    }
+
+    /** Устанавливает конкретное значение
+     * @param {number} a Значение
+     */
+
+    Set(a) {
+        this.attitude = a;
+        this.Add(0);
+    }
+
+    SetName(a){
+    this.name = a;
+    this.SetEmoji();
+    }
+
+    /** Получаем значение */
+
+    Get() {
+        return (this.attitude);
+    }
+
+    /** Создаём и добавляем элементы в инвентарь */
+
+    CreateTable() {
+        if (this.picture != '') {
+            this.container = document.createElement('cont');
+            this.container.id = 'atttablecell';
+            this.container.style.display = 'none';
+            this.textinfo = document.createElement('te');
+            this.cell = document.createElement('img');
+            this.container.appendChild(this.cell);
+            this.container.appendChild(this.textinfo);
+            this.cell.src = ROOTPATH+'pictures/' + this.picture + '.png';
+            if (this.type == 'Person') {
+                this.cell.id = 'atttablecellpict';
+                AttitudeTableField.appendChild(this.container);
+            }
+            if (this.type == 'Item') {
+                this.cell.id = 'itemtablecellpict';
+                Inventory.appendChild(this.container);
+            }
+            this.container.addEventListener('click', () => {
+                setTimeout(() => {
+                    InfoPicture.setAttribute('class', 'show');
+                    InfoText.setAttribute('class','show');
+                    InfoArticle.setAttribute('class','show');
+                    }, 0);
+                setTimeout(() => {
+                    InfoPicture.src = ROOTPATH + 'pictures/' + this.picture + '.png';
+                    InfoPicture.setAttribute('class', 'typewriter');
+                    InfoText.setAttribute('class','typewriter');
+                    InfoArticle.setAttribute('class','typewriter');
+                    InfoText.innerHTML = this.title;
+                    InfoArticle.innerHTML = '<hr>' + this.text;
+                    }, 5);
+
+
+            });
+
+        }
+    }
+
+    /** Устанавливаем эмодзи в зависимости от значения */
+
+    SetEmoji() {
+        if (this.attitude <= -1) this.textinfo.innerHTML = '<emoji>🙁</emoji><a>' + this.name;
+
+        if (this.attitude == 0) this.textinfo.innerHTML = '<emoji>😶</emoji><a>' + this.name;
+
+        if (this.attitude >= 1) this.textinfo.innerHTML = '<emoji>😌</emoji><a>' + this.name;
+
+        if (this.attitude >= 6) this.textinfo.innerHTML = '<emoji>😏</emoji><a>' + this.name;
+
+        if (this.attitude >= 10) this.textinfo.innerHTML = '<emoji>🥰</emoji><a>' + this.name;
+        
+    }
+
+    /** Добавляем элемент отображения количества предмета */
+
+    SetAmount() {
+        if(this.attitude>=2) {
+            this.textinfo.innerHTML = '<amount>' + this.attitude + '</amount><a>' + this.name;
+        }
+        else{
+            this.textinfo.innerHTML = '<amount>' + '</amount><a>' + this.name;
+        }
+    }
+
+    /** Прячем элемент */
+
+    Hide() {
+        try {
+            this.attitude = 0;
+            this.container.style.display = 'none';
+            
+        } catch (error) {
+
+        }
+
     }
 }
 /** Истории в меню */
@@ -1519,9 +1519,9 @@ Game.LoadPictures = function (callback) {
         }
     }
 
-    for (let prop in Game.Attitudes) {
-        if (Game.Attitudes[prop].picture == undefined || Game.Attitudes[prop].picture == '') { }
-        else PrechachedImages.push(Game.Attitudes[prop].picture);
+    for (let prop in Game.Stats) {
+        if (Game.Stats[prop].picture == undefined || Game.Stats[prop].picture == '') { }
+        else PrechachedImages.push(Game.Stats[prop].picture);
     }
 
 for (var x = 0; x < Game.Stories.length; x++) {
@@ -1568,10 +1568,10 @@ Game.Progress.Save = function (code) {
     localStorage.setItem(code+'_Played', '1');
 
     let story = localStorage.getItem('LastSave_Design');
-    for (let prop in Game.Attitudes) {
-        if (Game.Attitudes[prop].story == story) {
-        localStorage.setItem(code + '_' + prop + "_show", Game.Attitudes[prop].show);
-        localStorage.setItem(code + '_' + prop, Game.Attitudes[prop].attitude);
+    for (let prop in Game.Stats) {
+        if (Game.Stats[prop].story == story) {
+        localStorage.setItem(code + '_' + prop + "_show", Game.Stats[prop].show);
+        localStorage.setItem(code + '_' + prop, Game.Stats[prop].attitude);
         }
     }
 }
@@ -1586,9 +1586,9 @@ Game.Progress.Load = function (code) {
     if(localStorage.getItem('PlayerName')!='' || localStorage.getItem('PlayerName')!=null){
         Game.PlayerName = localStorage.getItem('PlayerName');
     }
-    for (let prop in Game.Attitudes) {
-        if (Game.Attitudes[prop].story == story) {
-            if (localStorage.getItem(code + "_" + prop + '_show') == 'true') Game.Attitudes[prop].Set(parseInt(localStorage.getItem(code + "_" + prop)));
+    for (let prop in Game.Stats) {
+        if (Game.Stats[prop].story == story) {
+            if (localStorage.getItem(code + "_" + prop + '_show') == 'true') Game.Stats[prop].Set(parseInt(localStorage.getItem(code + "_" + prop)));
         }
     }
 }
@@ -2169,7 +2169,7 @@ Game.Achievements.A_Part02Completed = new Achievement ({
 });
 //Characters
 
-Game.Attitudes.Aurora = new Attitude({
+Game.Stats.Aurora = new Stat({
     name: 'Аврора',
     picture: 'Persons/Aurora',
     title: 'В моей жизни происходит много значимых перемен.',
@@ -2177,7 +2177,7 @@ Game.Attitudes.Aurora = new Attitude({
     story: 'Aurora',
 });
 
-Game.Attitudes.Father = new Attitude({
+Game.Stats.Father = new Stat({
     name: 'Папа',
     picture: 'Persons/Dad',
     title: 'Мой единственный родной человек.',
@@ -2185,7 +2185,7 @@ Game.Attitudes.Father = new Attitude({
     story: 'Aurora',
 });
 
-Game.Attitudes.Yan = new Attitude({
+Game.Stats.Yan = new Stat({
     name: 'Ян',
     picture: 'Persons/Yan',
     title: 'Самый близкий друг для меня. Мой старший брат.',
@@ -2193,7 +2193,7 @@ Game.Attitudes.Yan = new Attitude({
     story: 'Aurora',
 });
 
-Game.Attitudes.Arthur = new Attitude({
+Game.Stats.Arthur = new Stat({
     name: 'Артур',
     picture: 'Persons/Arthur',
     title: 'Внук бывшего смотрителя маяка. Добрый и понимающий парень.',
@@ -2201,7 +2201,7 @@ Game.Attitudes.Arthur = new Attitude({
     story: 'Aurora',
 });
 
-Game.Attitudes.Kaleb = new Attitude({
+Game.Stats.Kaleb = new Stat({
     name: 'Калеб',
     picture: 'Persons/Kaleb',
     title: 'Наглый и самовлюбленный студент, с которым я столкнулась в библиотеке.',
@@ -2211,37 +2211,37 @@ Game.Attitudes.Kaleb = new Attitude({
 
 //Conditions
 
-Game.Attitudes.Drawing = new Attitude({
+Game.Stats.Drawing = new Stat({
     type: 'Choice',
     name: 'заниматься рисованием',
     story: 'Aurora',
 });
 
-Game.Attitudes.Writing = new Attitude({
+Game.Stats.Writing = new Stat({
     type: 'Choice',
     name: 'заниматься писательством',
     story: 'Aurora',
 });
 
-Game.Attitudes.Music = new Attitude({
+Game.Stats.Music = new Stat({
     type: 'Choice',
     name: 'быть меломаном',
     story: 'Aurora',
 });
 
-Game.Attitudes.Pragmatic = new Attitude({
+Game.Stats.Pragmatic = new Stat({
     type: 'Choice',
     name: 'быть прагматичной',
     story: 'Aurora',
 });
 
-Game.Attitudes.Romantic = new Attitude({
+Game.Stats.Romantic = new Stat({
     type: 'Choice',
     name: 'быть романтичной',
     story: 'Aurora',
 });
 
-Game.Attitudes.Song = new Attitude({
+Game.Stats.Song = new Stat({
     type: 'Choice',
     name: 'выбрала песню',
     story: 'Aurora',
@@ -2249,7 +2249,7 @@ Game.Attitudes.Song = new Attitude({
 
 //Items
 
-Game.Attitudes.Trial_Pass = new Attitude({
+Game.Stats.Trial_Pass = new Stat({
     name: 'Пропуск',
     picture: 'Items/Trial_Pass',
     type: 'Item',
@@ -2267,7 +2267,7 @@ Game.Scenes.A_Part01[0] =
     Для меня это было счастливым временем, которое не ускользало даже под гнетом тяжелых испытаний судьбы.
         `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[1].Begin(); Game.Attitudes.Aurora.Add(0); Game.Message('В верхнем левом углу находится инвентарь, там вы можете посмотреть полезную информацию') }],
+    buttonaction: [() => { Game.Scenes.A_Part01[1].Begin(); Game.Stats.Aurora.Add(0); Game.Message('В верхнем левом углу находится инвентарь, там вы можете посмотреть полезную информацию') }],
     background: 'Backgrounds/House_Inside',
     condition: () => { Game.Sounds.Play('Music', 'Lighthouse') }
   });
@@ -2366,7 +2366,7 @@ Game.Scenes.A_Part01[8] =
      <p>Но все изменилось, когда в один из дней он не пришел домой. 
           `,
       buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Part01[9].Begin(); Game.Attitudes.Yan.Add(0); }],
+      buttonaction: [() => { Game.Scenes.A_Part01[9].Begin(); Game.Stats.Yan.Add(0); }],
       background: 'Persons/Yan',
   });
 
@@ -2519,9 +2519,9 @@ Game.Scenes.A_Part01[103] =
       `,
     buttontext: ['Любила рисование','Любила писательство','Любила музыку'],
     buttonaction: [
-      () => { Game.Scenes.A_Part01[18].Begin(); Game.Achievements.A_Artist.Unlock(); Game.Attitudes.Drawing.Add(1); },
-      () => { Game.Scenes.A_Part01[21].Begin(); Game.Achievements.A_Writer.Unlock(); Game.Attitudes.Writing.Add(1);},
-      () => { Game.Scenes.A_Part01[24].Begin(); Game.Achievements.A_Musician.Unlock(); Game.Attitudes.Music.Add(1); }
+      () => { Game.Scenes.A_Part01[18].Begin(); Game.Achievements.A_Artist.Unlock(); Game.Stats.Drawing.Add(1); },
+      () => { Game.Scenes.A_Part01[21].Begin(); Game.Achievements.A_Writer.Unlock(); Game.Stats.Writing.Add(1);},
+      () => { Game.Scenes.A_Part01[24].Begin(); Game.Achievements.A_Musician.Unlock(); Game.Stats.Music.Add(1); }
     ],
     background: 'Backgrounds/Lighthouse',
   });
@@ -2692,8 +2692,8 @@ Game.Scenes.A_Part01[60] =
       `,
     buttontext: ['Романтичной','Прагматичной'],
     buttonaction: [
-      () => { Game.Scenes.A_Part01[29].Begin(); Game.Attitudes.Romantic.Add(1); },
-      () => { Game.Scenes.A_Part01[31].Begin(); Game.Attitudes.Pragmatic.Add(1); }
+      () => { Game.Scenes.A_Part01[29].Begin(); Game.Stats.Romantic.Add(1); },
+      () => { Game.Scenes.A_Part01[31].Begin(); Game.Stats.Pragmatic.Add(1); }
     ],
     background: 'Backgrounds/Lighthouse',
   });
@@ -2855,7 +2855,7 @@ Game.Scenes.A_Part01[40] =
       <p>Я чувствовала себя очень комфортно в его обществе. Его доброта и ласковое обращение вызывали в душе ранее неизвестные мне чувства. 
 `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[41].Begin(); Game.Attitudes.Arthur.Add(0); }],
+    buttonaction: [() => { Game.Scenes.A_Part01[41].Begin(); Game.Stats.Arthur.Add(0); }],
     background: 'Persons/Arthur',
   });
 
@@ -2903,10 +2903,10 @@ Game.Scenes.A_Part01[43] =
     buttonaction: [() => { Game.Scenes.A_Part01[44].Begin(); }],
     background: 'Backgrounds/Near_Lighthouse',
     condition: function (){
-      if(Game.Attitudes.Romantic.Get()==1){
+      if(Game.Stats.Romantic.Get()==1){
         this.buttonaction[0] = () => { Game.Scenes.A_Part01[44].Begin(); }
       }
-      if(Game.Attitudes.Pragmatic.Get()==1){
+      if(Game.Stats.Pragmatic.Get()==1){
         this.buttonaction[0] = () => { Game.Scenes.A_Part01[46].Begin(); }
       }
     }
@@ -3090,7 +3090,7 @@ Game.Scenes.A_Part01[56] =
       <p>Я обняла его. Крепко-крепко. Это был один из последних наших душевных вечеров перед моим отъездом. 
 `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[57].Begin(); Game.Attitudes.Father.Add(0); Game.Achievements.A_Part01Completed.Unlock(); }],
+    buttonaction: [() => { Game.Scenes.A_Part01[57].Begin(); Game.Stats.Father.Add(0); Game.Achievements.A_Part01Completed.Unlock(); }],
     background: 'Persons/Dad',
   });
 
@@ -3259,15 +3259,15 @@ Game.Scenes.A_Part02[12] =
     buttonaction: [() => { Game.Scenes.A_Part02[13].Begin();}],
     background: 'Backgrounds/Bench',
     condition: function (){
-      if (Game.Attitudes.Drawing.Get() >=1){
+      if (Game.Stats.Drawing.Get() >=1){
         this.buttonaction[0] = () =>{ Game.Scenes.A_Part02[13].Begin();}
       }
 
-      if (Game.Attitudes.Writing.Get() >=1){
+      if (Game.Stats.Writing.Get() >=1){
         this.buttonaction[0] = () =>{ Game.Scenes.A_Part02[29].Begin();}
       }
 
-      if (Game.Attitudes.Music.Get() >=1){
+      if (Game.Stats.Music.Get() >=1){
         this.buttonaction[0] = () =>{ Game.Scenes.A_Part02[36].Begin(); }
       }
     }
@@ -3385,7 +3385,7 @@ Game.Scenes.A_Part02[22] =
     buttonaction: [() => {
       Game.Scenes.A_Part02[23].Begin();
       Game.Message('Отец благодарен за ваше благосклонное отношение. Его состояние улучшается.');
-      Game.Attitudes.Father.Add(1);
+      Game.Stats.Father.Add(1);
     }],
     background: '',
   });
@@ -3399,7 +3399,7 @@ Game.Scenes.A_Part02[23] =
     buttonaction: [() => {
       Game.Scenes.A_Part02[24].Begin();
       Game.Message('Вы принимаете жизнь такой, какая она есть. Благодаря вашему выбору дух Авроры крепчает.')
-      Game.Attitudes.Aurora.Add(1);}],
+      Game.Stats.Aurora.Add(1);}],
     background: 'Persons/Dad',
   });
 
@@ -3434,7 +3434,7 @@ Game.Scenes.A_Part02[26] =
     buttonaction: [() => {
       Game.Scenes.A_Part02[27].Begin();
       Game.Message('Отец продолжает винить себя в смерти матери. Его состояние ухудшается.');
-      Game.Attitudes.Father.Add(-1);
+      Game.Stats.Father.Add(-1);
     }],
     background: 'Persons/Dad',
   });
@@ -3448,7 +3448,7 @@ Game.Scenes.A_Part02[27] =
     buttonaction: [() => {
       Game.Scenes.A_Part02[28].Begin();
       Game.Message('Вы не можете смириться с реальностью, с которой сталкиваетесь. Вследствие вашего выбора Аврора начинает больше сомневаться в себе.')
-      Game.Attitudes.Aurora.Add(-1);
+      Game.Stats.Aurora.Add(-1);
     }],
     background: 'Persons/Dad',
   });
@@ -3740,8 +3740,8 @@ Game.Scenes.A_Part02[54] =
     buttonaction: [() => { Game.Scenes.A_Part02[60].Begin();}],
     background: 'Persons/Arthur',
     condition: function() {
-        Game.Attitudes.Song.Set(1);
-      if(Game.Attitudes.Music.Get()>=1){
+        Game.Stats.Song.Set(1);
+      if(Game.Stats.Music.Get()>=1){
         this.buttonaction[0] = () => {Game.Scenes.A_Part02[55].Begin();}
       }
     }
@@ -3769,8 +3769,8 @@ Game.Scenes.A_Part02[56] =
         `,
     buttontext: ['Послушать Трек 1', 'Послушать Трек 2', 'Выбрать прослушиваемую'],
     buttonaction: [
-      () => { Game.Sounds.Play('Music','Aurora_Daily_01'); Game.Attitudes.Song.Set(1);},
-      () => { Game.Sounds.Play('Music','Aurora_Daily_02'); Game.Attitudes.Song.Set(2);},
+      () => { Game.Sounds.Play('Music','Aurora_Daily_01'); Game.Stats.Song.Set(1);},
+      () => { Game.Sounds.Play('Music','Aurora_Daily_02'); Game.Stats.Song.Set(2);},
       () => { Game.Scenes.A_Part02[59].Begin(); },
     ],
     background: 'Persons/Arthur',
@@ -3805,11 +3805,11 @@ Game.Scenes.A_Part02[61] =
     buttonaction: [() => { Game.Scenes.A_Part02[61].Begin();}],
     background: 'Backgrounds/Arthurs_Car',
     condition: function () {
-      if(Game.Attitudes.Romantic.Get()>=1){
+      if(Game.Stats.Romantic.Get()>=1){
         this.buttonaction[0] = () => { Game.Scenes.A_Part02[62].Begin();}
       }
 
-      if(Game.Attitudes.Pragmatic.Get()>=1){
+      if(Game.Stats.Pragmatic.Get()>=1){
         this.buttonaction[0] = () => { Game.Scenes.A_Part02[64].Begin();}
       }
 
@@ -4075,7 +4075,7 @@ Game.Scenes.A_Part02[85] =
     Он не договорил, но его высказывания все равно отозвались теплом на сердце. Я не могла тогда представить, что мог придумать Артур, но его слова и действия невольно заставляли верить в светлый исход.
         `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[86].Begin(); Game.Message('Артур становится ближе к Авроре'); Game.Attitudes.Arthur.Add(1)}],
+    buttonaction: [() => { Game.Scenes.A_Part02[86].Begin(); Game.Message('Артур становится ближе к Авроре'); Game.Stats.Arthur.Add(1)}],
     background: 'Persons/Arthur',
   });
 
@@ -4085,7 +4085,7 @@ Game.Scenes.A_Part02[86] =
     Оставшиеся часы до темноты, я пролежала на плече Артура. Не плача, не испытывая грусти. Только наслаждалась его компанией и разговорами, что грели душу.
         `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[91].Begin(); Game.Sounds.Play('Music','Aurora_Daily_0' + Game.Attitudes.Song.Get())}],
+    buttonaction: [() => { Game.Scenes.A_Part02[91].Begin(); Game.Sounds.Play('Music','Aurora_Daily_0' + Game.Stats.Song.Get())}],
     background: 'Backgrounds/Forest_Flowers',
   });
 
@@ -4128,7 +4128,7 @@ Game.Scenes.A_Part02[90] =
     Оставшиеся часы до темноты, мы сидели рядом друг с другом и мирно вели беседу на различные темы, стараясь чуть дольше не возвращаться в реальность.
         `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[91].Begin(); Game.Sounds.Play('Music','Aurora_Daily_0' + Game.Attitudes.Song.Get())}],
+    buttonaction: [() => { Game.Scenes.A_Part02[91].Begin(); Game.Sounds.Play('Music','Aurora_Daily_0' + Game.Stats.Song.Get())}],
     background: 'Backgrounds/Forest_Flowers',
   });
 
@@ -4138,7 +4138,7 @@ Game.Scenes.A_Part02[91] =
     Я вынырнула из воспоминаний, снова возвращаясь в салон автомобиля Артура.
         `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[92].Begin(); Game.Message('Артуру приятно, что вы помните его поддержку'); Game.Attitudes.Arthur.Add(1);}],
+    buttonaction: [() => { Game.Scenes.A_Part02[92].Begin(); Game.Message('Артуру приятно, что вы помните его поддержку'); Game.Stats.Arthur.Add(1);}],
     background: 'Backgrounds/Arthurs_Car',
   });
 
@@ -4254,7 +4254,7 @@ Game.Scenes.A_Part02[102] =
     Неожиданно ребенок начал ворочаться, а затем громко плакать. Мужчина стал успокаивать его, но крики так и продолжали пронзать мирную тишину.  
         `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[103].Begin(); Game.Sounds.Play('Music','Aurora_Daily_0' + Game.Attitudes.Song.Get())}],
+    buttonaction: [() => { Game.Scenes.A_Part02[103].Begin(); Game.Sounds.Play('Music','Aurora_Daily_0' + Game.Stats.Song.Get())}],
     background: 'Backgrounds/Lighthouse_Night',
   });
 
@@ -4481,10 +4481,10 @@ Game.Scenes.A_Part02[125] =
     buttonaction: [() => { Game.Scenes.A_Part02[126].Begin();}],
     background: 'Persons/Arthur',
     condition: function (){
-      if(Game.Attitudes.Pragmatic.Get()>=1){
+      if(Game.Stats.Pragmatic.Get()>=1){
         this.buttonaction[0] = () =>{Game.Scenes.A_Part02[127].Begin();}
       }
-      if(Game.Attitudes.Romantic.Get()>=1){
+      if(Game.Stats.Romantic.Get()>=1){
         this.buttonaction[0] = () =>{Game.Scenes.A_Part02[126].Begin();}
       }
     }
@@ -4600,7 +4600,7 @@ Game.Scenes.A_Part02[135] =
       <p>- Ты права. Просто беспокоюсь за тебя.
         `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[136].Begin(); Game.Attitudes.Trial_Pass.Add(1);}],
+    buttonaction: [() => { Game.Scenes.A_Part02[136].Begin(); Game.Stats.Trial_Pass.Add(1);}],
     background: 'Backgrounds/Arthurs_Car',
   });
 
@@ -4646,7 +4646,7 @@ Game.Scenes.A_Part02[139] =
     buttonaction: [() => { Game.Scenes.A_Part02[141].Begin();}],
     background: 'Backgrounds/Library',
     condition: function () {
-      if(Game.Attitudes.Writing.Get()>=1){
+      if(Game.Stats.Writing.Get()>=1){
         this.buttonaction[0] = () => { Game.Scenes.A_Part02[140].Begin();}
       }
     }
@@ -5014,7 +5014,7 @@ Game.Achievements.Dev = new Achievement ({
 });
 //Characters
 
-Game.Attitudes.God = new Attitude({
+Game.Stats.God = new Stat({
     name: 'Проводник',
     picture: 'Persons/Stranger',
     title: 'Его цели и мотивы неясны, но я думаю, он не желает мне зла. Время покажет. ',
@@ -5022,7 +5022,7 @@ Game.Attitudes.God = new Attitude({
     story: 'Immortals',
 });
 
-Game.Attitudes.Cheryl = new Attitude({
+Game.Stats.Cheryl = new Stat({
     name: 'Шерил',
     picture: 'Persons/Cheryl',
     title: 'Шерил все реже улыбается… Ее жизни что-то угрожает? ',
@@ -5030,7 +5030,7 @@ Game.Attitudes.Cheryl = new Attitude({
     story: 'Immortals',
 });
 
-Game.Attitudes.Scarlett = new Attitude({
+Game.Stats.Scarlett = new Stat({
     name: 'Скарлетт',
     picture: 'Persons/Scarlett',
     title: 'Кажется, что в последнее время Скар сама не своя. Могу ли я ей помочь?',
@@ -5038,7 +5038,7 @@ Game.Attitudes.Scarlett = new Attitude({
     story: 'Immortals',
 });
 
-Game.Attitudes.Neitan = new Attitude({
+Game.Stats.Neitan = new Stat({
     name: 'Нэйтан',
     picture: 'Persons/Neitan',
     title: 'Он знаток своего дела и любитель повторять про “важность” учебы.',
@@ -5046,7 +5046,7 @@ Game.Attitudes.Neitan = new Attitude({
     story: 'Immortals',
 });
 
-Game.Attitudes.Nicola = new Attitude({
+Game.Stats.Nicola = new Stat({
     name: 'Никола',
     picture: 'Persons/Nicola',
     title: 'Это он? Великий ученый? Я не схожу с ума?',
@@ -5055,7 +5055,7 @@ Game.Attitudes.Nicola = new Attitude({
 
 });
 
-Game.Attitudes.Leon = new Attitude({
+Game.Stats.Leon = new Stat({
     name: 'Леон',
     picture: 'Persons/Leon',
     title: 'Мы снова общаемся с ним, как в старые добрые времена…',
@@ -5063,7 +5063,7 @@ Game.Attitudes.Leon = new Attitude({
     story: 'Immortals',
 });
 
-Game.Attitudes.Antagonist = new Attitude({
+Game.Stats.Antagonist = new Stat({
     name: 'Александр',
     picture: 'Persons/Antagonist',
     title: 'Странный мужчина, который одержим Катариной.',
@@ -5071,7 +5071,7 @@ Game.Attitudes.Antagonist = new Attitude({
     story: 'Immortals',
 });
 
-Game.Attitudes.Robert = new Attitude({
+Game.Stats.Robert = new Stat({
     name: 'Роберт',
     picture: 'Persons/Robert',
     title: 'Фиктивный муж Катарины. Называет себя охотником на монстров.',
@@ -5079,7 +5079,7 @@ Game.Attitudes.Robert = new Attitude({
     story: 'Immortals',
 });
 
-Game.Attitudes.Family = new Attitude({
+Game.Stats.Family = new Stat({
     name: 'Семья',
     type: 'Choice',
     picture: '',
@@ -5090,121 +5090,121 @@ Game.Attitudes.Family = new Attitude({
 
 //Conditions
 
-Game.Attitudes.ForgotHomework = new Attitude({
+Game.Stats.ForgotHomework = new Stat({
     type: 'Choice',
     name: 'забыла домашку',
     story: 'Immortals',
 });
 
-Game.Attitudes.Late = new Attitude({
+Game.Stats.Late = new Stat({
     type: 'Choice',
     name: 'опоздала',
     story: 'Immortals',
 });
 
-Game.Attitudes.Believe = new Attitude({
+Game.Stats.Believe = new Stat({
     type: 'Choice',
     name: 'поверила в происходящее с Теслой',
     story: 'Immortals',
 });
 
-Game.Attitudes.StreetHide = new Attitude({
+Game.Stats.StreetHide = new Stat({
     type: 'Choice',
     name: 'убежала в переулок',
     story: 'Immortals',
 });
 
-Game.Attitudes.StreetStraight = new Attitude({
+Game.Stats.StreetStraight = new Stat({
     type: 'Choice',
     name: 'убежала в прямо по улице',
     story: 'Immortals',
 });
 
-Game.Attitudes.ComeWithLeon = new Attitude({
+Game.Stats.ComeWithLeon = new Stat({
     type: 'Choice',
     name: 'пойти  Нейтаном',
     story: 'Immortals',
 });
 
-Game.Attitudes.ScarlettSpeech = new Attitude({
+Game.Stats.ScarlettSpeech = new Stat({
     type: 'Choice',
     name: 'общалась со Скарлетт',
     story: 'Immortals',
 });
 
-Game.Attitudes.Activities = new Attitude({
+Game.Stats.Activities = new Stat({
     type: 'Choice',
     name: 'Кол-во активностей',
     story: 'Immortals',
 });
 
-Game.Attitudes.InvitedCheryl = new Attitude({
+Game.Stats.InvitedCheryl = new Stat({
     type: 'Choice',
     name: 'позвала Шерил',
     story: 'Immortals',
 });
 
-Game.Attitudes.DrinkAtParty = new Attitude({
+Game.Stats.DrinkAtParty = new Stat({
     type: 'Choice',
     name: 'выпила алкоголь',
     story: 'Immortals',
 });
 
-Game.Attitudes.HugLeon = new Attitude({
+Game.Stats.HugLeon = new Stat({
     type: 'Choice',
     name: 'обнялась с Леоном',
     story: 'Immortals',
 });
 
-Game.Attitudes.FollowedScarlett = new Attitude({
+Game.Stats.FollowedScarlett = new Stat({
     type: 'Choice',
     name: 'пошла за Скарлетт',
     story: 'Immortals',
 });
 
-Game.Attitudes.TryToEscape = new Attitude({
+Game.Stats.TryToEscape = new Stat({
     type: 'Choice',
     name: 'попыталась сбежать',
     story: 'Immortals',
 });
 
-Game.Attitudes.BrokenHand = new Attitude({
+Game.Stats.BrokenHand = new Stat({
     type: 'Choice',
     name: 'сломала руку',
     story: 'Immortals',
 });
 
-Game.Attitudes.MetAntagonist = new Attitude({
+Game.Stats.MetAntagonist = new Stat({
     type: 'Choice',
     name: 'пошла в сад',
     story: 'Immortals',
 });
 
-Game.Attitudes.AntagonistWire = new Attitude({
+Game.Stats.AntagonistWire = new Stat({
     type: 'Choice',
     name: 'поддалась соблазну соблазну',
     story: 'Immortals',
 });
 
-Game.Attitudes.HelpTesla = new Attitude({
+Game.Stats.HelpTesla = new Stat({
     type: 'Choice',
     name: 'помогла Тесле',
     story: 'Immortals',
 });
 
-Game.Attitudes.SupportLeon = new Attitude({
+Game.Stats.SupportLeon = new Stat({
     type: 'Choice',
     name: 'поддержала Леона в разговоре',
     story: 'Immortals',
 });
 
-Game.Attitudes.Brothers = new Attitude({
+Game.Stats.Brothers = new Stat({
     type: 'Choice',
     name: 'связь братьев',
     story: 'Immortals',
 });
 
-Game.Attitudes.GoStudy = new Attitude({
+Game.Stats.GoStudy = new Stat({
     type: 'Choice',
     name: 'пойти на занятия',
     story: 'Immortals',
@@ -5212,7 +5212,7 @@ Game.Attitudes.GoStudy = new Attitude({
 
 //Items
 
-Game.Attitudes.Money = new Attitude({
+Game.Stats.Money = new Stat({
     name: 'Деньги',
     picture: 'Items/Money',
     type: 'Item',
@@ -5221,7 +5221,7 @@ Game.Attitudes.Money = new Attitude({
     story: 'Immortals',
 });
 
-Game.Attitudes.Study = new Attitude({
+Game.Stats.Study = new Stat({
     name: 'Учёба',
     picture: 'Items/Study',
     type: 'Item',
@@ -5230,7 +5230,7 @@ Game.Attitudes.Study = new Attitude({
     story: 'Immortals',
 });
 
-Game.Attitudes.Key01 = new Attitude({
+Game.Stats.Key01 = new Stat({
     name: 'Ключ',
     picture: 'Items/Key01',
     type: 'Item',
@@ -5239,7 +5239,7 @@ Game.Attitudes.Key01 = new Attitude({
     story: 'Immortals',
 });
 
-Game.Attitudes.Knife = new Attitude({
+Game.Stats.Knife = new Stat({
     name: 'Нож',
     picture: 'Items/Knife',
     type: 'Item',
@@ -5248,7 +5248,7 @@ Game.Attitudes.Knife = new Attitude({
     story: 'Immortals',
 });
 
-Game.Attitudes.Golden_Cross = new Attitude({
+Game.Stats.Golden_Cross = new Stat({
     name: 'Крестик',
     picture: 'Items/Golden_Cross',
     type: 'Item',
@@ -5269,8 +5269,8 @@ Game.Scenes.FirstChapter[0] =
             'Встать'
         ],
         buttonaction: [
-            () => { Game.Scenes.FirstChapter[1].Begin(); Game.Attitudes.ForgotHomework.Add(1); Game.Achievements.Sleeper.Unlock(); Game.Attitudes.Money.Add(700); },
-            () => { Game.Scenes.FirstChapter[31].Begin(); Game.Achievements.GoodGirl.Unlock(); Game.Attitudes.Money.Add(700); }
+            () => { Game.Scenes.FirstChapter[1].Begin(); Game.Stats.ForgotHomework.Add(1); Game.Achievements.Sleeper.Unlock(); Game.Stats.Money.Add(700); },
+            () => { Game.Scenes.FirstChapter[31].Begin(); Game.Achievements.GoodGirl.Unlock(); Game.Stats.Money.Add(700); }
         ],
         background: 'Backgrounds/Room',
         condition: () => { Game.Sounds.Play('Music', 'FirstChapter');  Game.Effects.Flash(); }
@@ -5323,8 +5323,8 @@ Game.Scenes.FirstChapter[4] =
             'Потратить деньги на такси (200)',
             'Потратить деньги на автобус (50)'],
         buttonaction: [
-            () => { Game.Scenes.FirstChapter[5].Begin(); Game.Attitudes.Money.Add(-200); Game.Achievements.MoneySpender.Unlock(); },
-            () => { Game.Scenes.FirstChapter[25].Begin(); Game.Attitudes.Late.Add(1); Game.Attitudes.Money.Add(-50); Game.Attitudes.ScarlettSpeech.Add(-1) },
+            () => { Game.Scenes.FirstChapter[5].Begin(); Game.Stats.Money.Add(-200); Game.Achievements.MoneySpender.Unlock(); },
+            () => { Game.Scenes.FirstChapter[25].Begin(); Game.Stats.Late.Add(1); Game.Stats.Money.Add(-50); Game.Stats.ScarlettSpeech.Add(-1) },
         ],
         background: '',
     });
@@ -5375,8 +5375,8 @@ Game.Scenes.FirstChapter[8] =
             'Сказать быть решительнее'
         ],
         buttonaction: [
-            () => { Game.Scenes.FirstChapter[9].Begin(); Game.Message("Шерил приятна ваша забота"); Game.Attitudes.Cheryl.Add(1); Game.Attitudes.Key01.Add(1); },
-            () => { Game.Scenes.FirstChapter[10].Begin(); Game.Attitudes.Key01.Add(1); }
+            () => { Game.Scenes.FirstChapter[9].Begin(); Game.Message("Шерил приятна ваша забота"); Game.Stats.Cheryl.Add(1); Game.Stats.Key01.Add(1); },
+            () => { Game.Scenes.FirstChapter[10].Begin(); Game.Stats.Key01.Add(1); }
         ],
         background: 'Backgrounds/Phone',
     });
@@ -5390,14 +5390,14 @@ Game.Scenes.FirstChapter[9] =
         buttonaction: [() => { Game.Scenes.FirstChapter[12].Begin(); }],
         background: 'Backgrounds/Phone',
         condition: function () {
-            if (Game.Attitudes.Late.Get() >= 1) {
+            if (Game.Stats.Late.Get() >= 1) {
                 this.buttonaction[0] = () => { Game.Scenes.FirstChapter[27].Begin(); };
             }
-            if (Game.Attitudes.ForgotHomework.Get() <= 0) {
+            if (Game.Stats.ForgotHomework.Get() <= 0) {
                 this.buttonaction[0] = () => { Game.Scenes.FirstChapter[37].Begin(); };
             }
 
-          if (Game.Attitudes.Money.Get() <= 500) {
+          if (Game.Stats.Money.Get() <= 500) {
             this.buttonaction[0] = () => { Game.Scenes.FirstChapter[211].Begin(); };
           }
         },
@@ -5420,7 +5420,7 @@ Game.Scenes.FirstChapter[10] =
             Осознав, что я устала терпеть ее нытье, я сказала Шерил прямо. Если она хочет изменить свою жизнь, то пусть прекращает жить в этом доме и возьмет себя в руки.
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.FirstChapter[11].Begin(); Game.Message("Шерил считает, что вы не воспринимаете ее всерьез и не оказываете поддержки"); Game.Attitudes.Cheryl.Add(-1); }],
+        buttonaction: [() => { Game.Scenes.FirstChapter[11].Begin(); Game.Message("Шерил считает, что вы не воспринимаете ее всерьез и не оказываете поддержки"); Game.Stats.Cheryl.Add(-1); }],
         background: 'Backgrounds/Phone',
     });
 
@@ -5433,14 +5433,14 @@ Game.Scenes.FirstChapter[11] =
         buttonaction: [() => { Game.Scenes.FirstChapter[12].Begin(); }],
         background: 'Backgrounds/Phone',
         condition: function () {
-            if (Game.Attitudes.Late.Get() >= 1) {
+            if (Game.Stats.Late.Get() >= 1) {
                 this.buttonaction[0] = () => { Game.Scenes.FirstChapter[27].Begin(); };
             }
-            if (Game.Attitudes.ForgotHomework.Get() <= 0) {
+            if (Game.Stats.ForgotHomework.Get() <= 0) {
                 this.buttonaction[0] = () => { Game.Scenes.FirstChapter[37].Begin(); };
             }
 
-          if (Game.Attitudes.Money.Get() <= 500) {
+          if (Game.Stats.Money.Get() <= 500) {
             this.buttonaction[0] = () => { Game.Scenes.FirstChapter[211].Begin(); };
           }
 
@@ -5562,7 +5562,7 @@ Game.Scenes.FirstChapter[17] =
         buttonaction: [() => { Game.Scenes.FirstChapter[18].Begin(); }],
         background: 'Persons/Hero',
         condition: function () {
-            if (Game.Attitudes.Late.Get() >= 1) {
+            if (Game.Stats.Late.Get() >= 1) {
                 this.buttonaction[0] = () => { Game.Scenes.FirstChapter[29].Begin(); };
             }
         },
@@ -5607,8 +5607,8 @@ Game.Scenes.FirstChapter[20] =
             'Было всё равно'
         ],
         buttonaction: [
-            () => { Game.Scenes.FirstChapter[21].Begin(); Game.Attitudes.Scarlett.Add(1); Game.Message("Скарлетт дорожит вашей дружбой") },
-            () => { Game.Scenes.FirstChapter[22].Begin(); Game.Attitudes.Scarlett.Add(-1); Game.Message("Вы со Скарлетт не такие уж и близкие подруги") }
+            () => { Game.Scenes.FirstChapter[21].Begin(); Game.Stats.Scarlett.Add(1); Game.Message("Скарлетт дорожит вашей дружбой") },
+            () => { Game.Scenes.FirstChapter[22].Begin(); Game.Stats.Scarlett.Add(-1); Game.Message("Вы со Скарлетт не такие уж и близкие подруги") }
         ],
         background: 'Persons/Scarlett',
     });
@@ -5623,7 +5623,7 @@ Game.Scenes.FirstChapter[21] =
         buttonaction: [() => { Game.Scenes.FirstChapter[23].Begin(); }],
         background: 'Persons/Scarlett',
         condition: function () {
-            if (Game.Attitudes.ForgotHomework.Get() <= 0) {
+            if (Game.Stats.ForgotHomework.Get() <= 0) {
                 this.buttonaction[0] = () => { Game.Scenes.FirstChapter[41].Begin(); };
             }
         },
@@ -5640,7 +5640,7 @@ Game.Scenes.FirstChapter[22] =
         buttonaction: [() => { Game.Scenes.FirstChapter[23].Begin(); }],
         background: 'Persons/Scarlett',
         condition: function () {
-            if (Game.Attitudes.ForgotHomework.Get() <= 0) {
+            if (Game.Stats.ForgotHomework.Get() <= 0) {
                 this.buttonaction[0] = () => { Game.Scenes.FirstChapter[41].Begin(); };
             }
         },
@@ -5667,7 +5667,7 @@ Game.Scenes.FirstChapter[213] =
             `
     ,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.FirstChapter[24].Begin(); Game.Message("Профессор рад, что никто не опоздал"); Game.Attitudes.Neitan.Add(1) }],
+    buttonaction: [() => { Game.Scenes.FirstChapter[24].Begin(); Game.Message("Профессор рад, что никто не опоздал"); Game.Stats.Neitan.Add(1) }],
     background: 'Persons/Neitan',
   });
 
@@ -5814,7 +5814,7 @@ Game.Scenes.FirstChapter[180] =
             `
         ,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.FirstChapter[24].Begin(); Game.Message("Профессор недоволен вашим опозданием"); Game.Attitudes.Neitan.Add(-1); }],
+        buttonaction: [() => { Game.Scenes.FirstChapter[24].Begin(); Game.Message("Профессор недоволен вашим опозданием"); Game.Stats.Neitan.Add(-1); }],
         background: 'Persons/Neitan',
     });
 
@@ -6022,7 +6022,7 @@ Game.Scenes.FirstChapter[132] =
             `
         ,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.FirstChapter[24].Begin(); Game.Message("Профессор рад, что никто не опоздал"); Game.Attitudes.Neitan.Add(1) }],
+        buttonaction: [() => { Game.Scenes.FirstChapter[24].Begin(); Game.Message("Профессор рад, что никто не опоздал"); Game.Stats.Neitan.Add(1) }],
         background: 'Persons/Neitan',
     });
 
@@ -6039,11 +6039,11 @@ Game.Scenes.FirstChapter[42] =
         buttonaction: [''],
         background: 'Backgrounds/Lection',
         condition: function () {
-            if (Game.Attitudes.ForgotHomework.Get() <= 0) {
-                this.buttonaction[0] = () => { Game.Scenes.FirstChapter[43].Begin(); Game.Message("Ваша текущая успеваемость “4”"); Game.Attitudes.Study.Set(4); Game.Attitudes.Neitan.Add(1) };
+            if (Game.Stats.ForgotHomework.Get() <= 0) {
+                this.buttonaction[0] = () => { Game.Scenes.FirstChapter[43].Begin(); Game.Message("Ваша текущая успеваемость “4”"); Game.Stats.Study.Set(4); Game.Stats.Neitan.Add(1) };
             }
             else {
-                this.buttonaction[0] = () => { Game.Scenes.FirstChapter[44].Begin(); Game.Message("Ваша текущая успеваемость “3”"); Game.Attitudes.Study.Set(3) };
+                this.buttonaction[0] = () => { Game.Scenes.FirstChapter[44].Begin(); Game.Message("Ваша текущая успеваемость “3”"); Game.Stats.Study.Set(3) };
             }
         }
     });
@@ -6097,9 +6097,9 @@ Game.Scenes.FirstChapter[110] =
             'Разговаривала со Скарлетт'
         ],
         buttonaction: [
-            () => { Game.Scenes.FirstChapter[46].Begin(); if (Game.Attitudes.Study.Get() <= 3) Game.Attitudes.Study.Add(1); },
-            () => { Game.Scenes.FirstChapter[47].Begin(); Game.Attitudes.Neitan.Add(1) },
-            () => { Game.Scenes.FirstChapter[48].Begin(); Game.Attitudes.Scarlett.Add(1) }
+            () => { Game.Scenes.FirstChapter[46].Begin(); if (Game.Stats.Study.Get() <= 3) Game.Stats.Study.Add(1); },
+            () => { Game.Scenes.FirstChapter[47].Begin(); Game.Stats.Neitan.Add(1) },
+            () => { Game.Scenes.FirstChapter[48].Begin(); Game.Stats.Scarlett.Add(1) }
         ],
         background: 'Persons/Neitan',
     });
@@ -6202,7 +6202,7 @@ Game.Scenes.FirstChapter[50] =
         ],
         buttonaction: [
             () => { Game.Scenes.FirstChapter[51].Begin(); },
-            () => { Game.Scenes.FirstChapter[52].Begin(); if (Game.Attitudes.Study.Get() <= 3) Game.Attitudes.Study.Add(1); Game.Achievements.AllKnowing.Unlock(); },
+            () => { Game.Scenes.FirstChapter[52].Begin(); if (Game.Stats.Study.Get() <= 3) Game.Stats.Study.Add(1); Game.Achievements.AllKnowing.Unlock(); },
             () => { Game.Scenes.FirstChapter[51].Begin(); }
         ],
         background: 'Persons/Neitan',
@@ -6262,7 +6262,7 @@ Game.Scenes.FirstChapter[54] =
         }],
         background: 'Backgrounds/Lection',
         condition: function () {
-            if (Game.Attitudes.Study.Get() >= 5) Game.Attitudes.Study.Set(4);
+            if (Game.Stats.Study.Get() >= 5) Game.Stats.Study.Set(4);
         }
     });
 Game.Scenes.TL = [];
@@ -6345,7 +6345,7 @@ Game.Scenes.TL[7] =
             Серый костюм подчеркивал фигуру и намекал на не самое последнее положение в обществе.
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TL[8].Begin(); Game.Attitudes.Nicola.Add(0) }],
+        buttonaction: [() => { Game.Scenes.TL[8].Begin(); Game.Stats.Nicola.Add(0) }],
         background: 'Persons/Nicola',
     });
 
@@ -6395,9 +6395,9 @@ Game.Scenes.TL[9] =
             'Убежать'
         ],
         buttonaction: [
-            () => { Game.Scenes.TL[10].Begin(); Game.Attitudes.Believe.Add(1); },
-            () => { Game.Scenes.TL[33].Begin(); Game.Attitudes.Believe.Add(-1); },
-            () => { Game.Scenes.TL[49].Begin(); Game.Achievements.Crazy.Unlock(); Game.Attitudes.Believe.Add(-1); }
+            () => { Game.Scenes.TL[10].Begin(); Game.Stats.Believe.Add(1); },
+            () => { Game.Scenes.TL[33].Begin(); Game.Stats.Believe.Add(-1); },
+            () => { Game.Scenes.TL[49].Begin(); Game.Achievements.Crazy.Unlock(); Game.Stats.Believe.Add(-1); }
         ],
         background: 'Persons/Nicola',
     });
@@ -6411,7 +6411,7 @@ Game.Scenes.TL[10] =
             <p>- Все в порядке, просто голова закружилась,- я подыгрывала этому спектаклю моего подсознания.
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TL[11].Begin(); Game.Message("Никола вам сочувствует"); Game.Attitudes.Nicola.Add(1); }],
+        buttonaction: [() => { Game.Scenes.TL[11].Begin(); Game.Message("Никола вам сочувствует"); Game.Stats.Nicola.Add(1); }],
         background: 'Persons/Nicola',
     });
 
@@ -6485,7 +6485,7 @@ Game.Scenes.TL[14] =
             `,
         buttontext: [''],
         buttonaction: [() => {
-            Game.Scenes.TL[15].Begin(); Game.Message("Никола рад поддержать подругу"); Game.Attitudes.Nicola.Add(1);
+            Game.Scenes.TL[15].Begin(); Game.Message("Никола рад поддержать подругу"); Game.Stats.Nicola.Add(1);
         }],
         background: 'Persons/Nicola',
     });
@@ -6527,7 +6527,7 @@ Game.Scenes.TL[17] =
           Game.Scenes.TL[21].Activate(1); Game.Scenes.TL[23].Activate(1); Game.Scenes.TL[24].Activate(1); Game.Scenes.TL[26].Activate(1);
           Game.Scenes.TL[21].Activate(2); Game.Scenes.TL[23].Activate(2); Game.Scenes.TL[24].Activate(2); Game.Scenes.TL[26].Activate(2);
           Game.Scenes.TL[21].Activate(3); Game.Scenes.TL[23].Activate(3); Game.Scenes.TL[24].Activate(3); Game.Scenes.TL[26].Activate(3);
-            if (Game.Attitudes.Study.Get() >= 4) {
+            if (Game.Stats.Study.Get() >= 4) {
                 this.buttonaction[0] = () => { Game.Scenes.TL[18].Begin(); Game.Message("Ваши знания помогли вам узнать больше об эпохе и открыли дополнительный выбор"); Game.Achievements.SmartGirl.Unlock(); };
             }
             else {
@@ -6869,7 +6869,7 @@ Game.Scenes.TL[36] =
             <p>Я резко подступилась к Николе  и тепло обняла его. Крепко-крепко. Не ожидая от меня такого, он лишь стоял, словно статуя, не понимая, как реагировать на этот выпад. 
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TL[37].Begin(); Game.Message("Тесла приятно удивлен"); Game.Attitudes.Nicola.Add(1) }],
+        buttonaction: [() => { Game.Scenes.TL[37].Begin(); Game.Message("Тесла приятно удивлен"); Game.Stats.Nicola.Add(1) }],
         background: 'Persons/Nicola',
     });
 
@@ -6893,7 +6893,7 @@ Game.Scenes.TL[38] =
             <p>Я резко подступилась к Николе  и чмокнула его в щеку. Не ожидая от меня такого, он лишь стоял, словно статуя, не понимая, как реагировать на этот выпад.
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TL[39].Begin(); Game.Message("Тесла не оценил ваш порыв"); Game.Attitudes.Nicola.Add(-1) }],
+        buttonaction: [() => { Game.Scenes.TL[39].Begin(); Game.Message("Тесла не оценил ваш порыв"); Game.Stats.Nicola.Add(-1) }],
         background: 'Persons/Nicola',
     });
 
@@ -6917,7 +6917,7 @@ Game.Scenes.TL[40] =
             <p>– Катарина … 
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TL[41].Begin(); Game.Message("Тесла думает, что вы поддерживаете его деятельность"); Game.Attitudes.Nicola.Add(1) }],
+        buttonaction: [() => { Game.Scenes.TL[41].Begin(); Game.Message("Тесла думает, что вы поддерживаете его деятельность"); Game.Stats.Nicola.Add(1) }],
         background: 'Persons/Nicola',
     });
 
@@ -7030,8 +7030,8 @@ Game.Scenes.TL[49] =
             'Прямо по улице'
         ],
         buttonaction: [
-            () => { Game.Scenes.TL[50].Begin(); Game.Attitudes.StreetHide.Add(1); },
-            () => { Game.Scenes.TL[54].Begin(); Game.Attitudes.StreetStraight.Add(1); }
+            () => { Game.Scenes.TL[50].Begin(); Game.Stats.StreetHide.Add(1); },
+            () => { Game.Scenes.TL[54].Begin(); Game.Stats.StreetStraight.Add(1); }
         ],
         background: 'Backgrounds/NY',
     });
@@ -7077,7 +7077,7 @@ Game.Scenes.TL[53] =
             <p>– Отложим визит к Редьярду Киплингу, идем сразу в больницу!
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TL[44].Begin(); Game.Message("Тесла недоволен вашим поведением"); Game.Attitudes.Nicola.Add(-1); }],
+        buttonaction: [() => { Game.Scenes.TL[44].Begin(); Game.Message("Тесла недоволен вашим поведением"); Game.Stats.Nicola.Add(-1); }],
         background: 'Persons/Nicola',
     });
 
@@ -7198,10 +7198,10 @@ Game.Scenes.TC[0] =
         buttonaction: [() => { Game.Scenes.TC[1].Begin() }],
         background: 'Backgrounds/Firstaid_post',
         condition: function () {
-            Game.Attitudes.Scarlett.Add(0);
+            Game.Stats.Scarlett.Add(0);
             Game.Sounds.Play('Music', 'FirstChapter');
 
-            if (Game.Attitudes.Scarlett.Get() >= 1) {
+            if (Game.Stats.Scarlett.Get() >= 1) {
                 this.buttonaction[0] = () => { Game.Scenes.TC[1].Begin() };
             }
             else {
@@ -7248,7 +7248,7 @@ Game.Scenes.TC[5] =
             <p>-   $Имя Игрока$, любишь же ты устраивать выкрутасы… 
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TC[6].Begin(); Game.Attitudes.Leon.Add(0); }],
+        buttonaction: [() => { Game.Scenes.TC[6].Begin(); Game.Stats.Leon.Add(0); }],
         background: 'Persons/Leon',
     });
 
@@ -7279,7 +7279,7 @@ Game.Scenes.TC[150] =
             'Ох, что же это было…'
         ],
         buttonaction: [
-            () => { Game.Scenes.TC[7].Begin(); Game.Message("Леон волновался за вас"); Game.Attitudes.Leon.Add(1); },
+            () => { Game.Scenes.TC[7].Begin(); Game.Message("Леон волновался за вас"); Game.Stats.Leon.Add(1); },
             () => { Game.Scenes.TC[8].Begin(); },
             () => { Game.Scenes.TC[9].Begin(); },
             () => { Game.Scenes.TC[10].Begin(); }
@@ -7305,7 +7305,7 @@ Game.Scenes.TC[8] =
             <p>- Забудь, сейчас не об этом надо думать. Самое главное - ты пришла в себя и твоей жизни ничего не угрожает.
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TC[11].Begin(); Game.Message("Вы прилежная и ответственная ученица"); Game.Attitudes.Neitan.Add(1); }],
+        buttonaction: [() => { Game.Scenes.TC[11].Begin(); Game.Message("Вы прилежная и ответственная ученица"); Game.Stats.Neitan.Add(1); }],
         background: 'Persons/Neitan',
     });
 
@@ -7316,7 +7316,7 @@ Game.Scenes.TC[9] =
             <p>- Самое главное, что ты в порядке. Сейчас ни о чем другом переживать не надо. 
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TC[11].Begin(); Game.Message("Скарлетт рада помочь"); Game.Attitudes.Scarlett.Add(1) }],
+        buttonaction: [() => { Game.Scenes.TC[11].Begin(); Game.Message("Скарлетт рада помочь"); Game.Stats.Scarlett.Add(1) }],
         background: 'Persons/Scarlett',
     });
 
@@ -7355,8 +7355,8 @@ Game.Scenes.TC[12] =
             'Леон'
         ],
         buttonaction: [
-            () => { Game.Scenes.TC[49].Begin(); Game.Attitudes.ComeWithLeon.Add(0); },
-            () => { Game.Scenes.TC[13].Begin(); Game.Attitudes.ComeWithLeon.Add(1); }
+            () => { Game.Scenes.TC[49].Begin(); Game.Stats.ComeWithLeon.Add(0); },
+            () => { Game.Scenes.TC[13].Begin(); Game.Stats.ComeWithLeon.Add(1); }
         ],
         background: 'Backgrounds/Firstaid_post',
     });
@@ -7419,18 +7419,18 @@ Game.Scenes.TC[17] =
         buttonaction: [() => { Game.Scenes.TC[18].Begin(); }],
         background: 'Persons/Leon',
         condition: function () {
-        if (Game.Attitudes.Believe.Get() <= 0 && Game.Attitudes.StreetStraight.Get() >= 1) {
+        if (Game.Stats.Believe.Get() <= 0 && Game.Stats.StreetStraight.Get() >= 1) {
           this.buttonaction[0] = () => { Game.Scenes.TC[19].Begin(); };
         }
-        if (Game.Attitudes.Believe.Get() >= 1) {
+        if (Game.Stats.Believe.Get() >= 1) {
           this.buttonaction[0] = () => { Game.Scenes.TC[19].Begin(); };
         }
 
-        if (Game.Attitudes.Believe.Get() <= 0 && Game.Attitudes.StreetStraight.Get() <= 0 && Game.Attitudes.StreetHide.Get() >= 1) {
+        if (Game.Stats.Believe.Get() <= 0 && Game.Stats.StreetStraight.Get() <= 0 && Game.Stats.StreetHide.Get() >= 1) {
           this.buttonaction[0] = () => { Game.Scenes.TC[18].Begin(); };
         }
 
-          if (Game.Attitudes.Believe.Get() <= 0 && Game.Attitudes.StreetStraight.Get() <= 0 && Game.Attitudes.StreetHide.Get() <= 0) {
+          if (Game.Stats.Believe.Get() <= 0 && Game.Stats.StreetStraight.Get() <= 0 && Game.Stats.StreetHide.Get() <= 0) {
             this.buttonaction[0] = () => { Game.Scenes.TC[18].Begin(); };
           }
 
@@ -7470,7 +7470,7 @@ Game.Scenes.TC[20] =
             'Шел рядом и поддерживал'
         ],
         buttonaction: [
-            () => { Game.Scenes.TC[21].Begin(); Game.Message("Леон рад вам помочь"); Game.Attitudes.Leon.Add(1); },
+            () => { Game.Scenes.TC[21].Begin(); Game.Message("Леон рад вам помочь"); Game.Stats.Leon.Add(1); },
             () => { Game.Scenes.TC[24].Begin(); }
         ],
         background: 'Persons/Leon',
@@ -7799,7 +7799,7 @@ Game.Scenes.TC[40] =
         buttonaction: [() => { Game.Scenes.TC[41].Begin(); }],
         background: 'Persons/Leon',
         condition: function () {
-            if (Game.Attitudes.Cheryl.Get() <= -1) {
+            if (Game.Stats.Cheryl.Get() <= -1) {
                 this.buttonaction[0] = () => { Game.Scenes.TC[42].Begin(); };
             }
             else {
@@ -7869,7 +7869,7 @@ Game.Scenes.TC[45] =
             'Я предпочла скрыть правду'
         ],
         buttonaction: [
-            () => { Game.Scenes.TC[46].Begin(); Game.Attitudes.Cheryl.Add(1); Game.Achievements.TrustCheryl.Unlock() },
+            () => { Game.Scenes.TC[46].Begin(); Game.Stats.Cheryl.Add(1); Game.Achievements.TrustCheryl.Unlock() },
             () => { Game.Scenes.TC[48].Begin(); }
         ],
         background: 'Persons/Cheryl',
@@ -7902,7 +7902,7 @@ Game.Scenes.TC[48] =
             Я рассказа ту же байку про переутомление. Шерил почувствовала, что здесь что-то не так, ухмыльнулась,  и не стала продолжать разговор.
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TC[70].Begin(); Game.Message('Шерил ощущает вашу неискренность'); Game.Attitudes.Cheryl.Add(-1); }],
+        buttonaction: [() => { Game.Scenes.TC[70].Begin(); Game.Message('Шерил ощущает вашу неискренность'); Game.Stats.Cheryl.Add(-1); }],
         background: 'Persons/Cheryl',
     });
 
@@ -7963,18 +7963,18 @@ Game.Scenes.TC[53] =
         buttonaction: [() => { Game.Scenes.TC[18].Begin(); }],
         background: 'Persons/Neitan',
         condition: function () {
-          if (Game.Attitudes.Believe.Get() <= 0 && Game.Attitudes.StreetStraight.Get() >= 1) {
+          if (Game.Stats.Believe.Get() <= 0 && Game.Stats.StreetStraight.Get() >= 1) {
             this.buttonaction[0] = () => { Game.Scenes.TC[55].Begin(); };
           }
-          if (Game.Attitudes.Believe.Get() >= 1) {
+          if (Game.Stats.Believe.Get() >= 1) {
             this.buttonaction[0] = () => { Game.Scenes.TC[55].Begin(); };
           }
 
-          if (Game.Attitudes.Believe.Get() <= 0 && Game.Attitudes.StreetStraight.Get() <= 0 && Game.Attitudes.StreetHide.Get() >= 1) {
+          if (Game.Stats.Believe.Get() <= 0 && Game.Stats.StreetStraight.Get() <= 0 && Game.Stats.StreetHide.Get() >= 1) {
             this.buttonaction[0] = () => { Game.Scenes.TC[54].Begin(); };
           }
 
-          if (Game.Attitudes.Believe.Get() <= 0 && Game.Attitudes.StreetStraight.Get() <= 0 && Game.Attitudes.StreetHide.Get() <= 0) {
+          if (Game.Stats.Believe.Get() <= 0 && Game.Stats.StreetStraight.Get() <= 0 && Game.Stats.StreetHide.Get() <= 0) {
             this.buttonaction[0] = () => { Game.Scenes.TC[54].Begin(); };
           }
 
@@ -8026,7 +8026,7 @@ Game.Scenes.TC[57] =
             Его поддержка помогала мне не упасть. Я чувствовала, как его руки крепко держали меня, направляя, не давая оступиться. 
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TC[58].Begin(); Game.Message("Ваше сердце пропустило удар"); Game.Attitudes.Neitan.Add(1) }],
+        buttonaction: [() => { Game.Scenes.TC[58].Begin(); Game.Message("Ваше сердце пропустило удар"); Game.Stats.Neitan.Add(1) }],
         background: '',
     });
 
@@ -8092,7 +8092,7 @@ Game.Scenes.TC[62] =
         buttonaction: [() => { Game.Scenes.TC[63].Begin(); }],
         background: 'Persons/Neitan',
         condition: function () {
-            if (Game.Attitudes.Study.Get() >= 4) {
+            if (Game.Stats.Study.Get() >= 4) {
                 this.buttonaction[0] = () => { Game.Scenes.TC[63].Begin(); }
             }
             else {
@@ -8187,7 +8187,7 @@ Game.Scenes.TC[69] =
         buttonaction: [() => { Game.Scenes.TC[41].Begin(); }],
         background: 'Persons/Neitan',
         condition: function () {
-            if (Game.Attitudes.Cheryl.Get() <= -1) {
+            if (Game.Stats.Cheryl.Get() <= -1) {
                 this.buttonaction[0] = () => { Game.Scenes.TC[42].Begin(); };
             }
             else {
@@ -8243,12 +8243,12 @@ Game.Scenes.TC[72] =
         buttonaction: [() => { Game.Scenes.TC[73].Begin(); }],
         background: 'Backgrounds/Hero_Sleeps',
         condition: function () {
-            if (Game.Attitudes.Believe.Get() >= 1) {
+            if (Game.Stats.Believe.Get() >= 1) {
                 this.buttonaction[0] = () => { Game.Scenes.TC[73].Begin(); }
             }
-            else if (Game.Attitudes.StreetHide.Get() >= 1 || Game.Attitudes.Believe.Get() <= -1) {
+            else if (Game.Stats.StreetHide.Get() >= 1 || Game.Stats.Believe.Get() <= -1) {
                 this.buttonaction[0] = () => { Game.Scenes.TC[74].Begin(); }
-                if (Game.Attitudes.StreetStraight.Get() >= 1) {
+                if (Game.Stats.StreetStraight.Get() >= 1) {
                     this.buttonaction[0] = () => { Game.Scenes.TC[75].Begin(); }
                 }
             }
@@ -8302,7 +8302,7 @@ Game.Scenes.TC[76] =
             Спать совсем не хотелось, но и засиживаться долго нельзя. Организму нужен отдых.
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TC[77].Begin(); Game.Attitudes.Activities.Set(2); Game.Message('Вы можете сделать только 2 выбора!') }],
+        buttonaction: [() => { Game.Scenes.TC[77].Begin(); Game.Stats.Activities.Set(2); Game.Message('Вы можете сделать только 2 выбора!') }],
       condition: function () {
         Game.Scenes.TC[77].Activate(0);Game.Scenes.TC[77].Activate(1);Game.Scenes.TC[77].Activate(2);
         Game.Scenes.TC[80].Activate(0);Game.Scenes.TC[80].Activate(1);Game.Scenes.TC[80].Activate(2);Game.Scenes.TC[80].Activate(3);
@@ -8320,9 +8320,9 @@ Game.Scenes.TC[77] =
             'Написать кому-нибудь'
         ],
         buttonaction: [
-            () => { Game.Scenes.TC[78].Begin(); Game.Attitudes.Activities.Add(-1); Game.Attitudes.Family.Add(1);  },
-            () => { Game.Scenes.TC[79].Begin(); Game.Attitudes.Activities.Add(-1); },
-            () => { Game.Scenes.TC[80].Begin(); Game.Attitudes.Activities.Add(-1); },
+            () => { Game.Scenes.TC[78].Begin(); Game.Stats.Activities.Add(-1); Game.Stats.Family.Add(1);  },
+            () => { Game.Scenes.TC[79].Begin(); Game.Stats.Activities.Add(-1); },
+            () => { Game.Scenes.TC[80].Begin(); Game.Stats.Activities.Add(-1); },
         ],
         buttonactive: [true, true, true],
         background: 'Backgrounds/Hero_Sleeps',
@@ -8432,7 +8432,7 @@ Game.Scenes.TC[79] =
             Тем более, что придется пропустить несколько дней. Я принялась выполнять домашнюю работу и читать лекции. Вечер получился продуктивным.
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TC[101].Begin(); Game.Message('Вы прилежная ученица'); Game.Attitudes.Study.Add(1) }],
+        buttonaction: [() => { Game.Scenes.TC[101].Begin(); Game.Message('Вы прилежная ученица'); Game.Stats.Study.Add(1) }],
         background: 'Backgrounds/Hero_Sleeps',
         condition: function () {
             Game.Scenes.TC[77].Deactivate(1);
@@ -8458,12 +8458,12 @@ Game.Scenes.TC[80] =
         background: 'Backgrounds/Hero_Sleeps',
         buttonactive: [true, true, true, true],
         condition: function () {
-            if (Game.Attitudes.ComeWithLeon.Get() == 1) {
+            if (Game.Stats.ComeWithLeon.Get() == 1) {
                 this.buttonaction[0] = () => {
                     Game.Scenes.TC[88].Begin(); Game.Scenes.TC[80].Deactivate(0);
                 }
             }
-            if (Game.Attitudes.ComeWithLeon.Get() == 0) {
+            if (Game.Stats.ComeWithLeon.Get() == 0) {
                 this.buttonaction[1] = () => {
                     Game.Scenes.TC[90].Begin(); Game.Scenes.TC[80].Deactivate(1);
                 }
@@ -8499,7 +8499,7 @@ Game.Scenes.TC[89] =
             Леон предложил как-нибудь встретиться и повторить вечер воспоминаний. 
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TC[101].Begin(); Game.Message('Леон рад был поговорить с вами'); Game.Attitudes.Leon.Add(1) }],
+        buttonaction: [() => { Game.Scenes.TC[101].Begin(); Game.Message('Леон рад был поговорить с вами'); Game.Stats.Leon.Add(1) }],
         background: 'Backgrounds/Hero_Sleeps',
     });
 
@@ -8530,7 +8530,7 @@ Game.Scenes.TC[92] =
             Он пожелал мне спокойной ночи,  велел отдыхать и заниматься из дома. 
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TC[101].Begin(); Game.Message('Нэйтан рад вас наставлять'); Game.Attitudes.Neitan.Add(1) }],
+        buttonaction: [() => { Game.Scenes.TC[101].Begin(); Game.Message('Нэйтан рад вас наставлять'); Game.Stats.Neitan.Add(1) }],
         background: 'Backgrounds/Hero_Sleeps',
     });
 
@@ -8543,7 +8543,7 @@ Game.Scenes.TC[93] =
         buttonaction: [() => { Game.Scenes.TC[94].Begin(); }],
         background: 'Persons/Scarlett',
         condition: function () {
-            if (Game.Attitudes.ScarlettSpeech.Get() == -1) Game.Scenes.TC[93].buttonaction[0] = () => { Game.Scenes.TC[95].Begin(); }
+            if (Game.Stats.ScarlettSpeech.Get() == -1) Game.Scenes.TC[93].buttonaction[0] = () => { Game.Scenes.TC[95].Begin(); }
         }
     });
 
@@ -8554,7 +8554,7 @@ Game.Scenes.TC[94] =
             Мне был необходим этот разговор обо всем, что вызывало тревогу последние дни, разумеется, опуская момент с перемещением. У нас выдался очень душевный вечер. 
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TC[101].Begin(); Game.Message('Скарлетт чудесно провела время'); Game.Attitudes.Scarlett.Add(1) }],
+        buttonaction: [() => { Game.Scenes.TC[101].Begin(); Game.Message('Скарлетт чудесно провела время'); Game.Stats.Scarlett.Add(1) }],
         background: 'Persons/Scarlett',
     });
 
@@ -8584,8 +8584,8 @@ Game.Scenes.TC[96] =
             'Было все равно'
         ],
         buttonaction: [
-            () => { Game.Scenes.TC[97].Begin(); Game.Message('Скарлетт дорожит вашей дружбой'); Game.Attitudes.Scarlett.Add(1) },
-            () => { Game.Scenes.TC[98].Begin(); Game.Message('Вы со Скарлетт не такие уж и близкие подруги'); Game.Attitudes.Scarlett.Add(-1) },
+            () => { Game.Scenes.TC[97].Begin(); Game.Message('Скарлетт дорожит вашей дружбой'); Game.Stats.Scarlett.Add(1) },
+            () => { Game.Scenes.TC[98].Begin(); Game.Message('Вы со Скарлетт не такие уж и близкие подруги'); Game.Stats.Scarlett.Add(-1) },
         ],
         background: 'Persons/Scarlett',
     });
@@ -8617,7 +8617,7 @@ Game.Scenes.TC[99] =
             <p>Это было отличной идеей, мы обе погрузились в мир без насущных проблем, которых было много у каждой из нас, и отдохнули. 
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TC[101].Begin(); Game.Message('Шерил всегда рада вашей компании'); Game.Attitudes.Cheryl.Add(1) }],
+        buttonaction: [() => { Game.Scenes.TC[101].Begin(); Game.Message('Шерил всегда рада вашей компании'); Game.Stats.Cheryl.Add(1) }],
         background: 'Backgrounds/Hero_Sleeps',
     });
 
@@ -8645,7 +8645,7 @@ Game.Scenes.TC[101] =
         buttonaction: [() => { Game.Scenes.TC[77].Begin(); }],
         background: 'Backgrounds/Hero_Sleeps',
         condition: function () {
-            if (Game.Attitudes.Activities.Get() <= 0)
+            if (Game.Stats.Activities.Get() <= 0)
               Game.Scenes.TC[101].buttonaction[0] = () => { Game.Scenes.TC[100].Begin();
               Game.Achievements.SecondPartCompleted.Unlock();
             }
@@ -8861,7 +8861,7 @@ Game.Scenes.PP[17] =
             `,
         buttontext: [''],
         background: "Persons/Stranger",
-        buttonaction: [() => { Game.Scenes.PP[20].Begin(); Game.Message('Общение с вами приятно проводнику'); Game.Attitudes.God.Add(1); }],
+        buttonaction: [() => { Game.Scenes.PP[20].Begin(); Game.Message('Общение с вами приятно проводнику'); Game.Stats.God.Add(1); }],
     });
 
 Game.Scenes.PP[18] =
@@ -8874,7 +8874,7 @@ Game.Scenes.PP[18] =
             `,
         background: "Persons/Stranger",
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.PP[19].Begin(); Game.Message('Общение с вами неприятно проводнику'); Game.Attitudes.God.Add(-1); }],
+        buttonaction: [() => { Game.Scenes.PP[19].Begin(); Game.Message('Общение с вами неприятно проводнику'); Game.Stats.God.Add(-1); }],
     });
 
 Game.Scenes.PP[19] =
@@ -9233,7 +9233,7 @@ Game.Scenes.PN[1] =
         ],
         buttonaction: [
             () => { Game.Scenes.PN[2].Begin(); },
-            () => { Game.Scenes.PN[7].Begin(); Game.Message('Вы заработали деньги! (150)'); Game.Attitudes.Money.Add(150) },
+            () => { Game.Scenes.PN[7].Begin(); Game.Message('Вы заработали деньги! (150)'); Game.Stats.Money.Add(150) },
         ],
     });
 
@@ -9398,7 +9398,7 @@ Game.Scenes.PN[16] =
             'Продолжала общаться с друзьями'
         ],
         buttonaction: [
-            () => { Game.Scenes.PN[17].Begin(); Game.Attitudes.InvitedCheryl.Add(1); },
+            () => { Game.Scenes.PN[17].Begin(); Game.Stats.InvitedCheryl.Add(1); },
             () => { Game.Scenes.PN[19].Begin(); },
         ],
     });
@@ -9448,8 +9448,8 @@ Game.Scenes.PN[20] =
             'Заказать пиццу (150)',
             'Сделать бутерброды',],
         buttonaction: [
-            () => { Game.Scenes.PN[21].Begin(); Game.Attitudes.Money.Add(-200); Game.Message('Вы потратили деньги (200)'); Game.Achievements.Sushi.Unlock(); },
-            () => { Game.Scenes.PN[26].Begin(); Game.Attitudes.Money.Add(-150); Game.Message('Вы потратили деньги (150)') },
+            () => { Game.Scenes.PN[21].Begin(); Game.Stats.Money.Add(-200); Game.Message('Вы потратили деньги (200)'); Game.Achievements.Sushi.Unlock(); },
+            () => { Game.Scenes.PN[26].Begin(); Game.Stats.Money.Add(-150); Game.Message('Вы потратили деньги (150)') },
             () => { Game.Scenes.PN[31].Begin(); },
         ],
     });
@@ -9463,7 +9463,7 @@ Game.Scenes.PN[21] =
         buttontext: [''],
         buttonaction: [() => { Game.Scenes.PN[23].Begin(); }],
         condition: function () {
-            if (Game.Attitudes.InvitedCheryl.Get() >= 1) {
+            if (Game.Stats.InvitedCheryl.Get() >= 1) {
                 this.buttonaction[0] = () => {
                     Game.Scenes.PN[22].Begin();
                 }
@@ -9483,9 +9483,9 @@ Game.Scenes.PN[22] =
         buttonaction: [() => {
             Game.Scenes.PN[24].Begin();
             Game.Message('Ваши друзья обрадовались вкусной еде!');
-            Game.Attitudes.Leon.Add(1);
-            Game.Attitudes.Scarlett.Add(1);
-            Game.Attitudes.Cheryl.Add(1);
+            Game.Stats.Leon.Add(1);
+            Game.Stats.Scarlett.Add(1);
+            Game.Stats.Cheryl.Add(1);
         }],
     });
 
@@ -9499,9 +9499,9 @@ Game.Scenes.PN[23] =
         buttonaction: [() => {
             Game.Scenes.PN[24].Begin();
             Game.Message('Ваши друзья обрадовались вкусной еде!');
-            Game.Attitudes.Leon.Add(1);
-            Game.Attitudes.Scarlett.Add(1);
-            Game.Attitudes.Cheryl.Add(1);
+            Game.Stats.Leon.Add(1);
+            Game.Stats.Scarlett.Add(1);
+            Game.Stats.Cheryl.Add(1);
         }],
     });
 
@@ -9539,7 +9539,7 @@ Game.Scenes.PN[26] =
         buttontext: [''],
         buttonaction: [() => { Game.Scenes.PN[27].Begin(); }],
         condition: function () {
-            if (Game.Attitudes.InvitedCheryl.Get() >= 1) {
+            if (Game.Stats.InvitedCheryl.Get() >= 1) {
                 this.buttonaction[0] = () => {
                     Game.Scenes.PN[28].Begin();
                 }
@@ -9559,9 +9559,9 @@ Game.Scenes.PN[28] =
         buttonaction: [() => {
             Game.Scenes.PN[29].Begin();
             Game.Message('Ваши друзья обрадовались вкусной еде!');
-            Game.Attitudes.Leon.Add(1);
-            Game.Attitudes.Scarlett.Add(1);
-            Game.Attitudes.Cheryl.Add(1);
+            Game.Stats.Leon.Add(1);
+            Game.Stats.Scarlett.Add(1);
+            Game.Stats.Cheryl.Add(1);
         }],
     });
 
@@ -9575,9 +9575,9 @@ Game.Scenes.PN[27] =
         buttonaction: [() => {
             Game.Scenes.PN[29].Begin();
             Game.Message('Ваши друзья обрадовались вкусной еде!');
-            Game.Attitudes.Leon.Add(1);
-            Game.Attitudes.Scarlett.Add(1);
-            Game.Attitudes.Cheryl.Add(1);
+            Game.Stats.Leon.Add(1);
+            Game.Stats.Scarlett.Add(1);
+            Game.Stats.Cheryl.Add(1);
         }],
     });
 
@@ -9627,9 +9627,9 @@ Game.Scenes.PN[32] =
         buttonaction: [() => {
             Game.Scenes.PN[34].Begin();
             Game.Message('Ваши друзья обрадовались вкусной еде!');
-            Game.Attitudes.Leon.Add(1);
-            Game.Attitudes.Scarlett.Add(1);
-            Game.Attitudes.Cheryl.Add(1);
+            Game.Stats.Leon.Add(1);
+            Game.Stats.Scarlett.Add(1);
+            Game.Stats.Cheryl.Add(1);
         }],
     });
 
@@ -9643,9 +9643,9 @@ Game.Scenes.PN[33] =
         buttonaction: [() => {
             Game.Scenes.PN[34].Begin();
             Game.Message('Ваши друзья обрадовались вкусной еде!');
-            Game.Attitudes.Leon.Add(1);
-            Game.Attitudes.Scarlett.Add(1);
-            Game.Attitudes.Cheryl.Add(1);
+            Game.Stats.Leon.Add(1);
+            Game.Stats.Scarlett.Add(1);
+            Game.Stats.Cheryl.Add(1);
         }],
     });
 
@@ -9658,7 +9658,7 @@ Game.Scenes.PN[34] =
         buttontext: [''],
         buttonaction: [() => { Game.Scenes.PN[35].Begin(); }],
       condition: function () {
-        if (Game.Attitudes.InvitedCheryl.Get()>=1){
+        if (Game.Stats.InvitedCheryl.Get()>=1){
           this.text = 'Леон и Скарлетт попросили меня достать что-нибудь сладенькое к нашему небольшому пиршеству. На наше счастье, у меня было припасено шоколадное печенье. Я принесла закуску и мы продолжили общаться.<p>Шерил сидела тихонько и смущалась. Несмотря на царящее вокруг веселье, она довольно долго привыкала к людям. Конечно, ей и раньше приходилось видеть моих студенческих друзей, однако они особо не общались. <p> Но все же она выглядела счастливой и сытой. В руке красовался бокал с коктейлем, а лицо выражало умиротворение и спокойствие.';
         }
         else{
@@ -9690,8 +9690,8 @@ Game.Scenes.PN[36] =
         background: "Persons/Leon",
         buttontext: ['Выпила алкоголь', 'Ограничилась соком'],
         buttonaction: [
-            () => { Game.Scenes.PN[37].Begin(); Game.Sounds.Play('Music', 'Disco'); Game.Attitudes.DrinkAtParty.Add(1); },
-            () => { Game.Scenes.PN[38].Begin(); Game.Sounds.Play('Music', 'Disco'); Game.Attitudes.DrinkAtParty.Add(0);},],
+            () => { Game.Scenes.PN[37].Begin(); Game.Sounds.Play('Music', 'Disco'); Game.Stats.DrinkAtParty.Add(1); },
+            () => { Game.Scenes.PN[38].Begin(); Game.Sounds.Play('Music', 'Disco'); Game.Stats.DrinkAtParty.Add(0);},],
     });
 
 Game.Scenes.PN[37] =
@@ -9703,7 +9703,7 @@ Game.Scenes.PN[37] =
         buttontext: [''],
         buttonaction: [() => { Game.Scenes.PN[39].Begin(); }],
         condition: function () {
-            if (Game.Attitudes.InvitedCheryl.Get() >= 1) {
+            if (Game.Stats.InvitedCheryl.Get() >= 1) {
                 this.buttonaction[0] = () => { Game.Scenes.PN[45].Begin(); };
             }
         }
@@ -9718,7 +9718,7 @@ Game.Scenes.PN[38] =
         buttontext: [''],
         buttonaction: [() => { Game.Scenes.PN[39].Begin(); }],
         condition: function () {
-            if (Game.Attitudes.InvitedCheryl >= 1) {
+            if (Game.Stats.InvitedCheryl >= 1) {
                 this.buttonaction[0] = () => { Game.Scenes.PN[45].Begin(); };
             }
         }
@@ -9973,8 +9973,8 @@ Game.Scenes.PN[57] =
         buttonaction: [() => { Game.Scenes.PN[58].Begin(); Game.Effects.Disco.Stop(); }],
         condition: function () {
             Game.Message("Отношения со Скарлетт и Леоном улучшились");
-            Game.Attitudes.Leon.Add(1);
-            Game.Attitudes.Scarlett.Add(1);
+            Game.Stats.Leon.Add(1);
+            Game.Stats.Scarlett.Add(1);
             Game.Sounds.Cheers.play();
         }
     });
@@ -9997,7 +9997,7 @@ Game.Scenes.PN[58] =
             () => { Game.Scenes.PN[68].Begin(); },
             () => { Game.Scenes.PN[75].Begin(); },],
         condition: function () {
-            if (Game.Attitudes.InvitedCheryl.Get() >= 1) {
+            if (Game.Stats.InvitedCheryl.Get() >= 1) {
               this.text = 'Через несколько часов безудержного веселья, мы решили передохнуть и прийти в себя. Ребята решили побыть наедине с собой и привести мысли в порядок. Леон вышел на улицу, чтобы подышать свежим воздухом. Скарлетт устроилась на диване, включив телевизор, где шел какой-то романтический сериал.' +
                 ' Шерил выразила желание помыть посуду и поэтому осталась на кухне. <p>Остаток вечера мне хотелось побыть с:';
                 this.buttonactive[2] = true;
@@ -10102,7 +10102,7 @@ Game.Scenes.PN[64] =
             'Отстранилась',
         ],
         buttonaction: [
-            () => { Game.Scenes.PN[65].Begin(); Game.Attitudes.Leon.Add(1); Game.Attitudes.HugLeon.Add(1) },
+            () => { Game.Scenes.PN[65].Begin(); Game.Stats.Leon.Add(1); Game.Stats.HugLeon.Add(1) },
             () => { Game.Scenes.PN[67].Begin(); }
         ],
     });
@@ -10172,7 +10172,7 @@ Game.Scenes.PN[69] =
             'Подождала ее в комнате',
         ],
         buttonaction: [
-            () => { Game.Scenes.PN[70].Begin(); Game.Attitudes.Scarlett.Add(1); Game.Attitudes.FollowedScarlett.Add(1); },
+            () => { Game.Scenes.PN[70].Begin(); Game.Stats.Scarlett.Add(1); Game.Stats.FollowedScarlett.Add(1); },
             () => { Game.Scenes.PN[73].Begin(); },
         ],
     });
@@ -10314,7 +10314,7 @@ Game.Scenes.PN[80] =
             `,
         background: "Persons/Cheryl",
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.PN[83].Begin(); Game.Message('Шерил знает, что нас вас можно положиться'); Game.Attitudes.Cheryl.Add(1) }],
+        buttonaction: [() => { Game.Scenes.PN[83].Begin(); Game.Message('Шерил знает, что нас вас можно положиться'); Game.Stats.Cheryl.Add(1) }],
     });
 
 Game.Scenes.PN[81] =
@@ -10339,7 +10339,7 @@ Game.Scenes.PN[82] =
             `,
         background: "Persons/Cheryl",
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.PN[83].Begin(); Game.Message('Шерил становится решительнее, возможно именно это ей и нужно? '); Game.Attitudes.Cheryl.Add(-1) }],
+        buttonaction: [() => { Game.Scenes.PN[83].Begin(); Game.Message('Шерил становится решительнее, возможно именно это ей и нужно? '); Game.Stats.Cheryl.Add(-1) }],
     });
 
 Game.Scenes.PN[83] =
@@ -10351,7 +10351,7 @@ Game.Scenes.PN[83] =
         buttontext: [''],
         buttonaction: [() => { Game.Scenes.PN[84].Begin(); }],
         condition: function () {
-            if (Game.Attitudes.InvitedCheryl.Get() >= 1) {
+            if (Game.Stats.InvitedCheryl.Get() >= 1) {
                 this.buttonaction[0] = () => { Game.Scenes.PN[85].Begin(); }
             }
         }
@@ -10367,7 +10367,7 @@ Game.Scenes.PN[84] =
             `,
         background: "",
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.PN[86].Begin(); Game.Message('Состояние Шерил ухудшается'); Game.Attitudes.Cheryl.Add(-1); }],
+        buttonaction: [() => { Game.Scenes.PN[86].Begin(); Game.Message('Состояние Шерил ухудшается'); Game.Stats.Cheryl.Add(-1); }],
     });
 
 Game.Scenes.PN[85] =
@@ -10392,11 +10392,11 @@ Game.Scenes.PN[86] =
         buttontext: [''],
         buttonaction: [() => { Game.Scenes.PN[87].Begin(); }],
         condition: function () {
-            if (Game.Attitudes.FollowedScarlett.Get() >= 1) this.buttonaction[0] = () => { Game.Scenes.PN[88].Begin(); }
+            if (Game.Stats.FollowedScarlett.Get() >= 1) this.buttonaction[0] = () => { Game.Scenes.PN[88].Begin(); }
 
-            if (Game.Attitudes.HugLeon.Get() >= 1) this.buttonaction[0] = () => { Game.Scenes.PN[87].Begin(); }
+            if (Game.Stats.HugLeon.Get() >= 1) this.buttonaction[0] = () => { Game.Scenes.PN[87].Begin(); }
 
-            if (Game.Attitudes.FollowedScarlett.Get() <= 0 && Game.Attitudes.HugLeon.Get() <= 0) this.buttonaction[0] = () => { Game.Scenes.PN[89].Begin(); }
+            if (Game.Stats.FollowedScarlett.Get() <= 0 && Game.Stats.HugLeon.Get() <= 0) this.buttonaction[0] = () => { Game.Scenes.PN[89].Begin(); }
         }
     });
 
@@ -10489,8 +10489,8 @@ Game.Scenes.PN[93] =
         background: "Backgrounds/Chair",
         buttontext: ['Попыталась сбежать', 'Осталась сидеть на месте'],
         buttonaction: [
-            () => { Game.Scenes.PN[94].Begin(); Game.Attitudes.TryToEscape.Add(1); },
-            () => { Game.Scenes.PN[119].Begin(); Game.Attitudes.TryToEscape.Add(0); },
+            () => { Game.Scenes.PN[94].Begin(); Game.Stats.TryToEscape.Add(1); },
+            () => { Game.Scenes.PN[119].Begin(); Game.Stats.TryToEscape.Add(0); },
         ],
     });
 
@@ -10586,7 +10586,7 @@ Game.Scenes.PN[99] =
             `,
         background: "Backgrounds/Chair",
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.PN[102].Begin(); Game.Message('За свою решимость вы получили нож!'); Game.Attitudes.Knife.Add(1); Game.Achievements.FirstWeapon.Unlock(); }],
+        buttonaction: [() => { Game.Scenes.PN[102].Begin(); Game.Message('За свою решимость вы получили нож!'); Game.Stats.Knife.Add(1); Game.Achievements.FirstWeapon.Unlock(); }],
     });
 
 Game.Scenes.PN[100] =
@@ -10804,7 +10804,7 @@ Game.Scenes.PN[115] =
             `,
         background: "Persons/Monster",
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.PN[116].Begin(); Game.Message('К сожалению, не всегда надо бросаться в атаку… Вы сильно ранены!'); Game.Attitudes.BrokenHand.Add(1); Game.Achievements.AttackMonster.Unlock(); }],
+        buttonaction: [() => { Game.Scenes.PN[116].Begin(); Game.Message('К сожалению, не всегда надо бросаться в атаку… Вы сильно ранены!'); Game.Stats.BrokenHand.Add(1); Game.Achievements.AttackMonster.Unlock(); }],
     });
 
 Game.Scenes.PN[116] =
@@ -11010,7 +11010,7 @@ Game.Scenes.PN[127] =
         buttontext: [''],
         buttonaction: [() => { Game.Scenes.PN[128].Begin(); }],
         condition: function () {
-            if (Game.Attitudes.BrokenHand.Get() >= 1) this.buttonaction[0] = () => { Game.Scenes.PN[129].Begin(); }
+            if (Game.Stats.BrokenHand.Get() >= 1) this.buttonaction[0] = () => { Game.Scenes.PN[129].Begin(); }
         }
     });
 
@@ -11085,7 +11085,7 @@ Game.Scenes.PN[133] =
         buttontext: [''],
         buttonaction: [() => { Game.Scenes.PN[134].Begin(); Game.Achievements.Storm.Unlock(); }],
         condition: function () {
-          Game.Attitudes.Antagonist.Add(0);
+          Game.Stats.Antagonist.Add(0);
         }
     });
 
@@ -11102,7 +11102,7 @@ Game.Scenes.PN[134] =
           setTimeout(() => { Game.Scenes.FC[0].Begin(); }, 1000);
           Game.LoadScreen('FP');
           Game.Effects.Gray.Stop();
-          Game.Attitudes.Knife.Add(-1);
+          Game.Stats.Knife.Add(-1);
           Game.Progress.Save("FP");
         }],
     });
@@ -11145,7 +11145,7 @@ Game.Scenes.FC[2] = new Scene({
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FC[4].Begin(); }],
   condition: function () {
-    if(Game.Attitudes.BrokenHand.Get()>=1) {
+    if(Game.Stats.BrokenHand.Get()>=1) {
       this.buttonaction[0] = ()=>{Game.Scenes.FC[3].Begin();}
     }
   }
@@ -11337,7 +11337,7 @@ Game.Scenes.FC[14] = new Scene({
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FC[18].Begin(); }],
   condition: function () {
-    if (Game.Attitudes.BrokenHand.Get()>=1) this.buttonaction[0] = () => { Game.Scenes.FC[15].Begin();}
+    if (Game.Stats.BrokenHand.Get()>=1) this.buttonaction[0] = () => { Game.Scenes.FC[15].Begin();}
   }
 });
 
@@ -11401,11 +11401,11 @@ Game.Scenes.FC[20] = new Scene({
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FC[25].Begin(); }],
   condition: function (){
-    if(Game.Attitudes.Nicola.Get()>=1){
+    if(Game.Stats.Nicola.Get()>=1){
       this.buttonaction[0] = () => { Game.Scenes.FC[21].Begin(); }
     }
 
-    if(Game.Attitudes.Nicola.Get()<=0){
+    if(Game.Stats.Nicola.Get()<=0){
       this.buttonaction[0] = () => { Game.Scenes.FC[25].Begin(); }
     }
   }
@@ -11432,7 +11432,7 @@ Game.Scenes.FC[22] = new Scene({
   buttonaction: [() => {
     Game.Scenes.FC[201].Begin();
     Game.Message('Благодаря хорошим отношениям с Теслой, вы узнаете его все лучше.');
-    Game.Attitudes.Golden_Cross.Add(1);
+    Game.Stats.Golden_Cross.Add(1);
     Game.Achievements.Golden_Cross.Unlock();
   }],
 });
@@ -11447,7 +11447,7 @@ Game.Scenes.FC[201] = new Scene({
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FC[25].Begin(); }],
   condition: function () {
-    if(Game.Attitudes.Nicola.Get()>=2){
+    if(Game.Stats.Nicola.Get()>=2){
       this.buttonaction[0] = () => { Game.Scenes.FC[23].Begin(); }
     }
 
@@ -11464,7 +11464,7 @@ Game.Scenes.FC[23] = new Scene({
   buttonaction: [() => {
     Game.Scenes.FC[24].Begin();
     Game.Message('Ваши знания крепчают.');
-    if(Game.Attitudes.Study.Get()<=4){Game.Attitudes.Study.Add(1); }}
+    if(Game.Stats.Study.Get()<=4){Game.Stats.Study.Add(1); }}
     ],
 });
 
@@ -11605,7 +11605,7 @@ Game.Scenes.FC[37] = new Scene({
             `,
   background: "Persons/Robert",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FC[38].Begin(); Game.Message('Роберт всегда вас поддержит'); Game.Attitudes.Robert.attitude+=1; }],
+  buttonaction: [() => { Game.Scenes.FC[38].Begin(); Game.Message('Роберт всегда вас поддержит'); Game.Stats.Robert.attitude+=1; }],
 });
 
 Game.Scenes.FC[38] = new Scene({
@@ -11687,7 +11687,7 @@ Game.Scenes.FC[45] = new Scene({
   buttontext: ['Занимаешься опасным бизнесом', 'Выслеживаешь монстров', 'Работаешь в полиции'],
   buttonaction: [
     () => { Game.Scenes.FC[46].Begin(); Game.Message('Вы сделали неверное предположение');},
-    () => { Game.Scenes.FC[47].Begin(); Game.Message('Ваше предположение оказалось верным'); Game.Attitudes.Robert.attitude+=1; Game.Achievements.Guessed.Unlock();},
+    () => { Game.Scenes.FC[47].Begin(); Game.Message('Ваше предположение оказалось верным'); Game.Stats.Robert.attitude+=1; Game.Achievements.Guessed.Unlock();},
     () => { Game.Scenes.FC[48].Begin(); Game.Message('Вы сделали неверное предположение')},
   ],
 });
@@ -11781,11 +11781,11 @@ Game.Scenes.FC[210] = new Scene({
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FC[53].Begin();}],
   condition: function () {
-    if(Game.Attitudes.DrinkAtParty.Get()>=1){
+    if(Game.Stats.DrinkAtParty.Get()>=1){
       this.buttonaction[0] = () => {Game.Scenes.FC[211].Begin();}
     }
 
-    if(Game.Attitudes.DrinkAtParty.Get()<=0){
+    if(Game.Stats.DrinkAtParty.Get()<=0){
       this.buttonaction[0] = () => {Game.Scenes.FC[212].Begin();}
     }
 
@@ -11908,10 +11908,10 @@ Game.Scenes.FC[65] = new Scene({
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FC[66].Begin();}],
   condition: function () {
-    if(Game.Attitudes.TryToEscape.Get()>=1) {
+    if(Game.Stats.TryToEscape.Get()>=1) {
       this.buttonaction[0] = () => { Game.Scenes.FC[66].Begin();}
     }
-    if(Game.Attitudes.TryToEscape.Get()<=0) {
+    if(Game.Stats.TryToEscape.Get()<=0) {
       this.buttonaction[0] = () => { Game.Scenes.FC[69].Begin();}
     }
   }
@@ -11930,7 +11930,7 @@ Game.Scenes.FC[66] = new Scene({
     () => {
     Game.Scenes.FC[67].Begin();
     Game.Message('Вы решили оставить нож себе');
-    Game.Attitudes.Knife.Add(1);
+    Game.Stats.Knife.Add(1);
     Game.Achievements.KeepWeapon.Unlock();
     },
     () => { Game.Scenes.FC[68].Begin();},
@@ -11999,8 +11999,8 @@ Game.Scenes.FC[72] = new Scene({
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FC[77].Begin();}],
   condition: function () {
-    if(Game.Attitudes.BrokenHand.Get()>=1) this.buttonaction[0] = () => { Game.Scenes.FC[73].Begin();}
-    if(Game.Attitudes.BrokenHand.Get()<=0) this.buttonaction[0] = () => { Game.Scenes.FC[77].Begin();}
+    if(Game.Stats.BrokenHand.Get()>=1) this.buttonaction[0] = () => { Game.Scenes.FC[73].Begin();}
+    if(Game.Stats.BrokenHand.Get()<=0) this.buttonaction[0] = () => { Game.Scenes.FC[77].Begin();}
   }
 });
 
@@ -12077,8 +12077,8 @@ Game.Scenes.FC[78] = new Scene({
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FC[80].Begin();}],
   condition: function () {
-    if(Game.Attitudes.Knife.Get()>=1) this.buttonaction[0] = () => { Game.Scenes.FC[79].Begin(); Game.Attitudes.Knife.Set(0);}
-    if(Game.Attitudes.Knife.Get()<=0) this.buttonaction[0] = () => { Game.Scenes.FC[80].Begin();}
+    if(Game.Stats.Knife.Get()>=1) this.buttonaction[0] = () => { Game.Scenes.FC[79].Begin(); Game.Stats.Knife.Set(0);}
+    if(Game.Stats.Knife.Get()<=0) this.buttonaction[0] = () => { Game.Scenes.FC[80].Begin();}
   }
 });
 
@@ -12097,7 +12097,7 @@ Game.Scenes.FC[80] = new Scene({
        `,
   background: "Backgrounds/Katarina_Room",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FC[81].Begin(); Game.Sounds.Play('Music', 'Ball'); Game.Attitudes.Robert.Add(0); AndroidApp ('showAd');}],
+  buttonaction: [() => { Game.Scenes.FC[81].Begin(); Game.Sounds.Play('Music', 'Ball'); Game.Stats.Robert.Add(0); AndroidApp ('showAd');}],
 });
 
 Game.Scenes.FC[81] = new Scene({
@@ -12195,7 +12195,7 @@ Game.Scenes.FC[200] = new Scene({
   buttonaction: [
     () => {Game.Scenes.FC[89].Begin();},
     () => {Game.Scenes.FC[104].Begin();},
-    () => {Game.Scenes.FC[124].Begin(); Game.Attitudes.MetAntagonist.Add(1);},
+    () => {Game.Scenes.FC[124].Begin(); Game.Stats.MetAntagonist.Add(1);},
   ],
 });
 
@@ -12278,11 +12278,11 @@ Game.Scenes.FC[95] = new Scene({
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FC[96].Begin();}],
   condition: function () {
-    if(Game.Attitudes.Nicola.Get()>=1){
+    if(Game.Stats.Nicola.Get()>=1){
       this.buttonaction[0] = () => { Game.Scenes.FC[96].Begin(); }
     }
 
-    if(Game.Attitudes.Nicola.Get()<=0){
+    if(Game.Stats.Nicola.Get()<=0){
       this.buttonaction[0] = () => { Game.Scenes.FC[98].Begin(); }
     }
 
@@ -12296,7 +12296,7 @@ Game.Scenes.FC[96] = new Scene({
        `,
   background: "Persons/Nicola",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FC[97].Begin(); Game.Attitudes.Nicola.Add(1); Game.Message('Вы дорогой человек для Николы')}],
+  buttonaction: [() => { Game.Scenes.FC[97].Begin(); Game.Stats.Nicola.Add(1); Game.Message('Вы дорогой человек для Николы')}],
 });
 
 Game.Scenes.FC[97] = new Scene({
@@ -12308,11 +12308,11 @@ Game.Scenes.FC[97] = new Scene({
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FC[103].Begin();}],
   condition: function () {
-    if(Game.Attitudes.BrokenHand.Get()>=1){
+    if(Game.Stats.BrokenHand.Get()>=1){
       this.buttonaction[0] = () => { Game.Scenes.FC[101].Begin();}
     }
 
-    if(Game.Attitudes.BrokenHand.Get()<=0){
+    if(Game.Stats.BrokenHand.Get()<=0){
       this.buttonaction[0] = () => { Game.Scenes.FC[103].Begin();}
     }
   }
@@ -12337,11 +12337,11 @@ Game.Scenes.FC[99] = new Scene({
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FC[103].Begin();}],
   condition: function () {
-    if(Game.Attitudes.BrokenHand.Get()>=1){
+    if(Game.Stats.BrokenHand.Get()>=1){
       this.buttonaction[0] = () => { Game.Scenes.FC[101].Begin();}
     }
 
-    if(Game.Attitudes.BrokenHand.Get()<=0){
+    if(Game.Stats.BrokenHand.Get()<=0){
       this.buttonaction[0] = () => { Game.Scenes.FC[103].Begin();}
     }
   }
@@ -12355,11 +12355,11 @@ Game.Scenes.FC[100] = new Scene({
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FC[103].Begin();}],
   condition: function () {
-    if(Game.Attitudes.BrokenHand.Get()>=1){
+    if(Game.Stats.BrokenHand.Get()>=1){
       this.buttonaction[0] = () => { Game.Scenes.FC[101].Begin();}
     }
 
-    if(Game.Attitudes.BrokenHand.Get()<=0){
+    if(Game.Stats.BrokenHand.Get()<=0){
       this.buttonaction[0] = () => { Game.Scenes.FC[103].Begin();}
     }
   }
@@ -12448,11 +12448,11 @@ Game.Scenes.FC[108] = new Scene({
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FC[114].Begin();}],
   condition: function () {
-    if(Game.Attitudes.BrokenHand.Get()>=1){
+    if(Game.Stats.BrokenHand.Get()>=1){
       this.buttonaction[0] = () => { Game.Scenes.FC[109].Begin(); }
     }
 
-    if(Game.Attitudes.BrokenHand.Get()<=0){
+    if(Game.Stats.BrokenHand.Get()<=0){
       this.buttonaction[0] = () => { Game.Scenes.FC[114].Begin(); }
     }
 
@@ -12494,7 +12494,7 @@ Game.Scenes.FC[112] = new Scene({
        `,
   background: "Persons/Robert",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FC[113].Begin(); Game.Attitudes.Robert.Add(1); Game.Message('Роберт запомнит ваш танец')}],
+  buttonaction: [() => { Game.Scenes.FC[113].Begin(); Game.Stats.Robert.Add(1); Game.Message('Роберт запомнит ваш танец')}],
 });
 
 Game.Scenes.FC[113] = new Scene({
@@ -12540,7 +12540,7 @@ Game.Scenes.FC[117] = new Scene({
        `,
   background: "Persons/Robert",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FC[118].Begin(); Game.Attitudes.Robert.Add(1); Game.Message('Роберт запомнит ваш танец')}],
+  buttonaction: [() => { Game.Scenes.FC[118].Begin(); Game.Stats.Robert.Add(1); Game.Message('Роберт запомнит ваш танец')}],
 });
 
 Game.Scenes.FC[118] = new Scene({
@@ -12810,7 +12810,7 @@ Game.Scenes.FC[143] = new Scene({
   background: "Persons/Antagonist",
   buttontext: ['Поддалась соблазну 🔐', 'Смогла противостоять соблазну'],
   buttonaction: [
-    () => { Game.Scenes.FC[144].Begin(); Game.Achievements.LoveEvil.Unlock(); Game.Attitudes.AntagonistWire.Add(1); AndroidApp ('showAd');},
+    () => { Game.Scenes.FC[144].Begin(); Game.Achievements.LoveEvil.Unlock(); Game.Stats.AntagonistWire.Add(1); AndroidApp ('showAd');},
     () => { Game.Scenes.FC[156].Begin();},
   ],
 });
@@ -12903,7 +12903,7 @@ Game.Scenes.FC[152] = new Scene({
        `,
   background: "Persons/Antagonist",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FC[153].Begin(); Game.Message('Мужчина держит свое слово'); Game.Attitudes.Antagonist.Add(1)}],
+  buttonaction: [() => { Game.Scenes.FC[153].Begin(); Game.Message('Мужчина держит свое слово'); Game.Stats.Antagonist.Add(1)}],
 });
 
 Game.Scenes.FC[153] = new Scene({
@@ -12957,7 +12957,7 @@ Game.Scenes.FC[157] = new Scene({
   background: "Persons/Antagonist",
   buttontext: ['Согласилась 🔐', 'Отказалась'],
   buttonaction: [
-    () => { Game.Scenes.FC[144].Begin(); Game.Achievements.LoveEvil.Unlock(); Game.Attitudes.AntagonistWire.Add(1); AndroidApp ('showAd'); },
+    () => { Game.Scenes.FC[144].Begin(); Game.Achievements.LoveEvil.Unlock(); Game.Stats.AntagonistWire.Add(1); AndroidApp ('showAd'); },
     () => { Game.Scenes.FC[158].Begin();},
   ],
 });
@@ -13047,11 +13047,11 @@ Game.Scenes.FC[165] = new Scene({
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FC[169].Begin(); }],
   condition: function () {
-    if(Game.Attitudes.Study.Get()>=5){
+    if(Game.Stats.Study.Get()>=5){
       this.buttonaction[0] = () => { Game.Scenes.FC[166].Begin(); }
     }
 
-    if(Game.Attitudes.Study.Get()<=4){
+    if(Game.Stats.Study.Get()<=4){
       this.buttonaction[0] = () => { Game.Scenes.FC[169].Begin(); }
     }
 
@@ -13075,7 +13075,7 @@ Game.Scenes.FC[167] = new Scene({
        `,
   background: "Persons/Nicola",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FC[168].Begin(); Game.Message('Ваши знания помогают Тесле избавиться от зависимости.'); Game.Attitudes.Nicola.Add(1); Game.Attitudes.HelpTesla.Add(1); }],
+  buttonaction: [() => { Game.Scenes.FC[168].Begin(); Game.Message('Ваши знания помогают Тесле избавиться от зависимости.'); Game.Stats.Nicola.Add(1); Game.Stats.HelpTesla.Add(1); }],
 });
 
 Game.Scenes.FC[168] = new Scene({
@@ -13087,11 +13087,11 @@ Game.Scenes.FC[168] = new Scene({
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FC[172].Begin();}],
   condition: function () {
-    if(Game.Attitudes.AntagonistWire.Get()>=1){
+    if(Game.Stats.AntagonistWire.Get()>=1){
       this.buttonaction[0] = () => { Game.Scenes.FC[171].Begin();}
     }
 
-    if(Game.Attitudes.AntagonistWire.Get()<=0){
+    if(Game.Stats.AntagonistWire.Get()<=0){
       this.buttonaction[0] = () => { Game.Scenes.FC[172].Begin();}
     }
   }
@@ -13119,11 +13119,11 @@ Game.Scenes.FC[170] = new Scene({
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FC[172].Begin();}],
   condition: function () {
-    if(Game.Attitudes.AntagonistWire.Get()>=1){
+    if(Game.Stats.AntagonistWire.Get()>=1){
       this.buttonaction[0] = () => { Game.Scenes.FC[171].Begin();}
     }
 
-    if(Game.Attitudes.AntagonistWire.Get()<=0){
+    if(Game.Stats.AntagonistWire.Get()<=0){
       this.buttonaction[0] = () => { Game.Scenes.FC[172].Begin();}
     }
   }
@@ -13203,15 +13203,15 @@ Game.Scenes.FC[178] = new Scene({
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FC[179].Begin();}],
   condition: function () {
-    if(Game.Attitudes.AntagonistWire.Get()>=1){
+    if(Game.Stats.AntagonistWire.Get()>=1){
       this.buttonaction[0] = () => { Game.Scenes.FC[179].Begin(); }
     }
 
-    if(Game.Attitudes.AntagonistWire.Get()<=0 && Game.Attitudes.MetAntagonist.Get()>=1){
+    if(Game.Stats.AntagonistWire.Get()<=0 && Game.Stats.MetAntagonist.Get()>=1){
       this.buttonaction[0] = () => { Game.Scenes.FC[180].Begin(); }
     }
 
-    if(Game.Attitudes.MetAntagonist.Get()<=0){
+    if(Game.Stats.MetAntagonist.Get()<=0){
       this.buttonaction[0] = () => { Game.Scenes.FC[181].Begin(); }
     }
 
@@ -13430,7 +13430,7 @@ Game.Scenes.FifthPart[7] = new Scene({
             `,
   background: "Persons/Robert",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[8].Begin(); Game.Message('Вы хотите быть ближе к Роберту и, возможно, даже открыться ему.'); Game.Attitudes.Robert.Add(1);  }],
+  buttonaction: [() => { Game.Scenes.FifthPart[8].Begin(); Game.Message('Вы хотите быть ближе к Роберту и, возможно, даже открыться ему.'); Game.Stats.Robert.Add(1);  }],
 });
 
 Game.Scenes.FifthPart[8] = new Scene({
@@ -13528,7 +13528,7 @@ Game.Scenes.FifthPart[16] = new Scene({
             `,
   background: "Persons/Thomas",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[17].Begin(); Game.Message('Вы узнаете Теслу все лучше'); Game.Attitudes.Nicola.Add(1);  }],
+  buttonaction: [() => { Game.Scenes.FifthPart[17].Begin(); Game.Message('Вы узнаете Теслу все лучше'); Game.Stats.Nicola.Add(1);  }],
 });
 
 Game.Scenes.FifthPart[17] = new Scene({
@@ -13580,7 +13580,7 @@ Game.Scenes.FifthPart[21] = new Scene({
             `,
   background: "Persons/Antagonist",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[22].Begin(); Game.Message('К чему приведет ваша заинтересованность Эдвардом?'); Game.Attitudes.Neitan.Add(1);  }],
+  buttonaction: [() => { Game.Scenes.FifthPart[22].Begin(); Game.Message('К чему приведет ваша заинтересованность Эдвардом?'); Game.Stats.Neitan.Add(1);  }],
 });
 
 Game.Scenes.FifthPart[22] = new Scene({
@@ -13650,8 +13650,8 @@ Game.Scenes.FifthPart[27] = new Scene({
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[30].Begin();  }],
   condition: function () {
-    if (Game.Attitudes.BrokenHand.Get()<=0) this.buttonaction[0] = () => { Game.Scenes.FifthPart[30].Begin(); }
-    if (Game.Attitudes.BrokenHand.Get()>=1) this.buttonaction[0] = () => { Game.Scenes.FifthPart[28].Begin(); }
+    if (Game.Stats.BrokenHand.Get()<=0) this.buttonaction[0] = () => { Game.Scenes.FifthPart[30].Begin(); }
+    if (Game.Stats.BrokenHand.Get()>=1) this.buttonaction[0] = () => { Game.Scenes.FifthPart[28].Begin(); }
   }
 });
 
@@ -13759,7 +13759,7 @@ Game.Scenes.FifthPart[38] = new Scene({
   background: "Backgrounds/Kitchen",
   buttontext: ['Поддержала Леона', "Поддержала Скралетт"],
   buttonaction: [
-    () => { Game.Scenes.FifthPart[39].Begin(); Game.Attitudes.SupportLeon.Add(1);  },
+    () => { Game.Scenes.FifthPart[39].Begin(); Game.Stats.SupportLeon.Add(1);  },
     () => { Game.Scenes.FifthPart[43].Begin();  },
   ],
 });
@@ -13791,7 +13791,7 @@ Game.Scenes.FifthPart[41] = new Scene({
             `,
   background: "Persons/Leon",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[42].Begin(); Game.Message('Леон благодарен за спасение от нотаций Скарлетт'); Game.Attitudes.Leon.Add(1);  }],
+  buttonaction: [() => { Game.Scenes.FifthPart[42].Begin(); Game.Message('Леон благодарен за спасение от нотаций Скарлетт'); Game.Stats.Leon.Add(1);  }],
 });
 
 Game.Scenes.FifthPart[42] = new Scene({
@@ -13829,7 +13829,7 @@ Game.Scenes.FifthPart[45] = new Scene({
             `,
   background: "Persons/Scarlett",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[46].Begin(); Game.Message('Скарлетт рада вашей поддержке'); Game.Attitudes.Scarlett.Add(1);  }],
+  buttonaction: [() => { Game.Scenes.FifthPart[46].Begin(); Game.Message('Скарлетт рада вашей поддержке'); Game.Stats.Scarlett.Add(1);  }],
 });
 
 Game.Scenes.FifthPart[46] = new Scene({
@@ -13849,10 +13849,10 @@ Game.Scenes.FifthPart[47] = new Scene({
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[52].Begin();  }],
   condition: function () {
-    if(Game.Attitudes.Leon.Get()>=4){
+    if(Game.Stats.Leon.Get()>=4){
       this.buttonaction[0] = () => { Game.Scenes.FifthPart[48].Begin(); Game.Sounds.Play('Music','Leon');}
     }
-    if (Game.Attitudes.Leon.Get()<=3){
+    if (Game.Stats.Leon.Get()<=3){
       this.buttonaction[0] = () => { Game.Scenes.FifthPart[52].Begin();}
     }
   }
@@ -14125,7 +14125,7 @@ Game.Scenes.FifthPart[78] = new Scene({
             `,
   background: "Backgrounds/Car",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[79].Begin(); Game.Message('Связь братьев крепчает'); Game.Attitudes.Brothers.attitude+=1;}],
+  buttonaction: [() => { Game.Scenes.FifthPart[79].Begin(); Game.Message('Связь братьев крепчает'); Game.Stats.Brothers.attitude+=1;}],
 });
 
 Game.Scenes.FifthPart[79] = new Scene({
@@ -14299,7 +14299,7 @@ Game.Scenes.FifthPart[95] = new Scene({
   buttonaction: [() => {
     Game.Scenes.FifthPart[96].Begin();
     Game.Message('Вы предотвратили ссору ваших родителей');
-    Game.Attitudes.Family.Add(1);
+    Game.Stats.Family.Add(1);
     Game.Achievements.Psy.Unlock();
   }],
 });
@@ -14360,7 +14360,7 @@ Game.Scenes.FifthPart[101] = new Scene({
   background: "Backgrounds/Kitchen",
   buttontext: ['Пойду на занятия', 'Останусь дома'],
   buttonaction: [
-    () => {Game.Scenes.FifthPart[102].Begin(); Game.Attitudes.GoStudy.Add(1);},
+    () => {Game.Scenes.FifthPart[102].Begin(); Game.Stats.GoStudy.Add(1);},
     () => {Game.Scenes.FifthPart[107].Begin();}
   ],
 });
@@ -14392,10 +14392,10 @@ Game.Scenes.FifthPart[105] = new Scene({
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[106].Begin();}],
   condition: function () {
-    if(Game.Attitudes.Late.Get()>=1){
+    if(Game.Stats.Late.Get()>=1){
       this.buttonaction[1] = () => {Game.Scenes.FifthPart[106].Begin(); }
     }
-    if(Game.Attitudes.Late.Get()<=0){
+    if(Game.Stats.Late.Get()<=0){
       this.buttonaction[1] = () => {Game.Scenes.FifthPart[119].Begin(); }
     }
   }
@@ -14475,7 +14475,7 @@ Game.Scenes.FifthPart[113] = new Scene({
             `,
   background: "Backgrounds/Room",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[114].Begin(); Game.Message('Вы не предотвратили ссору ваших родителей'); Game.Attitudes.Family.Add(-1);}],
+  buttonaction: [() => { Game.Scenes.FifthPart[114].Begin(); Game.Message('Вы не предотвратили ссору ваших родителей'); Game.Stats.Family.Add(-1);}],
 });
 
 Game.Scenes.FifthPart[114] = new Scene({
@@ -14486,7 +14486,7 @@ Game.Scenes.FifthPart[114] = new Scene({
   background: "Backgrounds/Room",
   buttontext: ['Пойду на занятия', 'Останусь дома'],
   buttonaction: [
-    () => { Game.Scenes.FifthPart[115].Begin(); Game.Attitudes.GoStudy.Add(1);},
+    () => { Game.Scenes.FifthPart[115].Begin(); Game.Stats.GoStudy.Add(1);},
     () => { Game.Scenes.FifthPart[117].Begin();},
   ],
 });
@@ -14500,10 +14500,10 @@ Game.Scenes.FifthPart[115] = new Scene({
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[119].Begin();}],
   condition: function () {
-    if(Game.Attitudes.Late.Get()>=1){
+    if(Game.Stats.Late.Get()>=1){
       this.buttonaction[1] = () => {Game.Scenes.FifthPart[116].Begin(); }
     }
-    if(Game.Attitudes.Late.Get()<=0){
+    if(Game.Stats.Late.Get()<=0){
       this.buttonaction[1] = () => {Game.Scenes.FifthPart[119].Begin(); }
     }
   }
@@ -14592,7 +14592,7 @@ Game.Scenes.FifthPart[124] = new Scene({
             `,
   background: "Persons/Stranger",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[125].Begin(); Game.Message('Вы не можете принять сторону проводника'); Game.Attitudes.God.Add(1);}],
+  buttonaction: [() => { Game.Scenes.FifthPart[125].Begin(); Game.Message('Вы не можете принять сторону проводника'); Game.Stats.God.Add(1);}],
 });
 
 Game.Scenes.FifthPart[125] = new Scene({
@@ -14612,7 +14612,7 @@ Game.Scenes.FifthPart[126] = new Scene({
             `,
   background: "Persons/Stranger",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[127].Begin(); Game.Message('Вы на стороне проводника'); Game.Attitudes.God.Add(1);}],
+  buttonaction: [() => { Game.Scenes.FifthPart[127].Begin(); Game.Message('Вы на стороне проводника'); Game.Stats.God.Add(1);}],
 });
 
 Game.Scenes.FifthPart[127] = new Scene({
@@ -14643,10 +14643,10 @@ Game.Scenes.FifthPart[129] = new Scene({
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[130].Begin();}],
   condition: function () {
-    if(Game.Attitudes.GoStudy.Get()>=1){
+    if(Game.Stats.GoStudy.Get()>=1){
       this.buttonaction[0] = () => { Game.Scenes.FifthPart[130].Begin();}
     }
-    if(Game.Attitudes.GoStudy.Get()<=0){
+    if(Game.Stats.GoStudy.Get()<=0){
       this.buttonaction[0] = () => { Game.Scenes.FifthPart[137].Begin();}
     }
   }
@@ -14709,12 +14709,12 @@ Game.Scenes.FifthPart[135] = new Scene({
   buttonaction: [() => {
     Game.Scenes.FifthPart[136].Begin();
 
-    if (Game.Attitudes.Study.Get()<=4){
-      Game.Attitudes.Study.Add(1);
+    if (Game.Stats.Study.Get()<=4){
+      Game.Stats.Study.Add(1);
       Game.Message('Ваша успеваемость продолжает расти');
     }
 
-    if (Game.Attitudes.Study.Get()>=5){
+    if (Game.Stats.Study.Get()>=5){
       Game.Message('Вы укрепляете свою успеваемость');
     }
 
@@ -14736,7 +14736,7 @@ Game.Scenes.FifthPart[137] = new Scene({
             `,
   background: "Backgrounds/Room",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[138].Begin(); Game.Message('Вы заработали денег (+150)'); Game.Attitudes.Money.Add(150);}],
+  buttonaction: [() => { Game.Scenes.FifthPart[138].Begin(); Game.Message('Вы заработали денег (+150)'); Game.Stats.Money.Add(150);}],
 });
 
 Game.Scenes.FifthPart[138] = new Scene({
@@ -14747,7 +14747,7 @@ Game.Scenes.FifthPart[138] = new Scene({
   buttontext: [''],
   buttonaction: [() => {
     Game.Scenes.FifthPart[139].Begin();
-    Game.Attitudes.Study.Add(-1);
+    Game.Stats.Study.Add(-1);
     Game.Message('Вы пропустили учебу, поэтому ваша успеваемость снизилась');
   }],
 });
@@ -14867,11 +14867,11 @@ Game.Scenes.FifthPart[149] = new Scene({
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[151].Begin();}],
   condition: function () {
-    if(Game.Attitudes.GoStudy.Get()>=1){
+    if(Game.Stats.GoStudy.Get()>=1){
       this.buttonaction[0] = () => {
         Game.Scenes.FifthPart[150].Begin();
         Game.Message('Нэйтан гордится вашим стремлением к знаниям');
-        Game.Attitudes.Neitan.Add(1);
+        Game.Stats.Neitan.Add(1);
       }
     }
     else{
@@ -15034,7 +15034,7 @@ Game.Scenes.FifthPart[165] = new Scene({
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[177].Begin();}],
   condition: function () {
-    if(Game.Attitudes.Neitan.Get()>=6){
+    if(Game.Stats.Neitan.Get()>=6){
       this.buttonaction[0] = () =>{ Game.Scenes.FifthPart[166].Begin();}
       Game.Sounds.Play('Music','Neitan');
     }
@@ -15146,7 +15146,7 @@ Game.Scenes.FifthPart[175] = new Scene({
             `,
   background: "Persons/Neitan_New",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[176].Begin(); Game.Message('Между вами и Нэйтаном зарождается новое чувство'); Game.Attitudes.Neitan.Add(2)}],
+  buttonaction: [() => { Game.Scenes.FifthPart[176].Begin(); Game.Message('Между вами и Нэйтаном зарождается новое чувство'); Game.Stats.Neitan.Add(2)}],
 });
 
 Game.Scenes.FifthPart[176] = new Scene({
@@ -15272,7 +15272,7 @@ Game.Scenes.FifthPart[187] = new Scene({
 
 Game.Scenes.FifthPart[188] = new Scene({
   text: `
-    Я двинулась следом, но что-то привлекло мое внимание. Среди деревьев было движение. Приглядевшись, я заметила мелькающий маленький силуэт, приближавшийся ко мне медленными шагами.
+    Я двинулась следом, но что-то привлекло мое внимание. Среди деревьев было движение. Приглядевшись, я заметила мелькающий маленький силуэт, медленно приближавшийся ко мне.
             `,
   background: "Backgrounds/Lake",
   buttontext: [''],
@@ -15621,8 +15621,8 @@ Game.Scenes.Prologue[8] =
             'Продолжала замерзать'
         ],
         buttonaction: [
-            () => { Game.Message("Проводнику приятно, что вы послушались его"); Game.Scenes.Prologue[11].Begin(); Game.Attitudes.God.Add(1); },
-            () => { Game.Message("Проводник другого и не ожидал…"); Game.Scenes.Prologue[9].Begin(); Game.Attitudes.God.Add(0); }
+            () => { Game.Message("Проводнику приятно, что вы послушались его"); Game.Scenes.Prologue[11].Begin(); Game.Stats.God.Add(1); },
+            () => { Game.Message("Проводник другого и не ожидал…"); Game.Scenes.Prologue[9].Begin(); Game.Stats.God.Add(0); }
         ],
         background: 'Persons/Stranger',
     });

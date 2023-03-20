@@ -631,8 +631,6 @@ if>button {
     border: solid 1px white;
     border-radius: 4px;
     background: rgba(165, 0, 255, 0.09);
-    background: linear-gradient(90deg, rgba(165, 0, 255, 0.09) 0%, rgb(0 0 0 / 39%) 80%);
-    background: -webkit-linear-gradient(90deg, rgba(165, 0, 255, 0.09) 0%, rgb(0 0 0 / 39%) 80%);
 }
 
 inventory {
@@ -721,6 +719,7 @@ ib:active{
     top: 12vh;
     height: 20px;
     font-size: 20px;
+    border-left: 0;
 }
 
 ib>img {
@@ -783,7 +782,7 @@ inventory>#atttablecell {
 
 #atttablecellpict {
     box-sizing: border-box;
-    border: 2px solid #ffffff3b;
+    border: 2px solid transparent;
     border-radius: 40px;
     width: 70px;
     height: 70px;
@@ -794,12 +793,12 @@ inventory>#atttablecell {
     width: calc(100% - 2*40px);
     margin: 0 auto;
     height: 38vh;
-    border-width: 0px;
+    border-width: 0;
     border-color: white;
     border-style: solid;
     border-bottom-width: 1px;
     border-top-width: 1px;
-    background-color: #a982db31;
+    border-color: #bfbfbf63;
     display: grid;
     grid-template-columns: min-content 1fr;
     grid-template-rows: 1fr 1fr;
@@ -850,6 +849,7 @@ inventory>#atttablecell {
 mf>ib {
     top: 6vh;
     z-index: 2;
+    border-left: 0;
 }
 
 im>button {
@@ -859,6 +859,7 @@ im>button {
 #goach{
     border-radius: 0px 10px 10px 0px;
     top: 6vh;
+    border-left: 0;
     box-sizing: border-box;
 }
 
@@ -866,6 +867,7 @@ im>button {
     left: calc(100vw - 40px);
     border-radius: 10px 0px 0px 10px;
     top: 6vh;
+    border-right: 0;
     box-sizing: border-box;
 }
 
