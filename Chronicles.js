@@ -14022,7 +14022,7 @@ Game.Scenes.FifthPart[63] = new Scene({
   buttontext: [''],
   buttonaction: [() => {
     Game.Scenes.FifthPart[64].Begin();
-    Game.Message('<a style="color: #76adff">Вы играете от лица Нэйтана');
+    Game.Message('<a style="font-weight: 800; color: #76adff">Вы играете от лица Нэйтана');
     Game.Sounds.Play('Music','Neitan');
   }],
 });
@@ -14203,7 +14203,7 @@ Game.Scenes.FifthPart[86] = new Scene({
             `,
   background: "Backgrounds/Car",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[87].Begin(); Game.Message('<a style="color: #ff76db">Вы снова играете от лица главной героини'); Game.Sounds.Play('Music','FirstChapter');}],
+  buttonaction: [() => { Game.Scenes.FifthPart[87].Begin(); Game.Message('<a style="font-weight: 800; color: #ff3fcd">Вы снова играете от лица главной героини'); Game.Sounds.Play('Music','FirstChapter');}],
 });
 
 Game.Scenes.FifthPart[87] = new Scene({
