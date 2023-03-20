@@ -611,7 +611,7 @@ if {
     margin: -100vh auto auto auto;
     width: 100vw;
     padding: 0;
-    height: 100%;
+    height: 100vh;
     flex-wrap: wrap;
     flex-direction: column;
     backdrop-filter: blur(10px) saturate(45%);
