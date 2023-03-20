@@ -41,8 +41,8 @@
 }
 
 .fade-in-long {
-    -webkit-animation: fade-in 2s cubic-bezier(.39, .575, .565, 1.000) both;
-    animation: fade-in 2s cubic-bezier(.39, .575, .565, 1.000) both
+    -webkit-animation: fade-long 2s cubic-bezier(.39, .575, .565, 1.000) both;
+    animation: fade-long 2s cubic-bezier(.39, .575, .565, 1.000) both;
 }
 
 @-webkit-keyframes fade-long {
@@ -66,6 +66,35 @@
     100% {
         opacity: 1;
         visibility: visible;
+    }
+}
+
+.fade-out-long {
+    -webkit-animation: fade-out-long 0.5s cubic-bezier(.39, .575, .565, 1.000) both;
+    animation: fade-out-long 0.5s cubic-bezier(.39, .575, .565, 1.000) both;
+}
+
+@-webkit-keyframes fade-out-long {
+    0% {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    100% {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+@keyframes fade-out-long {
+    0% {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    100% {
+        opacity: 0;
+        visibility: hidden;
     }
 }
 

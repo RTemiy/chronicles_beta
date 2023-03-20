@@ -200,13 +200,15 @@ class Scene {
         var t = this.buttonaction + '';
         if (this.background == '') PictureField.style.display = 'none';
         else {
-            if(this.background != LastSlide.background()){
-                PictureField.classList.remove('fade-in');
+            if(this.background != LastSlide.background() && LastSlide.background() != undefined){
+                PictureField.classList.remove('fade-in-long');
+                PictureField.classList.add('fade-out-long');
                 setTimeout(() => {
                     PictureField.src = ROOTPATH + 'pictures/' + this.background + '.png';
                     PictureField.style.display = 'block';
-                    PictureField.classList.add('fade-in');
-                    },100);
+                    PictureField.classList.remove('fade-out-long');
+                    PictureField.classList.add('fade-in-long');
+                    },500);
             }
             else {
                 PictureField.src = ROOTPATH + 'pictures/' + this.background + '.png';
