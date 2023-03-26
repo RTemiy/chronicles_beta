@@ -47,24 +47,28 @@
 
 @-webkit-keyframes fade-long {
     0% {
-        opacity: 0;
+        opacity: 0.5;
+        filter: blur(15px);
         visibility: hidden;
     }
 
     100% {
         opacity: 1;
+        filter: blur(0);
         visibility: visible;
     }
 }
 
 @keyframes fade-in-long {
     0% {
-        opacity: 0;
+        opacity: 0.5;
+        filter: blur(15px);
         visibility: hidden;
     }
 
     100% {
         opacity: 1;
+        filter: blur(0);
         visibility: visible;
     }
 }
@@ -77,11 +81,13 @@
 @-webkit-keyframes fade-out-long {
     0% {
         opacity: 1;
+        filter: blur(0);
         visibility: visible;
     }
 
     100% {
-        opacity: 0;
+        opacity: 0.5;
+        filter: blur(15px);
         visibility: hidden;
     }
 }
@@ -89,11 +95,13 @@
 @keyframes fade-out-long {
     0% {
         opacity: 1;
+        filter: blur(0);
         visibility: visible;
     }
 
     100% {
-        opacity: 0;
+        opacity: 0.5;
+        filter: blur(15px);
         visibility: hidden;
     }
 }
@@ -153,7 +161,7 @@
     content: '';
     position: absolute;
     top: 0; left: 0; bottom: 0; right: 0;
-    box-shadow: inset 0 0 215px rgba(0, 140, 255, 0.58);
+    box-shadow: inset 0 0 215px rgba(125, 198, 255, 0.58);
 }
 
 .disco{
