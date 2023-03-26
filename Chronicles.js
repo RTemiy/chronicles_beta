@@ -2,7 +2,7 @@
  *
  * @source: https://github.com/RTemiy/Chronicles/
  *
- * @licstart  The following is the entire license notice for the
+ * @licstart The following is the entire license notice for the
  *  JavaScript code in this page.
  *
  * Copyright (C) 2022 Artemiy "RTemiy" G.
@@ -17,7 +17,6 @@
 
 //Path to files
 const ROOTPATH = '';
-
 
 //Game Variables
 const Game = {};
@@ -193,11 +192,9 @@ class Scene {
     }
 
     /** Запустить сцену */
-
     Begin() {
         LastSlide.add(this);
         setTimeout(() => {Game.LastSave.Save(this);},250);
-        var t = this.buttonaction + '';
         if (this.background == '') PictureField.style.display = 'none';
         else {
             if(this.background != LastSlide.background() && LastSlide.background() != undefined){
@@ -221,7 +218,6 @@ class Scene {
     }
 
     /** Отправная точка проверки элементов слайда */
-
     InterfaceChecker() {
         this.HideUnusableButtons();
         this.HideOnlyButton();
@@ -230,7 +226,6 @@ class Scene {
     }
 
     /** Прячем неиспользуемые кнопки */
-
     HideUnusableButtons() {
         for (let x = 0; x < 5; x++) {
             document.getElementById(`b0${x}`).setAttribute('class', 'fade-in');
@@ -248,7 +243,6 @@ class Scene {
     }
 
     /** Установить текст кнопок и заодно изменить размер */
-
     SetButtonValues() {
         for (let x = 0; x < this.buttontext.length; x++) {
             document.getElementById(`b0${x}`).innerHTML = this.buttontext[x];
@@ -823,6 +817,26 @@ Game.Effects.DisableAll = function (){
     Game.Effects.Disco.Stop();
 }
 
+/** Изменить стиль кнопок */
+Game.Effects.StyleButtons = function (chapter) {
+    let Buttons = document.querySelector('#bf');
+    switch (chapter) {
+        case 'AEP':
+            Buttons.style = 'margin-top: 20px';
+            Buttons.childNodes.forEach(function (element){
+                element.style = 'background-image: none; border: 1px blue solid; box-shadow: 0 0 5px blue, inset 0 0 5px blue';
+            });
+            break;
+
+        default:
+            Buttons.style = 'margin-top: 0';
+            Buttons.childNodes.forEach(function (element) {
+                element.style = 'background-image: url("./pictures/Interface/button.png"); border: 0; box-shadow: 0;';
+            });
+            break;
+    }
+}
+
 /**
  * Изменить оформление
  * @param {string} Background Фон слайдов
@@ -838,6 +852,7 @@ Game.Effects.ChangeDesign = function (Background,Border,Color,Font,Stroke){
     Root.style.setProperty('--simplecolor', Color);
     Root.style.setProperty('--font', Font);
     Root.style.setProperty('--stroke', Stroke);
+    Game.Effects.StyleButtons(localStorage.getItem('LastSave_Design'));
 }
 
 Game.Effects.Design = {};
@@ -859,17 +874,19 @@ Game.Effects.Design.Immortals = function (){
       'border',
       '#f2daffed',
       '"Times New Roman", Times, serif',
-      '0');
+      '0'
+    );
 }
 
-Game.Effects.Design.Amore = function (){
-    localStorage.setItem('LastSave_Design', 'Amore');
+Game.Effects.Design.AEP = function (){
+    localStorage.setItem('LastSave_Design', 'AEP');
     Game.Effects.ChangeDesign(
       'R_back',
       'R_border',
       'white',
       'Courier New',
-      '3px rgba(0, 208, 255, 0.2)');
+      '3px rgba(0, 208, 255, 0.2)'
+    );
 }
 //Все элементы
 
@@ -2121,6 +2138,231 @@ Game.Stories.push(
       })],
   })
 );
+
+Game.Stories.push(
+  new Story ({
+      name: 'Unkown',
+      pict: 'Covers/AEP',
+      chapters: [ new Chapter ({
+          name: 'Глава 1',
+          pict: 'Backgrounds/AEP_Col',
+          parts: [ new Part ({
+              name: 'Пролог',
+              pict: 'Backgrounds/AEP_Col',
+              code: 'AEP_Prologue',
+              event: function (){
+
+                  Game.Effects.Design.AEP();
+
+                  Game.HideAllAttitudes();
+
+                  Game.Effects.DisableAll();
+
+                  Game.LoadScreen('AEP_Prologue');
+
+                  Game.Scenes.AEP_Prologue[0].Begin();
+              }
+          }),
+          ],
+      })],
+  })
+);
+Game.Scenes.AEP_Prologue = [];
+
+Game.Scenes.AEP_Prologue[0] =
+  new Scene({
+    text: `
+      Стоя на арене величественного Колизея, я и представить не могла, что когда-нибудь окажусь в подобной ситуации. 
+      <p>Оглушающие выстрелы свистели у меня над головой.  А я, лежа в раскорячку, просто не понимала, куда себя деть. Меня окружали дурацкие древние колонны, которые я охотно использовала как укрытие. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => {
+        Game.Scenes.AEP_Prologue[1].Begin();
+        Game.Message('Сейчас вы сделаете свой первый выбор. Многие меняют сюжет незначительно, другие же ведут к серьезным переменам. Но помните - это только ваша история. Решите, какой вы видите свою главную героиню.');
+    }],
+    background: 'Backgrounds/AEP_Col',
+    condition: () => { Game.Sounds.Play('Music', 'AEP_Prologue'); }
+  });
+
+Game.Scenes.AEP_Prologue[1] =
+  new Scene({ text: `
+      Рядом со мной устроился Джон, мой сокурсник, который судорожно пытался вставить патроны в барабан простенького маленького револьвера. 
+      <p>Я не могла смотреть на его жалкие попытки сделать что-то сносное, поэтому:
+        `,
+      buttontext: ['Отобрала пушку','Отвернулась','Стукнула его хорошенько'],
+      buttonaction: [
+        () => {Game.Scenes.AEP_Prologue[2].Begin();},
+        () => {Game.Scenes.AEP_Prologue[4].Begin();},
+        () => {Game.Scenes.AEP_Prologue[7].Begin();},
+      ],
+      background: 'Persons/AEP_John',
+  });
+
+Game.Scenes.AEP_Prologue[2] =
+  new Scene({ text: `
+      - Хей, - недоуменно проговорил парень. - Ты же даже пользоваться им не умеешь! 
+      <p>- Все интуитивно понятно, вставить патроны, взвести курок… - я с легкостью проделывала все махинации. - Я жить хочу, а ты, черт тебя подери, не можешь элементарно зарядить пушку. Еще и втянул нас во все это. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => {Game.Scenes.AEP_Prologue[3].Begin();},
+    ],
+    background: 'Persons/AEP_John',
+  });
+
+Game.Scenes.AEP_Prologue[3] =
+  new Scene({ text: `
+      - Втянул во все это?! Лучше бы спросила своего дружка Мэтта, который переспал чуть ли не со всем университетом и ввязался в разборки с плохими дядьками… 
+      <p>- Самое время обосрать Мэтта, а не искать выход из ситуации. Такими темпами мы здесь скоро подохнем. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => {Game.Scenes.AEP_Prologue[9].Begin();},
+    ],
+    background: 'Persons/AEP_John',
+  });
+
+Game.Scenes.AEP_Prologue[4] =
+  new Scene({ text: `
+      Не в силах смотреть на сие “извращение”, я решила проверить обстановку и медленно выглянула из укрытия. Особой пользы это не принесло. 
+      <p>“Мда. Только пули свистят над головой… Очень лирично. И почему до сих пор не приехала полиция? Как только власти допускают перестрелку на чертовом историческом объекте?”
+        `,
+    buttontext: [''],
+    buttonaction: [() => {Game.Scenes.AEP_Prologue[5].Begin();},
+    ],
+    background: 'Backgrounds/AEP_Col',
+  });
+
+Game.Scenes.AEP_Prologue[5] =
+  new Scene({ text: `
+      Джон наконец-то закончил возиться с револьвером.
+      <p>- Что будем делать? - с нетерпением спросила я. 
+      <p>- Откуда я знаю? У меня опыта в таких делах не больше, чем у тебя. Или ты думаешь, что я решу все по щелчку пальцев?
+        `,
+    buttontext: [''],
+    buttonaction: [() => {Game.Scenes.AEP_Prologue[6].Begin();},
+    ],
+    background: 'Persons/AEP_John',
+  });
+
+Game.Scenes.AEP_Prologue[6] =
+  new Scene({ text: `
+      - Я надеялась, - нервная усмешка не сходила с моего лица. - Но у нас хотя бы есть оружие, это увеличивает наши шансы. 
+      <p>- На что? - парень съежился после моего утверждения - Умереть?
+        `,
+    buttontext: [''],
+    buttonaction: [() => {Game.Scenes.AEP_Prologue[9].Begin();},
+    ],
+    background: 'Persons/AEP_John',
+  });
+
+Game.Scenes.AEP_Prologue[7] =
+  new Scene({ text: `
+      Удар пришелся по затылку. Джон от неожиданности выронил револьвер, а вместе с ним и пули, которые затерялись в ночной темноте. 
+      <p>- Ты больная или как? - парень судорожно пытался нащупать выпавшие патроны.
+        `,
+    buttontext: [''],
+    buttonaction: [() => {Game.Scenes.AEP_Prologue[8].Begin();},
+    ],
+    background: 'Persons/AEP_John',
+  });
+
+Game.Scenes.AEP_Prologue[8] =
+  new Scene({ text: `
+      - Я не виновата, что у тебя руки из одного места…
+      <p>Джон схватился за голову и стал причитать о скорой смерти. Было бессмысленно его успокаивать. Если уж он что-то напридумывал, то так и будет на этом зациклен. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => {Game.Scenes.AEP_Prologue[9].Begin();},
+    ],
+    background: 'Persons/AEP_John',
+  });
+
+Game.Scenes.AEP_Prologue[9] =
+  new Scene({ text: `
+      - Сука… - Джон стал паниковать еще сильнее. - Долбанный университет, долбанные богатенькие детки.
+        `,
+    buttontext: [''],
+    buttonaction: [() => {Game.AskName(() => {Game.Scenes.AEP_Prologue[10].Begin()});},
+    ],
+    background: 'Persons/AEP_John',
+  });
+
+Game.Scenes.AEP_Prologue[10] =
+  new Scene({ text: `
+      - $Имя Игрока$, давай сваливать. 
+      <p>- Наконец-то дельное предложение.
+        `,
+    buttontext: [''],
+    buttonaction: [() => {Game.Scenes.AEP_Prologue[11].Begin();},
+    ],
+    background: 'Persons/AEP_John',
+  });
+
+Game.Scenes.AEP_Prologue[11] =
+  new Scene({ text: `
+      Мы старались красться, словно ниндзя. Мне казалось, что мы не потеряли сознание только из-за зашкаливающего адреналина. Минута, другая. В ушах звенит все сильнее из-за звуков выстрелов. 
+      <p>“Когда же это закончится?”
+        `,
+    buttontext: [''],
+    buttonaction: [() => {Game.Scenes.AEP_Prologue[12].Begin();},
+    ],
+    background: 'Backgrounds/AEP_Col',
+  });
+
+Game.Scenes.AEP_Prologue[12] =
+  new Scene({ text: `
+      Мы были уверены, что вот-вот выберемся и этот кошмар останется позади. Однако когда выход был так близко, нас как щенят поймали за шкирку. 
+      <p>С нами не церемонились. Джона - сразу лицом в пол, а меня схватил за подбородок один из бандитов  и стал рассматривать, словно я была как товар на полке магазина. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => {Game.Scenes.AEP_Prologue[13].Begin();},
+    ],
+    background: 'Backgrounds/AEP_Col',
+  });
+
+Game.Scenes.AEP_Prologue[13] =
+  new Scene({ text: `
+      - А ничего такая, сгодится же на одну ночь? - он обращался к своему коллеге, который держал Джона. 
+      <p>- Да ты себя видел? Она даже под страхом смерти ноги перед тобой не раздвинет, - мужчины громко рассмеялись. - Потянуло на молоденьких? Сейчас босс разберется с козлами  которые не понимают, когда надо держать язык за зубами - вот и делай, что хочешь. А пока долг - превыше всего.
+        `,
+    buttontext: [''],
+    buttonaction: [() => {Game.Scenes.AEP_Prologue[14].Begin();},
+    ],
+    background: 'Backgrounds/AEP_Col',
+  });
+
+Game.Scenes.AEP_Prologue[14] =
+  new Scene({ text: `
+      - Пф, - страшный мужчина средних лет со шрамами по всему лицу облизнулся. - А так хочется попробовать. 
+      <p>Он надел на меня наручники и грубо бросил на землю. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => {Game.Scenes.AEP_Prologue[15].Begin();},
+    ],
+    background: 'Backgrounds/AEP_Col',
+  });
+
+Game.Scenes.AEP_Prologue[15] =
+  new Scene({ text: `
+      Казалось, прошла вечность с тех пор, как бандиты вновь обратили на нас внимание. В этот раз они были не одни, а в сопровождение своего лидера. 
+      <p>- Ты? - я не могла сдержать удивления.
+        `,
+    buttontext: [''],
+    buttonaction: [() => {Game.Scenes.AEP_Prologue[16].Begin();},
+    ],
+    background: 'Backgrounds/AEP_Col',
+  });
+
+Game.Scenes.AEP_Prologue[16] =
+  new Scene({ text: `
+      - Так-так, - он провел рукой по моей грязной щеке. - Какие интересные у нас гости.
+      <p>Мужчина наставил свой окровавленный пистолет прямо мне к виску и проговорил:
+      <p>- Поиграем? 
+        `,
+    buttontext: [''],
+    buttonaction: [() => {Game.Scenes.AEP_Prologue[17].Begin();},
+    ],
+    background: 'Backgrounds/AEP_Col',
+  });
 Game.Achievements.A_PrologueCompleted = new Achievement ({
   picture: 'Backgrounds/Writing',
   title: 'Дневник',
@@ -13759,7 +14001,7 @@ Game.Scenes.FifthPart[38] = new Scene({
      <p>Я:
             `,
   background: "Backgrounds/Kitchen",
-  buttontext: ['Поддержала Леона', "Поддержала Скралетт"],
+  buttontext: ['Поддержала Леона', "Поддержала Скарлетт"],
   buttonaction: [
     () => { Game.Scenes.FifthPart[39].Begin(); Game.Stats.SupportLeon.Add(1);  },
     () => { Game.Scenes.FifthPart[43].Begin();  },
@@ -14205,7 +14447,7 @@ Game.Scenes.FifthPart[86] = new Scene({
             `,
   background: "Backgrounds/Car",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[87].Begin(); Game.Message('<a style="font-weight: 800; color: #ff3fcd">Вы снова играете от лица главной героини'); Game.Sounds.Play('Music','FirstChapter');}],
+  buttonaction: [() => { Game.Scenes.FifthPart[87].Begin(); Game.Message('<a style="font-weight: 800; color: #edc4ff">Вы снова играете от лица главной героини'); Game.Sounds.Play('Music','FirstChapter');}],
 });
 
 Game.Scenes.FifthPart[87] = new Scene({
@@ -14798,10 +15040,10 @@ Game.Scenes.FifthPart[143] = new Scene({
             `,
   background: "Backgrounds/Phone",
   buttontext: [
-    'Написала Нэйтану 🔐',
-    'Написала Леону 🔐',
-    'Написала Скарлетт 🔐',
-    'Написала Шерил 🔐',
+    'Написала Нэйтану',
+    'Написала Леону',
+    'Написала Скарлетт',
+    'Написала Шерил',
   ],
   buttonaction: [
     () => { Game.Scenes.FifthPart[144].Begin(); },

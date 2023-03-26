@@ -371,6 +371,15 @@
     50% { box-shadow: 0 0 0; }
     100% { box-shadow: 0 0 12px lightyellow; }
 }
+
+@keyframes simple-rotation {
+    0% {rotate: 0deg}
+    25% {rotate: -90deg}
+    50% {rotate: -180deg}
+    75% {rotate: -240deg}
+    100% {rotate: -360deg}
+}
+
 ls{
     margin: auto;
     height: 100vh;
@@ -419,6 +428,12 @@ ls{
     margin: auto;
     text-align: center;
 }
+
+.gear{
+    margin: 10px auto;
+    text-align: center;
+    animation: simple-rotation 2s linear;
+}
 :root {
     --bigtext: 3.35vh;
     --mediumtext: 2.15vh;
@@ -437,6 +452,15 @@ ls{
     src: url('fonts/CenturyGothic.eot?#iefix') format('embedded-opentype'),
     url('fonts/CenturyGothic.woff') format('woff'),
     url('fonts/CenturyGothic.ttf') format('truetype');
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Courier New';
+    src: url('fonts/CourierNewPSMT.eot');
+    src: url('fonts/CourierNewPSMT.eot?#iefix') format('embedded-opentype'),
+    url('fonts/CourierNewPSMT.woff') format('woff'),
+    url('fonts/CourierNewPSMT.ttf') format('truetype');
     font-style: normal;
 }
 
