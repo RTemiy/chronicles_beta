@@ -197,20 +197,8 @@ class Scene {
         setTimeout(() => {Game.LastSave.Save(this);},250);
         if (this.background == '') PictureField.style.display = 'none';
         else {
-            if(this.background != LastSlide.background() && LastSlide.background() != undefined){
-                PictureField.classList.remove('fade-in-long');
-                PictureField.classList.add('fade-out-long');
-                setTimeout(() => {
                     PictureField.src = ROOTPATH + 'pictures/' + this.background + '.png';
                     PictureField.style.display = 'block';
-                    PictureField.classList.remove('fade-out-long');
-                    PictureField.classList.add('fade-in-long');
-                    },500);
-            }
-            else {
-                PictureField.src = ROOTPATH + 'pictures/' + this.background + '.png';
-                PictureField.style.display = 'block';
-            }
         }
         if (this.condition) this.condition();
         TextField.innerHTML = this.text.replace("$Имя Игрока$", Game.PlayerName);
@@ -15073,7 +15061,7 @@ Game.Scenes.FifthPart[145] = new Scene({
 
 Game.Scenes.FifthPart[146] = new Scene({
   text: `
-    К моему удивлению, ответ пришел практически сразу. Он согласился о необходимости встречи и довольно быстро приехал. Через час профессор стоял около своей машины, ожидая моего выхода. 
+    К моему удивлению, ответ пришел практически сразу. Он согласился с необходимостью встречи и довольно быстро приехал. Через час профессор стоял около своей машины, ожидая моего выхода. 
     <p>Я не заставила себя долго ждать, так как наряжаться не было ни желания, ни повода. 
             `,
   background: "Backgrounds/Room",
@@ -15137,7 +15125,7 @@ Game.Scenes.FifthPart[150] = new Scene({
 
 Game.Scenes.FifthPart[151] = new Scene({
   text: `
-    - Так ты согласен отправится загород? Ничего, что так далеко? 
+    - Так ты согласен отправиться за город? Ничего, что так далеко? 
     <p>- Я вроде ранее никогда не упоминал, но мне нравится место, которое ты предложила. Там по-настоящему красиво: природа, вода, тишина. С удовольствием составлю тебе компанию. 
     <p>Я улыбнулась и мы сели в машину. 
             `,
@@ -15507,7 +15495,7 @@ Game.Scenes.FifthPart[186] = new Scene({
 Game.Scenes.FifthPart[187] = new Scene({
   text: `
     Мы немного постояли, слушая, как волны бьются о берег, как завывает ветер, холодным воздухом лаская нашу кожу. 
-    <p>Вскоре, Нэйтан ушел в сторону машины, давая мне немного времени, чтобы побыть наедине.
+    <p>Вскоре, Нэйтан ушел в сторону машины, давая мне немного времени, чтобы побыть наедине с собой.
             `,
   background: "Backgrounds/Lake",
   buttontext: [''],

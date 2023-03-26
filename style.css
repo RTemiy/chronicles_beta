@@ -364,8 +364,8 @@
 }
 
 .blink {
-    -webkit-animation: blink 1.5s linear infinite;
-    animation: blink 1.5s linear infinite;
+    -webkit-animation: blink infinite linear ;
+    animation: blink infinite linear ;
 }
 
 @keyframes blink {
