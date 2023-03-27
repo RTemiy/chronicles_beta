@@ -440,7 +440,7 @@ ls{
 .gear{
     margin: 10px auto;
     text-align: center;
-    animation: simple-rotation 2s linear;
+    animation: simple-rotation 2s linear infinite;
 }
 :root {
     --bigtext: 3.35vh;
