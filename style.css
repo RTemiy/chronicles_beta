@@ -661,8 +661,16 @@ bf>button>a{
 }
 #console{
     background-color: rgba(153, 150, 238, 0.3);
-    position: relative;
-    top: 210px;
+    color: white;
+    border: 0;
+    position: absolute;
+    top: calc(100vh - 25px);
+    width: 100vw;
+}
+
+#console:focus{
+    border: 0;
+    background-color: rgba(238, 234, 150, 0.3);
 }
 if {
     box-sizing: border-box;
