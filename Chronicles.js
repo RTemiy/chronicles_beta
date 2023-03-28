@@ -2039,7 +2039,7 @@ Game.Stories.push( new Story({
             new Part({
                 name: 'Часть 5',
                 code: 'FifthPart',
-                pict: 'Interface/Unknown',
+                pict: 'Backgrounds/Lake',
                 event: function () {
 
                     Game.Effects.Design.Immortals();
@@ -13580,7 +13580,7 @@ Game.Scenes.FifthPart[1] = new Scene({
   text: `
     “Это мой дом?”
             `,
-  background: "Backgrounds/Hero_Sleeps",
+  background: "Backgrounds/Dimensions",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[2].Begin();  }],
 });
@@ -13589,7 +13589,7 @@ Game.Scenes.FifthPart[2] = new Scene({
   text: `
     Мельком я замечала куски нескольких реальностей, собранных воедино. Как два разных пазла, которые нечаянно смешались и теперь невозможно было сложить четкую картинку.
             `,
-  background: "Backgrounds/Hero_Sleeps",
+  background: "Backgrounds/Dimensions",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[67].Begin();  }],
 });
@@ -13598,7 +13598,7 @@ Game.Scenes.FifthPart[67] = new Scene({
   text: `
     Все расплывалось перед глазами. Я была уверена, что нахожусь в своей гостинной и вижу перед собой обеденный стол, где мы часто проводили время с родителями. Но в то же время он приобретал очертания старинного столика, с присущей ему изысканной резьбой, за которым Роберт однажды предлагал мне выпить.
             `,
-  background: "Backgrounds/Hero_Sleeps",
+  background: "Backgrounds/Dimensions",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[68].Begin();  }],
 });
@@ -13607,7 +13607,7 @@ Game.Scenes.FifthPart[68] = new Scene({
   text: `
      “Что это? Все наслаивается друг на друга. Где я?”
             `,
-  background: "Backgrounds/Hero_Sleeps",
+  background: "Backgrounds/Dimensions",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[69].Begin();  }],
 });
@@ -13616,7 +13616,7 @@ Game.Scenes.FifthPart[69] = new Scene({
   text: `
      Немного успокоившись, я сделала вывод, что скорее всего - это просто сон. Или усталость от нескончаемых перемещений, дававшая о себе знать в такой изощренной форме. Я закрыла глаза и ударила себя несколько раз по щекам, в надежде очнуться и отогнать появляющиеся смазанные образы.
             `,
-  background: "Backgrounds/Hero_Sleeps",
+  background: "Backgrounds/Dimensions",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[70].Begin();  }],
 });
