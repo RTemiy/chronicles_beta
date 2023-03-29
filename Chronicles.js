@@ -10,8 +10,7 @@
  * The JavaScript code in this page is provided under CC BY-NC 3.0 license
  * https://creativecommons.org/licenses/by-nc/3.0/legalcode
  *
- * @licend  The above is the entire license notice
- * for the JavaScript code in this page.
+ * @licend The above is the entire license notice for the JavaScript code in this page.
  *
  */
 
@@ -74,6 +73,9 @@ Game.Settings = {};
 
 //Effects
 Game.Effects = {};
+
+//Design
+Game.Design = {};
 
 //Ads
 Game.canShowAds = false;
@@ -600,6 +602,91 @@ Game.AskName = function (action) {
     this.im.appendChild(this.input);
     this.im.appendChild(this.button);
 }
+
+/**
+ * Изменить оформление
+ * @param {string} Background Фон слайдов
+ * @param {string} Border Рамка для картинки слайда
+ * @param {string} Color Цвет шрифта
+ * @param {string} Font Семейство шрифта
+ * @param {string} Stroke Обводка шрифта
+ */
+Game.Design.ChangeInterface = function (Background,Border,Color,Font,Stroke){
+  MainField.style.backgroundImage = 'url(pictures/Interface/'+Background+'.png)';
+  BorderField.src = 'pictures/Interface/'+Border+'.png';
+  let Root = document.querySelector(':root');
+  Root.style.setProperty('--simplecolor', Color);
+  Root.style.setProperty('--font', Font);
+  Root.style.setProperty('--stroke', Stroke);
+}
+
+/** Изменить стиль кнопок
+ *
+ * @param {string} chapter Название Истории
+ */
+ Game.Design.Change = function (chapter){
+  localStorage.setItem('LastSave_Design', chapter);
+  switch (chapter) {
+
+    default:
+      Game.Design.ChangeInterface(
+        'back',
+        'border',
+        '#f2daffed',
+        '"Times New Roman", Times, serif',
+        '0'
+      );
+      Game.Design.StyleButtons(
+        'margin-top: 0',
+        'background-image: url("./pictures/Interface/button.png"); border: 0; box-shadow: 0;'
+      );
+      break;
+
+    case 'Aurora':
+      Game.Design.ChangeInterface(
+        'A_back',
+        'A_border',
+        'white',
+        'Century Gothic Regular',
+        '0'
+      );
+      Game.Design.StyleButtons(
+        'margin-top: 0',
+        'background-image: url("./pictures/Interface/button.png"); border: 0; box-shadow: 0;'
+      );
+      break;
+
+    case 'AEP':
+      Game.Design.ChangeInterface(
+        'R_back',
+        'R_border',
+        'white',
+        'Courier New',
+        '3px rgba(0, 208, 255, 0.2)'
+      );
+      Game.Design.StyleButtons(
+        'margin-top: 20px',
+        'background-image: none; border: 1px blue solid; box-shadow: 0 0 5px blue, inset 0 0 5px blue'
+      );
+      break;
+
+  }
+
+}
+
+
+/** Изменить стиль кнопок
+ * @param {string} buttonfieldastyle Стиль поля для кнопок
+ * @param {string} buttonsstyle Стиль каждой кнопки
+ */
+Game.Design.StyleButtons = function (buttonfieldastyle,buttonsstyle) {
+  let Buttons = document.querySelector('#bf');
+  Buttons.style = buttonfieldastyle;
+  Buttons.childNodes.forEach(function (element) {
+    element.style = buttonsstyle;
+      });
+}
+
 const Editor = {};
 
 Editor.AddNewScene = function (){
@@ -803,78 +890,6 @@ Game.Effects.Mem.Stop = function (){
 Game.Effects.DisableAll = function (){
     Game.Effects.Gray.Stop();
     Game.Effects.Disco.Stop();
-}
-
-/** Изменить стиль кнопок */
-Game.Effects.StyleButtons = function (chapter) {
-    let Buttons = document.querySelector('#bf');
-    switch (chapter) {
-        case 'AEP':
-            Buttons.style = 'margin-top: 20px';
-            Buttons.childNodes.forEach(function (element){
-                element.style = 'background-image: none; border: 1px blue solid; box-shadow: 0 0 5px blue, inset 0 0 5px blue';
-            });
-            break;
-
-        default:
-            Buttons.style = 'margin-top: 0';
-            Buttons.childNodes.forEach(function (element) {
-                element.style = 'background-image: url("./pictures/Interface/button.png"); border: 0; box-shadow: 0;';
-            });
-            break;
-    }
-}
-
-/**
- * Изменить оформление
- * @param {string} Background Фон слайдов
- * @param {string} Border Рамка для картинки слайда
- * @param {string} Color Цвет шрифта
- * @param {string} Font Семейство шрифта
- * @param {string} Stroke Обводка шрифта
- */
-Game.Effects.ChangeDesign = function (Background,Border,Color,Font,Stroke){
-    MainField.style.backgroundImage = 'url(pictures/Interface/'+Background+'.png)';
-    BorderField.src = 'pictures/Interface/'+Border+'.png';
-    let Root = document.querySelector(':root');
-    Root.style.setProperty('--simplecolor', Color);
-    Root.style.setProperty('--font', Font);
-    Root.style.setProperty('--stroke', Stroke);
-    Game.Effects.StyleButtons(localStorage.getItem('LastSave_Design'));
-}
-
-Game.Effects.Design = {};
-
-Game.Effects.Design.Aurora = function (){
-    localStorage.setItem('LastSave_Design', 'Aurora');
-    Game.Effects.ChangeDesign(
-      'A_back',
-      'A_border',
-      'white',
-      'Century Gothic Regular',
-      '0');
-}
-
-Game.Effects.Design.Immortals = function (){
-    localStorage.setItem('LastSave_Design', 'Immortals');
-    Game.Effects.ChangeDesign(
-      'back',
-      'border',
-      '#f2daffed',
-      '"Times New Roman", Times, serif',
-      '0'
-    );
-}
-
-Game.Effects.Design.AEP = function (){
-    localStorage.setItem('LastSave_Design', 'AEP');
-    Game.Effects.ChangeDesign(
-      'R_back',
-      'R_border',
-      'white',
-      'Courier New',
-      '3px rgba(0, 208, 255, 0.2)'
-    );
 }
 //Все элементы
 
@@ -1329,9 +1344,22 @@ Game.LastSave.Save = function (scene){
 Game.LastSave.Load = function (){
   Game.Progress.Load('LastSave');
   Game.Sounds.Play('Music', localStorage.getItem('LastSave_MusicName'));
-  Game.Effects.Design[localStorage.getItem('LastSave_Design')]();
+  Game.Design.Change(localStorage.getItem('LastSave_Design'));
   Game.LoadScreen(localStorage.getItem('LastSave_LS'));
   Game.Scenes[localStorage.getItem('LastSave_SlidePart')][localStorage.getItem('LastSave_SlideNumber')].Begin();
+}
+
+Game.LastLoadCheck = function (){
+  if (localStorage.getItem('LastSave' + '_Played')=='1'){
+    LastSaveButton.onclick = function (){
+      Game.LastSave.Load();
+      CloseOpen(MenuField,MainField);
+      LastSaveButton.style.display='none';
+    }
+  }
+  else{
+    LastSaveButton.style.display='none';
+  }
 }
 let LastSlide = {};
 
@@ -1389,19 +1417,6 @@ window.onload = function () {
 /** Показываем сцены для тестирования  */
 Game.ShowMeFeatures = function () {
     Game.Scenes.Features[0].Begin();
-}
-
-Game.LastLoadCheck = function (){
-    if (localStorage.getItem('LastSave' + '_Played')=='1'){
-        LastSaveButton.onclick = function (){
-            Game.LastSave.Load();
-            CloseOpen(MenuField,MainField);
-            LastSaveButton.style.display='none';
-        }
-    }
-    else{
-        LastSaveButton.style.display='none';
-    }
 }
 /**
  * Загрузочный экран
@@ -1946,7 +1961,7 @@ Game.Stories.push( new Story({
                 code: 'Prologue',
                 event: function () {
 
-                    Game.Effects.Design.Immortals();
+                    Game.Design.Change('Immortals');
 
                     Game.HideAllAttitudes();
 
@@ -1963,7 +1978,7 @@ Game.Stories.push( new Story({
                 pict: 'Backgrounds/Lection',
                 event: function () {
 
-                    Game.Effects.Design.Immortals();
+                    Game.Design.Change('Immortals');
 
                     Game.Progress.Load('FirstChapter');
 
@@ -1982,7 +1997,7 @@ Game.Stories.push( new Story({
                 pict: 'Backgrounds/NY',
                 event: function () {
 
-                    Game.Effects.Design.Immortals();
+                    Game.Design.Change('Immortals');
 
                     Game.Progress.Load('TL');
 
@@ -2002,7 +2017,7 @@ Game.Stories.push( new Story({
                 pict: 'Backgrounds/Pompeii',
                 event: function () {
 
-                    Game.Effects.Design.Immortals();
+                    Game.Design.Change('Immortals');
 
                     Game.Progress.Load('PP');
 
@@ -2022,7 +2037,7 @@ Game.Stories.push( new Story({
                 pict: 'Backgrounds/Ball',
                 event: function () {
 
-                    Game.Effects.Design.Immortals();
+                    Game.Design.Change('Immortals');
 
                     Game.Effects.DisableAll();
 
@@ -2042,7 +2057,7 @@ Game.Stories.push( new Story({
                 pict: 'Backgrounds/Lake',
                 event: function () {
 
-                    Game.Effects.Design.Immortals();
+                    Game.Design.Change('Immortals');
 
                     Game.Effects.DisableAll();
 
@@ -2050,7 +2065,7 @@ Game.Stories.push( new Story({
 
                     Game.Progress.Load('FifthPart');
 
-                    if (Game.PlayerName === undefined || Game.PlayerName === '') Game.AskName(() => {Game.Scenes.FC[0].Begin(); })
+                    if (Game.PlayerName === undefined || Game.PlayerName === '') Game.AskName(() => {Game.Scenes.FifthPart[0].Begin(); })
                     Game.Scenes.FifthPart[0].Begin();
 
                 },
@@ -2075,7 +2090,7 @@ Game.Stories.push(
               code: 'Aurora_Prologue',
               event: function (){
 
-                  Game.Effects.Design.Aurora();
+                  Game.Design.Change('Aurora');
 
                   Game.HideAllAttitudes();
 
@@ -2092,7 +2107,7 @@ Game.Stories.push(
                   code: 'Aurora_Part01',
                   event: function (){
 
-                      Game.Effects.Design.Aurora();
+                      Game.Design.Change('Aurora');
 
                       Game.Progress.Load('Aurora_Part01');
 
@@ -2109,7 +2124,7 @@ Game.Stories.push(
                   code: 'Aurora_Part02',
                   event: function (){
 
-                      Game.Effects.Design.Aurora();
+                      Game.Design.Change('Aurora');
 
                       Game.Progress.Load('Aurora_Part02');
 
@@ -2140,7 +2155,7 @@ Game.Stories.push(
               code: 'AEP_Prologue',
               event: function (){
 
-                  Game.Effects.Design.AEP();
+                  Game.Design.Change('AEP');
 
                   Game.HideAllAttitudes();
 
@@ -5504,6 +5519,42 @@ Game.Stats.Corkscrew = new Stat({
     type: 'Item',
     title: 'Штопор Скарлетт',
     text: 'Я выйграла его у Скарлетт, когда отгадывала загадки на озере. Она всегда носила его с собой, но почему же именно тогда Скарлетт решила отдать его мне? Влияние алкоголя?',
+    story: 'Immortals',
+});
+
+Game.Stats.Crisps = new Stat({
+    name: 'Еда',
+    picture: 'Items/Corkscrew',
+    type: 'Item',
+    title: 'Чипсы',
+    text: 'Чипсы с солью',
+    story: 'Immortals',
+});
+
+Game.Stats.TurkeySandw = new Stat({
+    name: 'Еда',
+    picture: 'Items/Corkscrew',
+    type: 'Item',
+    title: 'Сэндвич с идейкой',
+    text: 'Свежеприготовленный сэндвич с зеленью и индейкой',
+    story: 'Immortals',
+});
+
+Game.Stats.SausageSandw = new Stat({
+    name: 'Еда',
+    picture: 'Items/Corkscrew',
+    type: 'Item',
+    title: 'Сэндвич с колбасой',
+    text: 'Свежеприготовленный сэндвич с зеленью и колбасой',
+    story: 'Immortals',
+});
+
+Game.Stats.FruitsYogurt = new Stat({
+    name: 'Еда',
+    picture: 'Items/Corkscrew',
+    type: 'Item',
+    title: 'Фруты с йогуртом',
+    text: 'Свежие фрукты с йогуртом',
     story: 'Immortals',
 });
 Game.Scenes.FirstChapter = [];
@@ -15054,7 +15105,7 @@ Game.Scenes.FifthPart[143] = new Scene({
   buttonaction: [
     () => { Game.Scenes.FifthPart[144].Begin(); Game.Stats.GoToLakeWith.attitude='Neitan'; },
     () => { Game.Scenes.FifthPart[199].Begin(); Game.Stats.GoToLakeWith.attitude='Leon';},
-    () => { Game.Scenes.FifthPart[1000].Begin(); Game.Stats.GoToLakeWith.attitude='Scarlett';},
+    () => { Game.Scenes.FifthPart[291].Begin(); Game.Stats.GoToLakeWith.attitude='Scarlett';},
     () => { Game.Scenes.FifthPart[1000].Begin(); Game.Stats.GoToLakeWith.attitude='Cheryl';},
   ],
 });
@@ -15645,7 +15696,7 @@ Game.Scenes.FifthPart[199] = new Scene({
 Game.Scenes.FifthPart[200] = new Scene({
   text: `
      Я написала парню и получила ответ через некоторое время. Леон обещал заехать за мной в течение двух часов. Без лишних “но” или “если”. 
-     <p>Лежа в ожидании, в голову пришла совершенно абсурдная мысль. 
+     <p>Пока я лежала на кровати в ожидании, мне в голову пришла совершенно абсурдная мысль.
             `,
   background: "Backgrounds/Room",
   buttontext: [''],
@@ -16599,7 +16650,536 @@ Game.Scenes.FifthPart[290] = new Scene({
             `,
   background: "Persons/Leon_New",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[291].Begin();}],
+  buttonaction: [() => { Game.Scenes.FifthPart[1000].Begin();}],
+});
+
+Game.Scenes.FifthPart[291] = new Scene({
+  text: `
+        Скарлетт всегда заботится обо мне, беспокоится. Даже если между нами и случаются разногласия, девушка старается оставаться на моей стороне. Быть рядом, поддерживать. 
+        <p>“Давно мы не общались с ней вне университета. Сегодня - идеальный день, чтобы это реализовать. Уверена, нам обеим будет на пользу смена обстановки.”
+            `,
+  background: "Backgrounds/Room",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[292].Begin();}],
+});
+
+Game.Scenes.FifthPart[292] = new Scene({
+  text: `
+        Я написала Скарлетт и получила довольно скорый ответ. Она с удовольствием согласилась на поездку и обещала быть в течение часа. 
+        <p>Я решила спуститься на кухню, чтобы собрать нам что-нибудь вкусного в дорогу. 
+        <p>“Что любит Скарлетт? Надо вспомнить… Точно не всякую вредную еду, ведь следит за фигурой. Колбаса и вовсе ее враг номер 1”.
+            `,
+  background: "Backgrounds/Room",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[293].Begin();}],
+});
+
+Game.Scenes.FifthPart[293] = new Scene({
+  text: `
+        На кухне как раз суетилась мама, подготавливая ингредиенты для будущего ужина. Папа сидел на диване и читал газету, поглядывая в телевизор. 
+        <p>- Ты куда-то собираешься? - спросила мама, начиная чистить картошку. 
+        <p>- Да, решили со Скарлетт съездить на озеро. Давно никуда не выбирались.
+            `,
+  background: "Backgrounds/Kitchen",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[294].Begin();}],
+});
+
+Game.Scenes.FifthPart[294] = new Scene({
+  text: `
+        - Молодцы, - к нам в разговор вклинился папа, отвлекаясь от просмотра футбольного матча и чтения. - Не все же дома сидеть. Могу вас подвезти, кстати. Как раз есть одно дело неподалеку.
+        <p>- Это было бы чудесно, спасибо большое! 
+            `,
+  background: "Backgrounds/Kitchen",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[295].Begin();}],
+});
+
+Game.Scenes.FifthPart[295] = new Scene({
+  text: `
+        Мы еще немного поговорили с родителями и я принялась собирать еду. 
+        <p>“Что же выбрать?”
+            `,
+  background: "Backgrounds/Kitchen",
+  buttontext: ['Чипсы','Сэндвич с индейкой','Сэндвичи с колбасой','Фрукты с йогуртом'],
+  buttonaction: [
+    () => { Game.Scenes.FifthPart[296].Begin(); Game.Timer.Stop();},
+    () => { Game.Scenes.FifthPart[297].Begin(); Game.Timer.Stop();},
+    () => { Game.Scenes.FifthPart[298].Begin(); Game.Timer.Stop();},
+    () => { Game.Scenes.FifthPart[299].Begin(); Game.Timer.Stop();},
+  ],
+  condition: function () {
+    Game.Timer.Set(5,()=>{Game.Scenes.FifthPart[296].Begin()});
+  }
+});
+
+Game.Scenes.FifthPart[296] = new Scene({
+  text: `
+        Нет ничего лучше и проще, чем старая добрая классика в виде аппетитных снеков. 
+        <p>“Будет, чем похрустеть, как говорится.” 
+        <p>Я убрала несколько пачек к себе в рюкзак, довольная своим выбором.
+            `,
+  background: "Backgrounds/Kitchen",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[300].Begin();}],
+  condition: function () {
+    Game.Stats.Crisps.Add(1);
+  }
+});
+
+Game.Scenes.FifthPart[297] = new Scene({
+  text: `
+        Я достала из холодильника хлеб и запеченную индейку, которую вчера готовила мама. Добавив овощей, я аккуратно сформировала своей шедевр в аппетитный сэндвич. 
+        <p>“Отличный перекус на наш скромный пикник!”
+        <p>Я убрала несколько бутербродов к себе в рюкзак, довольная своим выбором. 
+            `,
+  background: "Backgrounds/Kitchen",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[300].Begin();}],
+  condition: function () {
+    Game.Stats.TurkeySandw.Add(1);
+  }
+});
+
+Game.Scenes.FifthPart[298] = new Scene({
+  text: `
+        Я достала из холодильника хлеб и колбасу. Добавив майонезный соус, я аккуратно сформировала своей шедевр в аппетитный сэндвич. 
+        <p>“Отличный перекус на наш скромный пикник!”
+        <p>Я убрала несколько бутербродов к себе в рюкзак, довольная своим выбором
+            `,
+  background: "Backgrounds/Kitchen",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[300].Begin();}],
+  condition: function () {
+    Game.Stats.SausageSandw.Add(1);
+  }
+});
+
+Game.Scenes.FifthPart[299] = new Scene({
+  text: `
+        Я набрала с собой несколько разнообразных фруктов: яблоки, бананы, мандарины и выбрала пару классических йогуртов. 
+        <p>“Легко и просто. Соответствует нашему неожиданному пикнику!”
+        <p>Я убрала фрукты с йогуртом к себе в рюкзак, довольная своим выбором.
+            `,
+  background: "Backgrounds/Kitchen",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[300].Begin();}],
+  condition: function () {
+    Game.Stats.FruitsYogurt.Add(1);
+  }
+});
+
+Game.Scenes.FifthPart[300] = new Scene({
+  text: `
+        Скарлетт приехала в назначенное время. Подруга выглядела очень уютно, но не изменяла своему стилю отличницы.
+        <p>- $Имя Игрока$, привет! - девушка крепко обняла меня. - Очень рада видеть тебя. Неужели мы наконец-то выберемся куда-то и проведем время вместе… Спасибо за приглашение.
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[301].Begin();}],
+});
+
+Game.Scenes.FifthPart[301] = new Scene({
+  text: `
+        Я вдруг почувствовал сильный запах алкоголя, во время наших объятий.
+        <p>“Скарлетт сегодня сама не своя. Обычно она вся такая серьезная и часто в своих учебных делах.” 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[302].Begin();}],
+});
+
+Game.Scenes.FifthPart[302] = new Scene({
+  text: `
+        - Скар, ты что пила? Что случилось?
+        <p>- Да не волнуйся ты так… Всего лишь несколько бокалов вина. И кстати, - она потрясла своим рюкзаком, откуда послышался звон бутылок. - Мы с тобой оторвемся по полной, вот увидишь!
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[303].Begin();}],
+});
+
+Game.Scenes.FifthPart[303] = new Scene({
+  text: `
+        Я не стала ничего говорить и расспрашивать о чем-то раньше времени. 
+        <p>“Самое главное, что ей сейчас хорошо, а далее мы со всем разберемся.”
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[304].Begin();}],
+});
+
+Game.Scenes.FifthPart[304] = new Scene({
+  text: `
+        К нам вышел отец, который поздоровался со Скарлетт и сел заводить машину. 
+        <p>- Это что же, наш личный водитель, - шепнула мне на ухо девушка. 
+        <p>- Как вы и просили: личный водитель, хорошая компания и поездка за тридевять земель.
+        <p>Мы громко рассмеялись, садясь в папину машину. 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[305].Begin();}],
+});
+
+Game.Scenes.FifthPart[305] = new Scene({
+  text: `
+        Всю дорогу мы общались со Скарлетт на разные темы, начиная с турецких сериалов, заканчивая мыслями о выпуском. 
+        <p>Отец не вмешивался. Только слушал, иногда улыбаясь от наших девчачьих разговоров. 
+        <p>Подруга также рассказывала про свои мечты, вроде отправиться путешествовать в какой-нибудь интересный город. 
+            `,
+  background: "Backgrounds/Car",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[306].Begin();}],
+});
+
+Game.Scenes.FifthPart[306] = new Scene({
+  text: `
+        - И это естественно будет Рим? - спросила я, желая подтвердить свои догадки. 
+        <p>- Все может быть, - Скар лишь загадочно улыбнулась. 
+            `,
+  background: "Backgrounds/Car",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[307].Begin();}],
+});
+
+Game.Scenes.FifthPart[307] = new Scene({
+  text: `
+        Благодаря этим разговорам я совершенно забыла обо всех проблемах, которые преследовали меня все это время. Я чувствовала себя снова живой и все, что меня беспокоило в данный момент - как отговорить Скарлетт не открывать вино прямо в салоне автомобиля.
+            `,
+  background: "Backgrounds/Car",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[308].Begin(); Game.Sounds.Play('Music','Lake')}],
+});
+
+Game.Scenes.FifthPart[308] = new Scene({
+  text: `
+        По прибытии на озеро, папа припарковал машину и на нас тут же обрушился сильный ветер. Вода в озере бушевала, будто бы порываясь выйти наружу и затопить все вокруг. 
+        <p>- Ого, - удивилась Скарлетт. - Была же хорошая погода… Что ж, может не будем мерзнуть и посидим в какой-нибудь кафешке неподалеку?
+            `,
+  background: "Backgrounds/Lake",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[309].Begin();}],
+});
+
+Game.Scenes.FifthPart[309] = new Scene({
+  text: `
+        Я посмотрела на Скарлетт. Она была права, не стоило оставаться здесь. Но мне нужна была разрядка. Чистый горизонт без всех этих проблем, машин или шума города. 
+        <p>“Я так мечтала выбраться хоть куда-нибудь… Пусть даже и не повезло с погодой, однако так быстро уезжать отсюда совсем не хочется”.  
+        <p>- Мы можем хотя бы немного побыть здесь? 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[310].Begin();}],
+});
+
+Game.Scenes.FifthPart[310] = new Scene({
+  text: `
+        - Знаешь, а ты права. Хотели выбраться вместе, а я что-то испугалась какого-то ветерка. 
+        <p>- Спасибо, - я была рада, что подруга осталась на моей стороне.
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[311].Begin();}],
+});
+
+Game.Scenes.FifthPart[311] = new Scene({
+  text: `
+        - Девочки, вы уверены? - спросил папа обеспокоенным тоном. - Все-таки это буря, а не шутки. 
+        <p>- Не волнуйтесь, - Скарлетт приобняла меня за плечи. - Все под контролем. Да и не собираемся же мы плавать. Просто постоять на берегу…
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[312].Begin();}],
+});
+
+Game.Scenes.FifthPart[312] = new Scene({
+  text: `
+        - Хорошо. Но будьте на связи. И, $Имя Игрока$, я не знаю, когда освобожусь… Сколько вы планируете тут быть?
+        <p>- Папа, все хорошо. Не думай о нас. Мы просто вызовем такси, когда будем собираться уезжать. 
+        <p>Отец кивнул, обнял меня и уехал. 
+
+            `,
+  background: "",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[313].Begin();}],
+});
+
+Game.Scenes.FifthPart[313] = new Scene({
+  text: `
+        Мы подошли к берегу, где не на шутку разыгрались волны.
+        <p>Я обхватила себя руками, осознавая, что мне безумно нравится окружающий пейзаж. Да, он был по-своему мрачный, но природа от этого не становилась менее привлекательной. Нет. Это была стихия, которая не может быть ни кем контролируема.
+        <p>- Это потрясающе…
+            `,
+  background: "Backgrounds/Lake",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[314].Begin();}],
+});
+
+Game.Scenes.FifthPart[314] = new Scene({
+  text: `
+        - Занятно. Я всегда думала, что ты трусишка, а тебя оказывается привлекает, когда все вокруг подвержено хаосу.
+        <p>- Не сказала бы, - я немного поерзала от дуновения ветра. - Просто природа - нечто другое. И относится к этому хочется иначе.
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[315].Begin();}],
+});
+
+Game.Scenes.FifthPart[315] = new Scene({
+  text: `
+        - Так мы решили пофилософствовать, - девушка достала из рюкзака напитки. - Давай уж делать это как полагается. 
+        <p>- Скар, все в порядке? - я снова решила поинтересоваться, так как видела, что несмотря на все эти улыбки, ее руки тряслись, а сама она заметно нервничала.
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[316].Begin();}],
+});
+
+Game.Scenes.FifthPart[316] = new Scene({
+  text: `
+        - Конечно, нет. Иначе бы я не приняла решение напиться.
+        <p>- Расскажешь? 
+        <p>Скарлетт налила себе в пластиковый стакан вина и сухо сказала:
+        <p>- Родители разводятся. 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[317].Begin();}],
+});
+
+Game.Scenes.FifthPart[317] = new Scene({
+  text: `
+        Скарлетт положила голову мне на плечо. Она не плакала, не билась в истерике, как бы мог любой поступить на ее месте. Подруга принимала вызов, который подкинула ей судьба. 
+        <p>Да, без вспомогательных средств не обошлось, но на то мы и люди. 
+        <p>“Всегда ищем как проще всего справляться с трудностями.”
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[318].Begin();}],
+});
+
+Game.Scenes.FifthPart[318] = new Scene({
+  text: `
+        - Скар, - я гладила ее по спине, пытаясь успокоить. - Почему они приняли такое решение? Вы уже поговорили об этом?
+        <p>- Все просто. Нежелание идти на компромиссы. Это их упрямство окончательно разрушило и без того шаткий фундамент нашей семьи. 
+        <p>- Но, может, это к лучшему?
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[319].Begin();}],
+});
+
+Game.Scenes.FifthPart[319] = new Scene({
+  text: `
+        - Может и так. Но я не представляю, как строить свою жизнь в этой суете. Почему они так поступают со мной? - Скарлетт отстранилась и залпом осушила содержимое стакана. 
+        <p>- Послушай, пожалуйста, - я взяла ее за руку и крепко сжала. - Тебе пора перестать жалеть себя. У тебя все прекрасно. Есть отличные перспективы на будущее, есть понимающие друзья, а ты сама завидная красотка!
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[320].Begin();}],
+});
+
+Game.Scenes.FifthPart[320] = new Scene({
+  text: `
+        Скарлетт не смогла сдержать улыбки. 
+        <p>- Спасибо, - она смотрела на озеро, погружаясь в рассуждения. - Знаешь, $Имя Игрока$, ты удивительная. Когда тебе плохо, у тебя всегда находятся силы поддерживать близких. Такому таланту можно только позавидовать. Но не перенапрягайся. И помни, что я рядом. Только скажи и я помогу.
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[321].Begin();}],
+});
+
+Game.Scenes.FifthPart[321] = new Scene({
+  text: `
+        Я верила этим словам, как и самой Скарлетт. Мне было тяжело, но осознание, что кто-то понимает меня и хочет помочь - вселяло уверенность в собственных силах. 
+        <p>Была и другая половина меня, которая хотела утонуть в своей слабости, плакать рядом с ней и ныть об этом дурацком бремени.
+            `,
+  background: "Backgrounds/Lake",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[322].Begin();}],
+});
+
+Game.Scenes.FifthPart[322] = new Scene({
+  text: `
+        Однако за столь короткий срок, я научилась чаще справляться с проблемами самостоятельно. Тяжело жить в двух мирах без поддержки. Возможно, я действительно выросла и начала по-другому ценить свою жизнь и, конечно, жизнь близких. 
+            `,
+  background: "Backgrounds/Lake",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[323].Begin();}],
+  condition: function () {
+    if(Game.Stats.Scarlett.Get()>=6){
+      this.buttonaction[0] = () => {Game.Scenes.FifthPart[323].Begin();}
+    }
+    else{
+      this.buttonaction[0] = () => {Game.Scenes.FifthPart[1000].Begin();}
+    }
+  }
+});
+
+Game.Scenes.FifthPart[323] = new Scene({
+  text: `
+         Скарлетт почувствовала, что мое настроение немного изменилось, поэтому взяла меня за руку и крепко сжала мою ладонь. Она отчего-то улыбалась. Так живо, как будто бы в ее жизни совершенно нет никаких проблем. 
+        <p>- Скар, что такое?
+        <p>- Ничего. Просто я так счастлива. Знаешь, время, которое проводишь с близким человеком действительно заставляет ощущать только позитивные эмоции. 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[324].Begin();}],
+});
+
+Game.Scenes.FifthPart[324] = new Scene({
+  text: `
+         В ее словах была правда. Я сама ощущала нечто подобное. 
+        <p>- Знаешь, $Имя Игрока$, мы с тобой многое пережили. Как говорится, прошли через огонь и воду. Скажи честно, ты никогда не жалела, что дружишь со мной?
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[325].Begin();}],
+});
+
+Game.Scenes.FifthPart[325] = new Scene({
+  text: `
+         В такие моменты мне действительно хотелось хорошенько стукнуть Скарлетт. Наверное ни одни отношения не могут обойтись без драмы. А может просто, каждому иногда нужно услышать ту самую поддержку и подтвердить уверенность взаимоотношений. 
+        <p>- Иди сюда, Скар.
+        <p>Я села на близлежащее бревно, потянула подругу за собой и аккуратно расположила ее голову на коленях. 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[326].Begin();}],
+});
+
+Game.Scenes.FifthPart[326] = new Scene({
+  text: `
+         - Я никогда не жалела. Да, мы ссоримся. Да, каждая любит иногда показать свой характер. Но от этого мы не перестаем быть близкими друг к другу. Отношения, которые мы выстраивали годами, только укрепляются, проходя тяжелые испытания. 
+          <p>- Но почему тогда некоторые люди расстаются, спустя долго время, проведенное вместе? Почему они принимают такое решение?
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[327].Begin();}],
+});
+
+Game.Scenes.FifthPart[327] = new Scene({
+  text: `
+         “Если бы я знала, Скарлетт. Отношения - это такой сложный процесс… Самой бы хоть в чем-то разобраться.”
+          <p>Я вздохнула, пытаясь собраться с мыслями. Сейчас на моих коленях лежал один из самых дорогих мне людей, нуждающийся в правильных словах.
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[328].Begin();}],
+});
+
+Game.Scenes.FifthPart[328] = new Scene({
+  text: `
+         - Скар, значит была проблема, которую они не хотели прорабатывать. Всегда есть причина. Мы же с тобой, например, постоянно разговариваем. Не откладываем все в долгий ящик, а стараемся по мере поступления проблем - сразу их решать. 
+        <p>- Я понимаю, - девушка закрыла лицо руками, пытаясь скрыть эмоции. - Но почему люди, которые были вместе более 8 лет, так беспечны по отношению к друг другу? Эти года ничего не значат?
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[329].Begin();}],
+});
+
+Game.Scenes.FifthPart[329] = new Scene({
+  text: `
+          - Конечно, значат, - я положила свою руку на ее, аккуратно поглаживая. - Просто они поздно поняли, что их взаимоотношения уже не те. Возможно, погрузившись в бытовые проблемы или сосредоточившись на работе, они позабыли, что такое простая семейная радость.
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[330].Begin();}],
+});
+
+Game.Scenes.FifthPart[330] = new Scene({
+  text: `
+           - Я бы никогда не позволила такому случиться, - проговаривала Скарлетт сквозь слезы. 
+          <p>- А какими ты видишь своим идеальные отношения? - я решила переключиться на другую тему, чтобы успокоить подругу.
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[331].Begin();}],
+});
+
+Game.Scenes.FifthPart[331] = new Scene({
+  text: `
+           - Хороший вопрос… Я и не задумывалась никогда. В голове одна самореализация. Какие тут свидания и отношения. 
+          <p>- Вот. Отличная возможность поделиться со мной планом идеального свидания. 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[332].Begin();}],
+});
+
+Game.Scenes.FifthPart[332] = new Scene({
+  text: `
+           Скарлетт лежала и долго думала над ответом. 
+           <p>Ветер понемногу стихал, оставляя лишь спокойные холодные завывания, от которых по телу пробегали мурашки. Погода становилась более благоприятной, казалось, что вот-вот выйдет теплое солнце и накроет нас своими лучами. 
+            `,
+  background: "Backgrounds/Lake",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[333].Begin();}],
+});
+
+Game.Scenes.FifthPart[333] = new Scene({
+  text: `
+    - Я не люблю что-то помпезное. По мне - скромность украшает. Смотря на это озеро, мне до банального хотелось бы устроить здесь пикник. Приехать сюда вечером, на закате. Расстелить плед. Вкусно покушать. Обниматься, дожидаясь наступления темноты, чтобы разглядывать с любимым человеком звезды. Гадать, что же такого нам принесет завтрашний день…
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[334].Begin();}],
+});
+
+Game.Scenes.FifthPart[334] = new Scene({
+  text: `
+    “Скарлетт оказывается тот еще романтик. Это очень мило.”
+    <p>- Ого, а это и правда заманчивое предложение. 
+    <p>- Хотела бы попасть на подобное мероприятие? - подруга усмехнулась. 
+    <p>- Почему нет…
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[335].Begin();}],
+});
+
+Game.Scenes.FifthPart[335] = new Scene({
+  text: `
+    Скарлетт убрала руки с лица и удивленно стала смотреть на меня своими красными от слез глазами. 
+    <p>- Это… неожиданно. 
+    <p>- Скар… 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[336].Begin();}],
+});
+
+Game.Scenes.FifthPart[336] = new Scene({
+  text: `
+    Она вдруг коснулась своим указательным пальцем моих губ, заставляя не продолжать предложение. 
+    <p>- Всему свое время. 
+    <p>Подруга начала вставать с колен. В тот момент мы были как никогда близки к другу. А я думала лишь о том, что снова могу видеть ее лучезарную улыбку. 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[337].Begin();}],
+});
+
+Game.Scenes.FifthPart[337] = new Scene({
+  text: `
+    Скарлетт рассматривала меня, пытаясь запомнить каждую частичку. Внимательно. С интересом. 
+    <p>Затем неожиданно поцеловала меня в щеку. Это был порыв, ее чувства, которые она хотела до меня донести. 
+    <p>Я смущенно отвернулась, пребывая в смятениях. 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[338].Begin(); Game.Message('Вы и Скарлетт все ближе узнаете друг друга'); Game.Stats.Stats.Scarlett.Add(2)}],
+});
+
+Game.Scenes.FifthPart[338] = new Scene({
+  text: `
+    - Дорогая моя, $Имя Игрока$, как много нам еще предстоит узнать друг о друге. 
+    <p>- Непременно, милашка Скарлетт. 
+    <p>Я смотрела на подругу как никогда раньше, а на сердце зародилось совершенное новое и неизведанное чувство.
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[339].Begin();}],
 });
 Game.Scenes.Prologue = [];
 
