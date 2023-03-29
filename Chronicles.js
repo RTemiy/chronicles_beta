@@ -5524,7 +5524,7 @@ Game.Stats.Corkscrew = new Stat({
 
 Game.Stats.Crisps = new Stat({
     name: 'Еда',
-    picture: 'Items/Corkscrew',
+    picture: 'Items/Crisps',
     type: 'Item',
     title: 'Чипсы',
     text: 'Чипсы с солью',
@@ -5533,7 +5533,7 @@ Game.Stats.Crisps = new Stat({
 
 Game.Stats.TurkeySandw = new Stat({
     name: 'Еда',
-    picture: 'Items/Corkscrew',
+    picture: 'Items/Sandwich',
     type: 'Item',
     title: 'Сэндвич с идейкой',
     text: 'Свежеприготовленный сэндвич с зеленью и индейкой',
@@ -5542,7 +5542,7 @@ Game.Stats.TurkeySandw = new Stat({
 
 Game.Stats.SausageSandw = new Stat({
     name: 'Еда',
-    picture: 'Items/Corkscrew',
+    picture: 'Items/Sandwich',
     type: 'Item',
     title: 'Сэндвич с колбасой',
     text: 'Свежеприготовленный сэндвич с зеленью и колбасой',
@@ -5551,7 +5551,7 @@ Game.Stats.SausageSandw = new Stat({
 
 Game.Stats.FruitsYogurt = new Stat({
     name: 'Еда',
-    picture: 'Items/Corkscrew',
+    picture: 'Items/Yogurt',
     type: 'Item',
     title: 'Фруты с йогуртом',
     text: 'Свежие фрукты с йогуртом',
