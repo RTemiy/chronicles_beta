@@ -17005,13 +17005,13 @@ Game.Scenes.FifthPart[322] = new Scene({
             `,
   background: "Backgrounds/Lake",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[323].Begin();}],
+  buttonaction: [() => { Game.Scenes.FifthPart[339].Begin();}],
   condition: function () {
     if(Game.Stats.Scarlett.Get()>=6){
-      this.buttonaction[0] = () => {Game.Scenes.FifthPart[323].Begin();}
+      this.buttonaction[0] = () => {Game.Scenes.FifthPart[323].Begin(); Game.Sounds.Play('Music','Scarlett');}
     }
     else{
-      this.buttonaction[0] = () => {Game.Scenes.FifthPart[1000].Begin();}
+      this.buttonaction[0] = () => {Game.Scenes.FifthPart[339].Begin();}
     }
   }
 });
@@ -17179,7 +17179,531 @@ Game.Scenes.FifthPart[338] = new Scene({
             `,
   background: "Persons/Scarlett_New",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[339].Begin();}],
+  buttonaction: [() => { Game.Scenes.FifthPart[343].Begin();}],
+});
+
+Game.Scenes.FifthPart[339] = new Scene({
+  text: `
+    Положила мне руку на плечо и тепло улыбнулась. 
+    <p>- $Имя Игрока$, я понимаю, что нам сейчас нелегко. Но мы справимся. Я в это верю. Мы же сильные и независимые. 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[340].Begin();}],
+});
+
+Game.Scenes.FifthPart[340] = new Scene({
+  text: `
+    Слова Скарлетт отозвались теплом в моей души. Я ответила:
+    <p>- Ты права. Давай попробуем жить дальше. Стараться изо всех сил прорваться через любые трудности. 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[341].Begin();}],
+});
+
+Game.Scenes.FifthPart[341] = new Scene({
+  text: `
+    Девушка отвернулась, смотря на окружающий пейзаж. 
+    <p>Возможно, в глубине души я ожидала большего. Я хотела поговорить со Скарлетт на более душевные темы. Узнать ее лучше. Но я понимала, почему все происходило именно таким образом.
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[342].Begin();}],
+});
+
+Game.Scenes.FifthPart[342] = new Scene({
+  text: `
+     “Она всегда заботится обо мне, но я, видимо, уделяла этому недостаточно внимания. Все равно я рада, что смогла провести с ней хоть немного времени и развеяться. Уверена, мы станем еще ближе. И останемся подругами.”
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[343].Begin();}],
+});
+
+Game.Scenes.FifthPart[343] = new Scene({
+  text: `
+      После всего произошедшего мы выдохнули и продолжили наслаждаться легкой прохладой исходящей от неспокойного озера. Разговаривали на отвлеченные темы, проводили время вместе, получая удовольствия от этих мгновений. 
+            `,
+  background: "Backgrounds/Lake",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[344].Begin();}],
+});
+
+Game.Scenes.FifthPart[344] = new Scene({
+  text: `
+      - Скар, я тут приготовила нам немного еды в поездку. Надеюсь, ты оценишь. 
+      <p>- Ох, я такая голодная. Спасибо тебе большое за то, что подумала о закуске, - она мило засмеялась. 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[345].Begin();}],
+  condition: function () {
+    if(Game.Stats.Crisps.Get()>=1){
+      this.buttonaction[0] = () => {Game.Scenes.FifthPart[345].Begin();}
+    }
+    if(Game.Stats.TurkeySandw.Get()>=1){
+      this.buttonaction[0] = () => {Game.Scenes.FifthPart[347].Begin();}
+    }
+    if(Game.Stats.SausageSandw.Get()>=1){
+      this.buttonaction[0] = () => {Game.Scenes.FifthPart[349].Begin();}
+    }
+    if(Game.Stats.FruitsYogurt.Get()>=1){
+      this.buttonaction[0] = () => {Game.Scenes.FifthPart[351].Begin();}
+    }
+  }
+});
+
+Game.Scenes.FifthPart[345] = new Scene({
+  text: `
+      Я достала из рюкзака несколько пачек чипсов и уверенно протянула одну из них Скарлетт. 
+      <p>Девушка с досадой стала смотреть на еду и сказала:
+      <p>- Я же говорила тебе, что на диете… Как же так. А мне так хочется есть. 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[346].Begin(); Game.Message('Ваш выбор еды расстроил Скарлетт'); Game.Stats.Scarlett.Add(-1); Game.Stats.Crisps.Add(-1);}],
+});
+
+Game.Scenes.FifthPart[346] = new Scene({
+  text: `
+      Скарлетт нехотя открыла пачку чипсов и начала громко хрустеть. 
+      <p>“Черт, почему я так плохо знаю предпочтения своей подруги?”
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[353].Begin();}],
+});
+
+Game.Scenes.FifthPart[347] = new Scene({
+  text: `
+      Я достала из рюкзака свои аппетитные сэндвичи и уверенно протянула один из них Скарлетт. 
+      <p>Девушка взяла еду и уточнила: 
+      <p>- А с чем они? 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[348].Begin(); Game.Message('Ваш выбор еды обрадовал Скарлетт'); Game.Stats.Scarlett.Add(1); Game.Stats.TurkeySandw.Add(-1);}],
+});
+
+Game.Scenes.FifthPart[348] = new Scene({
+  text: `
+      - Мама тут на днях готовила запеченную индейку. Решила сделать с ней, чтобы добру не пропадать.
+      <p>- Правильно. Спасибо тебе большое! 
+      <p>Девушка с жадностью накинулась на сэндвич, продолжая благодарить. 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[353].Begin();}],
+});
+
+Game.Scenes.FifthPart[349] = new Scene({
+  text: `
+      Я достала из рюкзака свои аппетитные сэндвичи и уверенно протянула один из них Скарлетт. 
+      <p>Девушка взяла еду и уточнила: 
+      <p>- А с чем они? 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[350].Begin(); Game.Message('Ваш выбор еды расстроил'); Game.Stats.Scarlett.Add(-1); Game.Stats.SausageSandw.Add(-1);}],
+});
+
+Game.Scenes.FifthPart[350] = new Scene({
+  text: `
+      - С колбасой. У нас дома было несколько видов, решила сделать, чтобы добру не пропадать. 
+      <p>Скарлетт с досадой стала смотреть на еду и сказала:
+      <p>- Я же говорила тебе, что на диете… Как же так. А мне так хочется есть. 
+      <p>Скарлетт нехотя начала есть сэндвич.
+      <p>“Черт, почему я так плохо знаю предпочтения своей подруги?”
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[353].Begin();}],
+});
+
+Game.Scenes.FifthPart[351] = new Scene({
+  text: `
+      Я достала из рюкзака фрукты с йогуртом и уверенно протянула несколько Скарлетт. 
+      <p>- Замечательно. Ты попала в точку. 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[352].Begin(); Game.Message('Ваш выбор еды обрадовал Скарлетт'); Game.Stats.Scarlett.Add(1); Game.Stats.FruitsYogurt.Add(-1);}],
+});
+
+Game.Scenes.FifthPart[352] = new Scene({
+  text: `
+      Я была рада порадовать подругу.
+      <p>Девушка с жадностью накинулась на яблоки и бананы, продолжая благодарить. 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[353].Begin();}],
+});
+
+Game.Scenes.FifthPart[353] = new Scene({
+  text: `
+      - Ну, ладно, - проговорила Скарлетт, подтягиваясь. - У меня есть предложение получше, чем просто сидеть и кушать.. 
+      <p>- А вот это уже интересно, слушаю тебя. 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[354].Begin();}],
+});
+
+Game.Scenes.FifthPart[354] = new Scene({
+  text: `
+      Девушка налила себе новую порцию алкоголя и продолжила:
+      <p>- Как насчет того, чтобы ты отгадывала мои загадки, - в голосе Скарлетт чувствовалось влияние алкоголя. 
+      <p>- Я - что делала? 
+      <p>- Ну, загадки… Всего лишь две. Давай. А за правильные ответы - будет подарок. 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[355].Begin();}],
+});
+
+Game.Scenes.FifthPart[355] = new Scene({
+  text: `
+      Я искренне засмеялась такому детскому предложению. Но деваться было некуда. Я покорно приняла ситуацию и кивнула. 
+      <p>Скарлетт озвучила свою первую загадку.
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[356].Begin();}],
+});
+
+Game.Scenes.FifthPart[356] = new Scene({
+  text: `
+      - Что пахнет как синяя краска, но красного цвета? 
+      <p>Вопрос ввел меня в ступор. 
+      <p>“Какой запах у краски? Что мне ответить?” 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: ['Красная краска','Растворитель','Краска для волос'],
+  buttonaction: [
+    () => { Game.Scenes.FifthPart[357].Begin();},
+    () => { Game.Scenes.FifthPart[358].Begin();},
+    () => { Game.Scenes.FifthPart[360].Begin();},
+  ],
+});
+
+Game.Scenes.FifthPart[357] = new Scene({
+  text: `
+      “Это какая-то чепуха… Но больше мне ничего не приходит в голову.”
+      <p>- Ого, - Скарлетт немного растерялась. - Я была уверена, что вопрос поставит тебя в тупик, но ты молодец. Это так просто и так глупо. Еще один вопрос и приз у тебя в кармане!
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[362].Begin();}],
+});
+
+Game.Scenes.FifthPart[358] = new Scene({
+  text: `
+      “Это же логично. Краска пахнет так же едко, как растворитель. А больше и ничего не подходит…
+      <p>- Хе-хе, - Скарлетт коварно улыбнулась. - Вот ты и попалась. Все гораздо очевиднее и проще. Ты слишком глубоко задумалась, ответ на поверхности. 
+      <p>- Так это было неправильно?
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[359].Begin();}],
+});
+
+Game.Scenes.FifthPart[359] = new Scene({
+  text: `
+      - Неа, правильный ответ - красная краска. Видишь? Не всегда надо пытаться искать скрытый смысл. 
+      <p>Я с досадой посмотрела на подругу. 
+      <p>“Обидно, что уйду без приза. Но зато мы повеселились!”
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[371].Begin();}],
+});
+
+Game.Scenes.FifthPart[360] = new Scene({
+  text: `
+      “Отличный вариант. Эти запахи чем-то похожи. Уверена, я попала в точку!” 
+      <p>- Хе-хе, - Скарлетт коварно улыбнулась. - Вот ты и попалась. Все гораздо очевиднее и проще. Много думать не надо. 
+      <p>- Так я назвала неправильный ответ?
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[361].Begin();}],
+});
+
+Game.Scenes.FifthPart[361] = new Scene({
+  text: `
+      - Неправильный. Правильный ответ - красная краска. Видишь? Не всегда надо пытаться искать скрытые смыслы. 
+      <p>Я с досадой посмотрела на подругу. 
+      <p>“Обидно, что уйду без приза. Но зато мы повеселились!”
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[371].Begin();}],
+});
+
+Game.Scenes.FifthPart[362] = new Scene({
+  text: `
+      - Мой последний вопрос, $Имя Игрока$. Ух. Он уже посерьезнее. Что всегда будет находиться перед тобой, и при этом тебе никогда это не увидеть?
+      <p>“И правда… Стоит лучше обдумать варианты. Это может быть все что угодно.”
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: ['Время','Будущее','Воздух'],
+  buttonaction: [
+    () => { Game.Scenes.FifthPart[363].Begin();},
+    () => { Game.Scenes.FifthPart[365].Begin();},
+    () => { Game.Scenes.FifthPart[369].Begin();},
+  ],
+});
+
+Game.Scenes.FifthPart[363] = new Scene({
+  text: `
+      “Оно же незримо. Это может быть правильным ответом.”
+      <p>- Нет, не оно. Время - это что-то общее, оно не принадлежит конкретно тебе. Оно затрагивает все и вся. А вот будущее… Только твое будущее - важно. 
+      <p>- Скар, подходит и тот и тот вариант. Глупости какие-то. 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[364].Begin();}],
+});
+
+Game.Scenes.FifthPart[364] = new Scene({
+  text: `
+      - Может быть. Но увы. Ты не угадала. 
+      <p>Я с досадой посмотрела на подругу. 
+      <p>“Обидно, что уйду без приза. Но зато мы повеселились!”
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[371].Begin();}],
+});
+
+Game.Scenes.FifthPart[365] = new Scene({
+  text: `
+      “Я никак не могу увидеть будущее. Конечно, может еще не время… Прошлое то вижу. Но все-таки это что-то недостижимое.”
+      <p>- И это правильный ответ! Ура. Мои поздравления. 
+      <p>- Ну, ты, конечно, и замудрила тут… Очень жду свой заслуженный приз!
+      <p>- Нетерпеливая какая. Сейчас все будет. 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[366].Begin();}],
+});
+
+Game.Scenes.FifthPart[366] = new Scene({
+  text: `
+      - Как ты все отгадала? - Скарлетт решила уточнить. - У тебя что варианты ответов перед глазами?  
+      <p>- И варианты ответов и вообще мной управляют иллюминаты. 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[367].Begin(); Game.Message('Вы получили новый предмет'); Game.Stats.Corkscrew.Add(1);}],
+});
+
+Game.Scenes.FifthPart[367] = new Scene({
+  text: `
+      - Ладно. Хватит ерничать. Как и обещала, держи. 
+      <p>Девушка протянула мне штопор, которым открывают бутылки для вина. 
+      <p>- Это что шутка? - я в растерянности приняла награду. 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[368].Begin();}],
+});
+
+Game.Scenes.FifthPart[368] = new Scene({
+  text: `
+      - Это твоя благодарность? Я вообще-то с ним никогда не расстаюсь. Он в каком-то роде мой талисман. Поэтому я тебе отдаю нечто важное. 
+      <p>- Скар…
+      <p>Я решила не спорить и просто приняла подарок, обнимая подругу. 
+      <p>“Расскажу ей как-нибудь. Когда она будет трезвой. Все же это милый жест с ее стороны. Но странный…”
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[371].Begin();}],
+});
+
+Game.Scenes.FifthPart[369] = new Scene({
+  text: `
+      “Мне кажется, это очевидно. Он вокруг нас, и передо мной, в том числе, а увидеть его я не в силах.”
+      <p>- Знаешь, если бы это был такой же легкий вопрос, как про краску - то я бы сказала, что это правильно. Но в этот раз тебе нужно было преисполниться в своем познании и выдать что-то интереснее, - немного улыбаясь, говорила Скарлетт. 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[370].Begin();}],
+});
+
+Game.Scenes.FifthPart[370] = new Scene({
+  text: `
+      - А какой же правильный ответ? 
+      <p>- Будущее, дорогая моя. То, что принадлежит только тебе и то, что ты не в силах увидеть. 
+      <p>Я с досадой посмотрела на подругу. 
+      <p>“Обидно, что уйду без приза. Но зато мы повеселились!”
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[371].Begin();}],
+});
+
+Game.Scenes.FifthPart[371] = new Scene({
+  text: `
+      Мы еще немного постояли, слушая, как волны бьются о берег, как завывает ветер, холодным воздухом лаская нашу кожу. 
+      <p>Вскоре, Скарлетт ушла в сторону дороги, давая мне немного времени, чтобы побыть наедине. 
+            `,
+  background: "Backgrounds/Lake",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[372].Begin();}],
+});
+
+Game.Scenes.FifthPart[372] = new Scene({
+  text: `
+      Я двинулась следом, но что-то привлекло мое внимание. Среди деревьев было движение. Приглядевшись, я заметила мелькающий маленький силуэт, медленно приближающийся ко мне.  
+            `,
+  background: "Backgrounds/Lake",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[373].Begin();}],
+});
+
+Game.Scenes.FifthPart[373] = new Scene({
+  text: `
+      Я подошла ближе и разглядела в нем собаку. 
+            `,
+  background: "Persons/Dog_Dirty",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[374].Begin();}],
+});
+
+Game.Scenes.FifthPart[374] = new Scene({
+  text: `
+      Продрогшая, грязная, но с преданными горящими глазами. Я аккуратно протянула ей руку и на мое удивление животное отозвалось. Собака тронула меня мокрым носом и жалобно заскулила. 
+      <p>Я погладила пса и обратила внимание, что на его шее висел ошейник. 
+      <p>- Так тебя зовут, Чарли, дружок. Что же мне с тобой делать?
+            `,
+  background: "Persons/Dog_Dirty",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[375].Begin();}],
+});
+
+Game.Scenes.FifthPart[375] = new Scene({
+  text: `
+      Ко мне присоединилась Скарлетт, которая стояла в ступоре, будто бы не осознавая до конца происходящее:
+      <p>- Это что, собака? Не понимаю, как она тут оказалась? И что мы теперь будем делать?
+      <p>- Отвезем его ко мне домой, а дальше подумаем. 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[376].Begin();}],
+});
+
+Game.Scenes.FifthPart[376] = new Scene({
+  text: `
+      - Ох, - девушка схватилась за голову. - Нужно вызвать такси или может помыть его для начала? А вдруг он ранен…
+      <p>- Скар, не паникуй. Погода плохая, нужно как можно скорее увести его отсюда. 
+      <p>- Ты права. 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[377].Begin();}],
+});
+
+Game.Scenes.FifthPart[377] = new Scene({
+  text: `
+      Скарлетт начала  не спеша двигаться в сторону дороги, увлекая за собой собаку. Пес сначала стоял в недоумении, но все же последовал за подругой на полусогнутых лапах.
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[378].Begin();}],
+});
+
+Game.Scenes.FifthPart[378] = new Scene({
+  text: `
+      - Я вызову такси, а ты пока побудь с Чарли, - я достала телефон, выбирая нужное приложение. 
+      <p>- Вот так приключения…
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[381].Begin();}],
+  condition: function () {
+    if(Game.Stats.Scarlett.Get()>=6){
+      this.buttonaction[0] = () => {Game.Scenes.FifthPart[379].Begin();}
+    }
+    else{
+      this.buttonaction[0] = () => {Game.Scenes.FifthPart[381].Begin();}
+    }
+  }
+});
+
+Game.Scenes.FifthPart[379] = new Scene({
+  text: `
+      Когда такси подъехало, я полезла в рюкзак за деньгами, чтобы оплатить поездку. 
+      <p>Но неожиданно вмешалась Скарлетт. Она видимо заранее подготовилась и протянула водителю несколько купюр. 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[380].Begin(); Game.Message('Благодаря хорошим отношениям со Скарлетт, девушка сама вызвалась оплатить вам такси');}],
+});
+
+Game.Scenes.FifthPart[380] = new Scene({
+  text: `
+      - Скар, зачем?
+      <p>- Дорогая, $Имя Игрока$, это меньшее, что я могу сделать. Я просто хотела завершить наш вечер на хорошей ноте и сделать тебе приятно. Прошу. Просто прими. Без твоих “но” или “если”. 
+      <p>Я тепло обняла подругу и мы сели в машину. 
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[382].Begin();}],
+});
+
+Game.Scenes.FifthPart[381] = new Scene({
+  text: `
+      Я незамедлительно вызвала и оплатила такси. На карте было видно, что движение на дорогах свободное, поэтому ожидание было недолгим.
+      <p>Когда водитель приехал, мы разместились на заднем сидении. 
+            `,
+  background: "",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[382].Begin(); Game.Message('Вы потратили часть своих денег'); Game.Stats.Money.Add(-200)}],
+});
+
+Game.Scenes.FifthPart[382] = new Scene({
+  text: `
+      Я и не заметила, как прильнула к окошку и сладко задремала. Всю дорогу я мирно посапывала, а Чарли аккуратно положил свою мордочку мне на колени, греясь и отдыхая.
+            `,
+  background: "Backgrounds/Car",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[383].Begin();}],
+});
+
+Game.Scenes.FifthPart[383] = new Scene({
+  text: `
+      Меня разбудила крепкая мужская рука, которая упорно теребила меня за плечо. 
+      <p>- Барышня, мы приехали, - тон голоса водителя был не слишком радушен. 
+      <p>- Скар, - подруга сладко дремала рядом со мной. - Просыпайся.
+            `,
+  background: "Backgrounds/Car",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[384].Begin();}],
+});
+
+Game.Scenes.FifthPart[384] = new Scene({
+  text: `
+      Девушка дернулась и еле-еле приоткрыла свои глаза. 
+      <p>- Как же болит голова… 
+      <p>- Неудивительно после того, сколько ты выпила. Пойдем в дом, сделаю тебе крепкий черный чай.
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[385].Begin();}],
+});
+
+Game.Scenes.FifthPart[385] = new Scene({
+  text: `
+      - Не стоит, - Скарлетт держалась за голову. - Мы чудесно провели время и спасли этого малыша. Обязательно помой его и сходи к ветеринару. А потом уже поищи хозяина. Я поеду домой и отосплюсь. Прости, что так бросаю тебя. 
+      <p>- Ничего, - я положила руку ей на плечо. - Спасибо тебе. Отдыхай. 
+      <p>Я подождала пока такси вместе со Скарлетт уедет и завела собаку в дом.
+            `,
+  background: "Persons/Scarlett_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[1000].Begin();}],
 });
 Game.Scenes.Prologue = [];
 
