@@ -1886,7 +1886,7 @@ Game.Scenes.Features[100] =
             <p>
             <p>Продолжение следует! 
 
-            <p>Дата выхода следующего обновления: 20 марта
+            <p>Дата выхода следующего обновления: 30 апреля
 
             <p>Очень ждём вас в нашем телеграмм канале - <a href="https://t.me/chronicles_game" target="_blank">Перейти</a>
 
@@ -15672,7 +15672,7 @@ Game.Scenes.FifthPart[198] = new Scene({
             `,
   background: "Persons/Neitan_New",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[1000].Begin();}],
+  buttonaction: [() => { Game.Scenes.FifthPart[479].Begin();}],
 });
 
 Game.Scenes.FifthPart[199] = new Scene({
@@ -16650,7 +16650,7 @@ Game.Scenes.FifthPart[290] = new Scene({
             `,
   background: "Persons/Leon_New",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[1000].Begin();}],
+  buttonaction: [() => { Game.Scenes.FifthPart[479].Begin();}],
 });
 
 Game.Scenes.FifthPart[291] = new Scene({
@@ -17703,7 +17703,7 @@ Game.Scenes.FifthPart[385] = new Scene({
             `,
   background: "Persons/Scarlett_New",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[1000].Begin();}],
+  buttonaction: [() => { Game.Scenes.FifthPart[479].Begin();}],
 });
 
 Game.Scenes.FifthPart[386] = new Scene({
@@ -18391,7 +18391,7 @@ Game.Scenes.FifthPart[448] = new Scene({
             `,
   background: "Persons/Cheryl_New",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[449].Begin();}],
+  buttonaction: [() => { Game.Scenes.FifthPart[449].Begin(); Game.Sounds.Play('Music','Chair');}],
 });
 
 Game.Scenes.FifthPart[449] = new Scene({
@@ -18425,6 +18425,634 @@ Game.Scenes.FifthPart[451] = new Scene({
   background: "Backgrounds/Cheryl_Painting",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[452].Begin();}],
+});
+
+Game.Scenes.FifthPart[452] = new Scene({
+  text: `
+      Я даже не знала, что мне ответить. Очередную ложь? 
+      <p>- Просто мне кажется, что этот монстр не похож на твои обычные рисунки, - мой голос дрожал из-за нахлынувших переживаний. - Так странно… Я хотела бы больше узнать о нем.
+      <p>- С чего это? - подруга смотрела на меня с недоверием. - Твоя реакция слишком необычная, чего-то не договариваешь мне? Ты тоже его видишь? 
+            `,
+  background: "Backgrounds/Cheryl_Painting",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[453].Begin();}],
+});
+
+Game.Scenes.FifthPart[453] = new Scene({
+  text: `
+      - Нет, почему столько вопросов, мне просто любопытно.
+      <p>- Может скажешь в чем дело? 
+      <p>- Но я уже ответила… и…
+            `,
+  background: "Backgrounds/Cheryl_Painting",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[454].Begin();}],
+});
+
+Game.Scenes.FifthPart[454] = new Scene({
+  text: `
+      - Знаешь, давай больше не будем об этом, пожалуйста
+      <p>- Как скажешь, - я не хотела еще больше ссориться и продолжать увиливать, но все же предприняла попытку узнать о еще кое о чем. - А символ? 
+            `,
+  background: "Backgrounds/Cheryl_Painting",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[455].Begin();}],
+});
+
+Game.Scenes.FifthPart[455] = new Scene({
+  text: `
+      - Я просто нарисовала то, что почувствовала. Перед глазами то и дело мелькали: образ той девушки, возмездие, время… Все это пришло в один миг в мою голову. 
+      <p>“Что все это значит? Когда обстановка будет более располагающей, я обязательно расспрошу Шерил об этом.”
+            `,
+  background: "Backgrounds/Cheryl_Painting",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[456].Begin(); Game.Sounds.Play('Music','Lake');}],
+});
+
+Game.Scenes.FifthPart[456] = new Scene({
+  text: `
+      Мы еще немного постояли, слушая, как волны бьются о берег, как завывает ветер, холодным воздухом лаская нашу кожу. 
+      <p>Вскоре, Шерил ушла в сторону дороги, давая мне немного времени, чтобы побыть наедине с собой. 
+            `,
+  background: "Backgrounds/Lake",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[457].Begin();}],
+});
+
+Game.Scenes.FifthPart[457] = new Scene({
+  text: `
+      Я двинулась следом, но что-то привлекло мое внимание. Среди деревьев было движение. Приглядевшись, я заметила мелькающий маленький силуэт, медленно приближающийся ко мне.  
+            `,
+  background: "Backgrounds/Lake",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[458].Begin();}],
+});
+
+Game.Scenes.FifthPart[458] = new Scene({
+  text: `
+      Я подошла ближе и разглядела в нем собаку.   
+            `,
+  background: "Persons/Dog_Dirty",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[459].Begin();}],
+});
+
+Game.Scenes.FifthPart[459] = new Scene({
+  text: `
+      Продрогшая, грязная, но с преданными горящими глазами. Я аккуратно протянула ей руку и на мое удивление животное отозвалось. Собака тронула меня мокрым носом и жалобно заскулила. 
+            `,
+  background: "Persons/Dog_Dirty",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[460].Begin();}],
+});
+
+Game.Scenes.FifthPart[460] = new Scene({
+  text: `
+      Я погладила пса и обратила внимание, что на его шее висел ошейник. 
+      <p>- Так тебя зовут, Чарли, дружок. Что же мне с тобой делать?
+            `,
+  background: "Persons/Dog_Dirty",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[461].Begin();}],
+});
+
+Game.Scenes.FifthPart[461] = new Scene({
+  text: `
+      Ко мне присоединилась Шерил, которая удивленно стояла и смотрела на испуганное животное. 
+      <p>- Это галлюцинации или здесь действительно стоит собака?
+      <p>- Стоит, Шерил. Я даже представить не могу, откуда он тут взялся. 
+      <p>- Скорее всего потерялся. Должно быть его хозяин места себе не находит. 
+      <p>- Отвезем его ко мне домой, а дальше подумаем. 
+            `,
+  background: "Persons/Cheryl_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[462].Begin();}],
+});
+
+Game.Scenes.FifthPart[462] = new Scene({
+  text: `
+      Шерил начала не спеша двигаться в сторону дороги, увлекая за собой собаку. Пес сначала стоял в недоумении, но все же последовал за подругой на полусогнутых лапах.
+            `,
+  background: "Persons/Dog_Dirty",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[463].Begin();}],
+});
+
+Game.Scenes.FifthPart[463] = new Scene({
+  text: `
+      - Я вызову такси, а ты пока побудь с Чарли, - я достала телефон, пытаясь открыть нужное приложение.
+      <p>Но устройство зависло и до последнего не хотело открывать,то, что мне было нужно.
+            `,
+  background: "Persons/Cheryl_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[464].Begin();}],
+});
+
+Game.Scenes.FifthPart[464] = new Scene({
+  text: `
+      - Если ты будешь бить свой телефон о дерево, он от этого не станет лучше работать, - констатировала факт Шерил. 
+      <p>- Я просто в панике, почему все так обернулось?
+            `,
+  background: "Persons/Cheryl_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[474].Begin();}],
+  condition: function () {
+    if(Game.Stats.Cheryl.Get()<=2){
+      this.buttonaction[0] = () => { Game.Scenes.FifthPart[465].Begin();}
+    }
+    else{
+      this.buttonaction[0] = () => { Game.Scenes.FifthPart[474].Begin();}
+    }
+  }
+});
+
+Game.Scenes.FifthPart[465] = new Scene({
+  text: `
+      - У меня есть одна идея, но я боюсь, что тебе это не понравится. 
+      <p>- Шерил, я согласна на все. 
+      <p>- Выслушала бы для начала… Ладно. Пойдем выйдем к дороге. 
+            `,
+  background: "Persons/Cheryl_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[466].Begin();}],
+});
+
+Game.Scenes.FifthPart[466] = new Scene({
+  text: `
+      Нашей скромной компанией мы выдвинулись из леса и вышли к проезжей части. Трасса пустовала, а пасмурная погода только подчеркивала таинственность этого места. 
+      <p>- И для чего мы здесь, Шерил? 
+      <p>- Увидишь. 
+            `,
+  background: "Backgrounds/Lake_Hitch",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[467].Begin();}],
+});
+
+Game.Scenes.FifthPart[467] = new Scene({
+  text: `
+      Девушка смело вышла на край дороги, выставляя палец вверх. Несколько машин стремительно пронеслись мимо. Одна из них остановилась. 
+      <p>Окно легковушки опустилось и из салона автомобиля показалась приветливая пожилая женщина: 
+      <p>- Девушки, вы потерялись?
+            `,
+  background: "Backgrounds/Lake_Hitch",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[468].Begin();}],
+});
+
+Game.Scenes.FifthPart[468] = new Scene({
+  text: `
+      - У нас сломался телефон и мы никак не можем вернуться домой, не могли бы вы нас подбросить? - Шерил вела себя очень раскованно. 
+      <p>- Конечно. Виктор, давай поможем им разместиться.
+      <p>Мы разместились на заднем сидении, а автомобиль медленно начал свое движение. 
+      <p>“Шерил не перестает меня удивлять.”
+            `,
+  background: "Backgrounds/Lake_Hitch",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[469].Begin();}],
+});
+
+Game.Scenes.FifthPart[469] = new Scene({
+  text: `
+      Пожилая пара завела с нами увлекательную беседу, рассказывая о своей бурной молодости.
+      <p>- Помнишь, Виктор? Студенческие годы были такими интересными. Вот бы повернуть время вспять. 
+      <p>- Один наш знакомый профессор говорит, что время лучше никогда не трогать, - Шерил поддерживала беседу.
+            `,
+  background: "Backgrounds/Cheryl_Hitch",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[470].Begin();}],
+});
+
+Game.Scenes.FifthPart[470] = new Scene({
+  text: `
+      - Странное высказывание, - заметил Виктор. - Что значит “не трогать”?
+      <p>- Ну, я уже в точности не помню его слова… Наверное, смысл в предопределенном исходе всего на свете или около того. 
+      <p>- А он симпатичный? - спросила супруга Виктора. 
+      <p>- Маргарет, боже. Я же рядом с тобой. Не стыдно?
+            `,
+  background: "Backgrounds/Cheryl_Hitch",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[471].Begin();}],
+});
+
+Game.Scenes.FifthPart[471] = new Scene({
+  text: `
+      - Это любопытство и не более, дорогой. 
+      <p>Шерил засмеялась и показала им фотографию Нэйтана, которая была размещена на сайте университета. 
+      <p>- Батюшки, - Маргарет удивленно смотрела на профессора. - Он так похож на того мужчину, что мы видели в Париже лет десять назад…
+            `,
+  background: "Backgrounds/Cheryl_Hitch",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[472].Begin();}],
+});
+
+Game.Scenes.FifthPart[472] = new Scene({
+  text: `
+      - Не может быть! - Виктор прильнул к экрану. - И правда. Нам его сложно забыть, учитывая, как он тогда помог. 
+      <p>- Это просто невозможно, профессор довольно молодой. Как он мог быть в Париже так давно и совершенно не измениться. Не зря говорят, что в мире аж целых семь человек похожи на тебя, - Шерил рассмеялась.
+      <p>- Может мы и ошиблись, неужели память совсем стала плоха, Виктор? 
+      <p>- Кто знает. 
+            `,
+  background: "Backgrounds/Cheryl_Hitch",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[473].Begin();}],
+});
+
+Game.Scenes.FifthPart[473] = new Scene({
+  text: `
+      Последнюю часть диалога мне не удалось услышать, ведь я и не заметила, как прильнула к окошку и сладко задремала. Оставшийся отрезок пути, я мирно посапывала, а Чарли аккуратно положил свою мордочку мне на колени, греясь и отдыхая.
+            `,
+  background: "Backgrounds/Cheryl_Hitch",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[476].Begin();}],
+});
+
+Game.Scenes.FifthPart[474] = new Scene({
+  text: `
+      - Давай просто подождем. Уверена, через какое-то время он отвиснет. 
+      <p>Так оно и произошло. Через полчаса я незамедлительно вызвала и оплатила такси. На карте было видно, что движение на дорогах свободное, поэтому ожидание было недолгим.
+      <p>Когда водитель приехал, мы разместились на заднем сидении. 
+            `,
+  background: "",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[475].Begin(); Game.Message('Вы потратили часть своих денег'); Game.Stats.Money.Add(-200)}],
+});
+
+Game.Scenes.FifthPart[475] = new Scene({
+  text: `
+      Я и не заметила, как прильнула к окошку и сладко задремала. Всю дорогу я мирно посапывала, а Чарли аккуратно положил свою мордочку мне на колени, греясь и отдыхая.
+            `,
+  background: "Backgrounds/Lake_Taxi",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[476].Begin();}],
+});
+
+Game.Scenes.FifthPart[476] = new Scene({
+  text: `
+      Меня разбудила Шерил, которая теребила меня за плечо.
+      <p>- Мы приехали, $Имя Игрока$.   
+      <p>Я еле-еле открыла глаза и недоуменно смотрела на подругу. 
+      <p>- Вставай, - Шерил потянула меня из салона. - Спасибо вам большое. 
+            `,
+  background: "Persons/Cheryl_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[477].Begin();}],
+});
+
+Game.Scenes.FifthPart[477] = new Scene({
+  text: `
+      Я вместе с Чарли и подругой стояли около своего дома. 
+      <p>- Шерил, спасибо тебе за все. И за твою помощь. 
+      <p>- Это тебе спасибо, - она нежно обняла меня, немного сжимая. - Я очень чудесно провела время. Надеюсь, что мы когда-нибудь повторим.
+            `,
+  background: "Persons/Cheryl_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[478].Begin();}],
+});
+
+Game.Scenes.FifthPart[478] = new Scene({
+  text: `
+      - Ты зайдешь? Или дела какие?
+      <p>- Прости, я сразу поеду на работу. Никак не отпроситься, - Шерил грустно вздохнула. - Позаботься о Чарли. Обязательно приласкай его и поищи хозяина. Прости, что так бросаю тебя. 
+      <p>- Ничего, - я положила руку ей на плечо. 
+      <p>Я подождала пока Шерил уедет и завела собаку в дом.
+            `,
+  background: "Persons/Cheryl_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[479].Begin();}],
+});
+
+Game.Scenes.FifthPart[479] = new Scene({
+  text: `
+      Нас встретила мама, которая выглядела крайне удивленно, увидев меня с собакой на пороге. 
+      <p>- $Имя Игрока$, кто твой новый друг? 
+      <p>Я кратко обрисовала маме все произошедшее на озере, в конце добавив, что не могла бросить его там. 
+            `,
+  background: "Backgrounds/Livingroom",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[480].Begin();}],
+});
+
+Game.Scenes.FifthPart[480] = new Scene({
+  text: `
+      - Я даже не знаю… Давай мы поступим так. Сходи и помой его хорошенько. Я не против, если он поживет у нас какое-то время, пока не найдется хозяин. 
+      <p>Мама подошла к собаке, погладила и взглянула на ошейник.
+      <p>- Чарли, значит. Что ж, после душа будешь кушать вкусное отварное мясо. 
+            `,
+  background: "Persons/Dog_Dirty",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[481].Begin();}],
+});
+
+Game.Scenes.FifthPart[481] = new Scene({
+  text: `
+      Первым делом я отвела его в ванну, чтобы смыть грязь. Собака не сопротивлялась и охотно шла на контакт, что наводило на очевидные мысли:
+      <p>“Его воспитанием занимались. Он привык к людям, но как ты оказался на улице… Что же ты пережил, малыш?” 
+            `,
+  background: "Persons/Dog_Dry",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[482].Begin();}],
+});
+
+Game.Scenes.FifthPart[482] = new Scene({
+  text: `
+      После купания, я вернулась обратно на кухню. К этому времени мама уже выставила несколько глубоких тарелок. Налила воду и положила кусочки мяса вперемешку с овощами. 
+            `,
+  background: "Backgrounds/Kitchen",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[483].Begin();}],
+});
+
+Game.Scenes.FifthPart[483] = new Scene({
+  text: `
+      Чарли сидел смирно, не притрагивался к еде, будто бы чего-то ожидая. 
+      <p>- Чарли, - я села рядом и погладила его. - Можно кушать, дружок. 
+      <p>Виляя хвостом, собака с жадностью накинулась на съестное. 
+            `,
+  background: "Persons/Dog_Dry",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[484].Begin();}],
+});
+
+Game.Scenes.FifthPart[484] = new Scene({
+  text: `
+      - Мама, спасибо за помощь… Я первый раз оказалась в такой ситуации. Мне даже представить сложно, что было бы, оставь мы его там. 
+      <p>- Милая, ты все сделала правильно. Уверена, папа тоже обрадуется, когда вернется после своих дел. 
+            `,
+  background: "Persons/Dog_Dry",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[485].Begin();}],
+});
+
+Game.Scenes.FifthPart[485] = new Scene({
+  text: `
+      Ближе к вечеру мы с Чарли поднялись в мою комнату и решили отдохнуть. Лежа на кровати, я прокручивала в голове воспоминания об этом насыщенном дне. 
+      <p>“Столько всего… Я чувствую, что готова встретиться с чем угодно после таких теплых разговоров. Справиться со всем. Но прежде надо решить еще одно дело.”
+            `,
+  background: "Backgrounds/Room",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[486].Begin();}],
+});
+
+Game.Scenes.FifthPart[486] = new Scene({
+  text: `
+      Взяв в руки телефон, я нашла несколько сайтов, где люди выкладывали объявления о пропаже животных.
+      <p>Я так и не смогла найти хоть какую-нибудь информацию о Чарли или его хозяине. 
+      <p>“Что ж… Стоит попробовать разместить его фотографию и свой номер телефона. Вдруг кто-то откликнется.” 
+            `,
+  background: "Backgrounds/Room",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[487].Begin();}],
+});
+
+Game.Scenes.FifthPart[487] = new Scene({
+  text: `
+      Так я и поступила. Затем отложила телефон и задумалась.
+      <p>“Время же течет по-разному в этой эпохе и в прошлом. Я могу со спокойной душой отправиться в мир Теслы, не боясь за Чарли или своих близких. Пора взять ситуацию в свои руки.”
+      <p>Я была полна решимости действовать дальше. Поэтому скрестив ноги на кровати, я попыталась погрузиться в глубины своего сознания. 
+            `,
+  background: "Backgrounds/Room",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[488].Begin();}],
+});
+
+Game.Scenes.FifthPart[488] = new Scene({
+  text: `
+      - Проводник, я знаю, что ты меня слышишь. Я в этом уверена. Я готова идти дальше. Просто покончим с этим. 
+      <p>Ничего не происходило. Но я не отчаивалась. 
+      <p>“Просто усну и встречусь с ним. Вероятно, должно сработать.” 
+            `,
+  background: "Backgrounds/Room",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[489].Begin();}],
+});
+
+Game.Scenes.FifthPart[489] = new Scene({
+  text: `
+      Засыпая, я уже не боялась, что могу оступиться. Ведь по словам проводника: все шло своим закономерным чередом. 
+      <p>“Мы еще посмотрим, кто останется победителем в этих играх разума.”
+            `,
+  background: "Backgrounds/Room",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[495].Begin(); Game.Sounds.Play('Music','Prologue')}],
+  condition: function () {
+    if(Game.Stats.God.Get()>=1){
+      this.buttonaction[0] = () => { Game.Scenes.FifthPart[490].Begin(); Game.Sounds.Play('Music','Prologue')}
+    }
+    else{
+      this.buttonaction[0] = () => { Game.Scenes.FifthPart[495].Begin(); Game.Sounds.Play('Music','Prologue')}
+    }
+  }
+});
+
+Game.Scenes.FifthPart[490] = new Scene({
+  text: `
+      Я видела прекрасное поле, усеянное различными цветами. От аромата, исходящего от них, кружилась голова.
+      <p>“Это место совершенно не похоже на все, что я видела в этом мире. Может ли это быть некой особенной зоной?”
+            `,
+  background: "Backgrounds/Flowerfield",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[491].Begin();}],
+});
+
+Game.Scenes.FifthPart[491] = new Scene({
+  text: `
+      Проводник стоял неподалеку. Он с наслаждением осматривал цветы, трогал, вдыхал их чудесные запахи. 
+      <p>Я смело подошла к нему. Мужчина впервые при нашей встрече улыбнулся, позволил себе положить руку мне на плечо и произнес:
+      <p>- Я горжусь твоей решимостью. Твое желание не сдаваться выше всяких похвал. 
+            `,
+  background: "Persons/Stranger",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[492].Begin();}],
+});
+
+Game.Scenes.FifthPart[492] = new Scene({
+  text: `
+      - Это далось мне нелегко. Но я готова. Готова разобраться со всем. Мне надоело быть аутсайдером в этой игре. 
+      <p>- Будь по твоему, - загадочный проводник призадумался. - Тебе следует увидеть еще кое-что перед тем, как надолго отправиться назад в Нью-Йорк. 
+            `,
+  background: "Persons/Stranger",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[493].Begin();}],
+});
+
+Game.Scenes.FifthPart[493] = new Scene({
+  text: `
+      - Хорошо. Но скажи, - я знала, что не получу ответа, но попытаться стоило. - А что это за место?
+      <p>- Здесь я отдыхаю. Много думаю. Трачу время на себя. 
+      <p>- Но разве ты не всегда “много думаешь”?
+      <p>- У меня есть определенные обязательства, так что не всегда удается побыть наедине с собой. 
+            `,
+  background: "Persons/Stranger",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[494].Begin();}],
+});
+
+Game.Scenes.FifthPart[494] = new Scene({
+  text: `
+      Такой ответ меня вполне устроил. 
+      <p>“По крайне мере он не начал отнекиваться. Чувствуется, что он готов понемногу мне открываться. 
+      <p>- Пойдем? - он протянул мне руку, открывая очередной проход. 
+            `,
+  background: "Backgrounds/Flowerfield",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[499].Begin();}],
+});
+
+Game.Scenes.FifthPart[495] = new Scene({
+  text: `
+      Я очутилась у обрыва, где бушевал сильный ветер, готовый в любой момент скинуть меня с шаткого уступа. 
+      <p>“Почему я здесь? Почему это место такое темное… Как же страшно. Холодно.”
+            `,
+  background: "Backgrounds/Waterflow",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[496].Begin();}],
+});
+
+Game.Scenes.FifthPart[496] = new Scene({
+  text: `
+      Ко мне не спеша подошел проводник, который выглядел удрученно. 
+      <p>- Зачем ты пришла?
+      <p>- Потому что хочу покончить со всем скорее и жить своей нормальной жизнью. 
+      <p>- Я уже говорил тебе, что это длинный путь. Не получится все решить только по твоему хотению. 
+            `,
+  background: "Persons/Stranger",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[497].Begin();}],
+});
+
+Game.Scenes.FifthPart[497] = new Scene({
+  text: `
+      - Плевать. Я готова встретиться с чем или кем угодно. Главное - разобраться в происходящем. 
+      <p>- Как скажешь, - он был подобен этому месту: темный, холодный. 
+      <p>“Мы не особо близки. Я часто говорила о своих мыслях прямо. Да, порой я была резка… Не ожидала, что последствия будут такими.”
+            `,
+  background: "Persons/Stranger",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[498].Begin();}],
+});
+
+Game.Scenes.FifthPart[498] = new Scene({
+  text: `
+      Я последовала за проводником в только что открывшийся проход, оставляя позади неспокойную бушующую воду и холодные порывы ветра. 
+            `,
+  background: "Backgrounds/Waterflow",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[499].Begin();}],
+});
+
+Game.Scenes.FifthPart[499] = new Scene({
+  text: `
+      Я уже понимала намерения проводника, стоило мне только увидеть портал, через который я уже однажды проходила. 
+      <p>- Почему снова туда? Почему мне сразу нельзя отправиться в эпоху Теслы?
+      <p>- Есть то, что ты должна увидеть прежде. Я уже говорил, что это место имеет ключевую роль. 
+            `,
+  background: "Backgrounds/Pompeii_Portal",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[500].Begin();}],
+});
+
+Game.Scenes.FifthPart[500] = new Scene({
+  text: `
+      “От этого не легче, но ладно. В конце концов там я выступаю лишь как наблюдать, что значительно облегчает задачу.”
+      <p>Без лишних слов я вновь отправилась в древний город. 
+            `,
+  background: "Backgrounds/Pompeii_Portal",
+  buttontext: [''],
+  buttonaction: [() => {
+    Game.Scenes.FifthPart[501].Begin();
+    Game.Sounds.Play('Music','Pompeii');
+    Game.Effects.Flash();
+  }],
+});
+
+Game.Scenes.FifthPart[501] = new Scene({
+  text: `
+      И снова площадь, на которой я в прошлый раз наблюдала за загадочной незнакомкой. 
+      <p>“Ничего не изменилось с того раза… Я снова должна увидеть ее?”
+      <p>Я осматривалась в поисках подсказок. Но жизнь в Помпеях шла своим чередом, а мне лишь оставалось наблюдать и искать. 
+            `,
+  background: "Backgrounds/Pompeii",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[502].Begin();}],
+});
+
+Game.Scenes.FifthPart[502] = new Scene({
+  text: `
+      Мое внимание привлек звонкий мужской голос, который с задором зазывал всех желающих в свою лавку, чтобы отведать прекрасного вина. 
+      <p>“А что мне терять? Все равно не знаю, что должна увидеть здесь. Хоть местную культуру посмотрю.”
+            `,
+  background: "Backgrounds/Pompeii",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[503].Begin();}],
+});
+
+Game.Scenes.FifthPart[503] = new Scene({
+  text: `
+      Подойдя на достаточно близкое расстояние, я буквально потеряла дар речи. Ноги подкосились, я просто села напротив мужчины и смотрела с широко-раскрытыми глазами.
+            `,
+  background: "Backgrounds/Pompeii",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[504].Begin();}],
+});
+
+Game.Scenes.FifthPart[504] = new Scene({
+  text: `
+      Волосы до плеч, белая туника. И такие знакомые черты лица…
+      <p>“Я схожу с ума? Или передо мной действительно стоит Роберт, держащий керамический кувшин, в Помпеях?”
+            `,
+  background: "Persons/Robert_Pompeii",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[505].Begin();}],
+});
+
+Game.Scenes.FifthPart[505] = new Scene({
+  text: `
+      Это не могло быть совпадением. Мужчина выглядел точно также, как и Роберт. Единственное их различие - это улыбка. Здешний Роберт улыбался так искренне, как будто бы у него нет никакого груза на плечах. 
+            `,
+  background: "Persons/Robert_Pompeii",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[506].Begin();}],
+});
+
+Game.Scenes.FifthPart[506] = new Scene({
+  text: `
+      “Нэйтан… Теперь Роберт. Вот, что хотел показать мне проводник? Это двойники? Как мы с Катариной? Но почему именно так все повернулось?”
+      <p>Это снова выбивало из колеи. Снова приходилось много думать, ведь я понимала, никто не скажет мне ничего прямо. 
+            `,
+  background: "Persons/Robert_Pompeii",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[507].Begin();}],
+});
+
+Game.Scenes.FifthPart[507] = new Scene({
+  text: `
+      Роберт продавал кувшины с вином один за другим, радуясь своей прибыли. 
+      <p>В какой-то момент к нему подошла симпатичная девушка и положила руку прямо на грудь, проговаривая:
+      <p>- Гай, когда мы уже пойдем плавать… Ты же обещал. 
+            `,
+  background: "Persons/Robert_Pompeii",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[508].Begin();}],
+});
+
+Game.Scenes.FifthPart[508] = new Scene({
+  text: `
+      - Прости, но сегодня не получится. Матушка совсем плохо себя чувствует. Мы с братьями дали слово, что позаботимся о хозяйстве. 
+      <p>- Всегда ты так. Небось отправишься вечером к своей Клаудии. 
+            `,
+  background: "Persons/Robert_Pompeii",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[509].Begin();}],
+});
+
+Game.Scenes.FifthPart[509] = new Scene({
+  text: `
+       Я завороженно смотрела на происходящее, дивясь своему новому открытию и чувствам, которые испытала. 
+        <p>“Похоже, что не только я имею тайны. Пора раскрыть свои карты, мальчики.” 
+            `,
+  background: "Persons/Robert_Pompeii",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.Features[100].Begin(); Game.Progress.Save('SixPart')}],
 });
 Game.Scenes.Prologue = [];
 
