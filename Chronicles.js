@@ -14668,7 +14668,7 @@ Game.Scenes.FifthPart[98] = new Scene({
 
 Game.Scenes.FifthPart[99] = new Scene({
   text: `
-           - Мне действительно стоит их навестить, но со всем происходящем… 
+           - Мне действительно стоит их навестить, но со всем происходящим… 
           <p>Конечно, родители не знали обо всем, но будто бы чувствовали, что сейчас не стоит давить на меня и расспрашивать. Придет время - я сама расскажу.
             `,
   background: "Backgrounds/Parents",
@@ -14691,7 +14691,7 @@ Game.Scenes.FifthPart[101] = new Scene({
            Я понимала, что она права и мне нечего возразить. Но столько всего происходит, что я невольно задаюсь вопросом: а надо ли оно мне? Действительно стоит тратить время на обучение? 
            <p>Я:
             `,
-  background: "Backgrounds/Livingroom",
+  background: "Backgrounds/Parents",
   buttontext: ['Пойду на занятия', 'Останусь дома'],
   buttonaction: [
     () => {Game.Scenes.FifthPart[102].Begin(); Game.Stats.GoStudy.Add(1);},
@@ -14703,7 +14703,7 @@ Game.Scenes.FifthPart[102] = new Scene({
   text: `
            - Да, мне уже лучше. Ты абсолютно права. Я и сама сегодня обдумывала этот вопрос и решила больше не пропускать учебу. Понимаю ведь, что потом нагонять гораздо сложнее.
             `,
-  background: "Backgrounds/Kitchen",
+  background: "Backgrounds/Parents",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[104].Begin();}],
 });
@@ -14711,9 +14711,9 @@ Game.Scenes.FifthPart[102] = new Scene({
 Game.Scenes.FifthPart[104] = new Scene({
   text: `
            Родители утвердительно кивнули. 
-          <p>- Молодец, хороший настрой, - папа одобрительно кивнул.
+          <p>- Молодец, хороший настрой, - папа похлопал меня по плечу.
             `,
-  background: "Backgrounds/Kitchen",
+  background: "Backgrounds/Parents",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[105].Begin();}],
 });
@@ -17776,7 +17776,7 @@ Game.Scenes.FifthPart[387] = new Scene({
 
 Game.Scenes.FifthPart[388] = new Scene({
   text: `
-      На кухне мама что-то готовила для предстоящего ужина. Папа занимался своими делами. Он был погружен в чтение газеты и просмотра футбольного матча. 
+      На кухне мама что-то готовила для предстоящего ужина. Папа занимался своими делами. Он был погружен в чтение газеты и просмотр футбольного матча. 
       <p>Я оповестила родителей, что мы с Шерил хотим поехать и развеяться. Они были не против и с удовольствием одобрили мой выбор.
             `,
   background: "Backgrounds/Kitchen",
