@@ -5584,8 +5584,8 @@ Game.Stats.TurkeySandw = new Stat({
     name: 'Еда',
     picture: 'Items/Sandwich',
     type: 'Item',
-    title: 'Сэндвич с идейкой',
-    text: 'Свежеприготовленный сэндвич с зеленью и индейкой',
+    title: 'Сэндвич с индейкой',
+    text: 'Свежеприготовленный сэндвич с овощами и индейкой',
     story: 'Immortals',
 });
 
@@ -17716,7 +17716,7 @@ Game.Scenes.FifthPart[382] = new Scene({
   text: `
       Я и не заметила, как прильнула к окошку и сладко задремала. Всю дорогу я мирно посапывала, а Чарли аккуратно положил свою мордочку мне на колени, греясь и отдыхая.
             `,
-  background: "Backgrounds/Car",
+  background: "Backgrounds/Lake_Taxi",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[383].Begin();}],
 });
@@ -17727,7 +17727,7 @@ Game.Scenes.FifthPart[383] = new Scene({
       <p>- Барышня, мы приехали, - тон голоса водителя был не слишком радушен. 
       <p>- Скар, - подруга сладко дремала рядом со мной. - Просыпайся.
             `,
-  background: "Backgrounds/Car",
+  background: "Backgrounds/Lake_Taxi",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[384].Begin();}],
 });
