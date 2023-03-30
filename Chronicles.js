@@ -5243,7 +5243,7 @@ Game.Achievements.Oops = new Achievement ({
 });
 
 Game.Achievements.Psy = new Achievement ({
-    picture: 'Persons/Hero',
+    picture: 'Backgrounds/Parents',
     title: 'Семейный психолог',
     text: 'Предотвратить ссору родителей',
     story: 'Immortals',
@@ -5288,6 +5288,13 @@ Game.Achievements.Fantasy = new Achievement ({
     picture: 'Backgrounds/Rabbit_Dragon_Caterpillar_Cloud',
     title: 'Фантазер',
     text: 'Проявите изобретательность и победите Шерил в игре',
+    story: 'Immortals',
+});
+
+Game.Achievements.Lake = new Achievement ({
+    picture: 'Backgrounds/Lake',
+    title: 'Уикэнд',
+    text: 'Пройти пятую часть',
     story: 'Immortals',
 });
 
@@ -14410,15 +14417,7 @@ Game.Scenes.FifthPart[73] = new Scene({
   text: `
         Брат с удивлением взглянул на меня, видимо, не ожидая, что я буду столь открыто говорить с ним о моих смятениях.
         <p>- Может, это имя и правда всколыхнуло твои воспоминания, ведь наша жизнь была столь насыщенной, что сейчас все и не вспомнишь.
-            `,
-  background: "Backgrounds/Car",
-  buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[74].Begin();}],
-});
-
-Game.Scenes.FifthPart[74] = new Scene({
-  text: `
-        Однако я не думаю, что $Имя Игрока$ догадывается о чем-то. К тожу же, судя по ее утреннему состоянию, она не до конца пришла в себя после нашей “небольшой” тусовки.
+        <p>Однако я не думаю, что $Имя Игрока$ догадывается о чем-то. К тожу же, судя по ее утреннему состоянию, она не до конца пришла в себя после нашей “небольшой” тусовки.
             `,
   background: "Backgrounds/Car",
   buttontext: [''],
@@ -14438,7 +14437,7 @@ Game.Scenes.FifthPart[75] = new Scene({
 Game.Scenes.FifthPart[76] = new Scene({
   text: `
         - Теперь ты цитируешь персонажей из мультфильмов? Уж извини, тебе еще далеко до мудрости той черепахи.
-        <p>Мы искренне засмеялись, будто бы на секунду забыв обо всех мучивших нас вопросах. 
+        <p>Мы искренне засмеялись на секунду забыв обо всех мучивших нас вопросах. 
             `,
   background: "Backgrounds/Car",
   buttontext: [''],
@@ -14449,7 +14448,7 @@ Game.Scenes.FifthPart[77] = new Scene({
   text: `
         - А если серьезно, - меня не отпускала мысль о недавно произошедшем инциденте, - Мне знакомо это имя, только не могу вспомнить, когда же мне приходилось его слышать… Думаю, если это что-то настолько важное, правильная мысль сама придет в голову. Так ведь говорила мама?
             `,
-  background: "Backgrounds/Car",
+  background: "Persons/Neitan",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[78].Begin();}],
 });
@@ -14458,7 +14457,7 @@ Game.Scenes.FifthPart[78] = new Scene({
   text: `
         -  Мама была мудрой женщиной. Вот и прислушайся к этому совету, не накручивай себя, - откинувшись на спинку сидения сказал Леон, потягиваясь. - И в конце концов. Ты же историк. Попробуй покопаться в архивах нашей семьи. Не зря же он существует.
             `,
-  background: "Backgrounds/Car",
+  background: "Persons/Leon",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[79].Begin(); Game.Message('Связь братьев крепчает'); Game.Stats.Brothers.attitude+=1;}],
 });
@@ -16651,7 +16650,7 @@ Game.Scenes.FifthPart[286] = new Scene({
             `,
   background: "",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[287].Begin(); Game.Message('Вы потратили часть своих денег'); Game.Stats.Money.Add(-200)}],
+  buttonaction: [() => { Game.Scenes.FifthPart[287].Begin(); Game.Message('Вы потратили часть своих денег (200)'); Game.Stats.Money.Add(-200)}],
 });
 
 Game.Scenes.FifthPart[287] = new Scene({
@@ -17710,7 +17709,7 @@ Game.Scenes.FifthPart[381] = new Scene({
             `,
   background: "",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[382].Begin(); Game.Message('Вы потратили часть своих денег'); Game.Stats.Money.Add(-200)}],
+  buttonaction: [() => { Game.Scenes.FifthPart[382].Begin(); Game.Message('Вы потратили часть своих денег (200)'); Game.Stats.Money.Add(-200)}],
 });
 
 Game.Scenes.FifthPart[382] = new Scene({
@@ -18727,7 +18726,7 @@ Game.Scenes.FifthPart[474] = new Scene({
             `,
   background: "",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[475].Begin(); Game.Message('Вы потратили часть своих денег'); Game.Stats.Money.Add(-200)}],
+  buttonaction: [() => { Game.Scenes.FifthPart[475].Begin(); Game.Message('Вы потратили часть своих денег (200)'); Game.Stats.Money.Add(-200)}],
 });
 
 Game.Scenes.FifthPart[475] = new Scene({
@@ -19095,7 +19094,7 @@ Game.Scenes.FifthPart[508] = new Scene({
             `,
   background: "Persons/Robert_Pompeii",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[509].Begin();}],
+  buttonaction: [() => { Game.Scenes.FifthPart[509].Begin(); Game.Achievements.Lake.Unlock()}],
 });
 
 Game.Scenes.FifthPart[509] = new Scene({
