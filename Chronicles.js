@@ -5249,6 +5249,48 @@ Game.Achievements.Psy = new Achievement ({
     story: 'Immortals',
 });
 
+Game.Achievements.LakeNeitan = new Achievement ({
+    picture: 'Persons/Neitan_New',
+    title: 'Я хочу большего!',
+    text: 'Сблизьтесь с Нэйтаном в поездке на озеро',
+    story: 'Immortals',
+});
+
+Game.Achievements.LakeLeon = new Achievement ({
+    picture: 'Persons/Leon_New',
+    title: 'Это было свидание?',
+    text: 'Сблизьтесь с Леоном в поездке на озеро',
+    story: 'Immortals',
+});
+
+Game.Achievements.LakeScarlett = new Achievement ({
+    picture: 'Persons/Scarlett_New',
+    title: 'Откровение',
+    text: 'Сблизьтесь со Скарлетт в поездке на озеро',
+    story: 'Immortals',
+});
+
+Game.Achievements.LakeCheryl = new Achievement ({
+    picture: 'Persons/Cheryl_New',
+    title: 'Её борьба',
+    text: 'Сблизьтесь с Шерил в поездке на озеро',
+    story: 'Immortals',
+});
+
+Game.Achievements.Guru = new Achievement ({
+    picture: 'Items/CorkScrew',
+    title: 'Гуру загадок',
+    text: 'Победите Скарлетт в загадках',
+    story: 'Immortals',
+});
+
+Game.Achievements.Fantasy = new Achievement ({
+    picture: 'Backgrounds/Rabbit_Dragon_Caterpillar_Cloud',
+    title: 'Фантазер',
+    text: 'Проявите изобретательность и победите Шерил в игре',
+    story: 'Immortals',
+});
+
 Game.Achievements.HiddenWorld = new Achievement ({
     picture: 'Items/Key01',
     title: '<accent>Спрятанный мир',
@@ -13621,24 +13663,16 @@ Game.Scenes.FifthPart[0] = new Scene({
             `,
   background: "Backgrounds/Hero_Sleeps",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[1].Begin();  }],
+  buttonaction: [() => { Game.Scenes.FifthPart[2].Begin();  }],
   condition: () => {
     Game.Sounds.Play('Music','Realities');
   }
 });
 
-Game.Scenes.FifthPart[1] = new Scene({
-  text: `
-    “Это мой дом?”
-            `,
-  background: "Backgrounds/Dimensions",
-  buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[2].Begin();  }],
-});
-
 Game.Scenes.FifthPart[2] = new Scene({
   text: `
-    Мельком я замечала куски нескольких реальностей, собранных воедино. Как два разных пазла, которые нечаянно смешались и теперь невозможно было сложить четкую картинку.
+    “Это мой дом?”
+    <p>Мельком я замечала куски нескольких реальностей, собранных воедино. Как два разных пазла, которые нечаянно смешались и теперь невозможно было сложить четкую картинку.
             `,
   background: "Backgrounds/Dimensions",
   buttontext: [''],
@@ -13678,7 +13712,7 @@ Game.Scenes.FifthPart[70] = new Scene({
      <p>- Катарина, очнись!
      <p>Но ответом ему было протяжное молчание.
             `,
-  background: "Persons/Robert",
+  background: "Backgrounds/Couch",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[3].Begin();  }],
 });
@@ -13688,7 +13722,7 @@ Game.Scenes.FifthPart[3] = new Scene({
     Я наблюдала, как все обеспокоенно обступили охотника и девушку, что не подавала признаков жизни. Гости шептались, некоторые предлагали пригласить врача, но Роберт их словно не слышал.
     <p>Я почувствовала, что:
             `,
-  background: "Persons/Robert",
+  background: "Backgrounds/Couch",
   buttontext: ['Мне хочется помочь Роберту','Мне было все равно'],
   buttonaction: [
     () => {Game.Scenes.FifthPart[4].Begin();  },
@@ -13758,7 +13792,7 @@ Game.Scenes.FifthPart[71] = new Scene({
   text: `
      Я решила сфокусировать своё внимание на Николе и Эдварде и снова погрузилась в состояние неопределённости, чтобы найти то чувство, которое приведёт меня к ним. У меня оставалась куча вопросов к личности этого загадочного двойника моего учителя, да и с Теслой мы не поговорили как следует. 
             `,
-  background: "Backgrounds/Ball",
+  background: "Backgrounds/Dimensions",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[10].Begin();  }],
 });
@@ -13768,7 +13802,7 @@ Game.Scenes.FifthPart[10] = new Scene({
      Возможно, именно они могли дать мне те ответы, в которых я так отчаянно нуждалась. 
     <p>Я сосредоточилась на:
             `,
-  background: "Backgrounds/Ball",
+  background: "Backgrounds/Dimensions",
   buttontext: ['Мыслях о Тесле', 'Мыслях об Эдварде'],
   buttonaction: [
     () => { Game.Scenes.FifthPart[11].Begin();  },
@@ -13797,7 +13831,7 @@ Game.Scenes.FifthPart[12] = new Scene({
 
 Game.Scenes.FifthPart[13] = new Scene({
   text: `
-     - Я делал эти чертовы лампочки, как ты и просил. И я требую получить часть положенных мне выплат за отработанное время, - Никола кипел от ярости. - И вообще, Эдисон, складывается ощущение, что ты просто скряга. Скряга, который находит любое оправдание, лишь бы не выплачивать заслуженную заработную плату честным людям!
+     - Я делал эти чертовы лампочки, как ты просил. И я требую получить часть положенных мне выплат за отработанное время, - Никола кипел от ярости. - И вообще, Эдисон, складывается ощущение, что ты просто скряга. Скряга, который находит любое оправдание, лишь бы не выплачивать заслуженную заработную плату честным людям!
             `,
   background: "Persons/Nicola",
   buttontext: [''],
@@ -13945,7 +13979,7 @@ Game.Scenes.FifthPart[27] = new Scene({
   text: `
      От осознания своей беспомощности, я просто уставилась в стену, пытаясь привести мысли в порядок. 
     <p>“Я нахожусь в своем времени? Или это сон во сне?”
-    <p>Хотелось рвать и метать. Столько вопросов и ни одного ответа, который помог бы мне справится с этой неопределенностью.
+    <p>Хотелось рвать и метать. Столько вопросов и ни одного ответа, который помог бы мне справиться с этой неопределенностью.
             `,
   background: "Backgrounds/Kitchen",
   buttontext: [''],
@@ -14449,7 +14483,7 @@ Game.Scenes.FifthPart[80] = new Scene({
 
 Game.Scenes.FifthPart[81] = new Scene({
   text: `
-         Леон посмотрел меня, как будто бы догадался о моем намерении скрыть информацию, а затем сказал: 
+         Леон посмотрел на меня, как будто бы догадался о моем намерении скрыть информацию, а затем сказал: 
          <p>- Ты же знаешь, несмотря на наши разногласия, я всегда готов тебе помочь. 
             `,
   background: "Backgrounds/Car",
@@ -14534,7 +14568,7 @@ Game.Scenes.FifthPart[89] = new Scene({
          “Если я не вмешаюсь, то мы можем перестать быть одной семьей.” 
           <p>Я быстро накинула на себя халат и спустилась вниз. Мама сидела на диване с бокалом вина, а отец стоял рядом с ней, обессиленно опустив голову.
             `,
-  background: "Backgrounds/Kitchen",
+  background: "Backgrounds/Livingroom",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[90].Begin();}],
 });
@@ -14547,7 +14581,7 @@ Game.Scenes.FifthPart[90] = new Scene({
           <p>Папа посмотрел на меня, проговорив: 
           <p>- Не волнуйся, просто небольшая ссора.
             `,
-  background: "Backgrounds/Kitchen",
+  background: "Backgrounds/Livingroom",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[91].Begin();}],
 });
@@ -14557,7 +14591,7 @@ Game.Scenes.FifthPart[91] = new Scene({
          - Вы называете ваши крики “небольшой ссорой”? - я начинала понемногу злиться из-за его уклончивого ответа. 
           <p>- У каждого бывают сложные периоды в отношениях, дорогая, - говорила тихим голосом мама. - Вот и у нас сейчас так же. Прости, если мы доставляем тебе дискомфорт.
             `,
-  background: "Backgrounds/Kitchen",
+  background: "Backgrounds/Livingroom",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[92].Begin();}],
 });
@@ -14566,7 +14600,7 @@ Game.Scenes.FifthPart[92] = new Scene({
   text: `
          - Мама, - мои глаза невольно наполнились слезами. - Я знаю, что вы всю жизнь меня поддерживаете, помогаете, идете на уступки. Даже сейчас, вы отдали в распоряжение наш дом, чтобы я просто не грустила и чудно провела время с друзьями. Пожалуйста, я тоже хочу вам помочь.
             `,
-  background: "Backgrounds/Kitchen",
+  background: "Backgrounds/Livingroom",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[93].Begin();}],
 });
@@ -14576,7 +14610,7 @@ Game.Scenes.FifthPart[93] = new Scene({
            - Мы не хотим погружать тебя глубоко в наши проблемы. Просто знай, что сейчас такой… “особенный” период, - было видно, как папа с трудом подбирал нужные слова. 
             <p>- Нам очень приятна твоя забота и ни в коем случаем не надо думать, что все плохо.. или…
             `,
-  background: "Backgrounds/Kitchen",
+  background: "Backgrounds/Livingroom",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[94].Begin();}],
 });
@@ -14585,7 +14619,7 @@ Game.Scenes.FifthPart[94] = new Scene({
   text: `
            Мама с папой переглянулись. В их взгляде будто бы промелькнуло осознание об их, возможно, не совсем правильном поведении перед дочерью.
             `,
-  background: "Backgrounds/Kitchen",
+  background: "Backgrounds/Livingroom",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[95].Begin();}],
 });
@@ -14593,9 +14627,9 @@ Game.Scenes.FifthPart[94] = new Scene({
 Game.Scenes.FifthPart[95] = new Scene({
   text: `
            Отец даже решился положить маме руку на плечо. Она не оттолкнула ее, лишь тихонечко сжала в ответ, поддерживая жест примирения. 
-           <p>“Я надеюсь, что у них все наладиться. По крайне мере они идут на контакт. Даже если я тот фактор, который насильно сподвигает их к этому.”
+           <p>“Я надеюсь, что у них все наладится. По крайне мере они идут на контакт. Даже если я тот фактор, который насильно сподвигает их к этому.”
             `,
-  background: "Backgrounds/Kitchen",
+  background: "Backgrounds/Parents",
   buttontext: [''],
   buttonaction: [() => {
     Game.Scenes.FifthPart[96].Begin();
@@ -14610,7 +14644,7 @@ Game.Scenes.FifthPart[96] = new Scene({
            - Ну, хватит грустить, дочка - отец подозвал меня в семейные объятия. - Мы очень ценим, что ты неравнодушна к нашим проблемам. Обещаем подумать, спокойно обсудить наши отношения и прийти к взвешенному решению.
             <p>- А как может быть иначе? - я тихонько всхлипнула, обнимая близких.
             `,
-  background: "Backgrounds/Kitchen",
+  background: "Backgrounds/Parents",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[97].Begin();}],
 });
@@ -14619,7 +14653,7 @@ Game.Scenes.FifthPart[97] = new Scene({
   text: `
            Спустя некоторое время мама принесла закуски и мы все вместе сели за стол. Я решила поинтересоваться, чем они занимались и что делали, пока мы с друзьями тусовались дома.
             `,
-  background: "Backgrounds/Kitchen",
+  background: "Backgrounds/Parents",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[98].Begin();}],
 });
@@ -14628,7 +14662,7 @@ Game.Scenes.FifthPart[98] = new Scene({
   text: `
            - О, - папа подлил вино в бокал маме. - Мы сходили в кино, затем немного погуляли и поехали к моим родителям. Кстати, бабушка и дедушка очень по тебе скучают.
             `,
-  background: "Backgrounds/Kitchen",
+  background: "Backgrounds/Parents",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[99].Begin();}],
 });
@@ -14638,7 +14672,7 @@ Game.Scenes.FifthPart[99] = new Scene({
            - Мне действительно стоит их навестить, но со всем происходящем… 
           <p>Конечно, родители не знали обо всем, но будто бы чувствовали, что сейчас не стоит давить на меня и расспрашивать. Придет время - я сама расскажу.
             `,
-  background: "Backgrounds/Kitchen",
+  background: "Backgrounds/Parents",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[100].Begin();}],
 });
@@ -14648,7 +14682,7 @@ Game.Scenes.FifthPart[100] = new Scene({
            Но это было бы совсем сказкой, если бы я избежала следующего вопроса:
           <p>- Ты идешь завтра в университет? - спросила мама. - Ты и так много пропустила, а мы не раз обсуждали, как важно получить высшее образование.
             `,
-  background: "Backgrounds/Kitchen",
+  background: "Backgrounds/Parents",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[101].Begin();}],
 });
@@ -14658,7 +14692,7 @@ Game.Scenes.FifthPart[101] = new Scene({
            Я понимала, что она права и мне нечего возразить. Но столько всего происходит, что я невольно задаюсь вопросом: а надо ли оно мне? Действительно стоит тратить время на обучение? 
            <p>Я:
             `,
-  background: "Backgrounds/Kitchen",
+  background: "Backgrounds/Livingroom",
   buttontext: ['Пойду на занятия', 'Останусь дома'],
   buttonaction: [
     () => {Game.Scenes.FifthPart[102].Begin(); Game.Stats.GoStudy.Add(1);},
@@ -15064,7 +15098,7 @@ Game.Scenes.FifthPart[139] = new Scene({
 
 Game.Scenes.FifthPart[140] = new Scene({
   text: `
-            Из-за большого количества свободного времени, я то и дело погружалась в мысли о плохом. Меня терзали сомнения по поводу моих выборов и решений, которые влияли не только на мою жизнь. 
+            Из-за того, что мне нечем было занять себя, я то и дело погружалась в мысли о плохом. Меня терзали сомнения по поводу моих выборов и решений, которые влияли не только на мою жизнь. 
             <p>“Как оставаться в своем уме, постоянно имея столько переживаний?”
             `,
   background: "Backgrounds/Room",
@@ -15447,7 +15481,12 @@ Game.Scenes.FifthPart[175] = new Scene({
             `,
   background: "Persons/Neitan_New",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[176].Begin(); Game.Message('Между вами и Нэйтаном зарождается новое чувство'); Game.Stats.Neitan.Add(2)}],
+  buttonaction: [() => {
+    Game.Scenes.FifthPart[176].Begin();
+    Game.Message('Между вами и Нэйтаном зарождается новое чувство');
+    Game.Stats.Neitan.Add(2);
+    Game.Achievements.LakeNeitan.Unlock();
+  }],
 });
 
 Game.Scenes.FifthPart[176] = new Scene({
@@ -16250,7 +16289,12 @@ Game.Scenes.FifthPart[252] = new Scene({
             `,
   background: "Backgrounds/Lake",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[253].Begin(); Game.Message('Вы и Леон стали значительно ближе к друг другу'); Game.Stats.Leon.Add(2)}],
+  buttonaction: [() => {
+    Game.Scenes.FifthPart[253].Begin();
+    Game.Message('Вы и Леон стали значительно ближе к друг другу');
+    Game.Stats.Leon.Add(2);
+    Game.Achievements.LakeLeon.Unlock();
+  }],
 });
 
 Game.Scenes.FifthPart[253] = new Scene({
@@ -16667,7 +16711,7 @@ Game.Scenes.FifthPart[292] = new Scene({
   text: `
         Я написала Скарлетт и получила довольно скорый ответ. Она с удовольствием согласилась на поездку и обещала быть в течение часа. 
         <p>Я решила спуститься на кухню, чтобы собрать нам что-нибудь вкусного в дорогу. 
-        <p>“Что любит Скарлетт? Надо вспомнить… Точно не всякую вредную еду, ведь следит за фигурой. Колбаса и вовсе ее враг номер 1”.
+        <p>“Что любит Скарлетт? Надо вспомнить… Точно не всякую вредную еду, ведь следит за фигурой. Колбаса и вовсе ее враг номер один”.
             `,
   background: "Backgrounds/Room",
   buttontext: [''],
@@ -17168,7 +17212,12 @@ Game.Scenes.FifthPart[337] = new Scene({
             `,
   background: "Persons/Scarlett_New",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[338].Begin(); Game.Message('Вы и Скарлетт все ближе узнаете друг друга'); Game.Stats.Stats.Scarlett.Add(2)}],
+  buttonaction: [() => {
+    Game.Scenes.FifthPart[338].Begin();
+    Game.Message('Вы и Скарлетт все ближе узнаете друг друга');
+    Game.Stats.Stats.Scarlett.Add(2);
+    Game.Achievements.LakeScarlett.Unlock();
+  }],
 });
 
 Game.Scenes.FifthPart[338] = new Scene({
@@ -17451,7 +17500,7 @@ Game.Scenes.FifthPart[362] = new Scene({
   buttontext: ['Время','Будущее','Воздух'],
   buttonaction: [
     () => { Game.Scenes.FifthPart[363].Begin();},
-    () => { Game.Scenes.FifthPart[365].Begin();},
+    () => { Game.Scenes.FifthPart[365].Begin(); Game.Achievements.Guru.Unlock();},
     () => { Game.Scenes.FifthPart[369].Begin();},
   ],
 });
@@ -17904,7 +17953,7 @@ Game.Scenes.FifthPart[403] = new Scene({
             `,
   background: "Backgrounds/Rabbit_Hat_Knight_Hatter",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[409].Begin();}],
+  buttonaction: [() => { Game.Scenes.FifthPart[409].Begin(); Game.Achievements.Fantasy.Unlock()}],
 });
 
 Game.Scenes.FifthPart[404] = new Scene({
@@ -17961,7 +18010,7 @@ Game.Scenes.FifthPart[408] = new Scene({
             `,
   background: "Backgrounds/Rabbit_Dragon_Caterpillar_Cloud",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[409].Begin();}],
+  buttonaction: [() => { Game.Scenes.FifthPart[409].Begin(); Game.Achievements.Fantasy.Unlock();}],
 });
 
 Game.Scenes.FifthPart[409] = new Scene({
@@ -18245,7 +18294,10 @@ Game.Scenes.FifthPart[434] = new Scene({
             `,
   background: "Persons/Cheryl_New",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[435].Begin(); Game.Message('Ваши предыдущие действия подтолкнули Шерил стать более самостоятельной ');}],
+  buttonaction: [() => {
+    Game.Scenes.FifthPart[435].Begin();
+    Game.Message('Ваши предыдущие действия подтолкнули Шерил стать более самостоятельной');
+    Game.Achievements.LakeCheryl.Unlock();}],
 });
 
 Game.Scenes.FifthPart[435] = new Scene({
