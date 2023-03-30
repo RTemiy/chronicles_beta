@@ -16576,7 +16576,7 @@ Game.Scenes.FifthPart[283] = new Scene({
         <p>Неожиданно водитель, который все это время поглядывал на нас в зеркало заднего вида, проговорил:
         <p>- Какой у вас жених, барышня! Странно только, что это он тебя в такую погоду на прогулку повез. Не беспокоится небось? 
             `,
-  background: "Backgrounds/Car",
+  background: "Backgrounds/Lake_Taxi",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[284].Begin();}],
 });
@@ -16586,7 +16586,7 @@ Game.Scenes.FifthPart[284] = new Scene({
         Я покраснела от сказанных им слов. Даже не обратила внимание на колкость. В голове прокручивалась фраза:
         <p>“Жених…”
             `,
-  background: "Backgrounds/Car",
+  background: "Backgrounds/Lake_Taxi",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[285].Begin(); Game.Message('Благодаря хорошим отношениям с Леоном, парень вызвался сам оплатить вам такси')}],
 });
@@ -16595,7 +16595,7 @@ Game.Scenes.FifthPart[285] = new Scene({
   text: `
         Краем глаза я видела, как Леон отчего-то широко улыбался. Он быстро отвернулся и направился к мотоциклу. 
             `,
-  background: "Backgrounds/Car",
+  background: "Backgrounds/Lake_Taxi",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[287].Begin();}],
 });
@@ -16615,7 +16615,7 @@ Game.Scenes.FifthPart[287] = new Scene({
         Леон, как и обещал, следовал за нами до самого дома. 
         <p>Я и не заметила, как прильнула к окошку и сладко задремала. Всю дорогу я мирно посапывала, а Чарли аккуратно положил свою мордочку мне на колени, греясь и отдыхая.
             `,
-  background: "Backgrounds/Car",
+  background: "Backgrounds/Lake_Taxi",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[288].Begin();}],
 });
@@ -16827,7 +16827,7 @@ Game.Scenes.FifthPart[305] = new Scene({
         <p>Отец не вмешивался. Только слушал, иногда улыбаясь от наших девчачьих разговоров. 
         <p>Подруга также рассказывала про свои мечты, вроде отправиться путешествовать в какой-нибудь интересный город. 
             `,
-  background: "Backgrounds/Car",
+  background: "Backgrounds/Hero_Car",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[306].Begin();}],
 });
@@ -16837,7 +16837,7 @@ Game.Scenes.FifthPart[306] = new Scene({
         - И это естественно будет Рим? - спросила я, желая подтвердить свои догадки. 
         <p>- Все может быть, - Скар лишь загадочно улыбнулась. 
             `,
-  background: "Backgrounds/Car",
+  background: "Backgrounds/Hero_Car",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[307].Begin();}],
 });
@@ -16846,7 +16846,7 @@ Game.Scenes.FifthPart[307] = new Scene({
   text: `
         Благодаря этим разговорам я совершенно забыла обо всех проблемах, которые преследовали меня все это время. Я чувствовала себя снова живой и все, что меня беспокоило в данный момент - как отговорить Скарлетт не открывать вино прямо в салоне автомобиля.
             `,
-  background: "Backgrounds/Car",
+  background: "Backgrounds/Hero_Car",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[308].Begin(); Game.Sounds.Play('Music','Lake')}],
 });
@@ -17816,7 +17816,7 @@ Game.Scenes.FifthPart[396] = new Scene({
       Мы с Шерил разместились на заднем сидении.
       <p>С самого начала нашего пути повисла неловкая тишина. Подруга смотрела в окно, пребывая в своих размышлениях, а я лишь про себя мечтала, чтобы мы скорее добрались до пункта назначения. 
             `,
-  background: "Backgrounds/Car",
+  background: "Backgrounds/Cheryl_Car",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[397].Begin();}],
 });
@@ -17828,7 +17828,7 @@ Game.Scenes.FifthPart[397] = new Scene({
       <p>- Нормально… 
       <p>- Знаешь, может посоветуешь, куда нам с Шерил сходить? Я думал насчет парка в центре города. Говорят, его облагородили. 
             `,
-  background: "Backgrounds/Car",
+  background: "Backgrounds/Cheryl_Car",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[398].Begin();}],
 });
@@ -17839,7 +17839,7 @@ Game.Scenes.FifthPart[398] = new Scene({
       <p>- Мы уже там были, - Шерил вмешалась в наш диалог, не скрывая своего пренебрежения. - Ты забыл, папочка?
       <p>- Да… Что-то не припомню, - он неловко почесал голову, продолжая вести автомобиль. 
             `,
-  background: "Backgrounds/Car",
+  background: "Backgrounds/Cheryl_Car",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[399].Begin();}],
 });
@@ -17850,7 +17850,7 @@ Game.Scenes.FifthPart[399] = new Scene({
       <p>- Давай порисуем. Как раньше. У каждой есть несколько минут, а затем меняемся рисунками и добавляем что-нибудь свое. Посмотрим, что из этого выйдет? 
       <p>Я с радостью закивала. 
             `,
-  background: "Backgrounds/Car",
+  background: "Backgrounds/Cheryl_Car",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[400].Begin();}],
 });
@@ -17861,7 +17861,7 @@ Game.Scenes.FifthPart[400] = new Scene({
       <p>Когда мы закончили, то перевернули лист так, чтобы часть с рисунком Шерил оказалась передо мной.
       <p>“Что же мне нарисовать?” 
             `,
-  background: "Backgrounds/Car",
+  background: "Backgrounds/Rabbit",
   buttontext: ['Шляпу кролика','Дракона в небе'],
   buttonaction: [
     () => { Game.Scenes.FifthPart[401].Begin();},
@@ -17875,18 +17875,21 @@ Game.Scenes.FifthPart[401] = new Scene({
       <p>- Ого… Это что же, мы рисуем помесь безумного шляпника и кролика?
       <p>- Я помню, как тебе нравится “Алиса в стране чудес”. В детстве твой отец постоянно читал нам эту сказку. Мы даже разыгрывали сцены по ролям… Мне доставался чеширский кот, а ты всегда была Алисой. 
             `,
-  background: "Backgrounds/Car",
+  background: "Backgrounds/Rabbit_Hat",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[402].Begin();}],
 });
 
+
 Game.Scenes.FifthPart[402] = new Scene({
   text: `
-      - А вот это нечестно… Чем виноват этот пушистик?
+      - Хорошие были времена. 
+      <p>Шерил призадумалась, взяла в руки карандаш и нарисовала рыцаря, готового атаковать веселого кролика.
+      <p>- А вот это нечестно… Чем виноват этот пушистик?
       <p>- Тем, что он такой милый, - Шерил ухмыльнулась и отвернулась, чтобы не подглядывать за моим следующим шагом. 
       <p>“Как мне спасти кролика?”
             `,
-  background: "Backgrounds/Car",
+  background: "Backgrounds/Rabbit_Hat_Knight",
   buttontext: ['Нарисовать безумного шляпника','Нарисовать дерево с норой'],
   buttonaction: [
     () => { Game.Scenes.FifthPart[403].Begin();},
@@ -17899,7 +17902,7 @@ Game.Scenes.FifthPart[403] = new Scene({
       - С козырей зашла, - подруга опустила руки. - С его чашками и выходками, у этого рыцаря точно не будет ни единого шанса. 
       <p>- Вот так вот, - я улыбнулась, довольствуясь маленькой победой. 
             `,
-  background: "Backgrounds/Car",
+  background: "Backgrounds/Rabbit_Hat_Knight_Hatter",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[409].Begin();}],
 });
@@ -17910,7 +17913,7 @@ Game.Scenes.FifthPart[404] = new Scene({
       <p>- Это нечестно! Кролик проворнее этого бугая с доспехами. 
       <p>- Слабая отговорка, - Шерил ткнула меня в бок, довольствуясь своей липовой победой. 
             `,
-  background: "Backgrounds/Car",
+  background: "Backgrounds/Rabbit_Hat_Knight_Tree",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[409].Begin();}],
 });
@@ -17919,20 +17922,20 @@ Game.Scenes.FifthPart[405] = new Scene({
   text: `
       Над кроликом появился устрашающий дракон, который своим пламенем хотел зажарить бедолагу. 
       <p>- Ты решила начать прям так серьезно? - Шерил ухмыльнулась и начала рисовать мне что-то в ответ. 
-      <p>Через некоторое время, я увидела, как рядом с кроликом появилась гусеница, которая выдыхала круги дыма, скрывая их обоих от хищника. 
             `,
-  background: "Backgrounds/Car",
+  background: "Backgrounds/Rabbit_Dragon",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[406].Begin();}],
 });
 
 Game.Scenes.FifthPart[406] = new Scene({
   text: `
-      - Как мило, что ты все больше отсылаешься к сказке “Алиса в стране чудес”. Не забыла нашу любовь к этому произведению, - проговорила я, предаваясь в воспоминания. 
+      Через некоторое время, я увидела, как рядом с кроликом появилась гусеница, которая выдыхала круги дыма, скрывая их обоих от хищника. 
+      <p>- Как мило, что ты все больше отсылаешься к сказке “Алиса в стране чудес”. Не забыла нашу любовь к этому произведению, - проговорила я, предаваясь в воспоминания. 
       <p>- Конечно, нет. Ведь отец так часто читал нам ее. 
       <p>Я сосредоточилась и задумалась, чем можно переиграть гусеницу, которая так всесильна?
             `,
-  background: "Backgrounds/Car",
+  background: "Backgrounds/Rabbit_Dragon_Caterpillar",
   buttontext: ['Нарисовать флакон с отравой для насекомых','Нарисовать дождь'],
   buttonaction: [
     () => { Game.Scenes.FifthPart[407].Begin();},
@@ -17946,7 +17949,7 @@ Game.Scenes.FifthPart[407] = new Scene({
       <p>- Это не говорит о том, что гусеница всесильна. 
       <p>- Слабая отговорка, - Шерил ткнула меня в бок, довольствуясь своей липовой победой..
             `,
-  background: "Backgrounds/Car",
+  background: "Backgrounds/Rabbit_Dragon_Caterpillar_Spray",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[409].Begin();}],
 });
@@ -17956,7 +17959,7 @@ Game.Scenes.FifthPart[408] = new Scene({
       - Так-так, а неплохой ход, - Шерил с досадой взглянула на рисунок. 
       <p>- Твоя гусеница не сможет курить, пока идет дождь, все логично, - я улыбнулась, довольствуясь маленькой победой.
             `,
-  background: "Backgrounds/Car",
+  background: "Backgrounds/Rabbit_Dragon_Caterpillar_Cloud",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[409].Begin();}],
 });
@@ -17965,7 +17968,7 @@ Game.Scenes.FifthPart[409] = new Scene({
   text: `
       Этот досуг помогал мне отвлечься. Забыть обо всех окружающих меня проблемах. Я чувствовала себя снова живой и все, что мне хотелось в данный момент - это посоревноваться с Шерил в мастерстве рисования. 
             `,
-  background: "Backgrounds/Car",
+  background: "Backgrounds/Cheryl_Car",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[410].Begin(); Game.Sounds.Play('Music','Lake');}],
 });
