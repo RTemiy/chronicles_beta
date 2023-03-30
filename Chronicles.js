@@ -15106,7 +15106,7 @@ Game.Scenes.FifthPart[143] = new Scene({
     () => { Game.Scenes.FifthPart[144].Begin(); Game.Stats.GoToLakeWith.attitude='Neitan'; },
     () => { Game.Scenes.FifthPart[199].Begin(); Game.Stats.GoToLakeWith.attitude='Leon';},
     () => { Game.Scenes.FifthPart[291].Begin(); Game.Stats.GoToLakeWith.attitude='Scarlett';},
-    () => { Game.Scenes.FifthPart[1000].Begin(); Game.Stats.GoToLakeWith.attitude='Cheryl';},
+    () => { Game.Scenes.FifthPart[386].Begin(); Game.Stats.GoToLakeWith.attitude='Cheryl';},
   ],
 });
 
@@ -17184,7 +17184,7 @@ Game.Scenes.FifthPart[338] = new Scene({
 
 Game.Scenes.FifthPart[339] = new Scene({
   text: `
-    Положила мне руку на плечо и тепло улыбнулась. 
+    Скарлетт почувствовала, что мое настроение немного изменилось, поэтому положила мне руку на плечо и тепло улыбнулась. 
     <p>- $Имя Игрока$, я понимаю, что нам сейчас нелегко. Но мы справимся. Я в это верю. Мы же сильные и независимые. 
             `,
   background: "Persons/Scarlett_New",
@@ -17704,6 +17704,169 @@ Game.Scenes.FifthPart[385] = new Scene({
   background: "Persons/Scarlett_New",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[1000].Begin();}],
+});
+
+Game.Scenes.FifthPart[386] = new Scene({
+  text: `
+      Мы с Шерил всегда были близки. Еще с самого детства. Она всегда была удивительной и по-своему странной девушкой. Но ее особенности не отталкивали меня, напротив, я хотела больше узнавать Шерил. Помочь ей с любыми трудностями. 
+      <p>“Хочу провести с ней время. Это пойдет на пользу нам обеим.”
+            `,
+  background: "Backgrounds/Room",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[387].Begin();}],
+});
+
+Game.Scenes.FifthPart[387] = new Scene({
+  text: `
+      Я написала Шерил и в скором времени получила ответ. Она согласилась и попросила прийти к ней домой, чтобы обо всем договориться лично. 
+      <p>Собрав немного вещей в дорогу, я спустилась вниз. 
+            `,
+  background: "Backgrounds/Room",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[388].Begin();}],
+});
+
+Game.Scenes.FifthPart[388] = new Scene({
+  text: `
+      На кухне мама что-то готовила для предстоящего ужина. Папа занимался своими делами. Он был погружен в чтение газеты и просмотра футбольного матча. 
+      <p>Я оповестила родителей, что мы с Шерил хотим поехать и развеяться. Они были не против и с удовольствием одобрили мой выбор.
+            `,
+  background: "Backgrounds/Kitchen",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[389].Begin();}],
+});
+
+Game.Scenes.FifthPart[389] = new Scene({
+  text: `
+      Шерил встретила меня на пороге своего дома. 
+      <p>- Привет, $Имя Игрока$, очень рада наконец-то увидеть тебя, - она тепло обняла меня, приглашая войти внутрь. - Ты постоишь тут пару минут? Я быстренько переоденусь. 
+      <p>- Конечно. Не торопись. 
+            `,
+  background: "Persons/Cheryl",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[390].Begin();}],
+});
+
+Game.Scenes.FifthPart[390] = new Scene({
+  text: `
+      Дом Шерил всегда выглядел одинаково, сколько я его помню. Минималистичный и старый дизайн. Все прибрано, аккуратно расставлено. 
+      <p>“Она молодец. Продолжает ухаживать за домом несмотря на проблемы в семье. Я рада, что ее любовь к этому месту остается прежней.”
+            `,
+  background: "Backgrounds/Cheryl_House",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[391].Begin();}],
+});
+
+Game.Scenes.FifthPart[391] = new Scene({
+  text: `
+      Пока я ждала подругу, ко мне вышел отчим Шерил. Он выглядел крайне неловко, переминался с ноги на ногу, и даже издалека чувствовался сильный запах перегара. 
+      <p>Но все же он натянул приветственную улыбку и сказал:
+      <p>- Давно ты к нам не заходила. Проходи, не стесняйся. Мы всегда тебе рады. 
+      <p>- Спасибо, но я ненадолго. Мы с Шерил уже уходим. 
+            `,
+  background: "Backgrounds/Cheryl_House",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[392].Begin();}],
+});
+
+Game.Scenes.FifthPart[392] = new Scene({
+  text: `
+      Сложно было описать те эмоции, которые я испытывала к этому мужчине, зная, какие ужасы он мог вытворить. 
+      <p>“Сколько раз я говорила тебе, Шер. Беги отсюда.”
+            `,
+  background: "Backgrounds/Cheryl_House",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[393].Begin();}],
+});
+
+Game.Scenes.FifthPart[393] = new Scene({
+  text: `
+      Шерил вышла в новом образе: на ней был теплый яркий свитер и джинсы-клёш. Она выглядела свежо и весело. 
+      <p>- Ты уже завел машину? - тон голоса девушки приобрел пренебрежительные оттенки. 
+      <p>- Я только недавно вернулся. Мы можем поехать в любой момент. 
+            `,
+  background: "Persons/Cheryl_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[394].Begin();}],
+});
+
+Game.Scenes.FifthPart[394] = new Scene({
+  text: `
+      - $Имя Игрока$, мой любимый отчим любезно согласился отвезти нас. Надеюсь, ты не против. 
+      <p>- Конечно, нет. Спасибо вам, что согласились…
+      <p>- Пустяки, - мужчина неуклюже заковылял к машине.
+            `,
+  background: "Persons/Cheryl_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[395].Begin();}],
+});
+
+Game.Scenes.FifthPart[395] = new Scene({
+  text: `
+      - Что ты делаешь, Шерил? Зачем он нам? Не проще ли вызвать такси? Или попросить моего отца? - я говорила вполголоса, чтобы мужчина не услышал.
+      <p>- Мы не миллионеры, чтобы вызывать такси в такую даль. К тому же этот козёл мне должен. Не волнуйся. 
+            `,
+  background: "Persons/Cheryl_New",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[396].Begin();}],
+});
+
+Game.Scenes.FifthPart[396] = new Scene({
+  text: `
+      Мы с Шерил разместились на заднем сидении.
+      <p>С самого начала нашего пути повисла неловкая тишина. Подруга смотрела в окно, пребывая в своих размышлениях, а я лишь про себя мечтала, чтобы мы скорее добрались до пункта назначения. 
+            `,
+  background: "Backgrounds/Car",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[397].Begin();}],
+});
+
+Game.Scenes.FifthPart[397] = new Scene({
+  text: `
+      На очередном светофоре отчим Шерил неожиданно обратился ко мне:
+      <p>- Как у тебя дела, $Имя Игрока$? Как учеба?
+      <p>- Нормально… 
+      <p>- Знаешь, может посоветуешь, куда нам с Шерил сходить? Я думал насчет парка в центре города. Говорят, его облагородили. 
+            `,
+  background: "Backgrounds/Car",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[398].Begin();}],
+});
+
+Game.Scenes.FifthPart[398] = new Scene({
+  text: `
+      “Зачем он делает вид, что заботится о ней? Какой нелепый и несвязный разговор.”
+      <p>- Мы уже там были, - Шерил вмешалась в наш диалог, не скрывая своего пренебрежения. - Ты забыл, папочка?
+      <p>- Да… Что-то не припомню, - он неловко почесал голову, продолжая вести автомобиль. 
+            `,
+  background: "Backgrounds/Car",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[399].Begin();}],
+});
+
+Game.Scenes.FifthPart[399] = new Scene({
+  text: `
+      Шерил вздохнула и наклонилась ко мне, прошептав:
+      <p>- Давай порисуем. Как раньше. У каждой есть несколько минут, а затем меняемся рисунками и добавляем что-нибудь свое. Посмотрим, что из этого выйдет? 
+      <p>Я с радостью закивала. 
+            `,
+  background: "Backgrounds/Car",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[400].Begin();}],
+});
+
+Game.Scenes.FifthPart[400] = new Scene({
+  text: `
+      Шерил подвинула ко мне часть альбома и я начала рисовать, напрягая свою фантазию. 
+      <p>Когда мы закончили, то перевернули лист так, чтобы часть с рисунком Шерил оказалась передо мной.
+      <p>“Что же мне нарисовать?” 
+            `,
+  background: "Backgrounds/Car",
+  buttontext: ['Шляпу кролика','Дракона в небе'],
+  buttonaction: [
+    () => { Game.Scenes.FifthPart[401].Begin();},
+    () => { Game.Scenes.FifthPart[401].Begin();},
+  ],
 });
 Game.Scenes.Prologue = [];
 
