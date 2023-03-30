@@ -14312,7 +14312,7 @@ Game.Scenes.FifthPart[58] = new Scene({
 
 Game.Scenes.FifthPart[59] = new Scene({
   text: `
-        Он словно изображает из себя дурочка… Мне же не могли показаться его резкие смены настроения? Или я себе все напридумывала?”
+        "Он словно изображает из себя дурочка… Мне же не могли показаться его резкие смены настроения? Или я себе все напридумывала?”
             `,
   background: "Persons/Neitan",
   buttontext: [''],
@@ -17392,7 +17392,7 @@ Game.Scenes.FifthPart[352] = new Scene({
 
 Game.Scenes.FifthPart[353] = new Scene({
   text: `
-      - Ну, ладно, - проговорила Скарлетт, подтягиваясь. - У меня есть предложение получше, чем просто сидеть и кушать.. 
+      - Ну, ладно, - проговорила Скарлетт, потягиваясь. - У меня есть предложение получше, чем просто сидеть и кушать.. 
       <p>- А вот это уже интересно, слушаю тебя. 
             `,
   background: "Persons/Scarlett_New",
@@ -18188,7 +18188,7 @@ Game.Scenes.FifthPart[425] = new Scene({
   buttonaction: [() => { Game.Scenes.FifthPart[436].Begin();}],
   condition: function () {
     if(Game.Stats.Cheryl.Get()<=2){
-      this.buttonaction[0] = () => { Game.Scenes.FifthPart[426].Begin();}
+      this.buttonaction[0] = () => { Game.Scenes.FifthPart[426].Begin(); Game.Sounds.Play('Music','Cheryl');}
     }
     else{
       this.buttonaction[0] = () => { Game.Scenes.FifthPart[436].Begin();}
@@ -18296,6 +18296,7 @@ Game.Scenes.FifthPart[434] = new Scene({
   buttontext: [''],
   buttonaction: [() => {
     Game.Scenes.FifthPart[435].Begin();
+    Game.Sounds.Play('Music','Lake');
     Game.Message('Ваши предыдущие действия подтолкнули Шерил стать более самостоятельной');
     Game.Achievements.LakeCheryl.Unlock();}],
 });
