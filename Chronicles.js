@@ -17179,7 +17179,7 @@ Game.Scenes.FifthPart[338] = new Scene({
             `,
   background: "Persons/Scarlett_New",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[343].Begin();}],
+  buttonaction: [() => { Game.Scenes.FifthPart[343].Begin(); Game.Sounds.Play('Music','Lake')}],
 });
 
 Game.Scenes.FifthPart[339] = new Scene({
