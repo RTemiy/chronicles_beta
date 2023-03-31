@@ -335,6 +335,11 @@ class Stat {
      */
 
     Add(v) {
+
+        InfoPicture.setAttribute('class', 'hide');
+        InfoText.setAttribute('class','hide');
+        InfoArticle.setAttribute('class','hide');
+
         if(this.type != 'Choice') {
             OpenInventoryButton.setAttribute('class', 'blink');
         }
@@ -5602,7 +5607,7 @@ Game.Stats.FruitsYogurt = new Stat({
     name: 'Еда',
     picture: 'Items/Yogurt',
     type: 'Item',
-    title: 'Фруты с йогуртом',
+    title: 'Фрукты с йогуртом',
     text: 'Свежие фрукты с йогуртом',
     story: 'Immortals',
 });
@@ -17376,7 +17381,10 @@ Game.Scenes.FifthPart[351] = new Scene({
             `,
   background: "Persons/Scarlett_New",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[352].Begin(); Game.Message('Ваш выбор еды обрадовал Скарлетт'); Game.Stats.Scarlett.Add(1); Game.Stats.FruitsYogurt.Add(-1);}],
+  buttonaction: [() => {
+    Game.Scenes.FifthPart[352].Begin();
+    Game.Message('Ваш выбор еды обрадовал Скарлетт');
+    Game.Stats.Scarlett.Add(1); Game.Stats.FruitsYogurt.Add(-1);}],
 });
 
 Game.Scenes.FifthPart[352] = new Scene({
@@ -17401,7 +17409,7 @@ Game.Scenes.FifthPart[353] = new Scene({
 
 Game.Scenes.FifthPart[354] = new Scene({
   text: `
-      Девушка налила себе новую порцию алкоголя и продолжила:
+      Девушка налила себе новую порцию вина и продолжила:
       <p>- Как насчет того, чтобы ты отгадывала мои загадки, - в голосе Скарлетт чувствовалось влияние алкоголя. 
       <p>- Я - что делала? 
       <p>- Ну, загадки… Всего лишь две. Давай. А за правильные ответы - будет подарок. 
