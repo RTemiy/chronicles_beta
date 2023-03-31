@@ -14732,10 +14732,10 @@ Game.Scenes.FifthPart[105] = new Scene({
   buttonaction: [() => { Game.Scenes.FifthPart[106].Begin();}],
   condition: function () {
     if(Game.Stats.Late.Get()>=1){
-      this.buttonaction[1] = () => {Game.Scenes.FifthPart[106].Begin(); }
+      this.buttonaction[0] = () => {Game.Scenes.FifthPart[106].Begin(); }
     }
     if(Game.Stats.Late.Get()<=0){
-      this.buttonaction[1] = () => {Game.Scenes.FifthPart[119].Begin(); }
+      this.buttonaction[0] = () => {Game.Scenes.FifthPart[119].Begin(); }
     }
   }
 });
@@ -14840,10 +14840,10 @@ Game.Scenes.FifthPart[115] = new Scene({
   buttonaction: [() => { Game.Scenes.FifthPart[119].Begin();}],
   condition: function () {
     if(Game.Stats.Late.Get()>=1){
-      this.buttonaction[1] = () => {Game.Scenes.FifthPart[116].Begin(); }
+      this.buttonaction[0] = () => {Game.Scenes.FifthPart[116].Begin(); }
     }
     if(Game.Stats.Late.Get()<=0){
-      this.buttonaction[1] = () => {Game.Scenes.FifthPart[119].Begin(); }
+      this.buttonaction[0] = () => {Game.Scenes.FifthPart[119].Begin(); }
     }
   }
 });
@@ -17981,14 +17981,22 @@ Game.Scenes.FifthPart[405] = new Scene({
             `,
   background: "Backgrounds/Rabbit_Dragon",
   buttontext: [''],
+  buttonaction: [() => { Game.Scenes.FifthPart[1].Begin();}],
+});
+
+Game.Scenes.FifthPart[1] = new Scene({
+  text: `
+      Через некоторое время, я увидела, как рядом с кроликом появилась гусеница, которая выдыхала круги дыма, скрывая их обоих от хищника. 
+      <p>- Как мило, что ты все больше отсылаешься к сказке “Алиса в стране чудес”. Не забыла нашу любовь к этому произведению, - проговорила я, предаваясь в воспоминания. 
+            `,
+  background: "Backgrounds/Rabbit_Dragon_Caterpillar",
+  buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[406].Begin();}],
 });
 
 Game.Scenes.FifthPart[406] = new Scene({
   text: `
-      Через некоторое время, я увидела, как рядом с кроликом появилась гусеница, которая выдыхала круги дыма, скрывая их обоих от хищника. 
-      <p>- Как мило, что ты все больше отсылаешься к сказке “Алиса в стране чудес”. Не забыла нашу любовь к этому произведению, - проговорила я, предаваясь в воспоминания. 
-      <p>- Конечно, нет. Ведь отец так часто читал нам ее. 
+      - Конечно, нет. Ведь отец так часто читал нам ее. 
       <p>Я сосредоточилась и задумалась, чем можно переиграть гусеницу, которая так всесильна?
             `,
   background: "Backgrounds/Rabbit_Dragon_Caterpillar",
@@ -18003,7 +18011,7 @@ Game.Scenes.FifthPart[407] = new Scene({
   text: `
       - Ну, нет, $Имя Игрока$. Забавная попытка, но гусеница же непростая… 
       <p>- Это не говорит о том, что гусеница всесильна. 
-      <p>- Слабая отговорка, - Шерил ткнула меня в бок, довольствуясь своей липовой победой..
+      <p>- Слабая отговорка, - Шерил ткнула меня в бок, довольствуясь своей липовой победой.
             `,
   background: "Backgrounds/Rabbit_Dragon_Caterpillar_Spray",
   buttontext: [''],
