@@ -1,15 +1,11 @@
 var GHPATH = '/Chronicles';
 var APP_PREFIX = 'chronicles_';
-var VERSION = 'version_02.1';
+var VERSION = 'version_02.11';
 
 var URLS = [
 
   //Root
   `${GHPATH}/`,
-  `${GHPATH}/index.html`,
-  `${GHPATH}/style.css`,
-  `${GHPATH}/Chronicles.js`,
-  `${GHPATH}/favicon.png`,
 
   //Fonts
   `${GHPATH}/fonts/CenturyGothic.eot`,
