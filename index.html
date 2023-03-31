@@ -3,10 +3,10 @@
 
 <head>
     <link rel="icon" href="favicon.png">
-<!--
+
     <link rel="canonical" href="https://rtemiy.github.io/Chronicles/"/>
     <link rel="manifest" href="/Chronicles/manifest.webmanifest">
--->
+
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width,height=device-height, initial-scale=1; user-scalable=0;" />
     <meta name="theme-color" content="black">
@@ -228,16 +228,20 @@
     <input id='#5' name="Region" type="text" required>
     <button id='#button' type="submit">Send</button>
 </form>
-<!--
+
     <script>
-        if (navigator.serviceWorker) {
-            navigator.serviceWorker.register (
-              '/Chronicles/sw.js',
-              {scope: '/Chronicles/'}
-            )
-        }
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker
+              .register("/Chronicles/sw.js", { scope: "/Chronicles/" })
+              .then((registration) => {
+                  console.log("Registration succeeded.");
+                  registration.update();
+              })
+              .catch((error) => {
+                  console.error(`Registration failed with ${error}`);
+              })}
     </script>
--->
+
     <script src="Chronicles.js"></script>
 
 </body>
