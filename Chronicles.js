@@ -18766,7 +18766,7 @@ Game.Scenes.FifthPart[477] = new Scene({
             `,
   background: "Persons/Cheryl_New",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[478].Begin(); Game.Sounds.Play('Music','FirstChapter')}],
+  buttonaction: [() => { Game.Scenes.FifthPart[478].Begin();}],
 });
 
 Game.Scenes.FifthPart[478] = new Scene({
@@ -18790,6 +18790,9 @@ Game.Scenes.FifthPart[479] = new Scene({
   background: "Backgrounds/Livingroom",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[480].Begin();}],
+  condition: function () {
+    Game.Sounds.Play('Music','FirstChapter');
+  }
 });
 
 Game.Scenes.FifthPart[480] = new Scene({
