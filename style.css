@@ -1090,22 +1090,28 @@ im>input {
 tf {
     position: relative;
     text-align: justify;
-    border: 0px solid;
+    border: 0 solid;
     border-radius: 10px;
     padding-left: 10%;
     width: 80vw;
     max-width: 325px;
     hyphens: auto;
     -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
 }
 
 tf>p{
     margin-top: 10px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
+    text-align: justify;
     text-align-last: left;
     word-spacing: -0.05em;
     hyphens: auto;
     -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+
 }
 #timerP {
     display: none;
