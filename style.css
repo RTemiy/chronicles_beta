@@ -1400,6 +1400,33 @@ MenuTitle::first-letter {
     color: rgb(255, 238, 0);
     display: none;
 }
+.settings__block{
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background-color: rgba(101, 101, 101, 0.5);
+    border: solid 0 rgba(128, 128, 128, 0.493);
+    background: linear-gradient(135deg, rgba(153, 0, 255, 0), rgba(183, 94, 255, 0.28));
+    background: -webkit-linear-gradient(135deg, rgba(153, 0, 255, 0), rgba(183, 94, 255, 0.28));
+    background-size: 150% 150%;
+    box-shadow: inset 0px 0px 5px 1px rgb(0 0 0 / 77%);
+}
+
+.settings__container{
+    border-radius: 15px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.settings__block>p{
+    margin-left: 10px;
+}
+
+.settings__icon{
+    width: 75px;
+}
+
 sf>button{
     margin: auto;
     background: rgba(165, 0, 255, 0.09);
@@ -1409,20 +1436,28 @@ sf>button{
     box-shadow: inset 0px 0px 5px 2px rgb(0 0 0 / 77%);
 }
 
-sf>p{
-    text-align: center;
+sf>button:first-of-type{
+    margin-top: -17px;
+    margin-left: -5px;
+    width: 50px;
+    height: 25px;
+    z-index: 5;
+    position: fixed;
+    background-image: url(pictures/Interface/arrow.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    border-radius: 0px 10px 10px 0px;
+    border: 1px solid rgba(170, 170, 170, 0.315);
 }
 
-sf>input{
-    margin: 15px auto 0 auto;
-}
-
-sf>a{
-
+sf>.settings__container>.settings__block>a{
     text-align: center;
+    padding: 15px;
+    text-decoration: none;
 }
 
 input[type=range] {
+    margin: 0 10px 0 auto;
     width: 10%;
     background-color: transparent;
     -webkit-appearance: none;
@@ -1431,7 +1466,6 @@ input[type=range] {
 #ZI {
     width: 50vw;
     max-width: 400px;
-    margin-bottom: 25px;
 }
 
 input[type=range]:focus {
@@ -1526,7 +1560,7 @@ input[type=range]:focus::-ms-fill-upper {
 
 input[type=checkbox] {
     width: 25px;
-    height: 25px;
+    margin: 0 10px 0 auto;
 }
 
 form{

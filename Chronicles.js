@@ -1898,7 +1898,7 @@ Game.Scenes.Features[100] =
             <p>Там вы сможете пообщаться с нами, узнать на каком этапе находится разработка игры. 
             И не стесняйтесь сообщать об ошибках, ведь только С ВАШЕЙ ПОМОЩЬЮ мы сможем стать лучше!
 
-            <p>Будем очень рады вашей оценке! Пожалуйста, оставляйте отзывы на странице нашего приложения в Google Play - <a href="https://play.google.com/store/apps/details?id=com.mva.chronicles target="_blank"">Перейти</a>
+            <p>Будем очень рады вашей оценке! Пожалуйста, оставляйте отзывы на странице нашего приложения в Google Play - <a href="https://play.google.com/store/apps/details?id=com.mva.chronicles" target="_blank">Перейти</a>
             `,
         background: "",
       buttonactive: [true, false],

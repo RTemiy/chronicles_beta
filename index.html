@@ -89,18 +89,42 @@
 
 <!-- Settings -->
 <sf id='sf'>
-    <button id='acptsett'>Применить и вернуться</button>
+    <button id='acptsett'></button>
+    <div class="settings__container">
+        <div class="settings__block">
+            <p>Звук выключить/включить</p>
+            <input id='SI' type="range" min="0" max="0.7" step="0.7" value="0.7">
+        </div>
+        <div class="settings__block">
+            <p>Автоматически прятать уведомления</p>
+            <input id='AHA' type="checkbox" checked>
+        </div>
+        <div class="settings__block" style="display: none">
+            <p>Масштаб</p>
+            <input id='ZI' type="range" min="10" max="150" step="5" value="100">
+        </div>
+    </div>
+    <div class="settings__container">
+        <div class="settings__block">
+            <p>Поддержите нас</p>
+        </div>
+        <div class="settings__block">
+            <a href="https://play.google.com/store/apps/details?id=com.mva.chronicles" target="_blank"><img class="settings__icon" src="pictures/Interface/gp.png"></a>
+            <a href="https://t.me/chronicles_game" target="_blank"><img class="settings__icon" src="pictures/Interface/tg.png"></a>
+        </div>
+    </div>
+    <div class="settings__container">
+        <div class="settings__block">
+            <a href="privacy_policy.html" target="_blank">- Политика конфиденциальности -</a>
+        </div>
+        <div class="settings__block">
+            <a href="terms_conditions.html" target="_blank">- Условия и положения -</a>
+        </div>
+    </div>
 
-    <p>Звук выключить/включить</p>
-    <input id='SI' type="range" min="0" max="0.7" step="0.7" value="0.7">
-    <p>Автоматически прятать уведомления</p>
-    <input id='AHA' type="checkbox" checked>
-    <p>Масштаб</p>
-    <input id='ZI' type="range" min="10" max="150" step="5" value="100">
-
-    <a href="privacy_policy.html" target="_blank">Политика конфиденциальности</a>
-    <a href="terms_conditions.html" target="_blank">Условия и положения</a>
-
+    <div class="settings__container">
+        <div class="settings__block"><a href="mailto:mvagamesofficial@gmail.com">- Отправьте свой отзыв нам на почту -</a></div>
+    </div>
     <button id="dsb">Удалить все сохранения и
         настройки</button>
 </sf>
