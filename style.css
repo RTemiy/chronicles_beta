@@ -1405,6 +1405,7 @@ MenuTitle::first-letter {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    width: 90%;
     background-color: rgba(101, 101, 101, 0.5);
     border: solid 0 rgba(128, 128, 128, 0.493);
     background: linear-gradient(135deg, rgba(153, 0, 255, 0), rgba(183, 94, 255, 0.28));
@@ -1413,8 +1414,25 @@ MenuTitle::first-letter {
     box-shadow: inset 0px 0px 5px 1px rgb(0 0 0 / 77%);
 }
 
-.settings__container{
+.settings__block:first-child{
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.settings__block:last-child{
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.settings__block:only-child{
     border-radius: 15px;
+}
+
+.settings__container{
     overflow: hidden;
     margin-top: 10px;
 }
