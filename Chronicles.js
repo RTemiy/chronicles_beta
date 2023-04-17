@@ -2141,6 +2141,24 @@ Game.Stories.push(
 
                   }
               }),
+              new Part ({
+                  name: 'Часть 3',
+                  pict: 'Backgrounds/Aurora_SW_Streets',
+                  code: 'Aurora_Part03',
+                  event: function (){
+
+                      Game.Design.Change('Aurora');
+
+                      Game.Progress.Load('Aurora_Part03');
+
+                      Game.Effects.DisableAll();
+
+                      Game.LoadScreen('Aurora_Part03');
+
+                      Game.Scenes.A_Part03[0].Begin();
+
+                  }
+              }),
           ],
       })],
   })
@@ -2458,9 +2476,17 @@ Game.Stats.Arthur = new Stat({
 
 Game.Stats.Kaleb = new Stat({
     name: 'Калеб',
-    picture: 'Persons/Kaleb',
+    picture: 'Persons/Aurora_Kaleb',
     title: 'Наглый и самовлюбленный студент, с которым я столкнулась в библиотеке.',
     text: 'Его происхождение окутано тайной, что мне предстоит выяснить. Кем же он окажется по итогу: надежным соратником в моем путешествии или злейшим врагом?',
+    story: 'Aurora',
+});
+
+Game.Stats.Dalia = new Stat({
+    name: 'Далия',
+    picture: 'Persons/Aurora_Kaleb',
+    title: 'Моя дорогая подруга. Человек, который изменил мою жизнь.',
+    text: 'Именно она побудила меня начать вести дневник. И я сделаю все, чтобы однажды мы снова встретились, тепло обнялись и вспомнили связывающее нас прошлое.\n',
     story: 'Aurora',
 });
 
@@ -2499,6 +2525,12 @@ Game.Stats.Romantic = new Stat({
 Game.Stats.Song = new Stat({
     type: 'Choice',
     name: 'выбрала песню',
+    story: 'Aurora',
+});
+
+Game.Stats.BetrayKaleb = new Stat({
+    type: 'Choice',
+    name: 'предала Калеба',
     story: 'Aurora',
 });
 
@@ -4946,7 +4978,7 @@ Game.Scenes.A_Part02[143] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[144].Begin();}],
-    background: 'Persons/Kaleb',
+    background: 'Persons/Aurora_Kaleb',
   });
 
 Game.Scenes.A_Part02[144] =
@@ -4957,7 +4989,7 @@ Game.Scenes.A_Part02[144] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[145].Begin();}],
-    background: 'Persons/Kaleb',
+    background: 'Persons/Aurora_Kaleb',
   });
 
 Game.Scenes.A_Part02[145] =
@@ -4968,7 +5000,7 @@ Game.Scenes.A_Part02[145] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[146].Begin(); Game.Achievements.A_Part02Completed.Unlock();}],
-    background: 'Persons/Kaleb',
+    background: 'Persons/Aurora_Kaleb',
   });
 
 Game.Scenes.A_Part02[146] =
@@ -4980,12 +5012,339 @@ Game.Scenes.A_Part02[146] =
         `,
     buttontext: [''],
     buttonaction: [ () => {
+      setTimeout(() => { Game.Scenes.A_Part03[0].Begin(); }, 1000);
+      Game.LoadScreen('Aurora_Part03');
       Game.Progress.Save("Aurora_Part03");
-      Game.Scenes.Features[100].Begin();
     }],
-    background: 'Persons/Kaleb',
+    background: 'Persons/Aurora_Kaleb',
   });
 
+Game.Scenes.A_Part03 = [];
+
+Game.Scenes.A_Part03[0] =
+  new Scene({
+    text: `
+    Я отложила дневник, наблюдая, как алое солнце стремится уйти за горизонт, чтобы скорее уступить место долгожданной ночи. Небо переливалось самыми разнообразными красками, словно некий безумный художник выплеснул на полотно все самые яркие цвета, надеясь в этом хаосе почерпнуть вдохновение. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[1].Begin(); }],
+    background: 'Backgrounds/Aurora_Lighthouse_Dawn',
+    condition: function (){
+      Game.Sounds.Play('Music', 'Lighthouse');
+      Game.Message('<p>Настоящее время')
+    }
+  });
+
+Game.Scenes.A_Part03[1] =
+  new Scene({
+    text: `
+    Я завороженно наблюдала за чудесами природы и была абсолютно уверена, что совсем скоро продолжу писать уже полюбившийся мне дневник. Но, прежде, мне захотелось побыть наедине со своими мыслями и чашечкой ароматного чая. 
+    <p>Еще немного полюбовавшись на прекрасный пейзаж, я спустилась со смотровой площадки маяка и направилась к нашему домику. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[2].Begin(); }],
+    background: 'Backgrounds/Aurora_Lighthouse_Dawn',
+  });
+
+Game.Scenes.A_Part03[2] =
+  new Scene({
+    text: `
+    Все оставалось по-прежнему. Тихая и мирная обстановка. Красивая и уютная комната. 
+    <p>Я села на диван вместе с напитком в руках и завернулась в плед, пытаясь еще раз обдумать написанные строки.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[3].Begin(); }],
+    background: 'Backgrounds/Aurora_Near_Lighthouse_Dawn',
+  });
+
+Game.Scenes.A_Part03[3] =
+  new Scene({
+    text: `
+    - Артур, где же ты… Почему ты всегда был рядом, но теперь решил покинуть меня. 
+    <p>Отставив кружку, я обхватила себя руками, пытаясь унять дрожь и успокоиться. Но не в силах сдержаться - я дала волю слезам. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[4].Begin(); }],
+    background: 'Backgrounds/Aurora_Near_Lighthouse_Dawn',
+  });
+
+Game.Scenes.A_Part03[4] =
+  new Scene({
+    text: `
+    - Почему все вышло именно так? Ты же моя опора. Мой… - тяжело было говорить из-за подступающих эмоций, которые буквально съедали меня изнутри. - Я никогда не забуду твою поддержку. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[5].Begin(); }],
+    background: 'Backgrounds/Aurora_Near_Lighthouse_Dawn',
+  });
+
+Game.Scenes.A_Part03[5] =
+  new Scene({
+    text: `
+    Все мои чувства перемешались. Я с трудом могла мыслить, ведь столько событий обрушилось на меня. А еще о стольком предстояло написать и будто бы вновь пережить.
+    <p>Снова взяв в руки чай, я все-таки нашла в себе силы продолжить. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[6].Begin(); }],
+    background: 'Backgrounds/Aurora_Near_Lighthouse_Dawn',
+  });
+
+Game.Scenes.A_Part03[6] =
+  new Scene({
+    text: `
+    - Моя первая встреча с Калебом. Каким же нахалом он был по началу, а какой чувственной натурой оказался по итогу.
+    <p>Я крепко сжала кружку, буквально обжигая свою ладонь. 
+    <p>“Сколько же всего с тобой связано. Ты причинил мне столько боли, и одновременно с этим - столько радости.”
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[7].Begin(); }],
+    background: 'Backgrounds/Aurora_Near_Lighthouse_Dawn',
+  });
+
+Game.Scenes.A_Part03[7] =
+  new Scene({
+    text: `
+    Неожиданно для себя я наконец-то смогла улыбнуться. Ведь в тот день мне удалось познакомиться с человеком, который полностью поменял мою жизнь. 
+    <p>- Я ведь тогда встретила первый раз не только Калеба… И все-таки: как после такого не верить в судьбу?
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[8].Begin(); }],
+    background: 'Backgrounds/Aurora_Near_Lighthouse_Dawn',
+  });
+
+Game.Scenes.A_Part03[8] =
+  new Scene({
+    text: `
+    “Я должна продолжить. Это необходимо. От этого зависит не только мое будущее. Соберись, Аврора. Скоро начнется одна из самых важных частей всей истории. Мне нужно сосредоточиться и зафиксировать все в точности.”
+    <p>Не в силах больше откладывать, я вернулась к дневнику.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[9].Begin(); }],
+    background: 'Backgrounds/Aurora_Near_Lighthouse_Dawn',
+  });
+
+Game.Scenes.A_Part03[9] =
+  new Scene({
+    text: `
+    Калеб выглядел немного растерянным и озирался по сторонам. 
+    <p>- Только не она… - парень вдруг посмотрел на меня и схватил за плечи. - Спрячь меня!
+    <p>- Что? - я стала смотреть вместе с ним, не понимая откуда мог доноситься звук. - Зачем мне это делать?
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[10].Begin(); }],
+    background: 'Persons/Aurora_Kaleb',
+    condition: function () {
+        Game.Sounds.Play('Music',`Aurora_Daily_0${Game.Stats.Song.Get()}`);
+        Game.Stats.Kaleb.Add(0);
+    }
+  });
+
+Game.Scenes.A_Part03[10] =
+  new Scene({
+      text: `
+    - Ну, я же очаровашка, - он спрятался за одним из книжных стеллажей, показывая мне знаком, чтобы я не издавала звуков.
+    <p>- Ты же мне книжку так и не вернул, - прошептала я. - И зачем мне выгораживать тебя?
+        `,
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Part03[11].Begin(); Game.Stats.Dalia.Add(0) }],
+      background: 'Backgrounds/Books',
+  });
+
+Game.Scenes.A_Part03[11] =
+  new Scene({
+      text: `
+    И вдруг я заметила молодую девушку, которая была подобно вихрю. Ее абсолютно не смущало, что мы находимся в библиотеке, где приветствуется тишина. Нет. Она бежала сломя голову через весь зал, даже вопреки возгласам рассерженной библиотекарши. 
+        `,
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Part03[12].Begin(); }],
+      background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[12] =
+  new Scene({
+    text: `
+    Она была очень красива, даже несмотря на легкую злость, которую она испытывала. Белая кофта. Светлые волосы и серые глаза. Именно такой я запомнила ее в нашу первую встречу. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[13].Begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[13] =
+  new Scene({
+    text: `
+    - Девушка? Да-да, вы. Не видели тут наглого и немного симпатичного на вид парня? - стараясь выровнять дыхание произнесла незнакомка. 
+    <p>“Я растерялась, так как не привыкла к такому вниманию. Должно быть эта девушка очень хотела отыскать Калеба, а я продолжала смотреть на нее не в силах что-либо произнести.”
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[14].Begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[14] =
+  new Scene({
+    text: `
+    После нескольких секунд она продолжила:
+    <p>- Брось, я же видела. Он точно был тут. Не волнуйся ты так, просто скажи, куда он вдруг испарился. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[15].Begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[15] =
+  new Scene({
+    text: `
+    - Я… нет, то есть… 
+    <p>- У вас все в порядке? Выглядите немного напуганной. Неужели этот засранец что-то сделал?! Калеб, а ну-ка выходи сейчас же! - девушка начала озираться по сторонам и вот-вот могла увидеть, где скрывается парень. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[16].Begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[16] =
+  new Scene({
+    text: `
+    Все это кардинально отличалось от моего привычного ритма жизни, ведь я настолько вжилась в роль одиночки, что даже простой разговор с новыми людьми заставлял сильно нервничать. Но я старалась перебороть себя, так как мне действительно хотелось быть выше своих заморочек и наконец-то начать полноценно жить. 
+    <p>Что делать? 
+        `,
+    buttontext: ['Выдать Калеба','Соврать'],
+    buttonaction: [
+      () => { Game.Scenes.A_Part03[17].Begin();},
+      () => { Game.Scenes.A_Part03[22].Begin(); Game.Stats.BetrayKaleb.Add(1);}
+    ],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[17] =
+  new Scene({
+    text: `
+    Мне не было смысла его выгораживать. К тому же, он вел себя слишком вызывающе при нашей первой встрече. Пусть знает, что я не одна из этих простушек, которые так легко поддаются на его “чары”. 
+    <p>Я жестом показала, где скрывается Калеб. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[18].Begin(); }],
+    background: 'Backgrounds/Books',
+  });
+
+Game.Scenes.A_Part03[18] =
+  new Scene({
+    text: `
+    - Он серьезно думал, что я не найду его там, - девушка вздохнула. - Выходи давай. Уж не знаю, что ты задумал и зачем решил спрятаться, но ведешь себя по-детски.
+    <p>Вскоре Калеб вышел, поднимая руки вверх, будто бы сдаваясь полицейскому.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[19].Begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[19] =
+  new Scene({
+    text: `
+    - Да что ты ко мне прицепилась? Мы уже миллион раз обсуждали. Ты перегибаешь палку, Далия. Все хорошо. Мы просто беседовали с этой милой девушкой. 
+    <p>То, что он назвал меня милой, было лишь одним из его приемчиков, который все же смутил меня. Я вскользь посмотрела на Калеба, пытаясь угадать его эмоции. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[20].Begin(); }],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part03[20] =
+  new Scene({
+    text: `
+    Он выглядел немного опечаленным, словно его тревожило нечто очень важное, а может просто раздражала сложившаяся ситуация. 
+    <p>Калеб поймал мой взгляд, но долго не задержался, опустив голову вниз, а затем произнес: 
+    <p>- Мы можем пойти уже?
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[21].Begin(); }],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part03[21] =
+  new Scene({
+    text: `
+    Далия с сочувствием обернулась ко мне, видимо заметив, что мне немного не по себе, и сказала: 
+    <p>- Надеюсь, у тебя все в порядке. Чтобы не случилось, не раскисай. Позитив правит этим миром. 
+    <p>Они вдвоем ушли, оставляя меня в легкой растерянности стоять посреди библиотеки. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[27].Begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[22] =
+  new Scene({
+    text: `
+    Я решила подыграть ему. Он не выглядел, как плохой человек. А если попросил помощи, должна быть весомая причина такому поведению. 
+    <p>- Он вроде убежал из библиотеки, но я не уверена, - произнесла я дрожащим голосом. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[23].Begin(); }],
+    background: 'Backgrounds/Books',
+  });
+
+Game.Scenes.A_Part03[23] =
+  new Scene({
+    text: `
+    - Спасибо! Нельзя было оставлять его, так и знала, что убежит при любой удобной возможности. 
+    <p>- Но все в порядке…
+    <p>- Я надеюсь, - она улыбнулась мне. - Мне стоит догнать его, пока он не натворил бед. Увидимся. 
+    <p>Девушка резво побежала в указанном мною направлении. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[24].Begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[24] =
+  new Scene({
+    text: `
+    Из своего укрытия вышел Калеб, который удивленно смотрел на меня.
+    <p>- Вот уж не думал, что решишься соврать. Зачем ты это сделала?
+    <p>- Мне показалось - тебе это необходимо. Вот и все.
+    <p>- Хех, - он ухмыльнулся. - Допустим. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[25].Begin(); }],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part03[25] =
+  new Scene({
+    text: `
+    Минуту другую он о чем-то размышлял, а затем произнес:
+    <p>- Услугу за услугу. Вижу, что на тебя можно положиться, поэтому буду должен. Если что понадобится - помогу. 
+    <p>- Не стоит. Я ничего такого не сделала и… 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[26].Begin(); Game.Message('Калебу понравилась ваша ложь. Он вернет должок'); Game.Stats.Kaleb.Add(1); }],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part03[26] =
+  new Scene({
+    text: `
+    Он вдруг приставил указательный палец к моим губам, заставляя не заканчивать фразу. 
+    <p>- Будь увереннее и не отказывайся от помощи. 
+    <p>Мне нечего было возразить на это и я покорно кивнула. 
+    <p>- Пока-пока, - Калеб вышел из библиотеки, махая мне рукой напоследок. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[27].Begin(); }],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part03[27] =
+  new Scene({
+    text: `
+    Оставшись наедине с собой, я выдохнула, так как осталась в комфортной и привычной для себя обстановке. Однако несмотря на произошедшую ситуацию, я ни сколько не пожалела, что пообщалась с такими странными, но в то же время - веселыми людьми. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[28].Begin(); }],
+    background: 'Backgrounds/Books',
+  });
 Game.Scenes.A_Prologue = [];
 
 Game.Scenes.A_Prologue[0] =
