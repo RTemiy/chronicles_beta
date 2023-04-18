@@ -582,11 +582,12 @@ function revealAchievs() {
   for (let i = 0; i < reveals.length; i++) {
     let windowHeight = window.innerHeight;
     let elementTop = reveals[i].getBoundingClientRect().top;
-    let elementVisible = 100;
-    if (elementTop < windowHeight - elementVisible) {
-      reveals[i].classList.add("active");
-    } else {
+    let elementBottom = reveals[i].getBoundingClientRect().bottom;
+    let elementVisible = 60;
+    if (elementTop > windowHeight - elementVisible || elementBottom < elementVisible) {
       reveals[i].classList.remove("active");
+    } else {
+      reveals[i].classList.add("active");
     }
   }
 }
