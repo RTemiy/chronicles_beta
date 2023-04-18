@@ -380,14 +380,6 @@
     100% { box-shadow: 0 0 12px lightyellow; }
 }
 
-@keyframes simple-rotation {
-    0% {rotate: 0deg}
-    25% {rotate: -90deg}
-    50% {rotate: -180deg}
-    75% {rotate: -240deg}
-    100% {rotate: -360deg}
-}
-
 ls{
     margin: auto;
     height: 100vh;
@@ -437,10 +429,9 @@ ls{
     text-align: center;
 }
 
-.gear{
+.lsgif{
     margin: 10px auto;
-    text-align: center;
-    animation: simple-rotation 2s linear infinite;
+    height: 35px;
 }
 :root {
     --bigtext: 3.35vh;
