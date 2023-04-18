@@ -510,6 +510,15 @@ body {
 accent{
     color: rgba(128, 128, 128, 0.68);
 }
+
+.reveal{
+    opacity: 0;
+    transition: opacity 1s ease-out;
+}
+
+.active{
+    opacity: 1;
+}
 head,
 script,
 title{

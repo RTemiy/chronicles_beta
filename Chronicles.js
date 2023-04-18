@@ -111,6 +111,7 @@ class Achievement {
 
     Init() {
         this.a = document.createElement('achievement');
+        this.a.classList.add('reveal');
         this.b = document.createElement('img');
         this.b.src = this.picture
         this.c = document.createElement('ATitle');
@@ -135,7 +136,7 @@ class Achievement {
             Game.SendData('получает достижение: '+ this.title);
         }
         this.unlocked = 1;
-        this.a.setAttribute('class', 'activeachievement');
+        this.a.classList.add('activeachievement');
         this.b.style.display= 'grid';
         this.e.style.display = 'none';
         Game.Progress.AchievementsSave();
@@ -144,9 +145,12 @@ class Achievement {
     /** Визуально прячем элемент достижения */
 
     Show(){
-        this.a.setAttribute('class','hide');
+        this.a.classList.add('hide');
         this.a.style.display = 'grid';
-        setTimeout(()=>{this.a.setAttribute('class','show');},200);
+        setTimeout(()=>{
+            this.a.classList.add('show');
+            this.a.classList.remove('hide');
+            },200);
     }
 
     /** Визуально показываем элемент достижения */
@@ -573,6 +577,20 @@ class Part {
         this.event = values.event;
     }
 }
+function revealAchievs() {
+  const reveals = document.querySelectorAll(".reveal");
+  for (let i = 0; i < reveals.length; i++) {
+    let windowHeight = window.innerHeight;
+    let elementTop = reveals[i].getBoundingClientRect().top;
+    let elementVisible = 100;
+    if (elementTop < windowHeight - elementVisible) {
+      reveals[i].classList.add("active");
+    } else {
+      reveals[i].classList.remove("active");
+    }
+  }
+}
+document.querySelector('#achievs').addEventListener("scroll", revealAchievs);
 /**
  * Узнать имя Главного героя
  * @param {function} action Действие после окончания
@@ -1041,6 +1059,7 @@ const AchievementsButton = document.getElementById('achb');
 AchievementsButton.onclick = () => {
     CloseOpen(MenuField,AchievementsField);
     AchievementsBackButton.onclick = () => { CloseOpen(AchievementsField, MenuField);}
+    revealAchievs();
 }
 
 /**
@@ -1062,7 +1081,7 @@ AchievementsImmortals.onclick = () => {Game.ShowCategoryAchievements('Immortals'
  * Кнопка "Достижения Авроры"
  */
 const AchievementsAurora = document.getElementById('achievs_aurora');
-AchievementsAurora.onclick = () => {Game.ShowCategoryAchievements('Aurora')}
+AchievementsAurora.onclick = () => {Game.ShowCategoryAchievements('Aurora');}
 
 /**
  * @const
@@ -1167,6 +1186,7 @@ GoAchievementsButton.onclick = () => {
     CloseOpen(MainField,AchievementsField);
     InventoryField.setAttribute('class','fade-out');
     AchievementsBackButton.onclick = () => { CloseOpen(AchievementsField, MainField);}
+    revealAchievs();
 }
 
 /**
