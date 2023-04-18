@@ -5154,6 +5154,15 @@ Game.Scenes.A_Part03[11] =
   new Scene({
       text: `
     И вдруг я заметила молодую девушку, которая была подобно вихрю. Ее абсолютно не смущало, что мы находимся в библиотеке, где приветствуется тишина. Нет. Она бежала сломя голову через весь зал, даже вопреки возгласам рассерженной библиотекарши. 
+        `,
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Part03[68].Begin(); }],
+      background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[68] =
+  new Scene({
+      text: `
     <s>Черты лица как у модели. Живая, бодрая. С растрепанными светлыми волосами.
         `,
       buttontext: [''],
@@ -5213,10 +5222,13 @@ Game.Scenes.A_Part03[16] =
         `,
     buttontext: ['Выдать Калеба','Подыграть Калебу '],
     buttonaction: [
-      () => { Game.Scenes.A_Part03[17].Begin();},
-      () => { Game.Scenes.A_Part03[22].Begin(); Game.Stats.BetrayKaleb.Add(1);}
+      () => { Game.Scenes.A_Part03[17].Begin(); Game.Stats.BetrayKaleb.Add(1); Game.Timer.Stop();},
+      () => { Game.Scenes.A_Part03[22].Begin(); Game.Timer.Stop();}
     ],
     background: 'Persons/Aurora_Dalia',
+    condition: function () {
+        Game.Timer.Set(5, ()=>{Game.Scenes.A_Part03[17].Begin(); Game.Timer.Stop(); })
+    }
   });
 
 Game.Scenes.A_Part03[17] =
