@@ -1136,7 +1136,7 @@ tf>p{
     border: 0;
 }
 #timerP::-webkit-progress-value {
-    background-color: rgba(181, 170, 255, 0.3) !important;
+    background-color: rgba(57, 255, 119, 0.4) !important;
 }
 achievement {
     width: 90vw;
