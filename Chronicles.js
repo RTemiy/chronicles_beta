@@ -6666,7 +6666,7 @@ Game.Scenes.A_Part03[140] =
       <p>Больше мне было невыносимо находиться в такой гнетущей атмосфере. 
         `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[141].Begin(); Game.Sounds.Play('Music',`Aurora_Daily_0${Game.Stats.Song.Get()}`);}],
+    buttonaction: [() => { Game.Scenes.A_Part03[141].Begin();}],
     background: 'Backgrounds/Aurora_Livingkitchen',
   });
 
