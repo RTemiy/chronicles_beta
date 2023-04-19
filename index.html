@@ -260,7 +260,7 @@
     <script>
         if ("serviceWorker" in navigator) {
             navigator.serviceWorker
-              .register("/Chronicles/sw.js", { scope: "/Chronicles/" })
+              .register("/Chronicles/sw.js", { scope: "/" })
               .then((registration) => {
                   console.log("Registration succeeded.");
                   registration.update();
