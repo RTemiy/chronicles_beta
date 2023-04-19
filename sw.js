@@ -160,7 +160,7 @@ var URLS = [
     `${GHPATH}/Persons/Scarlett`,
     `${GHPATH}/Persons/Scarlett_New`,
     `${GHPATH}/Persons/Stranger`,
-    `${GHPATH}/Persons/Thomas`
+    `${GHPATH}/Persons/Thomas`,
 
   //Interface
   `${GHPATH}/pictures/Interface/A_back.png`,
