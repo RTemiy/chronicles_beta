@@ -1,6 +1,6 @@
 var GHPATH = '/Chronicles';
 var APP_PREFIX = 'chronicles_';
-var VERSION = 'version_02.11';
+var VERSION = 'version_02.2';
 
 var URLS = [
 
