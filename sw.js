@@ -18,7 +18,6 @@ var URLS = [
   `${GHPATH}/patterns/ru.wasm`,
 
   //Pictures
-  [
     `${GHPATH}/Backgrounds/Abstraction.png`,
     `${GHPATH}/Backgrounds/Abstraction_Hero.png`,
     `${GHPATH}/Backgrounds/Aurora_Album.png`,
@@ -162,7 +161,6 @@ var URLS = [
     `${GHPATH}/Persons/Scarlett_New.png`,
     `${GHPATH}/Persons/Stranger.png`,
     `${GHPATH}/Persons/Thomas.png`,
-  ]
 
   //Interface
   `${GHPATH}/pictures/Interface/A_back.png`,
