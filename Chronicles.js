@@ -1075,14 +1075,14 @@ AchievementsBackButton.onclick = () => {CloseOpen(AchievementsField,MenuField);}
  * Кнопка "Достижения Бессмертных"
  */
 const AchievementsImmortals = document.getElementById('achievs_immortals');
-AchievementsImmortals.onclick = () => {Game.ShowCategoryAchievements('Immortals')}
+AchievementsImmortals.onclick = () => {Game.ShowCategoryAchievements('Immortals'); revealAchievs();}
 
 /**
  * @const
  * Кнопка "Достижения Авроры"
  */
 const AchievementsAurora = document.getElementById('achievs_aurora');
-AchievementsAurora.onclick = () => {Game.ShowCategoryAchievements('Aurora');}
+AchievementsAurora.onclick = () => {Game.ShowCategoryAchievements('Aurora'); revealAchievs();}
 
 /**
  * @const
@@ -1912,7 +1912,7 @@ Game.Scenes.Features[100] =
             <p>
             <p>Продолжение следует! 
 
-            <p>Дата выхода следующего обновления: 30 апреля
+            <p>Дата выхода следующего обновления: 20 мая
 
             <p>Очень ждём вас в нашем телеграмм канале - <a href="https://t.me/chronicles_game" target="_blank">Перейти</a>
 
@@ -2459,6 +2459,41 @@ Game.Achievements.A_Part02Completed = new Achievement ({
   picture: 'Backgrounds/Univer',
   title: 'Студенческие будни',
   text: 'Завершите вторую часть интересной встречей',
+  story: 'Aurora',
+});
+
+Game.Achievements.A_Fan = new Achievement ({
+  picture: 'Backgrounds/Aurora_Solist_Picture',
+  title: 'Фанатка',
+  text: 'Познакомьтесь с любимчиком Далии',
+  story: 'Aurora',
+});
+
+Game.Achievements.A_Fav_Writer = new Achievement ({
+  picture: 'Backgrounds/Writing',
+  title: 'Любимый писатель',
+  text: 'Узнайте интерес Калеба',
+  story: 'Aurora',
+});
+
+Game.Achievements.A_Legend = new Achievement ({
+  picture: 'Backgrounds/Aurora_Church',
+  title: 'Легенда',
+  text: 'Поучаствуйте в экскурсии и узнайте жуткий миф города',
+  story: 'Aurora',
+});
+
+Game.Achievements.A_Walker = new Achievement ({
+  picture: 'Persons/Arthur',
+  title: 'Блудный сын',
+  text: 'Найдите Артура',
+  story: 'Aurora',
+});
+
+Game.Achievements.A_Part03Completed = new Achievement ({
+  picture: 'Backgrounds/Aurora_Room',
+  title: 'Крепкий сон',
+  text: 'Завершите третью часть',
   story: 'Aurora',
 });
 //Characters
@@ -5904,7 +5939,12 @@ Game.Scenes.A_Part03[75] =
         <p>Далия замахнулась на него кулаком и мы дружно рассмеялись.
         `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[76].Begin(); Game.Message('У вас с Далией схожий интерес. Вы узнаете друг друга лучше'); Game.Stats.Dalia.Add(1)}],
+    buttonaction: [() => {
+      Game.Scenes.A_Part03[76].Begin();
+      Game.Message('У вас с Далией схожий интерес. Вы узнаете друг друга лучше');
+      Game.Stats.Dalia.Add(1);
+      Game.Achievements.A_Fan.Unlock();
+    }],
     background: 'Persons/Aurora_Kaleb',
   });
 
@@ -5991,7 +6031,11 @@ Game.Scenes.A_Part03[84] =
        Я была приятно удивлена, что Калеб оказался таким разносторонним человеком. Не каждому дано полюбить искусство, но он буквально оживал на глазах, когда говорил о своем кумире. Это не могло не восхитить. 
         `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[85].Begin(); Game.Message('У вас с Калебом схожий интерес. Вы узнаете друг друга лучше'); Game.Stats.Kaleb.Add(1); }],
+    buttonaction: [() => { Game.Scenes.A_Part03[85].Begin();
+      Game.Message('У вас с Калебом схожий интерес. Вы узнаете друг друга лучше');
+      Game.Stats.Kaleb.Add(1);
+      Game.Achievements.A_Fav_Writer.Unlock();
+    }],
     background: 'Persons/Aurora_Kaleb',
   });
 
@@ -6032,7 +6076,7 @@ Game.Scenes.A_Part03[87] =
 Game.Scenes.A_Part03[88] =
   new Scene({
       text: `
-        - Правильно, Калеб у нас философ, - Далия шутливо толкнула его в плечо. - Все может произойти. А если еще стараться… Например, пойти на концерт, занять места в первом ряду и смотреть ему в глаза весь концерт…
+        - Правильно, Калеб у нас философ, - Далия шутливо толкнула его в плечо. - Все может произойти. А если еще стараться… Например, пойти на концерт, занять места в первом ряду и смотреть ему в глаза все время…
         `,
       buttontext: [''],
       buttonaction: [() => { Game.Scenes.A_Part03[89].Begin(); }],
@@ -6165,10 +6209,10 @@ Game.Scenes.A_Part03[99] =
 Game.Scenes.A_Part03[100] =
   new Scene({
     text: `
-      Когда группа двинулась далее, мы незаметно примкнули к потоку. Внутри все переворачивалось от осознания, что мы поступаем не правильно. Но в тоже время я почему-то отчетливо ощутила - с этими новыми знакомыми мне ничего не грозит. 
+      Когда группа двинулась далее, мы незаметно примкнули к потоку. Внутри все переворачивалось от осознания, что мы поступаем неправильно. Но в тоже время я почему-то отчетливо ощутила - с этими новыми знакомыми мне ничего не грозит. 
         `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[101].Begin(); }],
+    buttonaction: [() => { Game.Scenes.A_Part03[101].Begin(); Game.Sounds.Play('Music','Aurora_Church')}],
     background: 'Backgrounds/Aurora_SW_Streets',
   });
 
@@ -6180,7 +6224,7 @@ Game.Scenes.A_Part03[101] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part03[102].Begin(); }],
-    background: 'Backgrounds/Aurora_Chrurch',
+    background: 'Backgrounds/Aurora_Church',
   });
 
 Game.Scenes.A_Part03[102] =
@@ -6191,7 +6235,7 @@ Game.Scenes.A_Part03[102] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part03[103].Begin(); }],
-    background: 'Backgrounds/Aurora_Chrurch',
+    background: 'Backgrounds/Aurora_Church',
   });
 
 Game.Scenes.A_Part03[103] =
@@ -6202,7 +6246,7 @@ Game.Scenes.A_Part03[103] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part03[123].Begin(); }],
-    background: 'Backgrounds/Aurora_Chrurch',
+    background: 'Backgrounds/Aurora_Church',
   });
 
 Game.Scenes.A_Part03[123] =
@@ -6213,7 +6257,7 @@ Game.Scenes.A_Part03[123] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part03[104].Begin(); }],
-    background: 'Backgrounds/Aurora_Chrurch',
+    background: 'Backgrounds/Aurora_Church',
   });
 
 Game.Scenes.A_Part03[104] =
@@ -6224,7 +6268,7 @@ Game.Scenes.A_Part03[104] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part03[105].Begin(); }],
-    background: 'Backgrounds/Aurora_Chrurch',
+    background: 'Backgrounds/Aurora_Church',
   });
 
 Game.Scenes.A_Part03[105] =
@@ -6235,18 +6279,18 @@ Game.Scenes.A_Part03[105] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part03[106].Begin(); }],
-    background: 'Backgrounds/Aurora_Chrurch',
+    background: 'Backgrounds/Aurora_Church',
   });
 
 Game.Scenes.A_Part03[106] =
   new Scene({
     text: `
       - И даже убийство - вымысел?
-      <p>- Есть одна легенда, - группа заметно оживилась, внимая каждое слово. - Якобы архитектор, Марко Берлускони, был не обычным человеком, а участником тайного общества. В то время началась гражданская война в Швеции - война против Сигизмунда, правящего короля. И Марко, по приказу власти, построил собор для покаяния неверных крестьян. 
+      <p>- Есть одна легенда, - группа заметно оживилась, внимая каждое слово. - Якобы архитектор, Марко Берлускони, был необычным человеком, а участником тайного общества. В то время началась гражданская война в Швеции - война против Сигизмунда, правящего короля. И Марко, по приказу власти, построил собор для покаяния неверных крестьян. 
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part03[107].Begin(); }],
-    background: 'Backgrounds/Aurora_Chrurch',
+    background: 'Backgrounds/Aurora_Church',
   });
 
 Game.Scenes.A_Part03[107] =
@@ -6256,7 +6300,7 @@ Game.Scenes.A_Part03[107] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part03[108].Begin(); }],
-    background: 'Backgrounds/Aurora_Chrurch',
+    background: 'Backgrounds/Aurora_Church',
   });
 
 Game.Scenes.A_Part03[108] =
@@ -6266,7 +6310,7 @@ Game.Scenes.A_Part03[108] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part03[109].Begin(); }],
-    background: 'Backgrounds/Aurora_Chrurch',
+    background: 'Backgrounds/Aurora_Church',
   });
 
 Game.Scenes.A_Part03[109] =
@@ -6276,8 +6320,8 @@ Game.Scenes.A_Part03[109] =
       <p>Только одно не выходило из головы - это желание поскорее покинуть собор и больше его никогда не видеть. 
         `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[110].Begin(); }],
-    background: 'Backgrounds/Aurora_Chrurch',
+    buttonaction: [() => { Game.Scenes.A_Part03[110].Begin(); Game.Achievements.A_Legend.Unlock(); }],
+    background: 'Backgrounds/Aurora_Church',
   });
 
 Game.Scenes.A_Part03[110] =
@@ -6290,7 +6334,7 @@ Game.Scenes.A_Part03[110] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part03[111].Begin(); }],
-    background: 'Backgrounds/Aurora_Chrurch',
+    background: 'Backgrounds/Aurora_Church',
     condition: function () {
       if (Game.Stats.Romantic.Get()>=1) this.buttonaction[0] = () => { Game.Scenes.A_Part03[111].Begin(); }
       if (Game.Stats.Pragmatic.Get()>=1) this.buttonaction[0] = () => { Game.Scenes.A_Part03[114].Begin(); }
@@ -6305,7 +6349,7 @@ Game.Scenes.A_Part03[111] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part03[112].Begin(); }],
-    background: 'Backgrounds/Aurora_Chrurch',
+    background: 'Backgrounds/Aurora_Church',
   });
 
 Game.Scenes.A_Part03[112] =
@@ -6316,7 +6360,7 @@ Game.Scenes.A_Part03[112] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part03[113].Begin(); }],
-    background: 'Backgrounds/Aurora_Chrurch',
+    background: 'Backgrounds/Aurora_Church',
   });
 
 Game.Scenes.A_Part03[113] =
@@ -6327,7 +6371,7 @@ Game.Scenes.A_Part03[113] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part03[116].Begin(); }],
-    background: 'Backgrounds/Aurora_Chrurch',
+    background: 'Backgrounds/Aurora_Church',
   });
 
 Game.Scenes.A_Part03[114] =
@@ -6338,7 +6382,7 @@ Game.Scenes.A_Part03[114] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part03[115].Begin(); }],
-    background: 'Backgrounds/Aurora_Chrurch',
+    background: 'Backgrounds/Aurora_Church',
   });
 
 Game.Scenes.A_Part03[115] =
@@ -6351,7 +6395,7 @@ Game.Scenes.A_Part03[115] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part03[116].Begin(); }],
-    background: 'Backgrounds/Aurora_Chrurch',
+    background: 'Backgrounds/Aurora_Church',
   });
 
 Game.Scenes.A_Part03[116] =
@@ -6391,8 +6435,8 @@ Game.Scenes.A_Part03[118] =
 Game.Scenes.A_Part03[119] =
   new Scene({
     text: `
-      - Да, обычно я не поступаю так необдуманно. Но с вами действительно я почувствовала себя хорошо. 
-      <p>- Я рад, - он улыбнулся. - Уверен, мы еще ни раз сможем пообщаться. Такси приехало. Пора прощаться. 
+      - Да, обычно я не поступаю так необдуманно. Но с вами я действительно почувствовала себя хорошо. 
+      <p>- Я рад, - он улыбнулся. - Уверена, мы еще ни раз сможем пообщаться. Такси приехало. Пора прощаться. 
       <p>- А как же Далия?
         `,
     buttontext: [''],
@@ -6432,10 +6476,397 @@ Game.Scenes.A_Part03[122] =
       <p>Я не знала, кто эта незнакомка. В голову пришло предположение, что фотографию мог обронить Калеб. Поэтому я незамедлительно спрятала свою находку в рюкзак и поспешила к Далии. 
         `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[124].Begin(); }],
+    buttonaction: [() => { Game.Scenes.A_Part03[124].Begin(); Game.Sounds.Play('Music','Aurora_City') }],
     background: 'Backgrounds/Aurora_Mother_Photo',
   });
 
+Game.Scenes.A_Part03[124] =
+  new Scene({
+    text: `
+      Девушка выглядела совсем поникшей. Я подсела к ней на бортик фонтана и спросила:
+      <p>- Что случилось, Далия? Я могу чем-то помочь?
+      <p>- Аврора, ох, к сожалению, ты ничем не сможешь помочь. Но спасибо за попытку! 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[125].Begin();}],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[125] =
+  new Scene({
+    text: `
+      - И все-таки ты такая грустная. 
+      <p>- Ладно… не знаю, зачем я тебе это рассказываю. Но все дело в моем отце. Он очень суровый человек и постоянно требует от меня невозможного. 
+      <p>- Например? 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[126].Begin();}],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[126] =
+  new Scene({
+    text: `
+      - Прости, я не могу сейчас привести конкретный пример. И, признаться, без того паршиво. Просто знай, что он тиран и деспот. Я его не ненавижу, но и по-настоящему любить просто не получается. Тяжелая ситуация. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[127].Begin();}],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[127] =
+  new Scene({
+    text: `
+      Вспомнив о своем отце, сердце невольно сжалось. Но мне удалось подавить эмоции и я с улыбкой произнесла:
+      <p>- Давай еще немного погуляем и вернёмся назад.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[128].Begin();}],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[128] =
+  new Scene({
+    text: `
+      - Отличная мысль! 
+      <p>Мы ушли с площади, оставляя фонтан позади. 
+      <p>Тогда я поймала себя на мысли, что мне очень хочется вернуться сюда. Поделиться драгоценными воспоминаниями с отцом или, может быть, с Артуром. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[129].Begin();}],
+    background: 'Backgrounds/Aurora_Fountain',
+  });
+
+Game.Scenes.A_Part03[129] =
+  new Scene({
+    text: `
+      Петляя по улочкам мы вышли к удивительному современному стеклянному зданию, на фасаде которого красовалась надпись “Rosen medical”. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[130].Begin();}],
+    background: 'Backgrounds/Aurora_Pharm',
+  });
+
+Game.Scenes.A_Part03[130] =
+  new Scene({
+    text: `
+      - Что это за здание? 
+      <p>- Это фармацевтическая компания. Одна из крупнейших в городе. У них даже название происходит от какой-то там древней шведской фамилии. 
+      <p>- Ого, очень красивое здание. 
+      <p>- Ты не поверишь, если я скажу, что мой отец его проектировал. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[131].Begin();}],
+    background: 'Backgrounds/Aurora_Pharm',
+  });
+
+Game.Scenes.A_Part03[131] =
+  new Scene({
+    text: `
+      - Он настоящий гений! 
+      <p>- Все так говорят… А теперь пойдем поскорее. Не хочу больше тут находиться. 
+      <p>- Постой…
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[132].Begin();}],
+    background: 'Backgrounds/Aurora_Pharm',
+  });
+
+Game.Scenes.A_Part03[132] =
+  new Scene({
+    text: `
+      Я не верила своим глазам, но из здания выходил Артур. Он выглядел очень нервно, постоянно оборачивался назад. От его добродушного и привычного располагающего вида не осталось и следа. Артур был полностью сосредоточен и шел вперед, пытаясь поскорее оставить здание далеко за спиной. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[133].Begin();}],
+    background: 'Backgrounds/Aurora_Pharm',
+  });
+
+Game.Scenes.A_Part03[133] =
+  new Scene({
+    text: `
+      - Что такое? - уточнила Далия. 
+      <p>- Это Артур! Он должен был забрать меня сегодня. 
+      <p>- Артур? Внук прошлого смотрителя? Какое интересное совпадение. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[134].Begin();}],
+    background: 'Backgrounds/Aurora_Pharm',
+  });
+
+Game.Scenes.A_Part03[134] =
+  new Scene({
+    text: `
+      Первое время, казалось, что Артур ничего не замечал вокруг. Но затем, будто бы неведомые силы заставили его посмотреть в мою сторону. Он сильно удивился, казалось, немного разозлился и стремительно направился в нашу сторону. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[135].Begin(); Game.Achievements.A_Walker.Unlock();}],
+    background: 'Backgrounds/Aurora_Pharm',
+  });
+
+Game.Scenes.A_Part03[135] =
+  new Scene({
+    text: `
+      - Аврора? Что ты здесь делаешь? Ты же должна быть в университете. 
+      <p>- Должна, но ты не приехал. 
+      <p>- Как… - Артур посмотрел на время и с грустью взглянул на меня. - Прости, пожалуйста. Я должен был явиться по рабочим вопросам в этот офис. Сам не знаю, как так получилось, что я совершенно забыл о времени.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[136].Begin();}],
+    background: 'Persons/Arthur',
+  });
+
+Game.Scenes.A_Part03[136] =
+  new Scene({
+    text: `
+       - А что это за рабочие вопросы такие? - спросила Далия, испытывающе глядя на Артура. 
+       <p>- А ты кто такая? Извини, конечно, но это тебя не касается. 
+       <p>- Ты прав, но поступать так с близкими людьми как минимум - не красиво. Знаю я эти ваши «рабочие встречи». Врать он не умеет. Скрывает что-то!  Какие-нибудь девушки…
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[137].Begin();}],
+    background: 'Persons/Arthur',
+  });
+
+Game.Scenes.A_Part03[137] =
+  new Scene({
+    text: `
+       - Я не собираюсь выслушивать нотации от незнакомки, тем более без веского повода, - Артур прервал Далию и резко схватил меня за руку, потянув в сторону своего автомобиля. 
+       <p>- Но как же, - я растерянно смотрела вслед девушки. - Постой, я даже не попрощалась. 
+       <p>- Еще увидимся, Аврора, - крикнула мне Далия. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[138].Begin(); Game.Sounds.Play('Music',`Aurora_Daily_0${Game.Stats.Song.Get()}`);}],
+    background: 'Persons/Arthur',
+  });
+
+Game.Scenes.A_Part03[138] =
+  new Scene({
+    text: `
+      Мы сели в машину Артура. Не было сил и желания вести разговор, поэтому мы молча поехали в сторону дома. 
+      <p>Я не представляла, почему он мог повести себя так бестактно. Да, я тоже была не права, что отправилась на прогулку, не стала его дожидаться.
+      <p>В конце концов, Далия оказалась права. Ему и правда было не до меня. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[139].Begin();}],
+    background: 'Backgrounds/Arthurs_Car',
+  });
+
+Game.Scenes.A_Part03[139] =
+  new Scene({
+    text: `
+      Даже дома разговор не завязывался. Мы не посмели смотреть друг на друга, а в горле застрял несуществующий ком. 
+      <p>Неожиданно Артур все-таки произнес:
+      <p>- Тебе пришло письмо. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[140].Begin();}],
+    background: 'Backgrounds/Livingkitchen',
+  });
+
+Game.Scenes.A_Part03[140] =
+  new Scene({
+    text: `
+      - Спасибо, - взяв в руки конверт, я поспешила в свою комнату. 
+      <p>Больше мне было невыносимо находиться в такой гнетущей атмосфере. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[141].Begin();}],
+    background: 'Backgrounds/Livingkitchen',
+  });
+
+Game.Scenes.A_Part03[141] =
+  new Scene({
+    text: `
+      Наконец-то оставшись сама с собой, я выдохнула, усаживаясь на кровати поудобнее. В голове прокручивался сегодняшний день и множество вопросов, на которые мне хотелось узнать ответы. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[142].Begin();}],
+    background: 'Backgrounds/Aurora_Room',
+  });
+
+Game.Scenes.A_Part03[142] =
+  new Scene({
+    text: `
+      Прежде всего меня интересовало: почему Артур так странно вел себя? Неужели работа настолько важна, что ему было сложно даже послать СМС?
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[143].Begin();}],
+    background: 'Backgrounds/Aurora_Room',
+  });
+
+Game.Scenes.A_Part03[143] =
+  new Scene({
+    text: `
+      А Калеб? Куда он так резко отправился? Что за отношения у Далии с отцом? 
+      <p>Даже легенда собора не отпускала меня, вызывая красочные образы у меня в голове. Все ли там так очевидно? 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[144].Begin();}],
+    background: 'Backgrounds/Aurora_Room',
+  });
+
+Game.Scenes.A_Part03[144] =
+  new Scene({
+    text: `
+      Но в одном я была уверена точно. Я ни разу не пожалела о своем решении участвовать в такой спонтанной поездке. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[145].Begin();}],
+    background: 'Backgrounds/Aurora_Room',
+  });
+
+Game.Scenes.A_Part03[145] =
+  new Scene({
+    text: `
+      Еще больше меня волновало то, что сейчас в руках я сжимала письмо от отца. Конечно же я сразу узнала его аккуратный почерк. 
+      <p>Мне было страшно увидеть написанное, но все же я открыла и начала читать.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[146].Begin();}],
+    background: 'Backgrounds/Aurora_Room',
+    condition: function () {
+      if (Game.Stats.Father.Get()>=1) this.buttonaction[0] = () => { Game.Scenes.A_Part03[146].Begin(); Game.Sounds.Play('Music','Lighthouse');}
+      if (Game.Stats.Father.Get()<=0) this.buttonaction[0] = () => { Game.Scenes.A_Part03[152].Begin(); Game.Sounds.Play('Music','Lighthouse');}
+    }
+  });
+
+Game.Scenes.A_Part03[146] =
+  new Scene({
+    text: `
+      Я не могла не обратить внимание на бумагу, на которой был написал текст. Она была мамина. Маме отчего-то очень нравилось коллекционировать необычную бумагу и иногда писать на ней особенные письма. 
+      <p>Оторвавшись от воспоминаний, я принялась читать.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[147].Begin();}],
+    background: 'Backgrounds/Aurora_Message_Father_Good',
+  });
+
+Game.Scenes.A_Part03[147] =
+  new Scene({
+    text: `
+      <i>Дорогая Аврора, как ты? Я так и не смог отправить тебе СМС, да и не силен в этих современных технологиях. Поэтому использую старый добрый метод - письмо. 
+      <p><i>Расскажи о своих успехах. Обжилась на новом месте? Как у вас с Артуром дела? Что с учебой? Мне интересна любая деталь, связанная с тобой. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[148].Begin();}],
+    background: 'Backgrounds/Aurora_Message_Father_Good',
+  });
+
+Game.Scenes.A_Part03[148] =
+  new Scene({
+    text: `
+      <i>Что же до меня, то у меня все хорошо. На работе все без изменений, полный штиль. Время от времени приезжают ремонтники. С одним из них даже удалось подружиться. Мои вечера отнюдь не такие одинокие, как ты могла подумать. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[149].Begin();}],
+    background: 'Backgrounds/Aurora_Message_Father_Good',
+  });
+
+Game.Scenes.A_Part03[149] =
+  new Scene({
+    text: `
+      <i>Мы проводим время с пользой. Общаемся. Часто делимся опытом в рабочей сфере. Представляешь, я даже научился менять лампочку в прожекторе маяка. Не знаю пригодится ли мне это, но это был поучительный опыт.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[150].Begin();}],
+    background: 'Backgrounds/Aurora_Message_Father_Good',
+  });
+
+Game.Scenes.A_Part03[150] =
+  new Scene({
+    text: `
+      <i>Я скучаю по тебе. Твой подарок греет мне душу и не дает грустить. 
+      <p><i>Ты тоже. Постарайся ради нас. 
+      <i><p>Люблю,
+      <i>Твой папа
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[151].Begin();}],
+    background: 'Backgrounds/Aurora_Message_Father_Good',
+  });
+
+Game.Scenes.A_Part03[151] =
+  new Scene({
+    text: `
+      Отложив письмо в сторону, я улыбнулась, так как была искренне счастлива, что с папой все хорошо. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[157].Begin();}],
+    background: 'Backgrounds/Aurora_Room',
+  });
+
+Game.Scenes.A_Part03[152] =
+  new Scene({
+    text: `
+      Я не могла не обратить внимание на бумагу, на которой был написал текст. Она была грязной в каких-то непонятных пятнах. 
+      <p>В душе сразу поселилось сомнение относительно состояния папы. Но же я начала читать письмо. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[153].Begin();}],
+    background: 'Backgrounds/Aurora_Message_Father_Bad',
+  });
+
+Game.Scenes.A_Part03[153] =
+  new Scene({
+    text: `
+      <i>Дорогая Аврора, как ты? Я так и не смог отправить тебе СМС, да и не силен в этих мобильных устройствах. Поэтому использую старый добрый метод - письмо. 
+      <i><p>Расскажи о своих успехах. Обжилась на новом месте? Как у вас с Артуром дела? Что с учебой? Мне интересна любая деталь связанная с тобой. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[154].Begin();}],
+    background: 'Backgrounds/Aurora_Message_Father_Bad',
+  });
+
+Game.Scenes.A_Part03[154] =
+  new Scene({
+    text: `
+      <i>Что же до меня, то я сильно устаю в последнее время. Провожу свои вечера в одиночестве, иногда позволяю себе немного выпить. Это помогает заглушить столь нелегкое бремя. 
+      <i><p>Но я в порядке. Я обещал быть честным с тобой. Да. Период сейчас не самый простой, однако я справляюсь. Иначе и быть не может. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[155].Begin();}],
+    background: 'Backgrounds/Aurora_Message_Father_Bad',
+  });
+
+Game.Scenes.A_Part03[155] =
+  new Scene({
+    text: `
+      <i>Я скучаю по тебе. Твой подарок греет мне душу и не дает окончательно загрустить.
+      <i><p>Люблю,
+      <i>Твой папа
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[156].Begin();}],
+    background: 'Backgrounds/Aurora_Message_Father_Bad',
+  });
+
+Game.Scenes.A_Part03[156] =
+  new Scene({
+    text: `
+      Отложив письмо в сторону, я заплакала от того, что отцу сейчас приходится так несладко, а я думаю лишь о себе и о каких-то несущественных вопросах. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[157].Begin();}],
+    background: 'Backgrounds/Aurora_Room',
+  });
+
+Game.Scenes.A_Part03[157] =
+  new Scene({
+    text: `
+      Я дала себе слово, что в ближайшее время обязательно навещу его. 
+      <p>А пока, обнимая подушку, я так и уснула в обнимку с письмом, вспоминая теплые слова своего отца. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => {
+      Game.Scenes.Features[100].Begin();
+      Game.Progress.Save('Aurora_Part04');
+    }],
+    background: 'Backgrounds/Aurora_Room',
+    condition: function () {
+      Game.Achievements.A_Part03Completed.Unlock();
+    }
+  });
 Game.Scenes.A_Prologue = [];
 
 Game.Scenes.A_Prologue[0] =
