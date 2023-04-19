@@ -260,11 +260,7 @@
 <script>
     if ("serviceWorker" in navigator) {
         navigator.serviceWorker
-          .register("/Chronicles/sw.js", { scope: "/Chronicles/" })
-          .then((registration) => {
-              console.log("Registration succeeded.");
-              registration.update();
-          })
+          .register("/Chronicles/sw.js?v=1", { scope: "/Chronicles/" })
           .catch((error) => {
               console.error(`Registration failed with ${error}`);
           })}
