@@ -14,7 +14,7 @@
       "url": "https://play.google.com/store/apps/details?id=com.mva.chronicles"
     }],
   "start_url": "/Chronicles/",
-  "scope": "/",
+  "scope": "/Chronicles/",
   "background_color": "#000000",
   "display": "standalone",
   "theme_color": "#000000",
