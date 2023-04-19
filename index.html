@@ -261,7 +261,7 @@
         const registerServiceWorker = async () => {
             if ("serviceWorker" in navigator) {
                 try {
-                    const registration = await navigator.serviceWorker.register("/sw.js", {
+                    const registration = await navigator.serviceWorker.register("/Chronicles/sw.js", {
                         scope: "/Chronicles/",
                     }).then((registration) => {
                         console.log("Registration succeeded.");
