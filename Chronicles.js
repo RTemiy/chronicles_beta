@@ -5285,7 +5285,7 @@ Game.Scenes.A_Part03[16] =
     ],
     background: 'Persons/Aurora_Dalia',
     condition: function () {
-        Game.Timer.Set(5, ()=>{Game.Scenes.A_Part03[17].Begin(); Game.Timer.Stop(); })
+        Game.Timer.Set(10, ()=>{Game.Scenes.A_Part03[17].Begin(); Game.Timer.Stop(); })
     }
   });
 
