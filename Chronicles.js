@@ -2109,10 +2109,10 @@ Game.Stories.push(
       pict: 'Covers/Aurora',
       chapters: [ new Chapter ({
           name: 'Глава 1',
-          pict: 'Backgrounds/Lighthouse',
+          pict: 'Backgrounds/Aurora_Lighthouse',
           parts: [ new Part ({
               name: 'Пролог',
-              pict: 'Backgrounds/Writing',
+              pict: 'Backgrounds/Aurora_Writing',
               code: 'Aurora_Prologue',
               event: function (){
 
@@ -2129,7 +2129,7 @@ Game.Stories.push(
           }),
               new Part ({
                   name: 'Часть 1',
-                  pict: 'Backgrounds/House_Inside',
+                  pict: 'Backgrounds/Aurora_House_Inside',
                   code: 'Aurora_Part01',
                   event: function (){
 
@@ -2146,7 +2146,7 @@ Game.Stories.push(
               }),
               new Part ({
                   name: 'Часть 2',
-                  pict: 'Backgrounds/Univer',
+                  pict: 'Backgrounds/Aurora_Univer',
                   code: 'Aurora_Part02',
                   event: function (){
 
@@ -2414,49 +2414,49 @@ Game.Scenes.AEP_Prologue[16] =
   });
   */
 Game.Achievements.A_PrologueCompleted = new Achievement ({
-  picture: 'Backgrounds/Writing',
+  picture: 'Backgrounds/Aurora_Writing',
   title: 'Дневник',
   text: 'Аврора начинает свой рассказ',
   story: 'Aurora',
 });
 
 Game.Achievements.A_Artist = new Achievement ({
-  picture: 'Backgrounds/Album',
+  picture: 'Backgrounds/Aurora_Album',
   title: 'Художник',
   text: 'Выберете в качестве основного хобби рисование',
   story: 'Aurora',
 });
 
 Game.Achievements.A_Writer = new Achievement ({
-  picture: 'Backgrounds/Writing',
+  picture: 'Backgrounds/Aurora_Writing',
   title: 'Писатель',
   text: 'Выберете в качестве основного хобби писательство',
   story: 'Aurora',
 });
 
 Game.Achievements.A_Musician = new Achievement ({
-  picture: 'Backgrounds/WM',
+  picture: 'Backgrounds/Aurora_WM',
   title: 'Музыкант',
   text: 'Выберете в качестве основного хобби музыку',
   story: 'Aurora',
 });
 
 Game.Achievements.A_Part01Completed = new Achievement ({
-  picture: 'Backgrounds/Lighthouse_Night',
+  picture: 'Backgrounds/Aurora_Lighthouse_Night',
   title: 'Новая жизнь',
   text: 'Отправьтесь с Авророй в неизвестное будущее',
   story: 'Aurora',
 });
 
 Game.Achievements.A_Musicality = new Achievement ({
-  picture: 'Backgrounds/Disc',
+  picture: 'Backgrounds/Aurora_Disc',
   title: 'Меломан',
   text: 'Выберите музыку по вкусу',
   story: 'Aurora',
 });
 
 Game.Achievements.A_Part02Completed = new Achievement ({
-  picture: 'Backgrounds/Univer',
+  picture: 'Backgrounds/Aurora_Univer',
   title: 'Студенческие будни',
   text: 'Завершите вторую часть интересной встречей',
   story: 'Aurora',
@@ -2470,37 +2470,30 @@ Game.Achievements.A_Fan = new Achievement ({
 });
 
 Game.Achievements.A_Fav_Writer = new Achievement ({
-  picture: 'Backgrounds/Writing',
+  picture: 'Backgrounds/Aurora_Writing',
   title: 'Любимый писатель',
   text: 'Узнайте интерес Калеба',
   story: 'Aurora',
 });
 
-Game.Achievements.A_Legend = new Achievement ({
-  picture: 'Backgrounds/Aurora_Church',
-  title: 'Легенда',
-  text: 'Поучаствуйте в экскурсии и узнайте жуткий миф города',
-  story: 'Aurora',
-});
-
-Game.Achievements.A_Walker = new Achievement ({
-  picture: 'Persons/Arthur',
-  title: 'Блудный сын',
-  text: 'Найдите Артура',
+Game.Achievements.A_PayBack = new Achievement ({
+  picture: 'Persons/Aurora_Kaleb',
+  title: 'Должок',
+  text: 'Не выдавайте Калеба',
   story: 'Aurora',
 });
 
 Game.Achievements.A_Part03Completed = new Achievement ({
   picture: 'Backgrounds/Aurora_Room',
-  title: 'Крепкий сон',
-  text: 'Завершите третью часть',
+  title: 'Знакомство',
+  text: 'Завершите третью часть, отдыхая после насыщенного дня',
   story: 'Aurora',
 });
 //Characters
 
 Game.Stats.Aurora = new Stat({
     name: 'Аврора',
-    picture: 'Persons/Aurora',
+    picture: 'Persons/Aurora_Aurora',
     title: 'В моей жизни происходит много значимых перемен.',
     text: 'Интересно, какие еще сюрпризы преподнесет судьба?',
     story: 'Aurora',
@@ -2508,7 +2501,7 @@ Game.Stats.Aurora = new Stat({
 
 Game.Stats.Father = new Stat({
     name: 'Папа',
-    picture: 'Persons/Dad',
+    picture: 'Persons/Aurora_Dad',
     title: 'Мой единственный родной человек.',
     text: 'Ему пришлось нелегко: работа, потеря дорогих людей. Его состояние нестабильно - я должна сделать все, чтобы помочь ему.',
     story: 'Aurora',
@@ -2516,7 +2509,7 @@ Game.Stats.Father = new Stat({
 
 Game.Stats.Yan = new Stat({
     name: 'Ян',
-    picture: 'Persons/Yan',
+    picture: 'Persons/Aurora_Yan',
     title: 'Самый близкий друг для меня. Мой старший брат.',
     text: 'Его загадочное исчезновение до сих пор отзывается болью у меня в сердце. Но я не собираюсь терять надежду.',
     story: 'Aurora',
@@ -2524,7 +2517,7 @@ Game.Stats.Yan = new Stat({
 
 Game.Stats.Arthur = new Stat({
     name: 'Артур',
-    picture: 'Persons/Arthur',
+    picture: 'Persons/Aurora_Arthur',
     title: 'Внук бывшего смотрителя маяка. Добрый и понимающий парень.',
     text: 'Именно он был рядом в самые трудные моменты моей жизни. Я не понимаю, какие чувства испытываю к нему, но время все расставит на свои места.',
     story: 'Aurora',
@@ -2594,7 +2587,7 @@ Game.Stats.BetrayKaleb = new Stat({
 
 Game.Stats.Trial_Pass = new Stat({
     name: 'Пропуск',
-    picture: 'Items/Trial_Pass',
+    picture: 'Items/Aurora_Trial_Pass',
     type: 'Item',
     title: 'Временный пропуск Авроры',
     text: 'Его вручил мне Артур, чтобы я могла пройти в университет в любое время',
@@ -2620,7 +2613,7 @@ Game.Scenes.A_Part01[0] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[1].Begin(); Game.Stats.Aurora.Add(0); Game.Message('В верхнем левом углу находится инвентарь, там вы можете посмотреть полезную информацию') }],
-    background: 'Backgrounds/House_Inside',
+    background: 'Backgrounds/Aurora_House_Inside',
     condition: () => { Game.Sounds.Play('Music', 'Lighthouse') }
   });
 
@@ -2632,7 +2625,7 @@ Game.Scenes.A_Part01[1] =
         `,
       buttontext: [''],
       buttonaction: [() => { Game.Scenes.A_Part01[100].Begin(); }],
-      background: 'Backgrounds/House_Inside',
+      background: 'Backgrounds/Aurora_House_Inside',
   });
 
 Game.Scenes.A_Part01[100] =
@@ -2643,7 +2636,7 @@ Game.Scenes.A_Part01[100] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[2].Begin(); }],
-    background: 'Persons/Dad',
+    background: 'Persons/Aurora_Dad',
   });
 
 Game.Scenes.A_Part01[2] =
@@ -2654,7 +2647,7 @@ Game.Scenes.A_Part01[2] =
         `,
       buttontext: [''],
       buttonaction: [() => { Game.Scenes.A_Part01[3].Begin(); }],
-      background: 'Persons/Dad',
+      background: 'Persons/Aurora_Dad',
   });
 
 Game.Scenes.A_Part01[3] =
@@ -2665,7 +2658,7 @@ Game.Scenes.A_Part01[3] =
         `,
       buttontext: [''],
       buttonaction: [() => { Game.Scenes.A_Part01[4].Begin(); }],
-      background: 'Persons/Dad',
+      background: 'Persons/Aurora_Dad',
   });
 
 Game.Scenes.A_Part01[4] =
@@ -2676,7 +2669,7 @@ Game.Scenes.A_Part01[4] =
         `,
       buttontext: [''],
       buttonaction: [() => { Game.Scenes.A_Part01[5].Begin(); }],
-      background: 'Persons/Dad',
+      background: 'Persons/Aurora_Dad',
   });
 
 Game.Scenes.A_Part01[5] =
@@ -2686,7 +2679,7 @@ Game.Scenes.A_Part01[5] =
         `,
       buttontext: [''],
       buttonaction: [() => { Game.Scenes.A_Part01[6].Begin(); }],
-      background: 'Backgrounds/House_Inside',
+      background: 'Backgrounds/Aurora_House_Inside',
   });
 
 Game.Scenes.A_Part01[6] =
@@ -2696,7 +2689,7 @@ Game.Scenes.A_Part01[6] =
         `,
       buttontext: [''],
       buttonaction: [() => { Game.Scenes.A_Part01[7].Begin(); }],
-      background: 'Persons/Yan',
+      background: 'Persons/Aurora_Yan',
   });
 
 Game.Scenes.A_Part01[7] =
@@ -2707,7 +2700,7 @@ Game.Scenes.A_Part01[7] =
           `,
       buttontext: [''],
       buttonaction: [() => { Game.Scenes.A_Part01[8].Begin(); }],
-      background: 'Persons/Yan',
+      background: 'Persons/Aurora_Yan',
   });
 
 Game.Scenes.A_Part01[8] =
@@ -2719,7 +2712,7 @@ Game.Scenes.A_Part01[8] =
           `,
       buttontext: [''],
       buttonaction: [() => { Game.Scenes.A_Part01[9].Begin(); Game.Stats.Yan.Add(0); }],
-      background: 'Persons/Yan',
+      background: 'Persons/Aurora_Yan',
   });
 
 Game.Scenes.A_Part01[9] =
@@ -2730,7 +2723,7 @@ Game.Scenes.A_Part01[9] =
           `,
       buttontext: [''],
       buttonaction: [() => { Game.Scenes.A_Part01[101].Begin(); }],
-      background: 'Backgrounds/Missing',
+      background: 'Backgrounds/Aurora_Missing',
   });
 
 Game.Scenes.A_Part01[101] =
@@ -2741,7 +2734,7 @@ Game.Scenes.A_Part01[101] =
           `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[10].Begin(); }],
-    background: 'Backgrounds/Missing',
+    background: 'Backgrounds/Aurora_Missing',
   });
 
 Game.Scenes.A_Part01[10] =
@@ -2753,7 +2746,7 @@ Game.Scenes.A_Part01[10] =
           `,
       buttontext: [''],
       buttonaction: [() => { Game.Scenes.A_Part01[11].Begin(); }],
-      background: 'Backgrounds/Missing',
+      background: 'Backgrounds/Aurora_Missing',
   });
 
 Game.Scenes.A_Part01[11] =
@@ -2764,7 +2757,7 @@ Game.Scenes.A_Part01[11] =
           `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[12].Begin(); }],
-    background: 'Backgrounds/House_Inside',
+    background: 'Backgrounds/Aurora_House_Inside',
   });
 
 Game.Scenes.A_Part01[12] =
@@ -2776,7 +2769,7 @@ Game.Scenes.A_Part01[12] =
           `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[13].Begin(); }],
-    background: 'Persons/Dad',
+    background: 'Persons/Aurora_Dad',
   });
 
 Game.Scenes.A_Part01[13] =
@@ -2786,7 +2779,7 @@ Game.Scenes.A_Part01[13] =
           `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[14].Begin(); }],
-    background: 'Backgrounds/House_Inside',
+    background: 'Backgrounds/Aurora_House_Inside',
   });
 
 Game.Scenes.A_Part01[14] =
@@ -2799,7 +2792,7 @@ Game.Scenes.A_Part01[14] =
       `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[15].Begin(); }],
-    background: 'Backgrounds/House_Inside',
+    background: 'Backgrounds/Aurora_House_Inside',
   });
 
 Game.Scenes.A_Part01[15] =
@@ -2812,7 +2805,7 @@ Game.Scenes.A_Part01[15] =
       `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[16].Begin(); }],
-    background: 'Persons/Aurora',
+    background: 'Persons/Aurora_Aurora',
   });
 
 Game.Scenes.A_Part01[16] =
@@ -2824,7 +2817,7 @@ Game.Scenes.A_Part01[16] =
       `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[17].Begin(); }],
-    background: 'Persons/Aurora',
+    background: 'Persons/Aurora_Aurora',
   });
 
 Game.Scenes.A_Part01[17] =
@@ -2835,7 +2828,7 @@ Game.Scenes.A_Part01[17] =
       `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[106].Begin();}],
-    background: 'Persons/Aurora',
+    background: 'Persons/Aurora_Aurora',
   });
 
 Game.Scenes.A_Part01[106] =
@@ -2847,7 +2840,7 @@ Game.Scenes.A_Part01[106] =
       `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[102].Begin();}],
-    background: 'Persons/Aurora',
+    background: 'Persons/Aurora_Aurora',
   });
 
 
@@ -2860,7 +2853,7 @@ Game.Scenes.A_Part01[102] =
       `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[103].Begin(); Game.Message('Сейчас вы сделаете свой первый выбор. Некоторые из них меняют сюжет незначительно, другие же ведут к серьезным переменам. Но помните, только Вам решать, какой вы видите свою главную героиню'); }],
-    background: 'Backgrounds/Lighthouse',
+    background: 'Backgrounds/Aurora_Lighthouse',
   });
 
 Game.Scenes.A_Part01[103] =
@@ -2875,7 +2868,7 @@ Game.Scenes.A_Part01[103] =
       () => { Game.Scenes.A_Part01[21].Begin(); Game.Achievements.A_Writer.Unlock(); Game.Stats.Writing.Add(1);},
       () => { Game.Scenes.A_Part01[24].Begin(); Game.Achievements.A_Musician.Unlock(); Game.Stats.Music.Add(1); }
     ],
-    background: 'Backgrounds/Lighthouse',
+    background: 'Backgrounds/Aurora_Lighthouse',
   });
 
 Game.Scenes.A_Part01[18] =
@@ -2888,7 +2881,7 @@ Game.Scenes.A_Part01[18] =
       `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[19].Begin(); }],
-    background: 'Backgrounds/Album',
+    background: 'Backgrounds/Aurora_Album',
   });
 
 Game.Scenes.A_Part01[19] =
@@ -2898,7 +2891,7 @@ Game.Scenes.A_Part01[19] =
       `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[107].Begin(); }],
-    background: 'Backgrounds/Album',
+    background: 'Backgrounds/Aurora_Album',
   });
 
 Game.Scenes.A_Part01[107] =
@@ -2909,7 +2902,7 @@ Game.Scenes.A_Part01[107] =
       `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[20].Begin(); }],
-    background: 'Backgrounds/Album',
+    background: 'Backgrounds/Aurora_Album',
   });
 
 Game.Scenes.A_Part01[20] =
@@ -2921,7 +2914,7 @@ Game.Scenes.A_Part01[20] =
       `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[28].Begin(); }],
-    background: 'Backgrounds/Album',
+    background: 'Backgrounds/Aurora_Album',
   });
 
 Game.Scenes.A_Part01[21] =
@@ -2933,7 +2926,7 @@ Game.Scenes.A_Part01[21] =
       `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[22].Begin(); }],
-    background: 'Backgrounds/Writing',
+    background: 'Backgrounds/Aurora_Writing',
   });
 
 Game.Scenes.A_Part01[22] =
@@ -2944,7 +2937,7 @@ Game.Scenes.A_Part01[22] =
       `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[23].Begin(); }],
-    background: 'Backgrounds/Writing',
+    background: 'Backgrounds/Aurora_Writing',
   });
 
 Game.Scenes.A_Part01[23] =
@@ -2955,7 +2948,7 @@ Game.Scenes.A_Part01[23] =
       `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[28].Begin(); }],
-    background: 'Backgrounds/Writing',
+    background: 'Backgrounds/Aurora_Writing',
   });
 
 Game.Scenes.A_Part01[24] =
@@ -2966,7 +2959,7 @@ Game.Scenes.A_Part01[24] =
       `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[25].Begin(); }],
-    background: 'Backgrounds/WM',
+    background: 'Backgrounds/Aurora_WM',
   });
 
 Game.Scenes.A_Part01[25] =
@@ -2977,7 +2970,7 @@ Game.Scenes.A_Part01[25] =
       `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[26].Begin(); }],
-    background: 'Backgrounds/WM',
+    background: 'Backgrounds/Aurora_WM',
   });
 
 Game.Scenes.A_Part01[26] =
@@ -2989,7 +2982,7 @@ Game.Scenes.A_Part01[26] =
       `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[27].Begin(); Game.Sounds.Play('Music','KingQueens'); }],
-    background: 'Backgrounds/WM',
+    background: 'Backgrounds/Aurora_WM',
   });
 
 Game.Scenes.A_Part01[27] =
@@ -3000,7 +2993,7 @@ Game.Scenes.A_Part01[27] =
       `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[110].Begin(); }],
-    background: 'Backgrounds/WM',
+    background: 'Backgrounds/Aurora_WM',
   });
 
 
@@ -3011,7 +3004,7 @@ Game.Scenes.A_Part01[110] =
       `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[120].Begin(); }],
-    background: 'Backgrounds/WM',
+    background: 'Backgrounds/Aurora_WM',
   });
 
 Game.Scenes.A_Part01[120] =
@@ -3022,7 +3015,7 @@ Game.Scenes.A_Part01[120] =
       `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[28].Begin(); Game.Sounds.Play('Music','Lighthouse') }],
-    background: 'Backgrounds/WM',
+    background: 'Backgrounds/Aurora_WM',
   });
 
 Game.Scenes.A_Part01[28] =
@@ -3033,7 +3026,7 @@ Game.Scenes.A_Part01[28] =
       `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[60].Begin(); }],
-    background: 'Backgrounds/Lighthouse',
+    background: 'Backgrounds/Aurora_Lighthouse',
   });
 
 Game.Scenes.A_Part01[60] =
@@ -3047,7 +3040,7 @@ Game.Scenes.A_Part01[60] =
       () => { Game.Scenes.A_Part01[29].Begin(); Game.Stats.Romantic.Add(1); },
       () => { Game.Scenes.A_Part01[31].Begin(); Game.Stats.Pragmatic.Add(1); }
     ],
-    background: 'Backgrounds/Lighthouse',
+    background: 'Backgrounds/Aurora_Lighthouse',
   });
 
 Game.Scenes.A_Part01[29] =
@@ -3057,7 +3050,7 @@ Game.Scenes.A_Part01[29] =
       `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[108].Begin(); }],
-    background: 'Backgrounds/Near_Lighthouse',
+    background: 'Backgrounds/Aurora_Near_Lighthouse',
   });
 
 Game.Scenes.A_Part01[108] =
@@ -3068,7 +3061,7 @@ Game.Scenes.A_Part01[108] =
       `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[30].Begin(); }],
-    background: 'Persons/Dad',
+    background: 'Persons/Aurora_Dad',
   });
 
 Game.Scenes.A_Part01[30] =
@@ -3080,7 +3073,7 @@ Game.Scenes.A_Part01[30] =
       `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[33].Begin(); }],
-    background: 'Backgrounds/Near_Lighthouse',
+    background: 'Backgrounds/Aurora_Near_Lighthouse',
   });
 
 Game.Scenes.A_Part01[31] =
@@ -3090,7 +3083,7 @@ Game.Scenes.A_Part01[31] =
       `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[109].Begin(); }],
-    background: 'Backgrounds/Near_Lighthouse',
+    background: 'Backgrounds/Aurora_Near_Lighthouse',
   });
 
 Game.Scenes.A_Part01[109] =
@@ -3101,7 +3094,7 @@ Game.Scenes.A_Part01[109] =
       `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[32].Begin(); }],
-    background: 'Persons/Dad',
+    background: 'Persons/Aurora_Dad',
   });
 
 Game.Scenes.A_Part01[32] =
@@ -3112,7 +3105,7 @@ Game.Scenes.A_Part01[32] =
 `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[33].Begin(); }],
-    background: 'Persons/Dad',
+    background: 'Persons/Aurora_Dad',
   });
 
 Game.Scenes.A_Part01[33] =
@@ -3125,7 +3118,7 @@ Game.Scenes.A_Part01[33] =
       `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[34].Begin(); }],
-    background: 'Backgrounds/Lighthouse',
+    background: 'Backgrounds/Aurora_Lighthouse',
   });
 
 Game.Scenes.A_Part01[34] =
@@ -3137,7 +3130,7 @@ Game.Scenes.A_Part01[34] =
       `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[35].Begin(); }],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part01[35] =
@@ -3149,7 +3142,7 @@ Game.Scenes.A_Part01[35] =
 `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[36].Begin(); }],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part01[36] =
@@ -3162,7 +3155,7 @@ Game.Scenes.A_Part01[36] =
 `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[37].Begin(); }],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part01[37] =
@@ -3174,7 +3167,7 @@ Game.Scenes.A_Part01[37] =
 `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[38].Begin(); }],
-    background: 'Backgrounds/Near_Lighthouse',
+    background: 'Backgrounds/Aurora_Near_Lighthouse',
   });
 
 Game.Scenes.A_Part01[38] =
@@ -3185,7 +3178,7 @@ Game.Scenes.A_Part01[38] =
 `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[39].Begin(); }],
-    background: 'Persons/Dad',
+    background: 'Persons/Aurora_Dad',
   });
 
 Game.Scenes.A_Part01[39] =
@@ -3197,7 +3190,7 @@ Game.Scenes.A_Part01[39] =
 `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[40].Begin(); }],
-    background: 'Backgrounds/Lighthouse',
+    background: 'Backgrounds/Aurora_Lighthouse',
   });
 
 Game.Scenes.A_Part01[40] =
@@ -3208,7 +3201,7 @@ Game.Scenes.A_Part01[40] =
 `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[41].Begin(); Game.Stats.Arthur.Add(0); }],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part01[41] =
@@ -3218,7 +3211,7 @@ Game.Scenes.A_Part01[41] =
 `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[115].Begin(); }],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part01[115] =
@@ -3229,7 +3222,7 @@ Game.Scenes.A_Part01[115] =
 `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[42].Begin(); }],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part01[42] =
@@ -3240,7 +3233,7 @@ Game.Scenes.A_Part01[42] =
 `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[43].Begin(); }],
-    background: 'Backgrounds/Near_Lighthouse',
+    background: 'Backgrounds/Aurora_Near_Lighthouse',
   });
 
 Game.Scenes.A_Part01[43] =
@@ -3253,7 +3246,7 @@ Game.Scenes.A_Part01[43] =
 `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[44].Begin(); }],
-    background: 'Backgrounds/Near_Lighthouse',
+    background: 'Backgrounds/Aurora_Near_Lighthouse',
     condition: function (){
       if(Game.Stats.Romantic.Get()==1){
         this.buttonaction[0] = () => { Game.Scenes.A_Part01[44].Begin(); }
@@ -3318,7 +3311,7 @@ Game.Scenes.A_Part01[48] =
 `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[49].Begin(); }],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part01[49] =
@@ -3329,7 +3322,7 @@ Game.Scenes.A_Part01[49] =
 `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[111].Begin(); }],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part01[111] =
@@ -3339,7 +3332,7 @@ Game.Scenes.A_Part01[111] =
 `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[50].Begin(); }],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part01[50] =
@@ -3352,7 +3345,7 @@ Game.Scenes.A_Part01[50] =
 `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[51].Begin(); }],
-    background: 'Backgrounds/Lighthouse_Night',
+    background: 'Backgrounds/Aurora_Lighthouse_Night',
   });
 
 Game.Scenes.A_Part01[51] =
@@ -3365,7 +3358,7 @@ Game.Scenes.A_Part01[51] =
 `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[52].Begin(); }],
-    background: 'Backgrounds/Lighthouse_Night',
+    background: 'Backgrounds/Aurora_Lighthouse_Night',
   });
 
 Game.Scenes.A_Part01[52] =
@@ -3376,7 +3369,7 @@ Game.Scenes.A_Part01[52] =
 `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[104].Begin(); }],
-    background: 'Persons/Dad',
+    background: 'Persons/Aurora_Dad',
   });
 
 Game.Scenes.A_Part01[104] =
@@ -3387,7 +3380,7 @@ Game.Scenes.A_Part01[104] =
 `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[53].Begin(); }],
-    background: 'Persons/Dad',
+    background: 'Persons/Aurora_Dad',
   });
 
 Game.Scenes.A_Part01[53] =
@@ -3399,7 +3392,7 @@ Game.Scenes.A_Part01[53] =
       `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[105].Begin(); }],
-    background: 'Backgrounds/Lighthouse_Night',
+    background: 'Backgrounds/Aurora_Lighthouse_Night',
   });
 
 Game.Scenes.A_Part01[105] =
@@ -3409,7 +3402,7 @@ Game.Scenes.A_Part01[105] =
 `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[54].Begin(); }],
-    background: 'Persons/Dad',
+    background: 'Persons/Aurora_Dad',
   });
 
 Game.Scenes.A_Part01[54] =
@@ -3421,7 +3414,7 @@ Game.Scenes.A_Part01[54] =
 `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[55].Begin(); }],
-    background: 'Persons/Dad',
+    background: 'Persons/Aurora_Dad',
   });
 
 Game.Scenes.A_Part01[55] =
@@ -3432,7 +3425,7 @@ Game.Scenes.A_Part01[55] =
 `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[56].Begin(); }],
-    background: 'Backgrounds/Lighthouse_Night',
+    background: 'Backgrounds/Aurora_Lighthouse_Night',
   });
 
 Game.Scenes.A_Part01[56] =
@@ -3443,7 +3436,7 @@ Game.Scenes.A_Part01[56] =
 `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[57].Begin(); Game.Stats.Father.Add(0); Game.Achievements.A_Part01Completed.Unlock(); }],
-    background: 'Persons/Dad',
+    background: 'Persons/Aurora_Dad',
   });
 
 Game.Scenes.A_Part01[57] =
@@ -3458,7 +3451,7 @@ Game.Scenes.A_Part01[57] =
       Game.LoadScreen('Aurora_Part02');
       Game.Progress.Save("Aurora_Part02");
     }],
-    background: 'Backgrounds/Lighthouse_Night',
+    background: 'Backgrounds/Aurora_Lighthouse_Night',
   });
 Game.Scenes.A_Part02 = [];
 
@@ -3470,7 +3463,7 @@ Game.Scenes.A_Part02[0] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[1].Begin(); }],
-    background: 'Backgrounds/Lighthouse',
+    background: 'Backgrounds/Aurora_Lighthouse',
     condition: function (){ Game.Sounds.Play('Music', 'Lighthouse') }
   });
 
@@ -3481,7 +3474,7 @@ Game.Scenes.A_Part02[1] =
         `,
       buttontext: [''],
       buttonaction: [() => { Game.Scenes.A_Part02[2].Begin();}],
-      background: 'Backgrounds/Lighthouse',
+      background: 'Backgrounds/Aurora_Lighthouse',
   });
 
 Game.Scenes.A_Part02[2] =
@@ -3492,7 +3485,7 @@ Game.Scenes.A_Part02[2] =
         `,
       buttontext: [''],
       buttonaction: [() => { Game.Scenes.A_Part02[3].Begin();}],
-      background: 'Backgrounds/Lighthouse',
+      background: 'Backgrounds/Aurora_Lighthouse',
   });
 
 Game.Scenes.A_Part02[3] =
@@ -3503,7 +3496,7 @@ Game.Scenes.A_Part02[3] =
         `,
       buttontext: [''],
       buttonaction: [() => { Game.Scenes.A_Part02[4].Begin();}],
-      background: 'Backgrounds/Lighthouse',
+      background: 'Backgrounds/Aurora_Lighthouse',
   });
 
 Game.Scenes.A_Part02[4] =
@@ -3514,7 +3507,7 @@ Game.Scenes.A_Part02[4] =
         `,
       buttontext: [''],
       buttonaction: [() => { Game.Scenes.A_Part02[5].Begin();}],
-      background: 'Persons/Dad',
+      background: 'Persons/Aurora_Dad',
   });
 
 Game.Scenes.A_Part02[5] =
@@ -3525,7 +3518,7 @@ Game.Scenes.A_Part02[5] =
         `,
       buttontext: [''],
       buttonaction: [() => { Game.Scenes.A_Part02[6].Begin();}],
-      background: 'Persons/Arthur',
+      background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[6] =
@@ -3536,7 +3529,7 @@ Game.Scenes.A_Part02[6] =
         `,
       buttontext: [''],
       buttonaction: [() => { Game.Scenes.A_Part02[7].Begin();}],
-      background: 'Backgrounds/Bench',
+      background: 'Backgrounds/Aurora_Bench',
   });
 
 Game.Scenes.A_Part02[6] =
@@ -3546,7 +3539,7 @@ Game.Scenes.A_Part02[6] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[7].Begin();}],
-    background: 'Backgrounds/Bench',
+    background: 'Backgrounds/Aurora_Bench',
   });
 
 Game.Scenes.A_Part02[7] =
@@ -3556,7 +3549,7 @@ Game.Scenes.A_Part02[7] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[8].Begin();}],
-    background: 'Persons/Dad',
+    background: 'Persons/Aurora_Dad',
   });
 
 Game.Scenes.A_Part02[8] =
@@ -3566,7 +3559,7 @@ Game.Scenes.A_Part02[8] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[9].Begin();}],
-    background: 'Persons/Dad',
+    background: 'Persons/Aurora_Dad',
   });
 
 Game.Scenes.A_Part02[9] =
@@ -3577,7 +3570,7 @@ Game.Scenes.A_Part02[9] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[10].Begin();}],
-    background: 'Backgrounds/Bench',
+    background: 'Backgrounds/Aurora_Bench',
   });
 
 Game.Scenes.A_Part02[10] =
@@ -3587,7 +3580,7 @@ Game.Scenes.A_Part02[10] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[11].Begin();}],
-    background: 'Backgrounds/Bench',
+    background: 'Backgrounds/Aurora_Bench',
   });
 
 Game.Scenes.A_Part02[11] =
@@ -3598,7 +3591,7 @@ Game.Scenes.A_Part02[11] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[12].Begin();}],
-    background: 'Backgrounds/Bench',
+    background: 'Backgrounds/Aurora_Bench',
   });
 
 Game.Scenes.A_Part02[12] =
@@ -3609,7 +3602,7 @@ Game.Scenes.A_Part02[12] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[13].Begin();}],
-    background: 'Backgrounds/Bench',
+    background: 'Backgrounds/Aurora_Bench',
     condition: function (){
       if (Game.Stats.Drawing.Get() >=1){
         this.buttonaction[0] = () =>{ Game.Scenes.A_Part02[13].Begin();}
@@ -3632,7 +3625,7 @@ Game.Scenes.A_Part02[13] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[14].Begin();}],
-    background: 'Backgrounds/Lighthouse_Painting',
+    background: 'Backgrounds/Aurora_Lighthouse_Painting',
   });
 
 Game.Scenes.A_Part02[14] =
@@ -3643,7 +3636,7 @@ Game.Scenes.A_Part02[14] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[15].Begin();}],
-    background: 'Backgrounds/Lighthouse_Painting',
+    background: 'Backgrounds/Aurora_Lighthouse_Painting',
   });
 
 Game.Scenes.A_Part02[15] =
@@ -3654,7 +3647,7 @@ Game.Scenes.A_Part02[15] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[16].Begin();}],
-    background: 'Backgrounds/Lighthouse_Painting',
+    background: 'Backgrounds/Aurora_Lighthouse_Painting',
   });
 
 Game.Scenes.A_Part02[16] =
@@ -3666,7 +3659,7 @@ Game.Scenes.A_Part02[16] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[17].Begin(); }],
-    background: 'Backgrounds/Lighthouse_Painting',
+    background: 'Backgrounds/Aurora_Lighthouse_Painting',
   });
 
 Game.Scenes.A_Part02[17] =
@@ -3678,7 +3671,7 @@ Game.Scenes.A_Part02[17] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[18].Begin();}],
-    background: 'Backgrounds/Lighthouse_Painting',
+    background: 'Backgrounds/Aurora_Lighthouse_Painting',
   });
 
 Game.Scenes.A_Part02[18] =
@@ -3690,7 +3683,7 @@ Game.Scenes.A_Part02[18] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[19].Begin();}],
-    background: 'Backgrounds/Lighthouse_Painting',
+    background: 'Backgrounds/Aurora_Lighthouse_Painting',
   });
 
 Game.Scenes.A_Part02[19] =
@@ -3705,7 +3698,7 @@ Game.Scenes.A_Part02[19] =
       () => { Game.Scenes.A_Part02[20].Begin();},
       () => { Game.Scenes.A_Part02[25].Begin();}
     ],
-    background: 'Backgrounds/Lighthouse',
+    background: 'Backgrounds/Aurora_Lighthouse',
   });
 
 Game.Scenes.A_Part02[20] =
@@ -3752,7 +3745,7 @@ Game.Scenes.A_Part02[23] =
       Game.Scenes.A_Part02[24].Begin();
       Game.Message('Вы принимаете жизнь такой, какая она есть. Благодаря вашему выбору дух Авроры крепчает')
       Game.Stats.Aurora.Add(1);}],
-    background: 'Persons/Dad',
+    background: 'Persons/Aurora_Dad',
   });
 
 Game.Scenes.A_Part02[24] =
@@ -3763,7 +3756,7 @@ Game.Scenes.A_Part02[24] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[42].Begin();}],
-    background: 'Persons/Dad',
+    background: 'Persons/Aurora_Dad',
   });
 
 Game.Scenes.A_Part02[25] =
@@ -3773,7 +3766,7 @@ Game.Scenes.A_Part02[25] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[26].Begin();}],
-    background: 'Persons/Dad',
+    background: 'Persons/Aurora_Dad',
   });
 
 Game.Scenes.A_Part02[26] =
@@ -3788,7 +3781,7 @@ Game.Scenes.A_Part02[26] =
       Game.Message('Отец продолжает винить себя в смерти матери. Его состояние ухудшается');
       Game.Stats.Father.Add(-1);
     }],
-    background: 'Persons/Dad',
+    background: 'Persons/Aurora_Dad',
   });
 
 Game.Scenes.A_Part02[27] =
@@ -3802,7 +3795,7 @@ Game.Scenes.A_Part02[27] =
       Game.Message('Вы не можете смириться с реальностью, с которой сталкиваетесь. Вследствие вашего выбора Аврора начинает больше сомневаться в себе')
       Game.Stats.Aurora.Add(-1);
     }],
-    background: 'Persons/Dad',
+    background: 'Persons/Aurora_Dad',
   });
 
 Game.Scenes.A_Part02[28] =
@@ -3812,7 +3805,7 @@ Game.Scenes.A_Part02[28] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[42].Begin();}],
-    background: 'Persons/Dad',
+    background: 'Persons/Aurora_Dad',
   });
 
 Game.Scenes.A_Part02[29] =
@@ -3822,7 +3815,7 @@ Game.Scenes.A_Part02[29] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[30].Begin();}],
-    background: 'Backgrounds/Note',
+    background: 'Backgrounds/Aurora_Note',
   });
 
 Game.Scenes.A_Part02[29] =
@@ -3833,7 +3826,7 @@ Game.Scenes.A_Part02[29] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[30].Begin();}],
-    background: 'Backgrounds/Note',
+    background: 'Backgrounds/Aurora_Note',
   });
 
 Game.Scenes.A_Part02[30] =
@@ -3843,7 +3836,7 @@ Game.Scenes.A_Part02[30] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[31].Begin();}],
-    background: 'Backgrounds/Note',
+    background: 'Backgrounds/Aurora_Note',
   });
 
 Game.Scenes.A_Part02[31] =
@@ -3853,7 +3846,7 @@ Game.Scenes.A_Part02[31] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[32].Begin();}],
-    background: 'Backgrounds/Note',
+    background: 'Backgrounds/Aurora_Note',
   });
 
 Game.Scenes.A_Part02[32] =
@@ -3865,7 +3858,7 @@ Game.Scenes.A_Part02[32] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[33].Begin();}],
-    background: 'Backgrounds/Note',
+    background: 'Backgrounds/Aurora_Note',
   });
 
 Game.Scenes.A_Part02[33] =
@@ -3877,7 +3870,7 @@ Game.Scenes.A_Part02[33] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[35].Begin();}],
-    background: 'Backgrounds/Note',
+    background: 'Backgrounds/Aurora_Note',
   });
 
 Game.Scenes.A_Part02[35] =
@@ -3889,7 +3882,7 @@ Game.Scenes.A_Part02[35] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[19].Begin();}],
-    background: 'Backgrounds/Note',
+    background: 'Backgrounds/Aurora_Note',
   });
 
 Game.Scenes.A_Part02[36] =
@@ -3899,7 +3892,7 @@ Game.Scenes.A_Part02[36] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[37].Begin();}],
-    background: 'Backgrounds/Disc',
+    background: 'Backgrounds/Aurora_Disc',
   });
 
 Game.Scenes.A_Part02[37] =
@@ -3910,7 +3903,7 @@ Game.Scenes.A_Part02[37] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[38].Begin();}],
-    background: 'Backgrounds/Disc',
+    background: 'Backgrounds/Aurora_Disc',
   });
 
 Game.Scenes.A_Part02[38] =
@@ -3921,7 +3914,7 @@ Game.Scenes.A_Part02[38] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[39].Begin();}],
-    background: 'Backgrounds/Disc',
+    background: 'Backgrounds/Aurora_Disc',
   });
 
 Game.Scenes.A_Part02[39] =
@@ -3933,7 +3926,7 @@ Game.Scenes.A_Part02[39] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[40].Begin();}],
-    background: 'Backgrounds/Disc',
+    background: 'Backgrounds/Aurora_Disc',
   });
 
 Game.Scenes.A_Part02[40] =
@@ -3945,7 +3938,7 @@ Game.Scenes.A_Part02[40] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[41].Begin();}],
-    background: 'Backgrounds/Disc',
+    background: 'Backgrounds/Aurora_Disc',
   });
 
 Game.Scenes.A_Part02[41] =
@@ -3957,7 +3950,7 @@ Game.Scenes.A_Part02[41] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[19].Begin();}],
-    background: 'Backgrounds/Disc',
+    background: 'Backgrounds/Aurora_Disc',
   });
 
 Game.Scenes.A_Part02[42] =
@@ -3967,7 +3960,7 @@ Game.Scenes.A_Part02[42] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[43].Begin();}],
-    background: 'Backgrounds/Bench',
+    background: 'Backgrounds/Aurora_Bench',
   });
 
 Game.Scenes.A_Part02[43] =
@@ -3978,7 +3971,7 @@ Game.Scenes.A_Part02[43] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[44].Begin();}],
-    background: 'Backgrounds/Bench',
+    background: 'Backgrounds/Aurora_Bench',
   });
 
 Game.Scenes.A_Part02[44] =
@@ -3989,7 +3982,7 @@ Game.Scenes.A_Part02[44] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[45].Begin();}],
-    background: 'Backgrounds/Bench',
+    background: 'Backgrounds/Aurora_Bench',
   });
 
 Game.Scenes.A_Part02[45] =
@@ -4000,7 +3993,7 @@ Game.Scenes.A_Part02[45] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[47].Begin();}],
-    background: 'Backgrounds/Bench',
+    background: 'Backgrounds/Aurora_Bench',
   });
 
 Game.Scenes.A_Part02[47] =
@@ -4011,7 +4004,7 @@ Game.Scenes.A_Part02[47] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[48].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[48] =
@@ -4022,7 +4015,7 @@ Game.Scenes.A_Part02[48] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[49].Begin(); Game.Sounds.Play('Music','Aurora_Daily_01')}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[49] =
@@ -4033,7 +4026,7 @@ Game.Scenes.A_Part02[49] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[50].Begin();}],
-    background: 'Backgrounds/From_Car',
+    background: 'Backgrounds/Aurora_From_Car',
   });
 
 Game.Scenes.A_Part02[50] =
@@ -4044,7 +4037,7 @@ Game.Scenes.A_Part02[50] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[51].Begin();}],
-    background: 'Backgrounds/From_Car',
+    background: 'Backgrounds/Aurora_From_Car',
   });
 
 Game.Scenes.A_Part02[51] =
@@ -4056,7 +4049,7 @@ Game.Scenes.A_Part02[51] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[52].Begin();}],
-    background: 'Backgrounds/From_Car',
+    background: 'Backgrounds/Aurora_From_Car',
   });
 
 Game.Scenes.A_Part02[52] =
@@ -4067,7 +4060,7 @@ Game.Scenes.A_Part02[52] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[53].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[53] =
@@ -4078,7 +4071,7 @@ Game.Scenes.A_Part02[53] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[54].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[54] =
@@ -4090,7 +4083,7 @@ Game.Scenes.A_Part02[54] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[60].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
     condition: function() {
         Game.Stats.Song.Set(1);
       if(Game.Stats.Music.Get()>=1){
@@ -4111,7 +4104,7 @@ Game.Scenes.A_Part02[55] =
       Game.Scenes.A_Part02[56].Begin();
       Game.Message('Так как ваша Аврора любит музыку, вам доступен дополнительный выбор музыки на повседневную жизнь девушки в городе');
     }],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[56] =
@@ -4125,7 +4118,7 @@ Game.Scenes.A_Part02[56] =
       () => { Game.Sounds.Play('Music','Aurora_Daily_02'); Game.Stats.Song.Set(2);},
       () => { Game.Scenes.A_Part02[59].Begin(); },
     ],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[59] =
@@ -4135,7 +4128,7 @@ Game.Scenes.A_Part02[59] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[60].Begin(); Game.Achievements.A_Musicality.Unlock();}],
-    background: 'Backgrounds/Arthurs_Car',
+    background: 'Backgrounds/Aurora_Arthurs_Car',
   });
 
 Game.Scenes.A_Part02[60] =
@@ -4145,7 +4138,7 @@ Game.Scenes.A_Part02[60] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[61].Begin();}],
-    background: 'Backgrounds/Arthurs_Car',
+    background: 'Backgrounds/Aurora_Arthurs_Car',
   });
 
 Game.Scenes.A_Part02[61] =
@@ -4155,7 +4148,7 @@ Game.Scenes.A_Part02[61] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[61].Begin();}],
-    background: 'Backgrounds/Arthurs_Car',
+    background: 'Backgrounds/Aurora_Arthurs_Car',
     condition: function () {
       if(Game.Stats.Romantic.Get()>=1){
         this.buttonaction[0] = () => { Game.Scenes.A_Part02[62].Begin();}
@@ -4175,7 +4168,7 @@ Game.Scenes.A_Part02[62] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[63].Begin();}],
-    background: 'Backgrounds/Arthurs_Car',
+    background: 'Backgrounds/Aurora_Arthurs_Car',
   });
 
 Game.Scenes.A_Part02[63] =
@@ -4186,7 +4179,7 @@ Game.Scenes.A_Part02[63] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[66].Begin();}],
-    background: 'Backgrounds/Arthurs_Car',
+    background: 'Backgrounds/Aurora_Arthurs_Car',
   });
 
 Game.Scenes.A_Part02[64] =
@@ -4196,7 +4189,7 @@ Game.Scenes.A_Part02[64] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[65].Begin();}],
-    background: 'Backgrounds/Arthurs_Car',
+    background: 'Backgrounds/Aurora_Arthurs_Car',
   });
 
 Game.Scenes.A_Part02[65] =
@@ -4207,7 +4200,7 @@ Game.Scenes.A_Part02[65] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[66].Begin();}],
-    background: 'Backgrounds/Arthurs_Car',
+    background: 'Backgrounds/Aurora_Arthurs_Car',
   });
 
 Game.Scenes.A_Part02[66] =
@@ -4218,7 +4211,7 @@ Game.Scenes.A_Part02[66] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[67].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[67] =
@@ -4228,7 +4221,7 @@ Game.Scenes.A_Part02[67] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[68].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[68] =
@@ -4238,7 +4231,7 @@ Game.Scenes.A_Part02[68] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[69].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[69] =
@@ -4252,7 +4245,7 @@ Game.Scenes.A_Part02[69] =
       () => { Game.Scenes.A_Part02[70].Begin(); Game.Sounds.Play('Music','Romantic'); AndroidApp ('showAd');},
       () => { Game.Scenes.A_Part02[93].Begin();}
     ],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[70] =
@@ -4262,7 +4255,7 @@ Game.Scenes.A_Part02[70] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[71].Begin();}],
-    background: 'Backgrounds/Forest',
+    background: 'Backgrounds/Aurora_Forest',
   });
 
 Game.Scenes.A_Part02[71] =
@@ -4273,7 +4266,7 @@ Game.Scenes.A_Part02[71] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[72].Begin();}],
-    background: 'Backgrounds/Forest',
+    background: 'Backgrounds/Aurora_Forest',
   });
 
 Game.Scenes.A_Part02[72] =
@@ -4284,7 +4277,7 @@ Game.Scenes.A_Part02[72] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[73].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[73] =
@@ -4294,7 +4287,7 @@ Game.Scenes.A_Part02[73] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[74].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[74] =
@@ -4304,7 +4297,7 @@ Game.Scenes.A_Part02[74] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[75].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[75] =
@@ -4315,7 +4308,7 @@ Game.Scenes.A_Part02[75] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[76].Begin();}],
-    background: 'Backgrounds/Forest',
+    background: 'Backgrounds/Aurora_Forest',
   });
 
 Game.Scenes.A_Part02[76] =
@@ -4326,7 +4319,7 @@ Game.Scenes.A_Part02[76] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[77].Begin();}],
-    background: 'Backgrounds/Forest_Flowers',
+    background: 'Backgrounds/Aurora_Forest_Flowers',
   });
 
 Game.Scenes.A_Part02[77] =
@@ -4337,7 +4330,7 @@ Game.Scenes.A_Part02[77] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[78].Begin();}],
-    background: 'Backgrounds/Forest_Flowers',
+    background: 'Backgrounds/Aurora_Forest_Flowers',
   });
 
 Game.Scenes.A_Part02[78] =
@@ -4348,7 +4341,7 @@ Game.Scenes.A_Part02[78] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[79].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[79] =
@@ -4359,7 +4352,7 @@ Game.Scenes.A_Part02[79] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[80].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[80] =
@@ -4370,7 +4363,7 @@ Game.Scenes.A_Part02[80] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[81].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[81] =
@@ -4382,7 +4375,7 @@ Game.Scenes.A_Part02[81] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[82].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[82] =
@@ -4396,7 +4389,7 @@ Game.Scenes.A_Part02[82] =
       () => { Game.Scenes.A_Part02[83].Begin();},
       () => { Game.Scenes.A_Part02[87].Begin();},
     ],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[83] =
@@ -4407,7 +4400,7 @@ Game.Scenes.A_Part02[83] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[84].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[84] =
@@ -4418,7 +4411,7 @@ Game.Scenes.A_Part02[84] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[85].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[85] =
@@ -4428,7 +4421,7 @@ Game.Scenes.A_Part02[85] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[86].Begin(); Game.Message('Артур становится ближе к Авроре'); Game.Stats.Arthur.Add(1)}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[86] =
@@ -4438,7 +4431,7 @@ Game.Scenes.A_Part02[86] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[91].Begin(); Game.Sounds.Play('Music','Aurora_Daily_0' + Game.Stats.Song.Get())}],
-    background: 'Backgrounds/Forest_Flowers',
+    background: 'Backgrounds/Aurora_Forest_Flowers',
   });
 
 Game.Scenes.A_Part02[87] =
@@ -4449,7 +4442,7 @@ Game.Scenes.A_Part02[87] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[88].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[88] =
@@ -4461,7 +4454,7 @@ Game.Scenes.A_Part02[88] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[89].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[89] =
@@ -4471,7 +4464,7 @@ Game.Scenes.A_Part02[89] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[90].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[90] =
@@ -4481,7 +4474,7 @@ Game.Scenes.A_Part02[90] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[91].Begin(); Game.Sounds.Play('Music','Aurora_Daily_0' + Game.Stats.Song.Get())}],
-    background: 'Backgrounds/Forest_Flowers',
+    background: 'Backgrounds/Aurora_Forest_Flowers',
   });
 
 Game.Scenes.A_Part02[91] =
@@ -4491,7 +4484,7 @@ Game.Scenes.A_Part02[91] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[92].Begin(); Game.Message('Артуру приятно, что вы помните его поддержку'); Game.Stats.Arthur.Add(1);}],
-    background: 'Backgrounds/Arthurs_Car',
+    background: 'Backgrounds/Aurora_Arthurs_Car',
   });
 
 Game.Scenes.A_Part02[92] =
@@ -4501,7 +4494,7 @@ Game.Scenes.A_Part02[92] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[95].Begin();}],
-    background: 'Backgrounds/Arthurs_Car',
+    background: 'Backgrounds/Aurora_Arthurs_Car',
   });
 
 Game.Scenes.A_Part02[93] =
@@ -4511,7 +4504,7 @@ Game.Scenes.A_Part02[93] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[94].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[94] =
@@ -4522,7 +4515,7 @@ Game.Scenes.A_Part02[94] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[95].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[95] =
@@ -4533,7 +4526,7 @@ Game.Scenes.A_Part02[95] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[96].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[96] =
@@ -4544,7 +4537,7 @@ Game.Scenes.A_Part02[96] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[97].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[97] =
@@ -4554,7 +4547,7 @@ Game.Scenes.A_Part02[97] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[98].Begin(); Game.Sounds.Play('Music','Lighthouse')}],
-    background: 'Backgrounds/Arthurs_Car',
+    background: 'Backgrounds/Aurora_Arthurs_Car',
   });
 
 Game.Scenes.A_Part02[98] =
@@ -4565,7 +4558,7 @@ Game.Scenes.A_Part02[98] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[99].Begin();}],
-    background: 'Backgrounds/Lighthouse_Night',
+    background: 'Backgrounds/Aurora_Lighthouse_Night',
   });
 
 Game.Scenes.A_Part02[99] =
@@ -4576,7 +4569,7 @@ Game.Scenes.A_Part02[99] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[100].Begin();}],
-    background: 'Backgrounds/Lighthouse_Night',
+    background: 'Backgrounds/Aurora_Lighthouse_Night',
   });
 
 Game.Scenes.A_Part02[100] =
@@ -4586,7 +4579,7 @@ Game.Scenes.A_Part02[100] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[101].Begin();}],
-    background: 'Backgrounds/Lighthouse_Night',
+    background: 'Backgrounds/Aurora_Lighthouse_Night',
   });
 
 Game.Scenes.A_Part02[101] =
@@ -4597,7 +4590,7 @@ Game.Scenes.A_Part02[101] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[102].Begin();}],
-    background: 'Backgrounds/Lighthouse_Night',
+    background: 'Backgrounds/Aurora_Lighthouse_Night',
   });
 
 Game.Scenes.A_Part02[102] =
@@ -4607,7 +4600,7 @@ Game.Scenes.A_Part02[102] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[103].Begin(); Game.Sounds.Play('Music','Aurora_Daily_0' + Game.Stats.Song.Get())}],
-    background: 'Backgrounds/Lighthouse_Night',
+    background: 'Backgrounds/Aurora_Lighthouse_Night',
   });
 
 Game.Scenes.A_Part02[103] =
@@ -4618,7 +4611,7 @@ Game.Scenes.A_Part02[103] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[105].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[105] =
@@ -4629,7 +4622,7 @@ Game.Scenes.A_Part02[105] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[106].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[106] =
@@ -4650,7 +4643,7 @@ Game.Scenes.A_Part02[107] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[108].Begin();}],
-    background: 'Backgrounds/Livingkitchen',
+    background: 'Backgrounds/Aurora_Livingkitchen',
   });
 
 Game.Scenes.A_Part02[108] =
@@ -4660,7 +4653,7 @@ Game.Scenes.A_Part02[108] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[109].Begin();}],
-    background: 'Backgrounds/Livingkitchen',
+    background: 'Backgrounds/Aurora_Livingkitchen',
   });
 
 Game.Scenes.A_Part02[109] =
@@ -4670,7 +4663,7 @@ Game.Scenes.A_Part02[109] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[110].Begin();}],
-    background: 'Backgrounds/Livingkitchen',
+    background: 'Backgrounds/Aurora_Livingkitchen',
   });
 
 Game.Scenes.A_Part02[110] =
@@ -4682,7 +4675,7 @@ Game.Scenes.A_Part02[110] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[111].Begin();}],
-    background: 'Backgrounds/Livingkitchen',
+    background: 'Backgrounds/Aurora_Livingkitchen',
   });
 
 Game.Scenes.A_Part02[111] =
@@ -4692,7 +4685,7 @@ Game.Scenes.A_Part02[111] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[112].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[112] =
@@ -4703,7 +4696,7 @@ Game.Scenes.A_Part02[112] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[113].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[113] =
@@ -4714,7 +4707,7 @@ Game.Scenes.A_Part02[113] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[114].Begin();}],
-    background: 'Backgrounds/Livingkitchen',
+    background: 'Backgrounds/Aurora_Livingkitchen',
   });
 
 Game.Scenes.A_Part02[114] =
@@ -4724,7 +4717,7 @@ Game.Scenes.A_Part02[114] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[115].Begin();}],
-    background: 'Backgrounds/Livingkitchen',
+    background: 'Backgrounds/Aurora_Livingkitchen',
   });
 
 Game.Scenes.A_Part02[115] =
@@ -4735,7 +4728,7 @@ Game.Scenes.A_Part02[115] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[116].Begin();}],
-    background: 'Backgrounds/Livingkitchen',
+    background: 'Backgrounds/Aurora_Livingkitchen',
   });
 
 Game.Scenes.A_Part02[116] =
@@ -4757,7 +4750,7 @@ Game.Scenes.A_Part02[118] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[119].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[119] =
@@ -4767,7 +4760,7 @@ Game.Scenes.A_Part02[119] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[120].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[120] =
@@ -4778,7 +4771,7 @@ Game.Scenes.A_Part02[120] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[121].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[121] =
@@ -4788,7 +4781,7 @@ Game.Scenes.A_Part02[121] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[122].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[122] =
@@ -4799,7 +4792,7 @@ Game.Scenes.A_Part02[122] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[123].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[123] =
@@ -4810,7 +4803,7 @@ Game.Scenes.A_Part02[123] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[124].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[124] =
@@ -4820,7 +4813,7 @@ Game.Scenes.A_Part02[124] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[125].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[125] =
@@ -4831,7 +4824,7 @@ Game.Scenes.A_Part02[125] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[126].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
     condition: function (){
       if(Game.Stats.Pragmatic.Get()>=1){
         this.buttonaction[0] = () =>{Game.Scenes.A_Part02[127].Begin();}
@@ -4851,7 +4844,7 @@ Game.Scenes.A_Part02[126] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[128].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[127] =
@@ -4863,7 +4856,7 @@ Game.Scenes.A_Part02[127] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[128].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[128] =
@@ -4875,7 +4868,7 @@ Game.Scenes.A_Part02[128] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[129].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[129] =
@@ -4886,7 +4879,7 @@ Game.Scenes.A_Part02[129] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[130].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[130] =
@@ -4896,7 +4889,7 @@ Game.Scenes.A_Part02[130] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[131].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[131] =
@@ -4907,7 +4900,7 @@ Game.Scenes.A_Part02[131] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[132].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[132] =
@@ -4920,7 +4913,7 @@ Game.Scenes.A_Part02[132] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[133].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part02[133] =
@@ -4941,7 +4934,7 @@ Game.Scenes.A_Part02[134] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[135].Begin();}],
-    background: 'Backgrounds/Arthurs_Car',
+    background: 'Backgrounds/Aurora_Arthurs_Car',
   });
 
 Game.Scenes.A_Part02[135] =
@@ -4953,7 +4946,7 @@ Game.Scenes.A_Part02[135] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[136].Begin(); Game.Stats.Trial_Pass.Add(1);}],
-    background: 'Backgrounds/Arthurs_Car',
+    background: 'Backgrounds/Aurora_Arthurs_Car',
   });
 
 Game.Scenes.A_Part02[136] =
@@ -4966,7 +4959,7 @@ Game.Scenes.A_Part02[136] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[137].Begin();}],
-    background: 'Backgrounds/Arthurs_Car',
+    background: 'Backgrounds/Aurora_Arthurs_Car',
   });
 
 Game.Scenes.A_Part02[137] =
@@ -4976,7 +4969,7 @@ Game.Scenes.A_Part02[137] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[138].Begin();}],
-    background: 'Backgrounds/Univer',
+    background: 'Backgrounds/Aurora_Univer',
   });
 
 Game.Scenes.A_Part02[138] =
@@ -4986,7 +4979,7 @@ Game.Scenes.A_Part02[138] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[139].Begin();}],
-    background: 'Backgrounds/Univer',
+    background: 'Backgrounds/Aurora_Univer',
   });
 
 Game.Scenes.A_Part02[139] =
@@ -4996,7 +4989,7 @@ Game.Scenes.A_Part02[139] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[141].Begin();}],
-    background: 'Backgrounds/Library',
+    background: 'Backgrounds/Aurora_Library',
     condition: function () {
       if(Game.Stats.Writing.Get()>=1){
         this.buttonaction[0] = () => { Game.Scenes.A_Part02[140].Begin();}
@@ -5012,7 +5005,7 @@ Game.Scenes.A_Part02[140] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[141].Begin();}],
-    background: 'Backgrounds/Library',
+    background: 'Backgrounds/Aurora_Library',
   });
 
 Game.Scenes.A_Part02[141] =
@@ -5022,7 +5015,7 @@ Game.Scenes.A_Part02[141] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[142].Begin();}],
-    background: 'Backgrounds/Books',
+    background: 'Backgrounds/Aurora_Books',
   });
 
 Game.Scenes.A_Part02[142] =
@@ -5032,7 +5025,7 @@ Game.Scenes.A_Part02[142] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[143].Begin();}],
-    background: 'Backgrounds/Books',
+    background: 'Backgrounds/Aurora_Books',
   });
 
 Game.Scenes.A_Part02[143] =
@@ -5212,7 +5205,7 @@ Game.Scenes.A_Part03[10] =
         `,
       buttontext: [''],
       buttonaction: [() => { Game.Scenes.A_Part03[11].Begin(); Game.Stats.Dalia.Add(0) }],
-      background: 'Backgrounds/Books',
+      background: 'Backgrounds/Aurora_Books',
   });
 
 Game.Scenes.A_Part03[11] =
@@ -5288,7 +5281,7 @@ Game.Scenes.A_Part03[16] =
     buttontext: ['Выдать Калеба','Подыграть Калебу '],
     buttonaction: [
       () => { Game.Scenes.A_Part03[17].Begin(); Game.Stats.BetrayKaleb.Add(1); Game.Timer.Stop();},
-      () => { Game.Scenes.A_Part03[22].Begin(); Game.Timer.Stop();}
+      () => { Game.Scenes.A_Part03[22].Begin(); Game.Timer.Stop(); Game.Achievements.A_PayBack.Unlock();}
     ],
     background: 'Persons/Aurora_Dalia',
     condition: function () {
@@ -5304,7 +5297,7 @@ Game.Scenes.A_Part03[17] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part03[18].Begin(); }],
-    background: 'Backgrounds/Books',
+    background: 'Backgrounds/Aurora_Books',
   });
 
 Game.Scenes.A_Part03[18] =
@@ -5361,7 +5354,7 @@ Game.Scenes.A_Part03[22] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part03[23].Begin(); }],
-    background: 'Backgrounds/Books',
+    background: 'Backgrounds/Aurora_Books',
   });
 
 Game.Scenes.A_Part03[23] =
@@ -5422,7 +5415,7 @@ Game.Scenes.A_Part03[27] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part03[28].Begin(); }],
-    background: 'Backgrounds/Books',
+    background: 'Backgrounds/Aurora_Books',
   });
 
 Game.Scenes.A_Part03[28] =
@@ -5432,7 +5425,7 @@ Game.Scenes.A_Part03[28] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part03[29].Begin(); }],
-    background: 'Backgrounds/Books',
+    background: 'Backgrounds/Aurora_Books',
   });
 
 Game.Scenes.A_Part03[29] =
@@ -5443,7 +5436,7 @@ Game.Scenes.A_Part03[29] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part03[30].Begin(); }],
-    background: 'Backgrounds/Univer',
+    background: 'Backgrounds/Aurora_Univer',
   });
 
 Game.Scenes.A_Part03[30] =
@@ -5453,7 +5446,7 @@ Game.Scenes.A_Part03[30] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part03[31].Begin(); }],
-    background: 'Backgrounds/Univer',
+    background: 'Backgrounds/Aurora_Univer',
   });
 
 Game.Scenes.A_Part03[31] =
@@ -6320,7 +6313,7 @@ Game.Scenes.A_Part03[109] =
       <p>Только одно не выходило из головы - это желание поскорее покинуть собор и больше его никогда не видеть. 
         `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[110].Begin(); Game.Achievements.A_Legend.Unlock(); }],
+    buttonaction: [() => { Game.Scenes.A_Part03[110].Begin();}],
     background: 'Backgrounds/Aurora_Church',
   });
 
@@ -6600,7 +6593,7 @@ Game.Scenes.A_Part03[134] =
       Первое время, казалось, что Артур ничего не замечал вокруг. Но затем, будто бы неведомые силы заставили его посмотреть в мою сторону. Он сильно удивился, казалось, немного разозлился и стремительно направился в нашу сторону. 
         `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[135].Begin(); Game.Achievements.A_Walker.Unlock();}],
+    buttonaction: [() => { Game.Scenes.A_Part03[135].Begin();}],
     background: 'Backgrounds/Aurora_Pharm',
   });
 
@@ -6613,7 +6606,7 @@ Game.Scenes.A_Part03[135] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part03[136].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part03[136] =
@@ -6625,7 +6618,7 @@ Game.Scenes.A_Part03[136] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part03[137].Begin();}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part03[137] =
@@ -6637,7 +6630,7 @@ Game.Scenes.A_Part03[137] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part03[138].Begin(); Game.Sounds.Play('Music',`Aurora_Daily_0${Game.Stats.Song.Get()}`);}],
-    background: 'Persons/Arthur',
+    background: 'Persons/Aurora_Arthur',
   });
 
 Game.Scenes.A_Part03[138] =
@@ -6649,7 +6642,7 @@ Game.Scenes.A_Part03[138] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part03[139].Begin();}],
-    background: 'Backgrounds/Arthurs_Car',
+    background: 'Backgrounds/Aurora_Arthurs_Car',
   });
 
 Game.Scenes.A_Part03[139] =
@@ -6661,7 +6654,7 @@ Game.Scenes.A_Part03[139] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part03[140].Begin();}],
-    background: 'Backgrounds/Livingkitchen',
+    background: 'Backgrounds/Aurora_Livingkitchen',
   });
 
 Game.Scenes.A_Part03[140] =
@@ -6672,7 +6665,7 @@ Game.Scenes.A_Part03[140] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part03[141].Begin();}],
-    background: 'Backgrounds/Livingkitchen',
+    background: 'Backgrounds/Aurora_Livingkitchen',
   });
 
 Game.Scenes.A_Part03[141] =
@@ -6720,7 +6713,7 @@ Game.Scenes.A_Part03[145] =
   new Scene({
     text: `
       Еще больше меня волновало то, что сейчас в руках я сжимала письмо от отца. Конечно же я сразу узнала его аккуратный почерк. 
-      <p>Мне было страшно увидеть написанное, но все же я открыла и начала читать.
+      <p>Мне было страшно увидеть написанное, но все же я открыла конверт.
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part03[146].Begin();}],
@@ -6800,7 +6793,7 @@ Game.Scenes.A_Part03[152] =
   new Scene({
     text: `
       Я не могла не обратить внимание на бумагу, на которой был написал текст. Она была грязной в каких-то непонятных пятнах. 
-      <p>В душе сразу поселилось сомнение относительно состояния папы. Но же я начала читать письмо. 
+      <p>В душе сразу поселилось сомнение относительно состояния папы, и я скорее приступила к письму.
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part03[153].Begin();}],
@@ -6876,7 +6869,7 @@ Game.Scenes.A_Prologue[0] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Prologue[1].Begin(); Game.Message('В левом верхнем углу под иконкой рюкзака нажмите на стрелочку, чтобы посмотреть текст предыдущего слайда'); }],
-    background: 'Backgrounds/Writing',
+    background: 'Backgrounds/Aurora_Writing',
     condition: () => { Game.Sounds.Play('Music', 'Aurora') }
   });
 
@@ -6890,7 +6883,7 @@ Game.Scenes.A_Prologue[1] =
         `,
       buttontext: [''],
       buttonaction: [() => { Game.Scenes.A_Prologue[2].Begin(); Game.Message('Эдгар По - “Сон во сне”'); }],
-      background: 'Backgrounds/Writing',
+      background: 'Backgrounds/Aurora_Writing',
   });
 
 Game.Scenes.A_Prologue[2] =
@@ -6903,7 +6896,7 @@ Game.Scenes.A_Prologue[2] =
         `,
       buttontext: [''],
       buttonaction: [() => { Game.Scenes.A_Prologue[3].Begin();  }],
-      background: 'Backgrounds/Writing',
+      background: 'Backgrounds/Aurora_Writing',
   });
 
 Game.Scenes.A_Prologue[3] =
@@ -6918,7 +6911,7 @@ Game.Scenes.A_Prologue[3] =
         `,
       buttontext: [''],
       buttonaction: [() => { Game.Scenes.A_Prologue[4].Begin(); }],
-      background: 'Backgrounds/Writing',
+      background: 'Backgrounds/Aurora_Writing',
   });
 
 Game.Scenes.A_Prologue[4] =
@@ -6929,7 +6922,7 @@ Game.Scenes.A_Prologue[4] =
         `,
       buttontext: [''],
       buttonaction: [() => { Game.Scenes.A_Prologue[5].Begin(); }],
-      background: 'Backgrounds/Writing',
+      background: 'Backgrounds/Aurora_Writing',
   });
 
 Game.Scenes.A_Prologue[5] =
@@ -6940,7 +6933,7 @@ Game.Scenes.A_Prologue[5] =
         `,
       buttontext: [''],
       buttonaction: [() => { Game.Scenes.A_Prologue[6].Begin(); Game.Achievements.A_PrologueCompleted.Unlock(); }],
-      background: 'Backgrounds/Writing',
+      background: 'Backgrounds/Aurora_Writing',
   });
 
 Game.Scenes.A_Prologue[6] =
@@ -6958,7 +6951,7 @@ Game.Scenes.A_Prologue[6] =
         Game.Progress.Save("Aurora_Part01");
 
       }],
-      background: 'Backgrounds/Writing',
+      background: 'Backgrounds/Aurora_Writing',
   });
 Game.Achievements.PrologueCompleted = new Achievement ({
     picture: 'Backgrounds/Abstraction',
