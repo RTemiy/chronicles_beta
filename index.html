@@ -262,7 +262,7 @@
             if ("serviceWorker" in navigator) {
                 try {
                     const registration = await navigator.serviceWorker.register("/sw.js", {
-                        scope: "/",
+                        scope: "/Chronicles/",
                     }).then((registration) => {
                         console.log("Registration succeeded.");
                         registration.update();
