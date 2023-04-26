@@ -19,8 +19,10 @@ const ROOTPATH = '';
 
 //Game Variables
 const Game = {};
+
 //Attitudes Conditions Items
 Game.Stats = {};
+
 Game.HideAllAttitudes = function () {
     for (let prop in Game.Stats) {
         Game.Stats[prop].show = false;
@@ -38,6 +40,7 @@ Game.Stories = [];
 
 //Achievements
 Game.Achievements = {};
+
 Game.ShowCategoryAchievements = function (Story){
     let amount = 0;
     let completed = 0;
@@ -85,6 +88,9 @@ Game.LastSave = {};
 
 //Mini-game
 Game.MiniGame = {};
+
+//Last slides
+Game.LastSlide = {};
 
 /**
  * Класс достижения
@@ -201,7 +207,7 @@ class Scene {
 
     /** Запустить сцену */
     Begin() {
-        LastSlide.add(this);
+        Game.LastSlide.add(this);
         setTimeout(() => {Game.LastSave.Save(this);},250);
         if (this.background == '') PictureField.style.display = 'none';
         else {
@@ -322,6 +328,7 @@ class Stat {
      * @param {string|undefined} info.picture Картинка
      * @param {boolean|undefined} info.show Показать изначально в нивентаре?
      * @param {string} info.story История к которой привязан стат
+     * @param {function | undefined} info.tapAction Событие при использовании предмета
      */
 
     constructor(info) {
@@ -333,6 +340,8 @@ class Stat {
         this.picture = info.picture || '';
         this.show = info.show || false;
         this.story = info.story;
+        this.tapped = false;
+        this.tapAction = info.tapAction || undefined;
         this.CreateTable();
     }
 
@@ -424,10 +433,8 @@ class Stat {
                     InfoText.innerHTML = this.title;
                     InfoArticle.innerHTML = '<hr>' + this.text;
                     }, 5);
-
-
             });
-
+            if(this.tapAction) this.container.addEventListener('click', () => { this.ItemDoubleTap();});
         }
     }
 
@@ -463,11 +470,14 @@ class Stat {
         try {
             this.attitude = 0;
             this.container.style.display = 'none';
-            
-        } catch (error) {
-
         }
+        catch (error) {}
+    }
 
+    ItemDoubleTap(){
+        if(this.tapped) this.tapAction();
+        this.tapped = true;
+        setTimeout(()=>{this.tapped = false},600);
     }
 }
 /** Истории в меню */
@@ -1513,20 +1523,18 @@ Game.LastLoadCheck = function (){
     LastSaveButton.style.display='none';
   }
 }
-let LastSlide = {};
-
-LastSlide.lastslide = [];
+Game.LastSlide.lastslide = [];
 
 /** @param {Scene} scene Объект сцены */
-LastSlide.add = function (scene){
+Game.LastSlide.add = function (scene){
   this.lastslide.push(scene);
 };
 
-LastSlide.text = function () {
+Game.LastSlide.text = function () {
     return this.lastslide[this.lastslide.length-2].text;
 };
 
-LastSlide.background = function () {
+Game.LastSlide.background = function () {
   if(this.lastslide.length>2) {
     return this.lastslide[this.lastslide.length - 2].background;
   }
@@ -1576,7 +1584,7 @@ Game.ShowMeFeatures = function () {
  */
 Game.LoadScreen = function (part) {
     localStorage.setItem('LastSave_LS', part);
-    LastSlide.lastslide = [];
+    Game.LastSlide.lastslide = [];
     setTimeout(() => {
         LoadingTip.innerHTML = '';
         LoadingBack.src = '';
@@ -1628,7 +1636,7 @@ Game.MemoryUsed = function (){
 Game.Message = function (text, isSlide) {
     MessageText.innerHTML = text.replace("$Имя Игрока$", Game.PlayerName);
     if (isSlide){
-        MessageText.innerHTML = LastSlide.text();
+        MessageText.innerHTML = Game.LastSlide.text();
         MessageField.setAttribute('class', 'hide');
         MessageField.style.display = 'block';
         setTimeout(() => { MessageField.setAttribute('class', 'show'); }, 100);
@@ -21203,7 +21211,7 @@ Game.Scenes.SixPart[4] = new Scene({
   text: `
     На земле лежала та самая девушка, что так отчаянно молилась богам в мое прошлое перемещение. Все ее тело было покрыто маленькими порезами, а сама она пребывала в полусознательном состоянии. 
             `,
-  background: "Persons/Robert_Pompeii",
+  background: "Persons/Goddess",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[5].Begin();  }],
 });
@@ -21213,7 +21221,7 @@ Game.Scenes.SixPart[5] = new Scene({
     Гай опустился рядом с ней на колени, проверил пульс, а затем взял на руки и произнес: 
     <p>- Я позабочусь об этой девушке. Моя матушка - лекарь. Освободите дорогу!
             `,
-  background: "Persons/Robert_Pompeii",
+  background: "Persons/Goddess",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[6].Begin();  }],
 });
@@ -21223,7 +21231,7 @@ Game.Scenes.SixPart[6] = new Scene({
     Никто и не посмел возразить. Все лишь хватали себя за голову, проговаривая:
     <p>- О, милостивый Юпитер! Не гневайся на нас. Спаси грешную душу. 
             `,
-  background: "Persons/Robert_Pompeii",
+  background: "Persons/Goddess",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[7].Begin();  }],
 });
@@ -21272,7 +21280,7 @@ Game.Scenes.SixPart[10] = new Scene({
 Game.Scenes.SixPart[11] = new Scene({
   text: `
     Проследовав за мужчиной, я оказалась в просторном доме. Он был, классической для тех времен, квадратной формы с несколькими комнатами по бокам. В центре располагался скромный сад с уютными местами для отдыха. 
-    “Видимо, эта семья достаточно зарабатывает благодаря торговле. Это потрясающее место.”
+    <p>“Видимо, эта семья достаточно зарабатывает благодаря торговле. Это потрясающее место.”
             `,
   background: "Interface/Unknown",
   buttontext: [''],
@@ -21337,7 +21345,7 @@ Game.Scenes.SixPart[17] = new Scene({
   text: `
     - И это причина почему ей никто не хотел помочь? 
     <p>- Во всем виноват страх, сын мой. Мы же сделаем все, что в наших силах, чтобы помочь несчастной. Чтобы она не сотворила, это останется на ее совести. 
-    Гай широко улыбнулся и положил маме руку на плечо в знак одобрения ее действий. 
+    <p>Гай широко улыбнулся и положил маме руку на плечо в знак одобрения ее действий. 
             `,
   background: "Interface/Unknown",
   buttontext: [''],
@@ -21369,8 +21377,8 @@ Game.Scenes.SixPart[19] = new Scene({
 Game.Scenes.SixPart[20] = new Scene({
   text: `
     - Мама, будь спокойна за нас. Мы уже достаточно взрослые, чтобы принимать участие в нашем быту и помогать вам с отцом. 
-    <p>Женщина одарила сына теплым взглядом и произнесла:
-    <p>- Отнесем эту девушку в мою комнату. Я приготовлю настой, который облегчит ее состояние. 
+    <p>Женщина одарила сына нежным взглядом и произнесла:
+    <p>- Отнесем эту девушку в мою комнату. Я приготовлю настой, который облегчит ее страдания. 
     <p>Гай с легкостью поднял девушку на руки и они скрылись за дверьми. 
             `,
   background: "Interface/Unknown",
