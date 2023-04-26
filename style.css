@@ -1087,6 +1087,91 @@ im>input {
     max-width: 400px;
     height: auto;
 }
+.tags-field{
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(165, 0, 255, 0.09);
+  background: linear-gradient(135deg, rgba(153, 0, 255, 0), rgba(183, 94, 255, 0.28));
+  background: -webkit-linear-gradient(135deg, rgba(153, 0, 255, 0), rgba(183, 94, 255, 0.28));
+  background-size: 150% 150%;
+  box-shadow: inset 0px 0px 5px 1px rgb(0 0 0 / 77%);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  transition: opacity 1s ease-in-out;
+  opacity: 1;
+  visibility: visible;
+}
+
+.tags-field_exit{
+  opacity: 0;
+  visibility: hidden;
+}
+
+.tags{
+  display: grid;
+  grid-template-rows: repeat(4,max-content);
+  grid-template-columns: repeat(4,max-content);
+  gap: 5px;
+  width: 295px;
+  margin: auto;
+  box-shadow: 0 0 5px black;
+  transition: all 1s ease-out;
+}
+
+.tags-field_win{
+  position: relative;
+  gap: 0;
+  border: 5px inset gray;
+  border-radius: 15px;
+  width: 275px;
+  overflow: hidden;
+}
+
+.tags-field_win:before{
+  position: absolute;
+  content: '';
+  display: block;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgb(0,0,0);
+  background: linear-gradient(315deg, rgb(0 0 0 / 60%) 0%, rgb(255 255 255 / 15%) 50%, rgb(0 0 0 / 40%) 100%);
+}
+
+.tags > .cell{
+  color: transparent;
+  width: 70px;
+  height: 70px;
+  background-size: cover;
+  transition: box-shadow 0.2s ease-out;
+  cursor: pointer;
+}
+
+.tags > .cell:hover{
+  box-shadow: 0 0 5px black;
+}
+
+.tags > .cell_selected{
+  box-shadow: 0 0 15px red;
+}
+
+.tags > .cell_selected:hover{
+  box-shadow: 0 0 15px red;
+}
+
+.tags > .cell_empty{
+  box-shadow: 0 0 15px blue;
+}
+
+.tags > .cell_empty:hover{
+  box-shadow: 0 0 15px blue;
+}
 tf {
     position: relative;
     text-align: justify;
