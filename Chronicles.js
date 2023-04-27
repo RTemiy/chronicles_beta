@@ -1293,7 +1293,11 @@ CreatorsBackButton.onclick = () => {CloseOpen(CreatorsField,MenuField);}
  * Скрытая кнопка "Консоль"
  */
 const RTemiyHiddenButton = document.getElementById('RTemiy');
-RTemiyHiddenButton.onclick = () => {ConsoleField.style.visibility='visible'; Game.Achievements.Dev.Unlock()}
+RTemiyHiddenButton.onclick = () => {
+    ConsoleField.style.visibility='visible';
+    Game.Achievements.Dev.Unlock();
+    uploadProgress();
+}
 
 //Загрузочный экран
 
