@@ -1666,13 +1666,13 @@ part {
     height: 250px;
     border-radius: 50px;
     overflow: hidden;
-    transition: max-height 0.15s ease-out;
     backdrop-filter: blur(10px) saturate(45%);
     -webkit-backdrop-filter: blur(10px) saturate(45%);
     background: rgba(166, 0, 255, 0.377);
     background: linear-gradient(90deg, rgba(166, 0, 255, 0.349) 0%, rgba(255, 0, 144, 0.418) 50%);
     background: -webkit-linear-gradient(90deg, rgba(166, 0, 255, 0.459) 0%, rgba(255, 0, 144, 0.377) 50%);
     box-shadow: inset 0px 0px 5px 2px rgb(0 0 0 / 77%);
+    transition: all 1s ease-in-out;
 }
 
 part:active{
@@ -1695,15 +1695,11 @@ stories>part>img {
 }
 
 part>button {
-    margin: auto;
-    margin-left: -45px;
-    margin-top: -135px;
+    margin: -135px auto auto -45px;
     z-index: 3;
     background-image: none;
-
     color: rgb(117, 239, 255);
     text-shadow: 0 0 15px rgb(0, 0, 0), 0 0 10px rgb(0, 0, 0);
-
     font-family: Impact, Charcoal, sans-serif;
     font-size: 25px;
     letter-spacing: 1px;
@@ -1721,6 +1717,7 @@ part>img {
     height: 225px;
     border-radius: 90px;
     padding-top: 15px;
+    transition: all 1s ease-in-out;
 }
 
 stories>part{
@@ -1777,4 +1774,3 @@ cf>button{
 cf>button:active{
     outline: solid 1px white;
 }
-

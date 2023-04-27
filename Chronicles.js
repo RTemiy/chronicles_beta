@@ -1051,6 +1051,40 @@ Game.Effects.DisableAll = function (){
     Game.Effects.Gray.Stop();
     Game.Effects.Disco.Stop();
 }
+function getProgress(){
+  return JSON.stringify(localStorage);
+}
+
+function downloadProgress() {
+  let a = document.createElement("a");
+  let file = new Blob([getProgress()], {type: 'text/plain'});
+  a.href = URL.createObjectURL(file);
+  a.download = 'Chronicles_Progress.txt';
+  a.click();
+}
+
+function uploadProgress() {
+  const c = document.createElement('div');
+  c.style.position = 'absolute';
+  const i = document.createElement('input');
+  i.type = 'file';
+  const readFile = () =>{
+    const reader = new FileReader();
+    reader.readAsText(i.files[0]);
+    reader.onload = () =>{
+      const SV = JSON.parse(reader.result);
+      for (let prop in SV){
+        localStorage.setItem(prop, SV[prop]);
+      }
+      location.reload()
+    }
+  }
+  i.addEventListener('change',()=>{
+    readFile();
+  });
+  document.body.appendChild(c);
+  c.appendChild(i);
+}
 //Все элементы
 
 /**
