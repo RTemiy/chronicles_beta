@@ -1,101 +1,5 @@
-/**
- *
- * @source: https://github.com/RTemiy/Chronicles/
- *
- * @licstart The following is the entire license notice for the
- *  JavaScript code in this page.
- *
- * Copyright (C) 2022 Artemiy "RTemiy" G.
- *
- * The JavaScript code in this page is provided under CC BY-NC 3.0 license
- * https://creativecommons.org/licenses/by-nc/3.0/legalcode
- *
- * @licend The above is the entire license notice for the JavaScript code in this page.
- *
- */
 
-//Path to files
-const ROOTPATH = '';
-
-//Game Variables
-const Game = {};
-
-//Attitudes Conditions Items
-Game.Stats = {};
-
-Game.HideAllAttitudes = function () {
-    for (let prop in Game.Stats) {
-        Game.Stats[prop]._show = false;
-        Game.Stats[prop].hide();
-    }
-    InfoText.innerHTML='';
-    InfoArticle.innerHTML='';
-    InfoPicture.src=ROOTPATH +'pictures/Interface/Unknown.png';
-    MessageField.setAttribute('class', 'hide');
-    MessageField.style.display = 'none';
-}
-
-//Parts and Chapters and Stories
-Game.Stories = [];
-
-//Achievements
-Game.Achievements = {};
-
-Game.ShowCategoryAchievements = function (Story){
-    let amount = 0;
-    let completed = 0;
-    for (let prop in Game.Achievements) {
-        if(Game.Achievements[prop].story == Story) {
-            amount++;
-            Game.Achievements[prop].show();
-            if(Game.Achievements[prop].unlocked>=1)completed++;
-            AchievementsAmount.innerHTML = 'Получено достижений ' + completed + '/' + amount;
-        }
-        else Game.Achievements[prop].hide();
-    }
-}
-Game.AllAchievs = 0;
-
-//Parts of scenes
-Game.Scenes = {};
-
-//Player name
-Game.PlayerName = '';
-
-//Timer
-Game.Timer = {};
-
-//Progress
-Game.Progress = {};
-
-//Sounds
-Game.Sounds = {};
-
-//Settings
-Game.Settings = {};
-
-//Effects
-Game.Effects = {};
-
-//Design
-Game.Design = {};
-
-//Ads
-Game.canShowAds = false;
-
-//Last save
-Game.LastSave = {};
-
-//Mini-game
-Game.MiniGame = {};
-
-//Last slides
-Game.LastSlide = {};
-
-/**
- * Класс достижения
-*/
-
+/** Класс достижения*/
 class Achievement {
 
     /**
@@ -106,9 +10,9 @@ class Achievement {
      * @param {string} object.story Код истории достижения
      */
     constructor(object) {
-        this.title = object.title;
-        this.text = '<hr>' + object.text+ '<p>';
-        this.picture = 'pictures/' + object.picture + '.png';
+        this._title = object.title;
+        this._text = '<hr>' + object.text+ '<p>';
+        this._picture = 'pictures/' + object.picture + '.png';
         this.unlocked = 0;
         this.story = object.story;
         this._init();
@@ -116,50 +20,50 @@ class Achievement {
 
     /** Создаём и добавляем элементы на страницу достижений */
     _init() {
-        this.a = document.createElement('achievement');
-        this.a.classList.add('reveal');
-        this.b = document.createElement('img');
-        this.b.src = this.picture
-        this.c = document.createElement('ATitle');
-        this.c.innerHTML = this.title;
-        this.d = document.createElement('AText');
-        this.d.innerHTML = this.text;
-        this.e = document.createElement('img');
-        this.e.src = 'pictures/Items/Lock.png';
-        this.e.id= 'lock';
-        AchievementsField.appendChild(this.a);
-        this.a.appendChild(this.b);
-        this.a.appendChild(this.e);
-        this.a.appendChild(this.c);
-        this.a.appendChild(this.d);  
+        this._a = document.createElement('achievement');
+        this._a.classList.add('reveal');
+        this._b = document.createElement('img');
+        this._b.src = this._picture
+        this._c = document.createElement('ATitle');
+        this._c.innerHTML = this._title;
+        this._d = document.createElement('AText');
+        this._d.innerHTML = this._text;
+        this._e = document.createElement('img');
+        this._e.src = 'pictures/Items/Lock.png';
+        this._e.id= 'lock';
+        AchievementsField.appendChild(this._a);
+        this._a.appendChild(this._b);
+        this._a.appendChild(this._e);
+        this._a.appendChild(this._c);
+        this._a.appendChild(this._d);
     }
 
     /** Открываем достижение - выводим сообщение, меняем отображение и сохраняем прогресс */
     unlock() {
         if(this.unlocked!=1){
-            Game.Inventory_Message('🔓 '+ this.title);
-            Game.SendData('получает достижение: '+ this.title);
+            Game.Inventory_Message('🔓 '+ this._title);
+            Game.SendData('получает достижение: '+ this._title);
         }
         this.unlocked = 1;
-        this.a.classList.add('activeachievement');
-        this.b.style.display= 'grid';
-        this.e.style.display = 'none';
+        this._a.classList.add('activeachievement');
+        this._b.style.display= 'grid';
+        this._e.style.display = 'none';
         Game.Progress.AchievementsSave();
     }
 
     /** Визуально прячем элемент достижения */
     show(){
-        this.a.classList.add('hide');
-        this.a.style.display = 'grid';
+        this._a.classList.add('hide');
+        this._a.style.display = 'grid';
         setTimeout(()=>{
-            this.a.classList.add('show');
-            this.a.classList.remove('hide');
+            this._a.classList.add('show');
+            this._a.classList.remove('hide');
             },200);
     }
 
     /** Визуально показываем элемент достижения */
     hide(){
-        this.a.style.display = 'none';
+        this._a.style.display = 'none';
     }
 }
 
@@ -218,15 +122,15 @@ class Stat {
     /** Создаём и добавляем элементы в инвентарь */
     _createTable() {
         if (this._picture != '') {
-            this.container = document.createElement('cont');
-            this.container.id = 'atttablecell';
-            this.container.style.display = 'none';
-            this.textinfo = document.createElement('te');
-            this.cell = document.createElement('img');
-            this.container.appendChild(this.cell);
-            this.container.appendChild(this.textinfo);
-            this.cell.src = ROOTPATH+'pictures/' + this._picture + '.png';
-            this.container.addEventListener('click', () => {
+            this._container = document.createElement('cont');
+            this._container.id = 'atttablecell';
+            this._container.style.display = 'none';
+            this._textinfo = document.createElement('te');
+            this._cell = document.createElement('img');
+            this._container.appendChild(this._cell);
+            this._container.appendChild(this._textinfo);
+            this._cell.src = ROOTPATH+'pictures/' + this._picture + '.png';
+            this._container.addEventListener('click', () => {
                 setTimeout(() => {
                     InfoPicture.setAttribute('class', 'show');
                     InfoText.setAttribute('class','show');
@@ -241,7 +145,7 @@ class Stat {
                     InfoArticle.innerHTML = '<hr>' + this._text;
                     }, 5);
             });
-            if(this._tapAction) this.container.addEventListener('click', () => { this._handleDoubleTap();});
+            if(this._tapAction) this._container.addEventListener('click', () => { this._handleDoubleTap();});
         }
     }
 
@@ -249,7 +153,7 @@ class Stat {
     hide() {
         try {
             this._attitude = 0;
-            this.container.style.display = 'none';
+            this._container.style.display = 'none';
         }
         catch (error) {}
     }
@@ -269,6 +173,140 @@ class Choice extends Stat {
     Game.SendData('выбирает '+this._name+': '+this._attitude);
   }
 }
+class Design {
+  /**
+   * Изменить оформление
+   * @param {string} Background Фон слайдов
+   * @param {string} Border Рамка для картинки слайда
+   * @param {string} Color Цвет шрифта
+   * @param {string} Font Семейство шрифта
+   * @param {string} Stroke Обводка шрифта
+   */
+  ChangeInterface (Background,Border,Color,Font,Stroke){
+    MainField.style.backgroundImage = 'url(pictures/Interface/'+Background+'.png)';
+    BorderField.src = 'pictures/Interface/'+Border+'.png';
+    let Root = document.querySelector(':root');
+    Root.style.setProperty('--simplecolor', Color);
+    Root.style.setProperty('--font', Font);
+    Root.style.setProperty('--stroke', Stroke);
+  }
+
+  /** Изменить стиль кнопок
+   *
+   * @param {string} chapter Название Истории
+   */
+  Change (chapter){
+    localStorage.setItem('LastSave_Design', chapter);
+    switch (chapter) {
+
+      default:
+        this.ChangeInterface(
+          'back',
+          'border',
+          '#f2daffed',
+          '"Times New Roman", Times, serif',
+          '0'
+        );
+        this.StyleButtons(
+          'margin-top: 0',
+          'background-image: url("./pictures/Interface/button.png"); border: 0; box-shadow: 0;'
+        );
+        break;
+
+      case 'Aurora':
+        this.ChangeInterface(
+          'A_back',
+          'A_border',
+          'white',
+          'Century Gothic Regular',
+          '0'
+        );
+        this.StyleButtons(
+          'margin-top: 0',
+          'background-image: url("./pictures/Interface/button.png"); border: 0; box-shadow: 0;'
+        );
+        break;
+
+      case 'AEP':
+        this.ChangeInterface(
+          'R_back',
+          'R_border',
+          'white',
+          'Courier New',
+          '3px rgba(0, 208, 255, 0.2)'
+        );
+        this.StyleButtons(
+          'margin-top: 20px',
+          'background-image: none; border: 1px blue solid; box-shadow: 0 0 5px blue, inset 0 0 5px blue'
+        );
+        break;
+    }
+  }
+
+  /** Изменить стиль кнопок
+   * @param {string} buttonfieldastyle Стиль поля для кнопок
+   * @param {string} buttonsstyle Стиль каждой кнопки
+   */
+  StyleButtons = function (buttonfieldastyle,buttonsstyle) {
+    let Buttons = document.querySelector('#bf');
+    Buttons.style = buttonfieldastyle;
+    Buttons.childNodes.forEach(function (element) {
+      element.style = buttonsstyle;
+    });
+  }
+}
+class Effects {
+  constructor() {
+
+    /** Эффект вспышки */
+    this.Flash = function () {
+      MainField.setAttribute('class', 'flash');
+      setTimeout(() => {
+        MainField.setAttribute('class', '');
+      }, 5000);
+    }
+
+    /** Эффект диско */
+    this.Disco = function () {
+      PictureField.setAttribute('class', 'disco');
+    }
+
+    /** Эффект диско выключить */
+    this.Disco.Stop = function () {
+      PictureField.setAttribute('class', '');
+    }
+
+    /** Эффект понурости */
+    this.Gray = function () {
+      MainField.setAttribute('class', 'sad');
+    }
+
+    /** Эффект понурости выключить */
+    this.Gray.Stop = function () {
+      MainField.setAttribute('class', '');
+    }
+
+
+    /** Эффект воспоминаний */
+    this.Mem = function() {
+      MainField.setAttribute('class', 'memory');
+    }
+
+    /** Эффект воспоминаний выключить */
+    this.Mem.Stop = function (){
+      MainField.setAttribute('class', '');
+    }
+
+    /** Выключить эффекты */
+    this.DisableAll = function () {
+      this.Gray.Stop();
+      this.Disco.Stop();
+      this.Mem.Stop()
+    }
+
+  }
+
+}
 class Item extends Stat {
   constructor(info) {
     super(info);
@@ -276,28 +314,81 @@ class Item extends Stat {
 
   add(v) {
     super.add(v);
-    this.container.style.display = 'inline-block';
+    this._container.style.display = 'inline-block';
     OpenInventoryButton.setAttribute('class', 'blink');
     this._setAmount();
-    if (this._attitude <= 0) this.container.style.display = 'none';
+    if (this._attitude <= 0) this._container.style.display = 'none';
   }
 
   _createTable() {
     super._createTable();
-    this.cell.id = 'itemtablecellpict';
-    Inventory.appendChild(this.container);
+    this._cell.id = 'itemtablecellpict';
+    Inventory.appendChild(this._container);
   }
 
   /** Обновляем количество */
   _setAmount() {
     if(this._attitude>=2) {
-      this.textinfo.innerHTML = '<amount>' + this._attitude + '</amount><a>' + this._name;
+      this._textinfo.innerHTML = '<amount>' + this._attitude + '</amount><a>' + this._name;
     }
     else{
-      this.textinfo.innerHTML = '<amount>' + '</amount><a>' + this._name;
+      this._textinfo.innerHTML = '<amount>' + '</amount><a>' + this._name;
     }
   }
 
+}
+class Last_Save {
+  Save (scene){
+    Game.Progress.Save('LastSave');
+    localStorage.setItem('LastSave'+'_Played', '1');
+    localStorage.setItem('LastSave_SlideNumber', scene.number);
+    localStorage.setItem('LastSave_SlidePart', scene.part);
+  }
+
+  Load (){
+    Game.Progress.Load('LastSave');
+    Game.Sounds.play('Music', localStorage.getItem('LastSave_MusicName'));
+    Game.Design.Change(localStorage.getItem('LastSave_Design'));
+    Game.LoadScreen(localStorage.getItem('LastSave_LS'));
+    Game.Scenes[localStorage.getItem('LastSave_SlidePart')][localStorage.getItem('LastSave_SlideNumber')].begin();
+  }
+
+  LastLoadCheck (){
+    if (localStorage.getItem('LastSave' + '_Played')=='1'){
+      LastSaveButton.onclick = function (){
+        Game.LastSave.Load();
+        CloseOpen(MenuField,MainField);
+        LastSaveButton.style.display='none';
+      }
+    }
+    else{
+      LastSaveButton.style.display='none';
+    }
+  }
+}
+class Last_Slide {
+  constructor() {
+    this.slides = [];
+  }
+
+  /** @param {Scene} scene Объект сцены */
+  add (scene) {
+    this.slides.push(scene);
+  }
+
+  text () {
+    return this.slides[this.slides.length-2].text;
+  }
+
+  background () {
+    if(this.slides.length>2) {
+      return this.slides[this.slides.length - 2].background;
+    }
+  }
+
+  refresh(){
+    this.slides = [];
+  }
 }
 class Person extends Stat {
   constructor(info) {
@@ -306,31 +397,88 @@ class Person extends Stat {
 
   add(v) {
     super.add(v);
-    this.container.style.display = 'inline-block';
+    this._container.style.display = 'inline-block';
     OpenInventoryButton.setAttribute('class', 'blink');
     this.SetEmoji();
   }
 
   _createTable() {
     super._createTable();
-    this.cell.id = 'atttablecellpict';
-    AttitudeTableField.appendChild(this.container);
+    this._cell.id = 'atttablecellpict';
+    AttitudeTableField.appendChild(this._container);
   }
 
   /** Устанавливаем эмодзи рядом с иконкой */
   SetEmoji() {
-    if (this._attitude <= -1) this.textinfo.innerHTML = '<emoji>🙁</emoji><a>' + this._name;
+    if (this._attitude <= -1) this._textinfo.innerHTML = '<emoji>🙁</emoji><a>' + this._name;
 
-    if (this._attitude == 0) this.textinfo.innerHTML = '<emoji>😶</emoji><a>' + this._name;
+    if (this._attitude == 0) this._textinfo.innerHTML = '<emoji>😶</emoji><a>' + this._name;
 
-    if (this._attitude >= 1) this.textinfo.innerHTML = '<emoji>😌</emoji><a>' + this._name;
+    if (this._attitude >= 1) this._textinfo.innerHTML = '<emoji>😌</emoji><a>' + this._name;
 
-    if (this._attitude >= 6) this.textinfo.innerHTML = '<emoji>😏</emoji><a>' + this._name;
+    if (this._attitude >= 6) this._textinfo.innerHTML = '<emoji>😏</emoji><a>' + this._name;
 
-    if (this._attitude >= 10) this.textinfo.innerHTML = '<emoji>🥰</emoji><a>' + this._name;
+    if (this._attitude >= 10) this._textinfo.innerHTML = '<emoji>🥰</emoji><a>' + this._name;
 
   }
 
+}
+class Progress {
+  /**
+   * Сохранение прогресса
+   * @param {string} code Код сохранения части
+   */
+  Save (code) {
+    if(Game.PlayerName!=undefined || Game.PlayerName!=''){
+      localStorage.setItem('PlayerName', Game.PlayerName);
+    }
+    localStorage.setItem(code+'_Played', '1');
+
+    let story = localStorage.getItem('LastSave_Design');
+    for (let prop in Game.Stats) {
+      if (Game.Stats[prop]._story == story) {
+        localStorage.setItem(code + '_' + prop + "_show", Game.Stats[prop]._show);
+        localStorage.setItem(code + '_' + prop, Game.Stats[prop]._attitude);
+      }
+    }
+  }
+
+  /**
+   * Загрузка прогресса
+   * @param {string} code Код загрузки части
+   */
+  Load (code) {
+    Game.HideAllAttitudes();
+    let story = localStorage.getItem('LastSave_Design');
+    if(localStorage.getItem('PlayerName')!='' || localStorage.getItem('PlayerName')!=null){
+      Game.PlayerName = localStorage.getItem('PlayerName');
+    }
+    for (let prop in Game.Stats) {
+      if (Game.Stats[prop]._story == story) {
+        if (localStorage.getItem(code + "_" + prop + '_show') == 'true') Game.Stats[prop].set(parseInt(localStorage.getItem(code + "_" + prop)));
+      }
+    }
+  }
+
+  /** Сохраниение достижений*/
+  AchievementsSave () {
+    for (let prop in Game.Achievements) {
+      localStorage.setItem('Achievement_' + prop, Game.Achievements[prop].unlocked);
+    }
+  }
+
+  /** Загрузка достижений*/
+  AchievementsLoad () {
+    for (let prop in Game.Achievements) {
+      Game.AllAchievs++;
+      if (localStorage.getItem('Achievement_' + prop) == '1') {
+        Game.Achievements[prop].unlocked = 1;
+      }
+    }
+    for (var prop in Game.Achievements) {
+      if (Game.Achievements[prop].unlocked == 1) Game.Achievements[prop].unlock();
+    }
+  }
 }
 /** Класс сцены - текст, картинка, текст кнопок, действия кнопок, активность кнопок, дополнительное действие */
 class Scene {
@@ -478,6 +626,93 @@ class Scene {
         }
     }
 }
+class Settings {
+  constructor() {
+    this.AutomatiallyHideAlert = true;
+    this._volume = 0.7;
+    this.Zoom = 100;
+  }
+
+  /** Устанавливаем все настройки */
+  Set () {
+    this.SetVolume(SoundInput.value);
+    this.AutomatiallyHideAlert = AutomatiallyHideAlert.checked;
+    this.Zoom = ZoomInput.value;
+    document.body.style.zoom = Game.Settings.Zoom + "%";
+
+    localStorage.setItem('Settings.Volume', this._volume);
+    localStorage.setItem('Settings.AHA', this.AutomatiallyHideAlert);
+    localStorage.setItem('Settings.Zoom', this.Zoom);
+  }
+
+  /** Устанавливаем настройки звука */
+  SetVolume (a) {
+    this._volume = a;
+    Game.Sounds.NS.volume = this._volume;
+  }
+
+  getVolume (){
+    return this._volume;
+  }
+
+  /** Загружаем настройки */
+  Load () {
+    localStorage.getItem('Settings.AHA' == 'true') ?  AutomatiallyHideAlert.checked = true  :  AutomatiallyHideAlert.checked = false;
+    SoundInput.value = localStorage.getItem('Settings.Volume');
+    //ZoomInput.value = localStorage.getItem('Settings.Zoom');
+    this.Set();
+  }
+}
+/** Основные звуки и музыка*/
+class Sounds {
+  constructor() {
+    this.Ambient = new Audio("sounds/Silence.mp3");
+    this.Music = new Audio("sounds/Silence.mp3");
+    this.NS = new Audio("sounds/noti.mp3");
+    this.Cheers = new Audio("sounds/Completed.mp3");
+  }
+
+  /** Включаем новую музыку
+   * @param {string} type Тип музыки
+   * @param {string} name Название звука
+   */
+  play(type, name){
+    localStorage.setItem('LastSave_MusicName', name);
+    if (Game.Settings.getVolume() != 0) {
+      let x = setInterval(()=>{this[type].volume-=0.1},100);
+      setTimeout(()=>{clearInterval(x)},700);
+    }
+    setTimeout(()=>{
+      this[type].pause();
+      this[type] = new Audio('sounds/' + name + '.mp3');
+      this[type].currentTime = 0;
+      this[type].loop = true;
+      this[type].volume = Game.Settings.getVolume();
+      this[type].play();
+    },800);
+  }
+
+  /** Останавливаем конкретный звук
+   * @param {string} type Тип музыки
+   */
+  stop (type) {
+    this[type].currentTime = 0;
+    this[type].pause();
+    this[type] = new Audio('sounds/Silence.mp3');
+  }
+
+  /** Ставим на паузу все звуки */
+  pauseAll () {
+    this.Ambient.pause();
+    this.Music.pause();
+  }
+
+  /** Воспроизводим все звуки */
+  resumeAll () {
+    this.Ambient.play();
+    this.Music.play();
+  }
+}
 /** Истории в меню */
 
 class Story {
@@ -580,7 +815,13 @@ class Part {
         this.event = values.event;
     }
 }
+/** Мини-игра "упрощенные пятнаки"*/
 class Tags {
+  /**
+   * @param {documentElement} mainfield Элемент, куда добавляется игра
+   * @param {URL} picture Путь до папки с картинками без номера и расширения
+   * @param {function} winaction Событие по завершению мини-игры
+   */
   constructor (mainfield,picture,winaction) {
     this._cells = [];
     this._cellSelected = 0;
@@ -590,28 +831,30 @@ class Tags {
     this._action = winaction;
   }
 
-  Init(){
-    this.container = document.createElement('div');
-    this.container.classList.add('tags-field');
-    this.TagsField = document.createElement('div');
-    this.TagsField.classList.add('tags');
-    this._field.appendChild(this.container);
-    this.container.appendChild(this.TagsField);
+  /** Добавляем элементы и запускаем игру*/
+  init(){
+    this._container = document.createElement('div');
+    this._container.classList.add('tags-field');
+    this._TagsField = document.createElement('div');
+    this._TagsField.classList.add('tags');
+    this._field.appendChild(this._container);
+    this._container.appendChild(this._TagsField);
     this._addCells();
     this._rndCells();
     this._activateSelection();
   }
 
-
+  /** Добавляем по порядку ячейки*/
   _addCells () {
     for(let x=0;x<16;x++){
       this._cells[x] = document.createElement('div');
       this._cells[x].classList.add('cell');
       this._cells[x].innerText = x+1;
-      this.TagsField.appendChild(this._cells[x]);
+      this._TagsField.appendChild(this._cells[x]);
     }
   }
 
+  /** Рандомизируем ячейки*/
   _rndCells () {
     let Numbers = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0];
     this._cells.forEach(function(obj){
@@ -619,9 +862,9 @@ class Tags {
       obj.innerText = Numbers[RndCell];
       Numbers.splice(RndCell,1);
     });
+  }
 
-    }
-
+  /** Присваеваем каждой ячейки картинку*/
   _applyPictures (){
     for (let x=0;x<16;x++){
       if(this._cells[x].innerText !== '0') {
@@ -634,6 +877,7 @@ class Tags {
     }
   }
 
+  /** Опустошаем нулевую ячейку*/
   _emptyCell (){
     this._cells.forEach(function(obj) {
       if (obj.innerText == 0) {
@@ -647,6 +891,7 @@ class Tags {
 
   }
 
+  /** Выделяем активный выбор*/
   _activateSelection() {
     for(let x=0;x<16;x++){
       this._cells[x].onclick = () => {
@@ -661,6 +906,7 @@ class Tags {
     }
   }
 
+  /** Убираем выделения с неактивированных ячеек*/
   _deactivateSelection () {
     for(let x=0;x<16;x++){
       if (this._cells[x].innerText == 0){
@@ -680,21 +926,23 @@ class Tags {
     }
   }
 
+  /** Действие окончания игры*/
   exit(){
-    this.container.classList.add('tags-field_exit');
+    this._container.classList.add('tags-field_exit');
     setTimeout(()=>{
-      this.container.remove();
+      this._container.remove();
       this._action();
     },3000);
   }
 
+  /** Проверка порядка ячеек и предварительное завершение*/
   _checkWin () {
     let Result = '';
     this._cells.forEach(function(obj){
       Result = Result + obj.innerText;
     });
     if(Result === '1234567891011121314150') {
-      this.TagsField.classList.add('tags-field_win');
+      this._TagsField.classList.add('tags-field_win');
       this._deactivateSelection();
       this._cells[15].classList.remove('cell_empty');
       this._cells[15].style.backgroundImage = `url("${this._picture}${16}.png")`;
@@ -704,6 +952,131 @@ class Tags {
     }
   }
 }
+/** Таймер*/
+class Timer{
+  /** @param {string} soundTimer Повторяющийся звук таймера*/
+  constructor(soundTimer) {
+    this._sound = new Audio(soundTimer);
+    this._sound.loop = true;
+  }
+
+  /**
+   * @param {number} seconds Период действия таймера в секундах
+   * @param {function} action Действие по окончанию таймера
+   */
+  set (seconds, action) {
+    let time = seconds * 1000;
+    this.stop();
+    this._sound.volume = Game.Settings.getVolume();
+    this._sound.play();
+    TimerProgressBar.style.display = 'block';
+    this._settingsInterval = setInterval(() => { TimerProgressBar.value -= TimerProgressBar.max / seconds / 100; }, 10);
+    this._settings = setTimeout(() => { action(); Game.Timer.stop(); }, time);
+  }
+
+/** Остановить таймер*/
+  stop () {
+    this._sound.pause();
+    TimerProgressBar.value = 100;
+    TimerProgressBar.style.display = 'none';
+    clearInterval(this._settingsInterval);
+    clearTimeout(this._settings);
+  }
+
+}
+/**
+ *
+ * @source: https://github.com/RTemiy/Chronicles/
+ *
+ * @licstart The following is the entire license notice for the
+ *  JavaScript code in this page.
+ *
+ * Copyright (C) 2022 Artemiy "RTemiy" G.
+ *
+ * The JavaScript code in this page is provided under CC BY-NC 3.0 license
+ * https://creativecommons.org/licenses/by-nc/3.0/legalcode
+ *
+ * @licend The above is the entire license notice for the JavaScript code in this page.
+ *
+ */
+
+//Path to files
+const ROOTPATH = '';
+
+//Game Variables
+const Game = {};
+
+//Attitudes Conditions Items
+Game.Stats = {};
+
+Game.HideAllAttitudes = function () {
+    for (let prop in Game.Stats) {
+        Game.Stats[prop]._show = false;
+        Game.Stats[prop].hide();
+    }
+    InfoText.innerHTML='';
+    InfoArticle.innerHTML='';
+    InfoPicture.src=ROOTPATH +'pictures/Interface/Unknown.png';
+    MessageField.setAttribute('class', 'hide');
+    MessageField.style.display = 'none';
+}
+
+//Parts and Chapters and Stories
+Game.Stories = [];
+
+//Achievements
+Game.Achievements = {};
+
+Game.ShowCategoryAchievements = function (Story){
+    let amount = 0;
+    let completed = 0;
+    for (let prop in Game.Achievements) {
+        if(Game.Achievements[prop].story == Story) {
+            amount++;
+            Game.Achievements[prop].show();
+            if(Game.Achievements[prop].unlocked>=1)completed++;
+            AchievementsAmount.innerHTML = 'Получено достижений ' + completed + '/' + amount;
+        }
+        else Game.Achievements[prop].hide();
+    }
+}
+Game.AllAchievs = 0;
+
+//Parts of scenes
+Game.Scenes = {};
+
+//Player name
+Game.PlayerName = '';
+
+//Timer
+Game.Timer = new Timer('./sounds/timer.mp3');
+
+//Progress
+Game.Progress = new Progress();
+
+//Sounds
+Game.Sounds = new Sounds();
+
+//Settings
+Game.Settings = new Settings();
+
+//Effects
+Game.Effects = new Effects();
+
+//Design
+Game.Design = new Design();
+
+//Ads
+Game.canShowAds = false;
+
+//Last save
+Game.LastSave = new Last_Save();
+
+//Mini-game
+Game.MiniGame = {};
+
+//Last slides
+Game.LastSlide = new Last_Slide();
 function revealAchievs() {
   const reveals = document.querySelectorAll(".reveal");
   for (let i = 0; i < reveals.length; i++) {
@@ -731,7 +1104,7 @@ Game.askName = function (action) {
         else if (!/^[а-яё]*$/i.test(this.name))this.text.innerText = 'Только русские буквы!';
         else {
             Game.PlayerName = this.name;
-            action();
+            this.action();
             MainField.style.display = 'block';
             this.im.remove();
             Game.SendData('устанавливает новое имя');
@@ -752,91 +1125,6 @@ Game.askName = function (action) {
     this.im.appendChild(this.input);
     this.im.appendChild(this.button);
 }
-
-/**
- * Изменить оформление
- * @param {string} Background Фон слайдов
- * @param {string} Border Рамка для картинки слайда
- * @param {string} Color Цвет шрифта
- * @param {string} Font Семейство шрифта
- * @param {string} Stroke Обводка шрифта
- */
-Game.Design.ChangeInterface = function (Background,Border,Color,Font,Stroke){
-  MainField.style.backgroundImage = 'url(pictures/Interface/'+Background+'.png)';
-  BorderField.src = 'pictures/Interface/'+Border+'.png';
-  let Root = document.querySelector(':root');
-  Root.style.setProperty('--simplecolor', Color);
-  Root.style.setProperty('--font', Font);
-  Root.style.setProperty('--stroke', Stroke);
-}
-
-/** Изменить стиль кнопок
- *
- * @param {string} chapter Название Истории
- */
- Game.Design.Change = function (chapter){
-  localStorage.setItem('LastSave_Design', chapter);
-  switch (chapter) {
-
-    default:
-      Game.Design.ChangeInterface(
-        'back',
-        'border',
-        '#f2daffed',
-        '"Times New Roman", Times, serif',
-        '0'
-      );
-      Game.Design.StyleButtons(
-        'margin-top: 0',
-        'background-image: url("./pictures/Interface/button.png"); border: 0; box-shadow: 0;'
-      );
-      break;
-
-    case 'Aurora':
-      Game.Design.ChangeInterface(
-        'A_back',
-        'A_border',
-        'white',
-        'Century Gothic Regular',
-        '0'
-      );
-      Game.Design.StyleButtons(
-        'margin-top: 0',
-        'background-image: url("./pictures/Interface/button.png"); border: 0; box-shadow: 0;'
-      );
-      break;
-
-    case 'AEP':
-      Game.Design.ChangeInterface(
-        'R_back',
-        'R_border',
-        'white',
-        'Courier New',
-        '3px rgba(0, 208, 255, 0.2)'
-      );
-      Game.Design.StyleButtons(
-        'margin-top: 20px',
-        'background-image: none; border: 1px blue solid; box-shadow: 0 0 5px blue, inset 0 0 5px blue'
-      );
-      break;
-
-  }
-
-}
-
-
-/** Изменить стиль кнопок
- * @param {string} buttonfieldastyle Стиль поля для кнопок
- * @param {string} buttonsstyle Стиль каждой кнопки
- */
-Game.Design.StyleButtons = function (buttonfieldastyle,buttonsstyle) {
-  let Buttons = document.querySelector('#bf');
-  Buttons.style = buttonfieldastyle;
-  Buttons.childNodes.forEach(function (element) {
-    element.style = buttonsstyle;
-      });
-}
-
 const Editor = {};
 
 Editor.AddNewScene = function (){
@@ -1000,47 +1288,6 @@ Editor.ReturnPictValue = function (a){
 
 
 
-/** Эффект вспышки */
-Game.Effects.Flash = function (){
-    MainField.setAttribute('class','flash');
-    setTimeout(()=>{MainField.setAttribute('class','');},5000);
-}
-
-/** Эффект диско */
-Game.Effects.Disco = function (){
-    PictureField.setAttribute('class','disco');
-}
-
-/** Эффект диско выключить */
-Game.Effects.Disco.Stop = function (){
-    PictureField.setAttribute('class','');
-}
-
-/** Эффект понурости */
-Game.Effects.Gray = function (){
-    MainField.setAttribute('class','sad');
-}
-
-/** Эффект понурости выключить */
-Game.Effects.Gray.Stop = function (){
-    MainField.setAttribute('class','');
-}
-
-/** Эффект воспоминаний */
-Game.Effects.Mem = function (){
-    MainField.setAttribute('class','memory');
-}
-
-/** Эффект воспоминаний выключить */
-Game.Effects.Mem.Stop = function (){
-    MainField.setAttribute('class','');
-}
-
-/** Выключить эффекты */
-Game.Effects.DisableAll = function (){
-    Game.Effects.Gray.Stop();
-    Game.Effects.Disco.Stop();
-}
 function getProgress(){
   return JSON.stringify(localStorage);
 }
@@ -1121,7 +1368,7 @@ const MenuField = document.getElementById('me');
 const ContinueButton = document.getElementById('continuebutton');
 ContinueButton.onclick= ()=>{
     CloseOpen(MenuField,MainField);
-    Game.Sounds.ResumeAll();
+    Game.Sounds.resumeAll();
 }
 
 /**
@@ -1459,7 +1706,7 @@ BackToMenuButton.onclick = () => {
     CloseOpen(MainField,MenuField);
     ContinueButton.style.display="block";
     InventoryField.setAttribute(`class`,`fade-out`);
-    Game.Sounds.PauseAll();
+    Game.Sounds.pauseAll();
     LastSaveButton.style.display='none';
 }
 
@@ -1500,7 +1747,6 @@ const EditorGenerated = document.getElementById('editorgenerated');
  *
  * @param {HTMLElement} a Поле для закрытия
  * @param {HTMLElement} b Поле для открытия
- * @constructor
  */
 CloseOpen = function (a, b) {
     a.style.display = 'none';
@@ -1524,51 +1770,8 @@ Game.Inventory_Message = function (text){
     InventoryMessage.setAttribute('class','inv_mes_show');
     setTimeout(()=>{InventoryMessage.setAttribute('class','');},3000)
 }
-Game.LastSave.Save = function (scene){
-  Game.Progress.Save('LastSave');
-  localStorage.setItem('LastSave'+'_Played', '1');
-  localStorage.setItem('LastSave_SlideNumber', scene.number);
-  localStorage.setItem('LastSave_SlidePart', scene.part);
-}
-
-Game.LastSave.Load = function (){
-  Game.Progress.Load('LastSave');
-  Game.Sounds.Play('Music', localStorage.getItem('LastSave_MusicName'));
-  Game.Design.Change(localStorage.getItem('LastSave_Design'));
-  Game.LoadScreen(localStorage.getItem('LastSave_LS'));
-  Game.Scenes[localStorage.getItem('LastSave_SlidePart')][localStorage.getItem('LastSave_SlideNumber')].begin();
-}
-
-Game.LastLoadCheck = function (){
-  if (localStorage.getItem('LastSave' + '_Played')=='1'){
-    LastSaveButton.onclick = function (){
-      Game.LastSave.Load();
-      CloseOpen(MenuField,MainField);
-      LastSaveButton.style.display='none';
-    }
-  }
-  else{
-    LastSaveButton.style.display='none';
-  }
-}
-Game.LastSlide.lastslide = [];
-
-/** @param {Scene} scene Объект сцены */
-Game.LastSlide.add = function (scene){
-  this.lastslide.push(scene);
-};
-
-Game.LastSlide.text = function () {
-    return this.lastslide[this.lastslide.length-2].text;
-};
-
-Game.LastSlide.background = function () {
-  if(this.lastslide.length>2) {
-    return this.lastslide[this.lastslide.length - 2].background;
-  }
-};
 /** После старта проверяем были ли приняты правила, а также устанавливаем настройки */
-Game.Settings.Launch = function () {
+Game.Launch = function () {
     document.addEventListener('contextmenu', event => event.preventDefault());
     if (localStorage.getItem('PPAccepted') !='1') {
         PP.style.display='block';
@@ -1583,7 +1786,7 @@ Game.Settings.Launch = function () {
         Game.Progress.AchievementsLoad();
         Game.SetSceneNumbers();
         Game.ShowCategoryAchievements('Immortals');
-        Game.LastLoadCheck();
+        Game.LastSave.LastLoadCheck();
         Game.LoadPictures(function () {
             StartGameLoadingProgress.setAttribute('class', 'fade-out');
             StartGameLoadingPercent.setAttribute('class', 'fade-out');
@@ -1599,7 +1802,7 @@ Game.Settings.Launch = function () {
 }
 /** События по загрузки страницы */
 window.onload = function () {
-    Game.Settings.Launch();
+    Game.Launch();
 }
 
 /** Показываем сцены для тестирования  */
@@ -1612,7 +1815,7 @@ Game.ShowMeFeatures = function () {
  */
 Game.LoadScreen = function (part) {
     localStorage.setItem('LastSave_LS', part);
-    Game.LastSlide.lastslide = [];
+    Game.LastSlide.refresh();
     setTimeout(() => {
         LoadingTip.innerHTML = '';
         LoadingBack.src = '';
@@ -1684,8 +1887,6 @@ Game.Message = function (text, isSlide) {
     clearTimeout(timer);
 
     MessageField.onclick = this.hideelem;
-
-
 
     if (Game.Settings.AutomatiallyHideAlert == true) var timer = setTimeout(() => {
         MessageField.setAttribute('class', 'slide-out-right');
@@ -1766,61 +1967,6 @@ QueuePict(PrechachedImages[0]);
 
     this.Check();
 }
-/**
- * Сохранение прогресса
- * @param {string} code Код сохранения части
- */
-Game.Progress.Save = function (code) {
-    if(Game.PlayerName!=undefined || Game.PlayerName!=''){
-        localStorage.setItem('PlayerName', Game.PlayerName);
-    }
-    localStorage.setItem(code+'_Played', '1');
-
-    let story = localStorage.getItem('LastSave_Design');
-    for (let prop in Game.Stats) {
-        if (Game.Stats[prop]._story == story) {
-        localStorage.setItem(code + '_' + prop + "_show", Game.Stats[prop]._show);
-        localStorage.setItem(code + '_' + prop, Game.Stats[prop]._attitude);
-        }
-    }
-}
-
-/**
- * Загрузка прогресса
- * @param {string} code Код загрузки части
- */
-Game.Progress.Load = function (code) {
-    Game.HideAllAttitudes();
-    let story = localStorage.getItem('LastSave_Design');
-    if(localStorage.getItem('PlayerName')!='' || localStorage.getItem('PlayerName')!=null){
-        Game.PlayerName = localStorage.getItem('PlayerName');
-    }
-    for (let prop in Game.Stats) {
-        if (Game.Stats[prop]._story == story) {
-            if (localStorage.getItem(code + "_" + prop + '_show') == 'true') Game.Stats[prop].set(parseInt(localStorage.getItem(code + "_" + prop)));
-        }
-    }
-}
-
-/** Сохраниение достижений*/
-Game.Progress.AchievementsSave = function () {
-    for (let prop in Game.Achievements) {
-        localStorage.setItem('Achievement_' + prop, Game.Achievements[prop].unlocked);
-    }
-}
-
-/** Загрузка достижений*/
-Game.Progress.AchievementsLoad = function () {
-    for (let prop in Game.Achievements) {
-        Game.AllAchievs++;
-        if (localStorage.getItem('Achievement_' + prop) == '1') {
-            Game.Achievements[prop].unlocked = 1;
-        }
-    }
-    for (var prop in Game.Achievements) {
-        if (Game.Achievements[prop].unlocked == 1) Game.Achievements[prop].unlock();
-    }
-}
 /** Присвоение номера сцене в зависимости от индекса массива*/
 Game.SetSceneNumbers = function (){
     for (let prop in Game.Scenes) {
@@ -1870,126 +2016,6 @@ function AndroidApp (a){
 }
 
 //AndroidApp ('showAd');
-/** Автоматически прятать уведомления */
-Game.Settings.AutomatiallyHideAlert = true;
-
-/** Значение параметра звука */
-Game.Settings.Volume = 0.7;
-
-/** Значение параметра масштаба */
-Game.Settings.Zoom = 100;
-
-
-/** Устанавливаем все настройки */
-Game.Settings.Set = function () {
-    Game.Settings.SetVolume(SoundInput.value);
-    Game.Settings.AutomatiallyHideAlert = AutomatiallyHideAlert.checked;
-    Game.Settings.Zoom = ZoomInput.value;
-    document.body.style.zoom = Game.Settings.Zoom + "%";
-
-    localStorage.setItem('Settings.Volume', Game.Settings.Volume);
-    localStorage.setItem('Settings.AHA', Game.Settings.AutomatiallyHideAlert);
-    localStorage.setItem('Settings.Zoom', Game.Settings.Zoom);
-}
-
-/** Устанавливаем настройки звука */
-Game.Settings.SetVolume = function (a) {
-    Game.Settings.Volume = a;
-    Game.Sounds.NS.volume = Game.Settings.Volume;
-    Game.Sounds.Music.volume = Game.Settings.Volume;
-    Game.Sounds.Ambient.volume = Game.Settings.Volume;
-    Game.Timer.Sound.volume = Game.Settings.Volume;
-}
-
-/** Загружаем настройки */
-Game.Settings.Load = function () {
-    localStorage.getItem('Settings.AHA' == 'true') ?  AutomatiallyHideAlert.checked = true  :  AutomatiallyHideAlert.checked = false ;
-    SoundInput.value = localStorage.getItem('Settings.Volume');
-    //ZoomInput.value = localStorage.getItem('Settings.Zoom');
-    Game.Settings.Set();
-}
-/** Фоновый звук */
-Game.Sounds.Ambient = new Audio("sounds/Silence.mp3");
-
-/** Основная музыка */
-Game.Sounds.Music = new Audio("sounds/Silence.mp3");
-
-/** Звук уведомления */
-Game.Sounds.NS = new Audio("sounds/noti.mp3");
-
-/** Звук выполненного задания */
-Game.Sounds.Cheers = new Audio("sounds/Completed.mp3");
-
-/** Включаем новую музыку
- *
- * @param {string} type Тип музыки
- * @param {string} name Название звука
- */
-Game.Sounds.Play = function (type, name) {
-    localStorage.setItem('LastSave_MusicName', name);
-    if (Game.Settings.Volume != 0) {
-        let x = setInterval(()=>{Game.Sounds[type].volume-=0.1},100);
-        setTimeout(()=>{clearInterval(x)},700);
-    }
-    setTimeout(()=>{
-        Game.Sounds[type].pause();
-        Game.Sounds[type] = new Audio('sounds/' + name + '.mp3');
-        Game.Sounds[type].currentTime = 0;
-        Game.Sounds[type].loop = true;
-        Game.Sounds[type].volume = Game.Settings.Volume;
-        Game.Sounds[type].play();
-    },800);
-}
-
-/** Останавливаем конкретный звук
- *
- * @param {string} type Тип музыки
- */
-Game.Sounds.Stop = function (type) {
-    Game.Sounds[type].currentTime = 0;
-    Game.Sounds[type].pause();
-    Game.Sounds[type] = new Audio('sounds/Silence.mp3');
-}
-
-/** Ставим на паузу все звуки */
-Game.Sounds.PauseAll = function () {
-    Game.Sounds.Ambient.pause();
-    Game.Sounds.Music.pause();
-}
-
-/** Воспроизводим все звуки */
-Game.Sounds.ResumeAll = function () {
-    Game.Sounds.Ambient.play();
-    Game.Sounds.Music.play();
-}
-
-/** Звук таймера */
-Game.Timer.Sound = new Audio('sounds/timer.mp3');
-Game.Timer.Sound.loop = true;
-
-/**
- *  Таймер по истечении которого выполняется действие
- * @param {number} seconds Количество секунд
- * @param {function} action Действие по окончании таймера
- */
-Game.Timer.Set = function (seconds, action) {
-    let time = seconds * 1000;
-    Game.Timer.Stop();
-    Game.Timer.Sound.volume = Game.Settings.Volume;
-    Game.Timer.Sound.play();
-    TimerProgressBar.style.display = 'block';
-    Game.Timer.SettingsInterval = setInterval(() => { TimerProgressBar.value -= TimerProgressBar.max / seconds / 100; }, 10);
-    Game.Timer.Settings = setTimeout(() => { action(); Game.Timer.Stop(); }, time);
-}
-
-/** Останавливаем таймер */
-Game.Timer.Stop = function () {
-    Game.Timer.Sound.pause();
-    TimerProgressBar.value = 100;
-    TimerProgressBar.style.display = 'none';
-    clearInterval(Game.Timer.SettingsInterval);
-    clearTimeout(Game.Timer.Settings);
-}
 let hidden, visibilityChange;
 let alreadyturnedoff = false;
 if (typeof document.hidden !== "undefined") {
@@ -2009,8 +2035,8 @@ if (typeof document.hidden !== "undefined") {
 document.addEventListener(visibilityChange, handleVisibilityChange, false);
 
 function handleVisibilityChange() {
-    if(!alreadyturnedoff){Game.Sounds.PauseAll();alreadyturnedoff = true;}
-    else {Game.Sounds.ResumeAll();alreadyturnedoff = false;}
+    if(!alreadyturnedoff){Game.Sounds.pauseAll();alreadyturnedoff = true;}
+    else {Game.Sounds.resumeAll();alreadyturnedoff = false;}
 }
 Game.Scenes.Features = [];
 
@@ -2088,7 +2114,7 @@ Game.Scenes.Features[100] =
         buttontext: ['Вернуться в меню'],
         buttonaction: [() => {
           CloseOpen(MainField,MenuField);
-          Game.Sounds.PauseAll();
+          Game.Sounds.pauseAll();
         }],
     });
 
@@ -2786,7 +2812,7 @@ Game.Scenes.A_Part01[0] =
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part01[1].begin(); Game.Stats.Aurora.add(0); Game.Message('В верхнем левом углу находится инвентарь, там вы можете посмотреть полезную информацию') }],
     background: 'Backgrounds/Aurora_House_Inside',
-    condition: () => { Game.Sounds.Play('Music', 'Lighthouse') }
+    condition: () => { Game.Sounds.play('Music', 'Lighthouse') }
   });
 
 Game.Scenes.A_Part01[1] =
@@ -3153,7 +3179,7 @@ Game.Scenes.A_Part01[26] =
     <p>Я не обратила внимание на эту колкость. Люди почему-то норовят показать свое превосходство, но я к этому привыкла и отнеслась спокойно. 
       `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[27].begin(); Game.Sounds.Play('Music','KingQueens'); }],
+    buttonaction: [() => { Game.Scenes.A_Part01[27].begin(); Game.Sounds.play('Music','KingQueens'); }],
     background: 'Backgrounds/Aurora_WM',
   });
 
@@ -3186,7 +3212,7 @@ Game.Scenes.A_Part01[120] =
       <p>И даже сейчас, стоя перед бушующим морем, я все еще слушаю их песни. Надеясь, что когда-нибудь у меня хватит смелости взять в руки гитару и сочинить свое произведение.
       `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[28].begin(); Game.Sounds.Play('Music','Lighthouse') }],
+    buttonaction: [() => { Game.Scenes.A_Part01[28].begin(); Game.Sounds.play('Music','Lighthouse') }],
     background: 'Backgrounds/Aurora_WM',
   });
 
@@ -3636,7 +3662,7 @@ Game.Scenes.A_Part02[0] =
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part02[1].begin(); }],
     background: 'Backgrounds/Aurora_Lighthouse',
-    condition: function (){ Game.Sounds.Play('Music', 'Lighthouse') }
+    condition: function (){ Game.Sounds.play('Music', 'Lighthouse') }
   });
 
 Game.Scenes.A_Part02[1] =
@@ -4186,7 +4212,7 @@ Game.Scenes.A_Part02[48] =
     <p>Машина неспешно двинулась с места, оставляя позади маяк и отца, машущего на прощание рукой.
         `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[49].begin(); Game.Sounds.Play('Music','Aurora_Daily_01')}],
+    buttonaction: [() => { Game.Scenes.A_Part02[49].begin(); Game.Sounds.play('Music','Aurora_Daily_01')}],
     background: 'Persons/Aurora_Arthur',
   });
 
@@ -4286,8 +4312,8 @@ Game.Scenes.A_Part02[56] =
         `,
     buttontext: ['Послушать Трек 1', 'Послушать Трек 2', 'Выбрать прослушиваемую'],
     buttonaction: [
-      () => { Game.Sounds.Play('Music','Aurora_Daily_01'); Game.Stats.Song.set(1);},
-      () => { Game.Sounds.Play('Music','Aurora_Daily_02'); Game.Stats.Song.set(2);},
+      () => { Game.Sounds.play('Music','Aurora_Daily_01'); Game.Stats.Song.set(1);},
+      () => { Game.Sounds.play('Music','Aurora_Daily_02'); Game.Stats.Song.set(2);},
       () => { Game.Scenes.A_Part02[59].begin(); },
     ],
     background: 'Persons/Aurora_Arthur',
@@ -4414,7 +4440,7 @@ Game.Scenes.A_Part02[69] =
         `,
     buttontext: ['Помню этот разговор 🔐', 'Не могла вспомнить'],
     buttonaction: [
-      () => { Game.Scenes.A_Part02[70].begin(); Game.Sounds.Play('Music','Romantic'); AndroidApp ('showAd');},
+      () => { Game.Scenes.A_Part02[70].begin(); Game.Sounds.play('Music','Romantic'); AndroidApp ('showAd');},
       () => { Game.Scenes.A_Part02[93].begin();}
     ],
     background: 'Persons/Aurora_Arthur',
@@ -4602,7 +4628,7 @@ Game.Scenes.A_Part02[86] =
     Оставшиеся часы до темноты, я пролежала на плече Артура. Не плача, не испытывая грусти. Только наслаждалась его компанией и разговорами, что грели душу.
         `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[91].begin(); Game.Sounds.Play('Music','Aurora_Daily_0' + Game.Stats.Song.get)}],
+    buttonaction: [() => { Game.Scenes.A_Part02[91].begin(); Game.Sounds.play('Music','Aurora_Daily_0' + Game.Stats.Song.get)}],
     background: 'Backgrounds/Aurora_Forest_Flowers',
   });
 
@@ -4645,7 +4671,7 @@ Game.Scenes.A_Part02[90] =
     Оставшиеся часы до темноты, мы сидели рядом друг с другом и мирно вели беседу на различные темы, стараясь чуть дольше не возвращаться в реальность.
         `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[91].begin(); Game.Sounds.Play('Music','Aurora_Daily_0' + Game.Stats.Song.get)}],
+    buttonaction: [() => { Game.Scenes.A_Part02[91].begin(); Game.Sounds.play('Music','Aurora_Daily_0' + Game.Stats.Song.get)}],
     background: 'Backgrounds/Aurora_Forest_Flowers',
   });
 
@@ -4718,7 +4744,7 @@ Game.Scenes.A_Part02[97] =
     Дальнейшие часы в пути прошли, по большей части молча. Я не хотела больше отвлекать Артура от дороги, к тому же меня продолжало сильно клонить в сон. 
         `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[98].begin(); Game.Sounds.Play('Music','Lighthouse')}],
+    buttonaction: [() => { Game.Scenes.A_Part02[98].begin(); Game.Sounds.play('Music','Lighthouse')}],
     background: 'Backgrounds/Aurora_Arthurs_Car',
   });
 
@@ -4771,7 +4797,7 @@ Game.Scenes.A_Part02[102] =
     Неожиданно ребенок начал ворочаться, а затем громко плакать. Мужчина стал успокаивать его, но крики так и продолжали пронзать мирную тишину.  
         `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[103].begin(); Game.Sounds.Play('Music','Aurora_Daily_0' + Game.Stats.Song.get)}],
+    buttonaction: [() => { Game.Scenes.A_Part02[103].begin(); Game.Sounds.play('Music','Aurora_Daily_0' + Game.Stats.Song.get)}],
     background: 'Backgrounds/Aurora_Lighthouse_Night',
   });
 
@@ -5260,7 +5286,7 @@ Game.Scenes.A_Part03[0] =
     buttonaction: [() => { Game.Scenes.A_Part03[1].begin(); }],
     background: 'Backgrounds/Aurora_Lighthouse_Dawn',
     condition: function (){
-      Game.Sounds.Play('Music', 'Lighthouse');
+      Game.Sounds.play('Music', 'Lighthouse');
     }
   });
 
@@ -5363,7 +5389,7 @@ Game.Scenes.A_Part03[9] =
     buttonaction: [() => { Game.Scenes.A_Part03[10].begin(); }],
     background: 'Persons/Aurora_Kaleb',
     condition: function () {
-        Game.Sounds.Play('Music',`Aurora_Daily_0${Game.Stats.Song.get}`);
+        Game.Sounds.play('Music',`Aurora_Daily_0${Game.Stats.Song.get}`);
         Game.Stats.Kaleb.add(0);
         Game.Message('Вы вернулись в воспоминания')
     }
@@ -5452,12 +5478,12 @@ Game.Scenes.A_Part03[16] =
         `,
     buttontext: ['Выдать Калеба','Подыграть Калебу '],
     buttonaction: [
-      () => { Game.Scenes.A_Part03[17].begin(); Game.Stats.BetrayKaleb.add(1); Game.Timer.Stop();},
-      () => { Game.Scenes.A_Part03[22].begin(); Game.Timer.Stop(); Game.Achievements.A_PayBack.unlock();}
+      () => { Game.Scenes.A_Part03[17].begin(); Game.Stats.BetrayKaleb.add(1); Game.Timer.stop();},
+      () => { Game.Scenes.A_Part03[22].begin(); Game.Timer.stop(); Game.Achievements.A_PayBack.unlock();}
     ],
     background: 'Persons/Aurora_Dalia',
     condition: function () {
-        Game.Timer.Set(10, ()=>{Game.Scenes.A_Part03[17].begin(); Game.Timer.Stop(); })
+        Game.Timer.set(10, ()=>{Game.Scenes.A_Part03[17].begin(); Game.Timer.stop(); })
     }
   });
 
@@ -6266,7 +6292,7 @@ Game.Scenes.A_Part03[90] =
         До окончания поездки, мы продолжали вести непринужденную беседу и узнавать друг друга. На удивление, я и правда расслабилась и начала понемногу привыкать к моим новым знакомым.
         `,
       buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Part03[91].begin(); Game.Sounds.Play('Music','Aurora_City') }],
+      buttonaction: [() => { Game.Scenes.A_Part03[91].begin(); Game.Sounds.play('Music','Aurora_City') }],
       background: 'Backgrounds/Aurora_Bus',
   });
 
@@ -6377,7 +6403,7 @@ Game.Scenes.A_Part03[100] =
       Когда группа двинулась далее, мы незаметно примкнули к потоку. Внутри все переворачивалось от осознания, что мы поступаем неправильно. Но в тоже время я почему-то отчетливо ощутила - с этими новыми знакомыми мне ничего не грозит. 
         `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[101].begin(); Game.Sounds.Play('Music','Aurora_Church')}],
+    buttonaction: [() => { Game.Scenes.A_Part03[101].begin(); Game.Sounds.play('Music','Aurora_Church')}],
     background: 'Backgrounds/Aurora_SW_Streets',
   });
 
@@ -6893,8 +6919,8 @@ Game.Scenes.A_Part03[145] =
     buttonaction: [() => { Game.Scenes.A_Part03[146].begin();}],
     background: 'Backgrounds/Aurora_Room',
     condition: function () {
-      if (Game.Stats.Father.get>=1) this.buttonaction[0] = () => { Game.Scenes.A_Part03[146].begin(); Game.Sounds.Play('Music','Lighthouse');}
-      if (Game.Stats.Father.get<=0) this.buttonaction[0] = () => { Game.Scenes.A_Part03[152].begin(); Game.Sounds.Play('Music','Lighthouse');}
+      if (Game.Stats.Father.get>=1) this.buttonaction[0] = () => { Game.Scenes.A_Part03[146].begin(); Game.Sounds.play('Music','Lighthouse');}
+      if (Game.Stats.Father.get<=0) this.buttonaction[0] = () => { Game.Scenes.A_Part03[152].begin(); Game.Sounds.play('Music','Lighthouse');}
     }
   });
 
@@ -7044,7 +7070,7 @@ Game.Scenes.A_Prologue[0] =
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Prologue[1].begin(); Game.Message('В левом верхнем углу под иконкой рюкзака нажмите на стрелочку, чтобы посмотреть текст предыдущего слайда'); }],
     background: 'Backgrounds/Aurora_Writing',
-    condition: () => { Game.Sounds.Play('Music', 'Aurora') }
+    condition: () => { Game.Sounds.play('Music', 'Aurora') }
   });
 
 Game.Scenes.A_Prologue[1] =
@@ -7644,7 +7670,7 @@ Game.Scenes.FirstChapter[0] =
             () => { Game.Scenes.FirstChapter[31].begin(); Game.Achievements.GoodGirl.unlock(); Game.Stats.Money.add(700); }
         ],
         background: 'Backgrounds/Room',
-        condition: () => { Game.Sounds.Play('Music', 'FirstChapter');  Game.Effects.Flash(); }
+        condition: () => { Game.Sounds.play('Music', 'FirstChapter');  Game.Effects.Flash(); }
     });
 
 Game.Scenes.FirstChapter[1] =
@@ -8648,7 +8674,7 @@ Game.Scenes.TL[1] =
         buttontext: [''],
         buttonaction: [() => { Game.Scenes.TL[2].begin(); Game.Message("<em>Нью-Йорк 1885 год"); Game.Effects.Flash(); }],
         background: '',
-        condition: function () { Game.Sounds.Play('Music', 'NY'); }
+        condition: function () { Game.Sounds.play('Music', 'NY'); }
     });
 
 Game.Scenes.TL[2] =
@@ -9175,7 +9201,7 @@ Game.Scenes.TL[31] =
         buttontext: [''],
         buttonaction: [() => { Game.Scenes.TL[32].begin(); Game.Achievements.FirstMonster.unlock(); }],
         background: 'Persons/Monster',
-        condition: () => { Game.Sounds.Play('Music', 'Monster') }
+        condition: () => { Game.Sounds.play('Music', 'Monster') }
     });
 
 Game.Scenes.TL[32] =
@@ -9373,7 +9399,7 @@ Game.Scenes.TL[47] =
         buttontext: [''],
         buttonaction: [() => { Game.Scenes.TL[48].begin(); Game.Achievements.FirstMonster.unlock(); }],
         background: 'Persons/Monster',
-        condition: () => { Game.Sounds.Play('Music', 'Monster') }
+        condition: () => { Game.Sounds.play('Music', 'Monster') }
     });
 
 Game.Scenes.TL[48] =
@@ -9545,7 +9571,7 @@ Game.Scenes.TL[60] =
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.TL[160].begin();}],
     background: 'Persons/Monster',
-    condition: () => { Game.Sounds.Play('Music', 'Monster') }
+    condition: () => { Game.Sounds.play('Music', 'Monster') }
   });
 
 Game.Scenes.TL[160] =
@@ -9570,7 +9596,7 @@ Game.Scenes.TC[0] =
         background: 'Backgrounds/Firstaid_post',
         condition: function () {
             Game.Stats.Scarlett.add(0);
-            Game.Sounds.Play('Music', 'FirstChapter');
+            Game.Sounds.play('Music', 'FirstChapter');
 
             if (Game.Stats.Scarlett.get >= 1) {
                 this.buttonaction[0] = () => { Game.Scenes.TC[1].begin() };
@@ -9845,7 +9871,7 @@ Game.Scenes.TC[20] =
             () => { Game.Scenes.TC[24].begin(); }
         ],
         background: 'Persons/Leon',
-        condition: function(){Game.Sounds.Play('Music','Leon');
+        condition: function(){Game.Sounds.play('Music','Leon');
         }
     });
 
@@ -10188,7 +10214,7 @@ Game.Scenes.TC[41] =
         buttontext: [''],
         buttonaction: [() => { Game.Scenes.TC[43].begin(); }],
         background: 'Persons/Cheryl',
-        condition: function () { Game.Sounds.Play('Music', 'Cheryl'); }
+        condition: function () { Game.Sounds.play('Music', 'Cheryl'); }
     });
 
 Game.Scenes.TC[42] =
@@ -10200,7 +10226,7 @@ Game.Scenes.TC[42] =
         buttontext: [''],
         buttonaction: [() => { Game.Scenes.TC[43].begin(); }],
         background: 'Persons/Cheryl',
-        condition: function () { Game.Sounds.Play('Music', 'Cheryl') }
+        condition: function () { Game.Sounds.play('Music', 'Cheryl') }
     });
 
 Game.Scenes.TC[43] =
@@ -10388,7 +10414,7 @@ Game.Scenes.TC[56] =
             () => { Game.Scenes.TC[57].begin(); },
             () => { Game.Scenes.TC[60].begin(); }],
         background: 'Persons/Neitan',
-        condition: function () { Game.Sounds.Play('Music', 'Neitan') }
+        condition: function () { Game.Sounds.play('Music', 'Neitan') }
     });
 
 Game.Scenes.TC[57] =
@@ -10576,7 +10602,7 @@ Game.Scenes.TC[70] =
         buttontext: [''],
         buttonaction: [() => { Game.Scenes.TC[160].begin(); }],
         background: 'Backgrounds/Hero_Sleeps',
-        condition: function () { Game.Sounds.Play('Music', 'FirstChapter'); }
+        condition: function () { Game.Sounds.play('Music', 'FirstChapter'); }
     });
 
 Game.Scenes.TC[160] =
@@ -11034,7 +11060,7 @@ Game.Scenes.PP[1] =
         buttontext: [''],
         background: 'Backgrounds/Abstraction_Hero',
         buttonaction: [() => { Game.Scenes.PP[2].begin(); }],
-        condition: () => { Game.Sounds.Play('Music', 'Prologue'); Game.Effects.Flash(); }
+        condition: () => { Game.Sounds.play('Music', 'Prologue'); Game.Effects.Flash(); }
     });
 
 Game.Scenes.PP[2] =
@@ -11309,7 +11335,7 @@ Game.Scenes.PP[23] =
         background: "Backgrounds/Pompeii",
         buttontext: [''],
         buttonaction: [() => { Game.Scenes.PP[24].begin(); }],
-        condition: () => { Game.Sounds.Play('Music', 'Crowd') }
+        condition: () => { Game.Sounds.play('Music', 'Crowd') }
     });
 
 Game.Scenes.PP[24] =
@@ -11336,7 +11362,7 @@ Game.Scenes.PP[25] =
             `,
         background: "Backgrounds/Pompeii",
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.PP[26].begin();Game.Sounds.Play('Music','Pompeii'); }],
+        buttonaction: [() => { Game.Scenes.PP[26].begin();Game.Sounds.play('Music','Pompeii'); }],
     });
 
 Game.Scenes.PP[26] =
@@ -11418,7 +11444,7 @@ Game.Scenes.PP[31] =
           Game.Scenes.PP[33].activate(0); Game.Scenes.PP[35].activate(0); Game.Scenes.PP[37].activate(0);
           Game.Scenes.PP[33].activate(1); Game.Scenes.PP[35].activate(1); Game.Scenes.PP[37].activate(1);
           Game.Scenes.PP[33].activate(2); Game.Scenes.PP[35].activate(2); Game.Scenes.PP[37].activate(2);
-            Game.Sounds.Play('Music', 'Prologue')
+            Game.Sounds.play('Music', 'Prologue')
             if (this.buttonactive[0] == false && this.buttonactive[1] == false && this.buttonactive[2] == false) {
                 this.buttonactive[3] = true;
             }
@@ -11590,7 +11616,7 @@ Game.Scenes.PN[0] =
         background: "Backgrounds/Room",
         buttontext: [''],
         buttonaction: [() => { Game.Scenes.PN[1].begin(); }],
-        condition: () => { Game.Sounds.Play('Music', 'FirstChapter'); }
+        condition: () => { Game.Sounds.play('Music', 'FirstChapter'); }
     });
 
 Game.Scenes.PN[1] =
@@ -12061,8 +12087,8 @@ Game.Scenes.PN[36] =
         background: "Persons/Leon",
         buttontext: ['Выпила алкоголь', 'Ограничилась соком'],
         buttonaction: [
-            () => { Game.Scenes.PN[37].begin(); Game.Sounds.Play('Music', 'Disco'); Game.Stats.DrinkAtParty.add(1); },
-            () => { Game.Scenes.PN[38].begin(); Game.Sounds.Play('Music', 'Disco'); Game.Stats.DrinkAtParty.add(0);},],
+            () => { Game.Scenes.PN[37].begin(); Game.Sounds.play('Music', 'Disco'); Game.Stats.DrinkAtParty.add(1); },
+            () => { Game.Scenes.PN[38].begin(); Game.Sounds.play('Music', 'Disco'); Game.Stats.DrinkAtParty.add(0);},],
     });
 
 Game.Scenes.PN[37] =
@@ -12227,12 +12253,12 @@ Game.Scenes.PN[50] =
             'Вниз',
         ],
         buttonaction: [
-            () => { Game.Scenes.PN[55].begin(); Game.Timer.Stop(); },
+            () => { Game.Scenes.PN[55].begin(); Game.Timer.stop(); },
             () => { Game.Scenes.PN[51].begin(); Game.Effects.Disco(); },
-            () => { Game.Scenes.PN[55].begin(); Game.Timer.Stop(); },
+            () => { Game.Scenes.PN[55].begin(); Game.Timer.stop(); },
         ],
         condition: function () {
-            Game.Timer.Set(9, () => {
+            Game.Timer.set(9, () => {
                 Game.Scenes.PN[55].begin();
             })
         }
@@ -12250,12 +12276,12 @@ Game.Scenes.PN[51] =
             'Вниз',
         ],
         buttonaction: [
-            () => { Game.Scenes.PN[55].begin(); Game.Timer.Stop(); },
-            () => { Game.Scenes.PN[55].begin(); Game.Timer.Stop(); },
+            () => { Game.Scenes.PN[55].begin(); Game.Timer.stop(); },
+            () => { Game.Scenes.PN[55].begin(); Game.Timer.stop(); },
             () => { Game.Scenes.PN[52].begin(); Game.Effects.Disco(); },
         ],
         condition: function () {
-            Game.Timer.Set(8, () => {
+            Game.Timer.set(8, () => {
                 Game.Scenes.PN[55].begin();
             })
         }
@@ -12273,12 +12299,12 @@ Game.Scenes.PN[52] =
             'Вниз'
         ],
         buttonaction: [
-            () => { Game.Scenes.PN[55].begin(); Game.Timer.Stop(); },
+            () => { Game.Scenes.PN[55].begin(); Game.Timer.stop(); },
             () => { Game.Scenes.PN[54].begin(); Game.Effects.Disco(); },
-            () => { Game.Scenes.PN[55].begin(); Game.Timer.Stop(); },
+            () => { Game.Scenes.PN[55].begin(); Game.Timer.stop(); },
         ],
         condition: function () {
-            Game.Timer.Set(7, () => {
+            Game.Timer.set(7, () => {
                 Game.Scenes.PN[55].begin();
             })
         }
@@ -12296,12 +12322,12 @@ Game.Scenes.PN[54] =
             'Вниз'
         ],
         buttonaction: [
-            () => { Game.Scenes.PN[57].begin(); Game.Timer.Stop(); Game.Effects.Disco(); Game.Achievements.DanceQueen.unlock(); },
-            () => { Game.Scenes.PN[55].begin(); Game.Timer.Stop(); },
-            () => { Game.Scenes.PN[55].begin(); Game.Timer.Stop(); },
+            () => { Game.Scenes.PN[57].begin(); Game.Timer.stop(); Game.Effects.Disco(); Game.Achievements.DanceQueen.unlock(); },
+            () => { Game.Scenes.PN[55].begin(); Game.Timer.stop(); },
+            () => { Game.Scenes.PN[55].begin(); Game.Timer.stop(); },
         ],
         condition: function () {
-            Game.Timer.Set(6, () => {
+            Game.Timer.set(6, () => {
                 Game.Scenes.PN[55].begin();
             })
         }
@@ -12390,7 +12416,7 @@ Game.Scenes.PN[59] =
         background: "Persons/Leon",
         buttontext: [''],
         buttonaction: [() => { Game.Scenes.PN[60].begin(); }],
-        condition: function () { Game.Sounds.Play('Music','Leon')}
+        condition: function () { Game.Sounds.play('Music','Leon')}
     });
 
 Game.Scenes.PN[60] =
@@ -12525,7 +12551,7 @@ Game.Scenes.PN[68] =
         background: "Persons/Scarlett",
         buttontext: [''],
         buttonaction: [() => { Game.Scenes.PN[69].begin(); }],
-        condition: function () {Game.Sounds.Play('Music','Scarlett')}
+        condition: function () {Game.Sounds.play('Music','Scarlett')}
 
     });
 
@@ -12618,7 +12644,7 @@ Game.Scenes.PN[75] =
         background: "Persons/Cheryl",
         buttontext: [''],
         buttonaction: [() => { Game.Scenes.PN[76].begin(); }],
-        condition: function () { Game.Sounds.Play('Music', 'Cheryl') }
+        condition: function () { Game.Sounds.play('Music', 'Cheryl') }
     });
 
 Game.Scenes.PN[76] =
@@ -12821,7 +12847,7 @@ Game.Scenes.PN[90] =
         buttonaction: [() => { Game.Scenes.PN[91].begin(); }],
         condition: function () {
             Game.Effects.Gray();
-            Game.Sounds.Play('Music', 'Chair');
+            Game.Sounds.play('Music', 'Chair');
             AndroidApp ('showAd');
         }
     });
@@ -13489,7 +13515,7 @@ Game.Scenes.FC[0] = new Scene({
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FC[1].begin(); Game.Message("<em>Нью-Йорк 1885 год"); }],
   condition: () => {
-    Game.Sounds.Play('Music','Doctor');
+    Game.Sounds.play('Music','Doctor');
   }
 });
 
@@ -14468,7 +14494,7 @@ Game.Scenes.FC[80] = new Scene({
        `,
   background: "Backgrounds/Katarina_Room",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FC[81].begin(); Game.Sounds.Play('Music', 'Ball'); Game.Stats.Robert.add(0); AndroidApp ('showAd');}],
+  buttonaction: [() => { Game.Scenes.FC[81].begin(); Game.Sounds.play('Music', 'Ball'); Game.Stats.Robert.add(0); AndroidApp ('showAd');}],
 });
 
 Game.Scenes.FC[81] = new Scene({
@@ -14981,7 +15007,7 @@ Game.Scenes.FC[124] = new Scene({
        `,
   background: "Backgrounds/Ball",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FC[125].begin(); Game.Sounds.Play('Music','Antagonist'); }],
+  buttonaction: [() => { Game.Scenes.FC[125].begin(); Game.Sounds.play('Music','Antagonist'); }],
 });
 
 Game.Scenes.FC[125] = new Scene({
@@ -15383,7 +15409,7 @@ Game.Scenes.FC[162] = new Scene({
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FC[163].begin();}],
   condition: function (){
-    Game.Sounds.Play('Music', 'Ball');
+    Game.Sounds.play('Music', 'Ball');
   }
 });
 
@@ -15693,7 +15719,7 @@ Game.Scenes.FifthPart[0] = new Scene({
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[2].begin();  }],
   condition: () => {
-    Game.Sounds.Play('Music','Realities');
+    Game.Sounds.play('Music','Realities');
   }
 });
 
@@ -15966,7 +15992,7 @@ Game.Scenes.FifthPart[23] = new Scene({
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[24].begin();  }],
   condition: function () {
-    Game.Sounds.Play('Music','FirstChapter');
+    Game.Sounds.play('Music','FirstChapter');
     Game.Effects.Flash();
   }
 });
@@ -16213,7 +16239,7 @@ Game.Scenes.FifthPart[47] = new Scene({
   buttonaction: [() => { Game.Scenes.FifthPart[52].begin();  }],
   condition: function () {
     if(Game.Stats.Leon.get>=4){
-      this.buttonaction[0] = () => { Game.Scenes.FifthPart[48].begin(); Game.Sounds.Play('Music','Leon');}
+      this.buttonaction[0] = () => { Game.Scenes.FifthPart[48].begin(); Game.Sounds.play('Music','Leon');}
     }
     if (Game.Stats.Leon.get<=3){
       this.buttonaction[0] = () => { Game.Scenes.FifthPart[52].begin();}
@@ -16260,7 +16286,7 @@ Game.Scenes.FifthPart[51] = new Scene({
             `,
   background: "Persons/Leon",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[52].begin(); Game.Sounds.Play('Music','FirstChapter');  }],
+  buttonaction: [() => { Game.Scenes.FifthPart[52].begin(); Game.Sounds.play('Music','FirstChapter');  }],
 });
 
 Game.Scenes.FifthPart[52] = new Scene({
@@ -16386,7 +16412,7 @@ Game.Scenes.FifthPart[63] = new Scene({
   buttonaction: [() => {
     Game.Scenes.FifthPart[64].begin();
     Game.Message('<a style="font-weight: 800; color: #76adff">Вы играете от лица Нэйтана');
-    Game.Sounds.Play('Music','Neitan');
+    Game.Sounds.play('Music','Neitan');
   }],
 });
 
@@ -16558,7 +16584,7 @@ Game.Scenes.FifthPart[86] = new Scene({
             `,
   background: "Backgrounds/Car",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[87].begin(); Game.Message('<a style="font-weight: 800; color: #edc4ff">Вы снова играете от лица главной героини'); Game.Sounds.Play('Music','FirstChapter');}],
+  buttonaction: [() => { Game.Scenes.FifthPart[87].begin(); Game.Message('<a style="font-weight: 800; color: #edc4ff">Вы снова играете от лица главной героини'); Game.Sounds.play('Music','FirstChapter');}],
 });
 
 Game.Scenes.FifthPart[87] = new Scene({
@@ -17264,7 +17290,7 @@ Game.Scenes.FifthPart[152] = new Scene({
             `,
   background: "Backgrounds/Car",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[153].begin(); Game.Sounds.Play('Music','Lake')}],
+  buttonaction: [() => { Game.Scenes.FifthPart[153].begin(); Game.Sounds.play('Music','Lake')}],
 });
 
 Game.Scenes.FifthPart[153] = new Scene({
@@ -17391,7 +17417,7 @@ Game.Scenes.FifthPart[165] = new Scene({
   condition: function () {
     if(Game.Stats.Neitan.get>=6){
       this.buttonaction[0] = () =>{ Game.Scenes.FifthPart[166].begin();}
-      Game.Sounds.Play('Music','Neitan');
+      Game.Sounds.play('Music','Neitan');
     }
     else{
       this.buttonaction[0] = () =>{ Game.Scenes.FifthPart[177].begin();}
@@ -17515,7 +17541,7 @@ Game.Scenes.FifthPart[176] = new Scene({
             `,
   background: "Backgrounds/Lake",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[180].begin(); Game.Sounds.Play('Music','Lake');}],
+  buttonaction: [() => { Game.Scenes.FifthPart[180].begin(); Game.Sounds.play('Music','Lake');}],
 });
 
 Game.Scenes.FifthPart[177] = new Scene({
@@ -17931,7 +17957,7 @@ Game.Scenes.FifthPart[216] = new Scene({
             `,
   background: "Backgrounds/Bike_Together",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[217].begin(); Game.Sounds.Play('Music','Lake')}],
+  buttonaction: [() => { Game.Scenes.FifthPart[217].begin(); Game.Sounds.play('Music','Lake')}],
 });
 
 Game.Scenes.FifthPart[217] = new Scene({
@@ -18118,7 +18144,7 @@ Game.Scenes.FifthPart[234] = new Scene({
   buttonaction: [() => { Game.Scenes.FifthPart[235].begin();}],
   condition: function () {
     if(Game.Stats.Leon.get>=6){
-      this.buttonaction[0] = () => {Game.Scenes.FifthPart[235].begin(); Game.Sounds.Play('Music','Leon')}
+      this.buttonaction[0] = () => {Game.Scenes.FifthPart[235].begin(); Game.Sounds.play('Music','Leon')}
     }
     else{
       this.buttonaction[0] = () => {Game.Scenes.FifthPart[254].begin();}
@@ -18325,7 +18351,7 @@ Game.Scenes.FifthPart[253] = new Scene({
             `,
   background: "Backgrounds/Lake",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[257].begin(); Game.Sounds.Play('Music','Lake')}],
+  buttonaction: [() => { Game.Scenes.FifthPart[257].begin(); Game.Sounds.play('Music','Lake')}],
 });
 
 Game.Scenes.FifthPart[254] = new Scene({
@@ -18767,13 +18793,13 @@ Game.Scenes.FifthPart[295] = new Scene({
   background: "Backgrounds/Kitchen",
   buttontext: ['Чипсы','Сэндвич с индейкой','Сэндвичи с колбасой','Фрукты с йогуртом'],
   buttonaction: [
-    () => { Game.Scenes.FifthPart[296].begin(); Game.Timer.Stop();},
-    () => { Game.Scenes.FifthPart[297].begin(); Game.Timer.Stop();},
-    () => { Game.Scenes.FifthPart[298].begin(); Game.Timer.Stop();},
-    () => { Game.Scenes.FifthPart[299].begin(); Game.Timer.Stop();},
+    () => { Game.Scenes.FifthPart[296].begin(); Game.Timer.stop();},
+    () => { Game.Scenes.FifthPart[297].begin(); Game.Timer.stop();},
+    () => { Game.Scenes.FifthPart[298].begin(); Game.Timer.stop();},
+    () => { Game.Scenes.FifthPart[299].begin(); Game.Timer.stop();},
   ],
   condition: function () {
-    Game.Timer.Set(5,()=>{Game.Scenes.FifthPart[296].begin()});
+    Game.Timer.set(5,()=>{Game.Scenes.FifthPart[296].begin()});
   }
 });
 
@@ -18912,7 +18938,7 @@ Game.Scenes.FifthPart[307] = new Scene({
             `,
   background: "Backgrounds/Hero_Car",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[308].begin(); Game.Sounds.Play('Music','Lake')}],
+  buttonaction: [() => { Game.Scenes.FifthPart[308].begin(); Game.Sounds.play('Music','Lake')}],
 });
 
 Game.Scenes.FifthPart[308] = new Scene({
@@ -19072,7 +19098,7 @@ Game.Scenes.FifthPart[322] = new Scene({
   buttonaction: [() => { Game.Scenes.FifthPart[339].begin();}],
   condition: function () {
     if(Game.Stats.Scarlett.get>=6){
-      this.buttonaction[0] = () => {Game.Scenes.FifthPart[323].begin(); Game.Sounds.Play('Music','Scarlett');}
+      this.buttonaction[0] = () => {Game.Scenes.FifthPart[323].begin(); Game.Sounds.play('Music','Scarlett');}
     }
     else{
       this.buttonaction[0] = () => {Game.Scenes.FifthPart[339].begin();}
@@ -19248,7 +19274,7 @@ Game.Scenes.FifthPart[338] = new Scene({
             `,
   background: "Persons/Scarlett_New",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[343].begin(); Game.Sounds.Play('Music','Lake')}],
+  buttonaction: [() => { Game.Scenes.FifthPart[343].begin(); Game.Sounds.play('Music','Lake')}],
 });
 
 Game.Scenes.FifthPart[339] = new Scene({
@@ -20050,7 +20076,7 @@ Game.Scenes.FifthPart[409] = new Scene({
             `,
   background: "Backgrounds/Cheryl_Car",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[410].begin(); Game.Sounds.Play('Music','Lake');}],
+  buttonaction: [() => { Game.Scenes.FifthPart[410].begin(); Game.Sounds.play('Music','Lake');}],
 });
 
 Game.Scenes.FifthPart[410] = new Scene({
@@ -20219,7 +20245,7 @@ Game.Scenes.FifthPart[425] = new Scene({
   buttonaction: [() => { Game.Scenes.FifthPart[436].begin();}],
   condition: function () {
     if(Game.Stats.Cheryl.get<=2){
-      this.buttonaction[0] = () => { Game.Scenes.FifthPart[426].begin(); Game.Sounds.Play('Music','Cheryl');}
+      this.buttonaction[0] = () => { Game.Scenes.FifthPart[426].begin(); Game.Sounds.play('Music','Cheryl');}
     }
     else{
       this.buttonaction[0] = () => { Game.Scenes.FifthPart[436].begin();}
@@ -20327,7 +20353,7 @@ Game.Scenes.FifthPart[434] = new Scene({
   buttontext: [''],
   buttonaction: [() => {
     Game.Scenes.FifthPart[435].begin();
-    Game.Sounds.Play('Music','Lake');
+    Game.Sounds.play('Music','Lake');
     Game.Message('Ваши предыдущие действия подтолкнули Шерил стать более самостоятельной');
     Game.Achievements.LakeCheryl.unlock();}],
 });
@@ -20475,7 +20501,7 @@ Game.Scenes.FifthPart[448] = new Scene({
             `,
   background: "Persons/Cheryl_New",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[449].begin(); Game.Sounds.Play('Music','Chair');}],
+  buttonaction: [() => { Game.Scenes.FifthPart[449].begin(); Game.Sounds.play('Music','Chair');}],
 });
 
 Game.Scenes.FifthPart[449] = new Scene({
@@ -20550,7 +20576,7 @@ Game.Scenes.FifthPart[455] = new Scene({
             `,
   background: "Backgrounds/Cheryl_Painting",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[456].begin(); Game.Sounds.Play('Music','Lake');}],
+  buttonaction: [() => { Game.Scenes.FifthPart[456].begin(); Game.Sounds.play('Music','Lake');}],
 });
 
 Game.Scenes.FifthPart[456] = new Scene({
@@ -20815,7 +20841,7 @@ Game.Scenes.FifthPart[479] = new Scene({
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.FifthPart[480].begin();}],
   condition: function () {
-    Game.Sounds.Play('Music','FirstChapter'); AndroidApp ('showAd');
+    Game.Sounds.play('Music','FirstChapter'); AndroidApp ('showAd');
   }
 });
 
@@ -20920,13 +20946,13 @@ Game.Scenes.FifthPart[489] = new Scene({
             `,
   background: "Backgrounds/Room",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[495].begin(); Game.Sounds.Play('Music','Prologue')}],
+  buttonaction: [() => { Game.Scenes.FifthPart[495].begin(); Game.Sounds.play('Music','Prologue')}],
   condition: function () {
     if(Game.Stats.God.get>=1){
-      this.buttonaction[0] = () => { Game.Scenes.FifthPart[490].begin(); Game.Sounds.Play('Music','Prologue')}
+      this.buttonaction[0] = () => { Game.Scenes.FifthPart[490].begin(); Game.Sounds.play('Music','Prologue')}
     }
     else{
-      this.buttonaction[0] = () => { Game.Scenes.FifthPart[495].begin(); Game.Sounds.Play('Music','Prologue')}
+      this.buttonaction[0] = () => { Game.Scenes.FifthPart[495].begin(); Game.Sounds.play('Music','Prologue')}
     }
   }
 });
@@ -21047,7 +21073,7 @@ Game.Scenes.FifthPart[500] = new Scene({
   buttontext: [''],
   buttonaction: [() => {
     Game.Scenes.FifthPart[501].begin();
-    Game.Sounds.Play('Music','Pompeii');
+    Game.Sounds.play('Music','Pompeii');
     Game.Effects.Flash();
   }],
 });
@@ -21158,7 +21184,7 @@ Game.Scenes.SixPart[0] = new Scene({
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[1].begin();  }],
   condition: () => {
-    Game.Sounds.Play('Music','Pompeii');
+    Game.Sounds.play('Music','Pompeii');
     Game.Message('<i>Помпеи 79 г. н.э.');
   }
 });
@@ -21370,7 +21396,7 @@ Game.Scenes.SixPart[20] = new Scene({
             `,
   background: "Interface/Unknown",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.SixPart[21].begin(); Game.Sounds.Play('Music','Prologue');  }],
+  buttonaction: [() => { Game.Scenes.SixPart[21].begin(); Game.Sounds.play('Music','Prologue');  }],
 });
 
 Game.Scenes.SixPart[21] = new Scene({
@@ -21494,7 +21520,7 @@ Game.Scenes.Prologue[0] =
         buttontext: [''],
         buttonaction: [() => { Game.Scenes.Prologue[1].begin(); Game.Message('В левом верхнем углу под иконкой рюкзака нажмите на стрелочку, чтобы посмотреть текст предыдущего слайда.'); }],
         background: 'Backgrounds/Abstraction',
-        condition: () => { Game.Sounds.Play('Music', 'Prologue'); }
+        condition: () => { Game.Sounds.play('Music', 'Prologue'); }
 
     });
 
