@@ -1317,7 +1317,8 @@ creators,
 partf,
 cf,
 stories,
-achievs {
+achievs,
+favourites{
     visibility: hidden;
     animation: fade-in 0.5s ease 0.5s 0.5 normal forwards;
 }
@@ -1326,7 +1327,8 @@ cf,
 partf,
 stories,
 creators,
-achievs {
+achievs,
+favourites{
     max-height: calc(100vh - 50px);
     display:none;
     padding-top: 50px;
@@ -1418,6 +1420,143 @@ access{
     z-index: 6;
     background-color: black;
     background-image: url(pictures/Covers/chapter.png);
+}
+#favbb {
+  margin-top: -17px;
+  margin-left: -5px;
+  width: 50px;
+  height: 25px;
+  z-index: 5;
+  position: fixed;
+  background-image: url(pictures/Interface/arrow.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  border-radius: 0px 10px 10px 0px;
+  border: 1px solid rgba(170, 170, 170, 0.315);
+}
+
+#favcoins{
+  margin-top: -17px;
+  text-align: center;
+  right: 10px;
+  width: 80px;
+  position: fixed;
+  border: red solid 1px;
+  border: 1px solid rgba(170, 170, 170, 0.315);
+  border-radius: 5px;
+  transition: color 0.5s ease-in-out;
+}
+
+#favicons{
+  margin: auto;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: row;
+  height: 70px;
+  overflow: hidden;
+  overflow-x: auto;
+}
+
+#favavatar{
+  margin: auto;
+  position: relative;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.5s ease-in-out;
+}
+
+#favlevel{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: -1vh;
+  left: 1vw;
+  border: solid orange 2px;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  background: yellow;
+  box-shadow: 0 0 10px yellow;
+}
+
+#favleveltext{
+  color: black;
+  font-size: var(--bigtext);
+}
+
+#favlevelprogress{
+  border: 1px solid white;
+  background: black;
+  width: 90%;
+  height: 25px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#favlevelprogressbar{
+  background-color: rgba(57, 255, 119, 0.4);
+  width: 60%;
+  height: 100%;
+  transition: all 0.5s ease-in-out;
+}
+
+#favavatarimage{
+  border: 3px gray inset;
+  width: 90%;
+  height: auto;
+  border-radius: 15px;
+}
+
+#favavatarname{
+  border: white 1px solid;
+  border-radius: 10px 10px 0 0;
+  border-bottom: 0;
+  font-size: var(--bigtext);
+  width: 50%;
+  text-align: center;
+  margin: auto;
+  position: relative;
+  top: -38px;
+  color: white;
+  text-shadow: 0 0 5px black;
+  background: rgba(165, 0, 255, 0.09);
+  background: linear-gradient(90deg, rgba(165, 0, 255, 0.09) 0%, rgb(0 0 0 / 39%) 80%);
+  background: -webkit-linear-gradient(90deg, rgba(165, 0, 255, 0.09) 0%, rgb(0 0 0 / 39%) 80%);
+}
+
+#favtrofy{
+  margin: auto;
+  margin-top: -10px;
+  width: 90%;
+  height: 30vh;
+  border: 1px solid rgba(147, 147, 147, 0.53);
+  background: rgba(165, 0, 255, 0.09);
+  background: linear-gradient(90deg, rgba(165, 0, 255, 0.09) 0%, rgb(0 0 0 / 39%) 80%);
+  background: -webkit-linear-gradient(90deg, rgba(165, 0, 255, 0.09) 0%, rgb(0 0 0 / 39%) 80%);
+}
+
+.favico{
+  margin-right: 15px;
+  border-radius: 50%;
+  box-shadow: 0 0 13px white;
+  width: 70px;
+  transition: all 0.5s ease-in-out;
+}
+
+.favico:first-child{
+  margin-left: 15px;
+}
+
+.favico_selected{
+  box-shadow: 0 0 20px green, 0 0 8px 1px white;
+}
+
+.emptyavatar{
+  opacity: 0;
 }
 me>img{
     position:initial;

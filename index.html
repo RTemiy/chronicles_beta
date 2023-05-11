@@ -66,6 +66,7 @@
     <button id='continuebutton'>Продолжить игру</button>
     <button id='lastsavebutton'>Продолжить игру</button>
     <button id='saves'>Истории</button>
+    <button id='favouritesb'>Фавориты</button>
     <button id='settingsb'>Настройки</button>
     <button id='achb'>Достижения</button>
     <button id='crb'>Создатели</button>
@@ -171,18 +172,22 @@
     <button class="storybutton" id="achievs_aurora">Аврора</button>
 </achievs>
 
-<!-- Editor -->
+<!-- Favourites Screen -->
+<favourites id="favours">
+    <button id="favbb"></button>
+    <div id="favcoins">🪙</div>
+    <div id="favicons"></div>
+    <div id="favavatar">
+        <div id="favlevel"> <p id="favleveltext">1</p> </div>
+        <div id="favlevelprogress">
+            <div id="favlevelprogressbar"></div>
+        </div>
+        <img id="favavatarimage" src="./pictures/Persons/Neitan.png">
+        <div id="favavatarname">Нейтан</div>
+    </div>
+    <div id="favtrofy"></div>
 
-<editor id="editor">
-    <img src="pictures/Interface/PVNE.png">
-    <button id="editorback">⬅️</button>
-    <button id="editorstart">▶️</button>
-    <button id="editorload">⤴️</button>
-    <button id="editorsave">⤵️</button>
-    <button id="editornew">🆕</button>
-    <p>Код (только для продвинутых пользователей)</p>
-    <textarea id="editorgenerated" type="text"></textarea>
-</editor>
+</favourites>
 
 <!-- Loading Screen -->
 <ls id='ls' style="display:none;">

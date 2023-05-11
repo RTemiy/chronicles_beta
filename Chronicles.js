@@ -31,7 +31,7 @@ class Achievement {
         this._e = document.createElement('img');
         this._e.src = 'pictures/Items/Lock.png';
         this._e.id= 'lock';
-        AchievementsField.appendChild(this._a);
+        Game.Interface.$('AchievementsField').appendChild(this._a);
         this._a.appendChild(this._b);
         this._a.appendChild(this._e);
         this._a.appendChild(this._c);
@@ -41,14 +41,14 @@ class Achievement {
     /** Открываем достижение - выводим сообщение, меняем отображение и сохраняем прогресс */
     unlock() {
         if(this.unlocked!=1){
-            Game.Inventory_Message('🔓 '+ this._title);
-            Game.SendData('получает достижение: '+ this._title);
+            Game.inventoryMessage('🔓 '+ this._title);
+            Game.sendData('получает достижение: '+ this._title);
         }
         this.unlocked = 1;
         this._a.classList.add('activeachievement');
         this._b.style.display= 'grid';
         this._e.style.display = 'none';
-        Game.Progress.AchievementsSave();
+        Game.Progress.saveAchievements();
     }
 
     /** Визуально прячем элемент достижения */
@@ -92,6 +92,7 @@ class Stat {
         this._story = info.story;
         this._tapped = false;
         this._tapAction = info.tapAction || undefined;
+        this.score = 5;
         this._createTable();
     }
 
@@ -99,9 +100,9 @@ class Stat {
      *  @param {number} v Значение
      */
     add(v) {
-        InfoPicture.setAttribute('class', 'hide');
-        InfoText.setAttribute('class','hide');
-        InfoArticle.setAttribute('class','hide');
+        Game.Interface.$('InfoPicture').setAttribute('class', 'hide');
+        Game.Interface.$('InfoText').setAttribute('class','hide');
+        Game.Interface.$('InfoArticle').setAttribute('class','hide');
         this._show = true;
         this._attitude += v;
     }
@@ -132,21 +133,27 @@ class Stat {
             this._cell.src = ROOTPATH+'pictures/' + this._picture + '.png';
             this._container.addEventListener('click', () => {
                 setTimeout(() => {
-                    InfoPicture.setAttribute('class', 'show');
-                    InfoText.setAttribute('class','show');
-                    InfoArticle.setAttribute('class','show');
+                    Game.Interface.$('InfoPicture').setAttribute('class', 'show');
+                    Game.Interface.$('InfoText').setAttribute('class','show');
+                    Game.Interface.$('InfoArticle').setAttribute('class','show');
                     }, 0);
                 setTimeout(() => {
-                    InfoPicture.src = ROOTPATH + 'pictures/' + this._picture + '.png';
-                    InfoPicture.setAttribute('class', 'typewriter');
-                    InfoText.setAttribute('class','typewriter');
-                    InfoArticle.setAttribute('class','typewriter');
-                    InfoText.innerHTML = this._title;
-                    InfoArticle.innerHTML = '<hr>' + this._text;
+                    Game.Interface.$('InfoPicture').src = ROOTPATH + 'pictures/' + this._picture + '.png';
+                    Game.Interface.$('InfoPicture').setAttribute('class', 'typewriter');
+                    Game.Interface.$('InfoText').setAttribute('class','typewriter');
+                    Game.Interface.$('InfoArticle').setAttribute('class','typewriter');
+                    Game.Interface.$('InfoText').innerHTML = this._title;
+                    Game.Interface.$('InfoArticle').innerHTML = '<hr>' + this._text;
                     }, 5);
             });
             if(this._tapAction) this._container.addEventListener('click', () => { this._handleDoubleTap();});
         }
+    }
+
+    _handleDoubleTap(){
+        if(this._tapped) this._tapAction();
+        this._tapped = true;
+        setTimeout(()=>{this._tapped = false},600);
     }
 
     /** Прячем элемент */
@@ -157,12 +164,6 @@ class Stat {
         }
         catch (error) {}
     }
-    /** Двойное нажатие */
-    _handleDoubleTap(){
-        if(this._tapped) this._tapAction();
-        this._tapped = true;
-        setTimeout(()=>{this._tapped = false},600);
-    }
 }
 class Choice extends Stat {
   constructor(info) {
@@ -170,7 +171,7 @@ class Choice extends Stat {
   }
   add(v) {
     super.add(v);
-    Game.SendData('выбирает '+this._name+': '+this._attitude);
+    Game.sendData('выбирает '+this._name+': '+this._attitude);
   }
 }
 class Design {
@@ -182,9 +183,9 @@ class Design {
    * @param {string} Font Семейство шрифта
    * @param {string} Stroke Обводка шрифта
    */
-  ChangeInterface (Background,Border,Color,Font,Stroke){
-    MainField.style.backgroundImage = 'url(pictures/Interface/'+Background+'.png)';
-    BorderField.src = 'pictures/Interface/'+Border+'.png';
+    _changeInterface (Background, Border, Color, Font, Stroke){
+    Game.Interface.$('MainField').style.backgroundImage = 'url(pictures/Interface/'+Background+'.png)';
+    Game.Interface.$('BorderField').src = 'pictures/Interface/'+Border+'.png';
     let Root = document.querySelector(':root');
     Root.style.setProperty('--simplecolor', Color);
     Root.style.setProperty('--font', Font);
@@ -195,47 +196,47 @@ class Design {
    *
    * @param {string} chapter Название Истории
    */
-  Change (chapter){
+  change (chapter){
     localStorage.setItem('LastSave_Design', chapter);
     switch (chapter) {
 
       default:
-        this.ChangeInterface(
+        this._changeInterface(
           'back',
           'border',
           '#f2daffed',
           '"Times New Roman", Times, serif',
           '0'
         );
-        this.StyleButtons(
+        this._styleButtons(
           'margin-top: 0',
           'background-image: url("./pictures/Interface/button.png"); border: 0; box-shadow: 0;'
         );
         break;
 
       case 'Aurora':
-        this.ChangeInterface(
+        this._changeInterface(
           'A_back',
           'A_border',
           'white',
           'Century Gothic Regular',
           '0'
         );
-        this.StyleButtons(
+        this._styleButtons(
           'margin-top: 0',
           'background-image: url("./pictures/Interface/button.png"); border: 0; box-shadow: 0;'
         );
         break;
 
       case 'AEP':
-        this.ChangeInterface(
+        this._changeInterface(
           'R_back',
           'R_border',
           'white',
           'Courier New',
           '3px rgba(0, 208, 255, 0.2)'
         );
-        this.StyleButtons(
+        this._styleButtons(
           'margin-top: 20px',
           'background-image: none; border: 1px blue solid; box-shadow: 0 0 5px blue, inset 0 0 5px blue'
         );
@@ -247,7 +248,7 @@ class Design {
    * @param {string} buttonfieldastyle Стиль поля для кнопок
    * @param {string} buttonsstyle Стиль каждой кнопки
    */
-  StyleButtons = function (buttonfieldastyle,buttonsstyle) {
+  _styleButtons (buttonfieldastyle, buttonsstyle) {
     let Buttons = document.querySelector('#bf');
     Buttons.style = buttonfieldastyle;
     Buttons.childNodes.forEach(function (element) {
@@ -260,41 +261,41 @@ class Effects {
 
     /** Эффект вспышки */
     this.Flash = function () {
-      MainField.setAttribute('class', 'flash');
+      Game.Interface.$('MainField').setAttribute('class', 'flash');
       setTimeout(() => {
-        MainField.setAttribute('class', '');
+        Game.Interface.$('MainField').setAttribute('class', '');
       }, 5000);
     }
 
     /** Эффект диско */
     this.Disco = function () {
-      PictureField.setAttribute('class', 'disco');
+      Game.Interface.$('PictureField').setAttribute('class', 'disco');
     }
 
     /** Эффект диско выключить */
     this.Disco.Stop = function () {
-      PictureField.setAttribute('class', '');
+      Game.Interface.$('PictureField').setAttribute('class', '');
     }
 
     /** Эффект понурости */
     this.Gray = function () {
-      MainField.setAttribute('class', 'sad');
+      Game.Interface.$('MainField').setAttribute('class', 'sad');
     }
 
     /** Эффект понурости выключить */
     this.Gray.Stop = function () {
-      MainField.setAttribute('class', '');
+      Game.Interface.$('MainField').setAttribute('class', '');
     }
 
 
     /** Эффект воспоминаний */
     this.Mem = function() {
-      MainField.setAttribute('class', 'memory');
+      Game.Interface.$('MainField').setAttribute('class', 'memory');
     }
 
     /** Эффект воспоминаний выключить */
     this.Mem.Stop = function (){
-      MainField.setAttribute('class', '');
+      Game.Interface.$('MainField').setAttribute('class', '');
     }
 
     /** Выключить эффекты */
@@ -307,6 +308,732 @@ class Effects {
   }
 
 }
+class Engine {
+  constructor() {
+    this.Interface = new Interface();
+    this.Stats = [];
+    this.Stories = [];
+    this.Achievements = {};
+    this.AllAchievs = 0;
+    this.Scenes = {};
+    this.PlayerName = '';
+    this.Timer = new Timer();
+    this.Progress = new Progress();
+    this.Sounds = new Sounds();
+    this.Settings = new Settings();
+    this.Effects = new Effects();
+    this.Design = new Design();
+    this.canShowAds = false;
+    this.LastSave = new Last_Save();
+    this.Minigame = {};
+    this.LastSlide = new Last_Slide();
+    this.Favourites = new Favourites();
+  }
+
+  /** Прячем любые статы*/
+  hideAllAttitudes () {
+    for (let prop in this.Stats) {
+      this.Stats[prop]._show = false;
+      this.Stats[prop].hide();
+    }
+    this.Interface.$('InfoText').innerHTML='';
+    this.Interface.$('InfoArticle').innerHTML='';
+    this.Interface.$('InfoPicture').src=ROOTPATH +'pictures/Interface/Unknown.png';
+    this.Interface.$('MessageField').setAttribute('class', 'hide');
+    this.Interface.$('MessageField').style.display = 'none';
+  }
+
+  /** Показываем определенную категорию достижений
+   * @param {string} Story Код истории
+   */
+  showCategoryAchievements (Story){
+    let amount = 0;
+    let completed = 0;
+    for (let prop in this.Achievements) {
+      if(this.Achievements[prop].story == Story) {
+        amount++;
+        this.Achievements[prop].show();
+        if(this.Achievements[prop].unlocked>=1)completed++;
+        this.Interface.$('AchievementsAmount').innerHTML = 'Получено достижений ' + completed + '/' + amount;
+      }
+      else this.Achievements[prop].hide();
+    }
+  }
+
+  /**
+   * Узнать имя Главного героя
+   * @param {function} action Действие после окончания
+   */
+  askName (action) {
+    this.checkname = () => {
+      this.name = this.input.value;
+      if (this.name.length <= 1) this.text.innerText = 'Не менее 2 символов!';
+      else if (this.name.length >= 15) this.text.innerText = 'Максимум 15 символов!';
+      else if (!/^[а-яё]*$/i.test(this.name)) this.text.innerText = 'Только русские буквы!';
+      else {
+        this.PlayerName = this.name;
+        this.action();
+        this.Interface.$('MainField').style.display = 'block';
+        this.im.remove();
+        this.sendData('устанавливает новое имя');
+        localStorage.setItem('PlayerName',this.PlayerName);
+      }
+    };
+    this.Interface.$('MainField').style.display = 'none';
+    this.action = action;
+    this.im = document.createElement('im');
+    this.text = document.createElement('p');
+    this.text.innerText = 'Как меня зовут?'
+    this.input = document.createElement('input');
+    this.button = document.createElement('button');
+    this.button.innerHTML = 'Принять';
+    this.button.onclick = this.checkname;
+    document.body.appendChild(this.im);
+    this.im.appendChild(this.text);
+    this.im.appendChild(this.input);
+    this.im.appendChild(this.button);
+  }
+
+  /** После старта проверяем были ли приняты правила, а также устанавливаем настройки */
+  launch () {
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    if (localStorage.getItem('PPAccepted') !='1') {
+      this.Interface.$('PP').style.display='block';
+      this.Interface.$('Disclaimer').style.display='none';
+      this.Interface.$('MenuField').style.visibility='hidden';
+      localStorage.setItem('Settings.FirstLaunch', 'false');
+      this.Settings.set();
+    }
+    else {
+      this.sendData('запускает игру');
+      this.Settings.load();
+      this.Progress.loadAchievements();
+      this.setScenesNumbers();
+      this.showCategoryAchievements('Immortals');
+      this.LastSave.checkLastLoad();
+      this.initFavourites();
+      this.loadPictures(() => {
+        this.Interface.$('StartGameLoadingProgress').setAttribute('class', 'fade-out');
+        this.Interface.$('StartGameLoadingPercent').setAttribute('class', 'fade-out');
+        setTimeout(() => {
+          document.getElementsByTagName('disc')[0].setAttribute('class', 'fade-out');
+          setTimeout(() => {
+            document.getElementsByTagName('disc')[0].style.display='none';
+            this.Interface.$('MenuField').style.display='block';
+          }, 1000);
+        }, 1000);
+      });
+    }
+  }
+
+  /**
+   * Загрузочный экран
+   * @param {string} part Код части
+   */
+  LoadScreen (part) {
+    localStorage.setItem('LastSave_LS', part);
+    this.LastSlide.refresh();
+    setTimeout(() => {
+      this.Interface.$('LoadingTip').innerHTML = '';
+      this.Interface.$('LoadingBack').src = '';
+      if (part == undefined) part = 'chapter';
+      this.Interface.$('LoadingBack').src = 'pictures/Covers/' + part + '.png';
+      this.Interface.$('LoadingBackBack').src = 'pictures/Covers/' + part + '.png';
+      this.Interface.$('LoadingScreen').style.zIndex = '3';
+      setTimeout(() => {
+        this.Interface.$('PartField').innerHTML = '';
+        this.Interface.$('PartField').style.display = 'none';
+        this.Interface.$('MainField').setAttribute('class', 'hide');
+        setTimeout(()=>{
+          this.Interface.$('LoadingScreen').style.display = 'block';
+          this.Interface.$('LoadingScreen').setAttribute('class', 'show');
+          this.Interface.$('MainField').style.display = "none";
+        },1000)
+
+        setTimeout(() => {
+          this.Interface.$('LoadingTip').innerHTML = '<p class="fade-ina">Нажмите, чтобы продолжить';
+          this.Interface.$('LoadingScreen').onclick = () => {
+            AndroidApp ('showAd');
+            setTimeout(() => { this.Interface.$('LoadingScreen').setAttribute('class', 'hide'); }, 1000);
+            setTimeout(() => {
+              this.Interface.$('LoadingScreen').style.display = 'none';
+              this.Interface.$('MainField').setAttribute('class', 'show');
+              this.Interface.$('MainField').style.display = "block";
+            }, 2000);
+            this.Interface.$('LoadingScreen').onclick = () => { }
+          }
+        }, 6000);
+      }, 0);
+    }, 0);
+  }
+
+  /**
+   * @param {string|undefined} text Текст сообщения
+   * @param {boolean|undefined=} isSlide Является ли показом предыдущего слайда?
+   */
+  message (text, isSlide) {
+    this.Interface.$('MessageText').innerHTML = text.replace("$Имя Игрока$", this.PlayerName);
+    if (isSlide){
+      this.Interface.$('MessageText').innerHTML = this.LastSlide.text();
+      this.Interface.$('MessageField').setAttribute('class', 'hide');
+      this.Interface.$('MessageField').style.display = 'block';
+      setTimeout(() => { this.Interface.$('MessageField').setAttribute('class', 'show'); }, 100);
+    }
+    else{
+      setTimeout(() => { this.Interface.$('MessageField').setAttribute('class', 'slide-in-right'); }, 0);
+      setTimeout(() => { this.Interface.$('MessageField').style.display = 'block'; }, 100);
+      this.Sounds.NS.play();
+    }
+    this.hideelem = () => {
+      this.Interface.$('MessageField').setAttribute('class', 'slide-out-right');
+      setTimeout(() => {
+        this.Interface.$('MessageField').style.display = 'none';
+      }, 1000);
+    }
+
+    clearTimeout(timer);
+
+    this.Interface.$('MessageField').onclick = this.hideelem;
+
+    if (this.Settings.automatiallyHideAlert == true) var timer = setTimeout(() => {
+      this.Interface.$('MessageField').setAttribute('class', 'slide-out-right');
+      setTimeout(() => {
+        this.Interface.$('MessageField').style.display = 'none';
+      }, 1000);
+    }, 5000);
+  }
+
+  /** @param {string} text Текст особого сообщения */
+  inventoryMessage (text){
+    this.Interface.$('InventoryMessage').innerHTML = '<a>'+"⠀"+text;
+    this.Interface.$('InventoryMessage').setAttribute('class','inv_mes_show');
+    setTimeout(()=>{this.Interface.$('InventoryMessage').setAttribute('class','');},3000)
+  }
+
+  /**
+   * Загружаем картинки и убираем повторы
+   * @param {function} callback Вызываем следующие функции по завершению загрузки
+   */
+  loadPictures (callback) {
+    let pictures = [];
+    let picturesTotal = 0;
+    let picturesLoaded = 0;
+    const queuePictures = a => {
+      pictures[x] = document.createElement('img');
+      pictures[x].style.display='none';
+      pictures[x].src = ROOTPATH + 'pictures/' + a + ".png";
+      document.body.appendChild(pictures[x]);
+      picturesTotal++;
+      pictures[x].onload = () => {
+        picturesLoaded++;
+        this.Interface.$('StartGameLoadingProgress').setAttribute('value', picturesLoaded);
+        this.Interface.$('StartGameLoadingPercent').innerText = Math.floor(picturesLoaded/imagesPrechached.length*100) + '%';
+        if(imagesPrechached[picturesLoaded] == undefined){}
+        else {
+          queuePictures(imagesPrechached[picturesLoaded]);
+        }
+      }
+    }
+
+    for (let prop in this.Scenes) {
+      for (var x = 0; x < this.Scenes[prop].length; x++) {
+        if (this.Scenes[prop][x] == undefined || this.Scenes[prop][x].background == '') { }
+        else imagesPrechached.push(this.Scenes[prop][x].background);
+      }
+    }
+
+    for (let prop in this.Stats) {
+      if (this.Stats[prop].picture == undefined || this.Stats[prop].picture == '') { }
+      else imagesPrechached.push(this.Stats[prop].picture);
+    }
+
+    for (var x = 0; x < this.Stories.length; x++) {
+      imagesPrechached.push(this.Stories[x].pict);
+      for (var y = 0; y < this.Stories[x].chapters.length; y++) {
+        imagesPrechached.push(this.Stories[x].chapters[y].pict);
+        for (var z = 0; z < this.Stories[x].chapters[y].parts.length; z++) {
+          imagesPrechached.push(this.Stories[x].chapters[y].parts[z].pict);
+          imagesPrechached.push('Covers/'+this.Stories[x].chapters[y].parts[z].code);
+        }
+      }
+    }
+    for (var a = 0; a<imagesPrechached.length; a++){
+      for(var b = a+1; b<imagesPrechached.length; b++){
+        if(imagesPrechached[a]==imagesPrechached[b]){
+          imagesPrechached.splice(b,1);
+          b--;
+        }
+      }
+    }
+
+    imagesPrechached.sort();
+
+    queuePictures(imagesPrechached[0]);
+
+    this.Interface.$('StartGameLoadingProgress').setAttribute('max', imagesPrechached.length);
+
+    this.checkTotalLoadedPictures = function () {
+      imagesPrechached.length == picturesLoaded ? callback() : setTimeout(() => { this.checkTotalLoadedPictures(); }, 1000);
+    }
+
+    this.checkTotalLoadedPictures();
+  }
+
+  initFavourites(){
+    Game.Progress.loadFavourites();
+    Game.Favourites.checkDates();
+    Game.Progress.saveFavourites();
+    Game.Favourites.addAllPersons();
+  }
+
+  /** Присвоение номера сцене в зависимости от индекса массива*/
+  setScenesNumbers (){
+    for (let prop in this.Scenes) {
+      for (let x = 0; x < this.Scenes[prop].length; x++) {
+        if(this.Scenes[prop][x] != undefined) {
+          this.Scenes[prop][x].number = x;
+          this.Scenes[prop][x].part = prop;
+        }
+      }
+    }
+  }
+
+  /** ЗАполняем форму и отправляем данные*/
+  sendData (a) {
+    let today = new Date();
+    let dd = String(today.getDate()).padStart(2, '0');
+    let mm = String(today.getMonth() + 1).padStart(2, '0');
+    let yyyy = today.getFullYear();
+    let nowtime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    today = dd + '.' + mm + '.' + yyyy;
+
+    document.getElementById('#1').setAttribute('value', localStorage.getItem('PlayerName'));
+    document.getElementById('#2').setAttribute('value', today);
+    document.getElementById('#3').setAttribute('value', a);
+    document.getElementById('#4').setAttribute('value', nowtime);
+    document.getElementById('#5').setAttribute('value', Intl.DateTimeFormat().resolvedOptions().timeZone);
+    document.getElementById('#button').click();
+  }
+
+  /** Показываем сцены для тестирования  */
+  showMeFeatures () {
+    this.Scenes.Features[0].begin();
+  }
+
+  /** Показывает сообщение о количесве занимаеймой внутренней памяти*/
+  usedMemory (){
+    let allStrings = '';
+    for(let key in window.localStorage){
+      if(window.localStorage.hasOwnProperty(key)){
+        allStrings += window.localStorage[key];
+      }
+    }
+    this.message(Math.floor(3 + ((allStrings.length*16)/(8*1024))) + 'кб спользовано')
+  }
+
+}
+class Favourites{
+  constructor() {
+    this._coins = 0;
+    this._personSelectedElement = {};
+    this._personSelectedName = '';
+    this.lastGotCoins = {};
+  }
+
+  addAllPersons(){
+    for(let item in Game.Stats){
+      if (Game.Stats[item] instanceof Person){
+        this._addPerson(Game.Stats[item]._picture, item);
+      }
+    }
+    this._personSelectedElement = Game.Interface.$('FavouritesIcons').firstChild;
+    Game.Interface.$('FavouritesIcons').firstChild.click();
+    this._setCoinsAmount();
+  }
+
+  _setCoinsAmount(){
+    Game.Interface.$('FavouriteCoins').innerText = '🪙 ' + this._coins;
+  }
+
+  _addPerson(picture,name){
+    let objName = name;
+    let el = document.createElement('img');
+    el.src = `./pictures/${picture}.png`;
+    el.classList.add('favico');
+    el.onclick = (el) =>{
+      this._selectPerson(el.target,objName);
+    }
+    Game.Interface.$('FavouritesIcons').appendChild(el);
+  }
+
+  _selectPerson(element, name){
+    this._personSelectedElement.classList.remove('favico_selected');
+    this._personSelectedElement = element;
+    this._personSelectedElement.classList.add('favico_selected');
+    Game.Interface.$('FavouriteAvatarContainer').classList.add('emptyavatar');
+    setTimeout(()=>{
+      Game.Interface.$('FavouritesAvatar').src = element.src;
+      Game.Interface.$('FavouriteName').innerText = Game.Stats[name]._name;
+      this._setScore(name);
+
+      Game.Interface.$('FavouriteAvatarContainer').classList.remove('emptyavatar');
+    },500);
+    Game.Interface.$('FavouriteLevel').onclick = () =>{
+      this._addScore(name);
+    }
+
+  }
+
+  _addScore(name){
+    if(this._coins>=1) {
+      Game.Stats[name].score++;
+      this._setScore(name);
+      this._animateProgressBar();
+      this._coins-=1;
+      this._setCoinsAmount();
+      Game.Progress.saveFavourites();
+    }
+    else{
+      Game.Interface.$('FavouriteCoins').style.color='red';
+      setTimeout(()=>{
+        Game.Interface.$('FavouriteCoins').style.color='';
+      },500);
+    }
+  }
+
+  _animateProgressBar(){
+    Game.Interface.$('FavouriteLevelProgressBar').style.backgroundColor='yellow';
+    setTimeout(()=>{
+      Game.Interface.$('FavouriteLevelProgressBar').style.backgroundColor='';
+    },500)
+  }
+
+  _setScore(name){
+    Game.Interface.$('FavouriteLevelText').innerText = this._countLevel(name);
+
+    Game.Interface.$('FavouriteLevelProgressBar').style.width =  this._currentProgress(name) + 20 + '%';
+  }
+
+  _currentProgress(name){
+    return Game.Stats[name].score % (5 * this._countLevel(name)) / 0.05;
+  }
+
+  _countLevel(name){
+    return Math.floor(Game.Stats[name].score / 5);
+  }
+
+  checkDates(){
+    let today = new Date();
+    let lastDate = new Date (this.lastGotCoins)
+    if(this._daysBetween(lastDate,today) >= 1){
+      this._coins++;
+      this._setCoinsAmount();
+      this.lastGotCoins = today;
+      Game.Progress.saveFavourites();
+    }
+  }
+
+  _daysBetween(first, second) {
+
+    // Copy date parts of the timestamps, discarding the time parts.
+    let one = new Date(first.getFullYear(), first.getMonth(), first.getDate());
+    let two = new Date(second.getFullYear(), second.getMonth(), second.getDate());
+
+    // Do the math.
+    let millisecondsPerDay = 1000 * 60 * 60 * 24;
+    let millisBetween = two.getTime() - one.getTime();
+    let days = millisBetween / millisecondsPerDay;
+
+    // Round down.
+    return Math.round(days);
+  }
+}
+class Interface {
+  constructor() {
+    this._elements = {};
+    this._init();
+  }
+
+  /**
+   * @param {string} nameSelector
+   * @param {string} name
+   * @param {function=}  clickAction
+   */
+  add(nameSelector,name,clickAction){
+    this._elements[name] = document.querySelector(nameSelector);
+    this._elements[name].onclick = clickAction;
+    return this._elements[name];
+  }
+
+  $(name){
+    return this._elements[name];
+  }
+
+  /**
+   * @param {string} elementClose Имя поля для закрытия
+   * @param {string} elementOpen Имя поля для открытия
+   */
+  closeopen(elementClose, elementOpen){
+    this.$(elementClose).style.display = 'none';
+    this.$(elementOpen).style.display = 'block';
+  }
+
+  _init(){
+    //Все элементы
+
+//Дисклеймер
+    this.add('#PP','PP');
+
+    this.add('#disc','Disclaimer');
+
+    this.add(
+      '#ap',
+      'AcceptPolicyButton',
+      ()=>{
+        localStorage.setItem('PPAccepted','1');
+        window.location.reload();
+      }
+    );
+
+    this.add('#StartGameLoadingProgress','StartGameLoadingProgress');
+
+    this.add('#percent', 'StartGameLoadingPercent');
+
+
+//Поле меню
+
+    this.add('#me','MenuField');
+
+    this.add('#continuebutton','ContinueButton',
+      ()=>{
+        this.closeopen('MenuField','MainField');
+        Game.Sounds.resumeAll();
+      });
+
+    this.add('#lastsavebutton','LastSaveButton');
+
+//Истории и сохранения
+
+    this.add('#stories','StoriesField');
+
+    this.add('#storiesbackbutton', 'StoriesBackButton',
+      () => {
+        this.closeopen('StoriesField','MenuField');
+      });
+
+    this.add('#saves', 'SavesButton',
+      () => {
+        this.closeopen('MenuField','StoriesField')
+      });
+
+    this.add('#partf','PartField');
+
+    this.add('#cf','ChapterField');
+
+//Настройки
+
+    this.add('#sf', 'SettingsField');
+
+    this.add('#settingsb', 'SettingsButton', () => {
+      this.closeopen('MenuField','SettingsField')
+    });
+
+    this.add('#acptsett', 'AcceptSettingsButton', () => {
+      this.closeopen('SettingsField','MenuField');
+      Game.Settings.set();
+    });
+
+    this.add('#SI', 'SoundInput');
+
+    this.add('#AHA', 'AutomatiallyHideAlert');
+
+    this.add('#dsb', 'DeleteSavedButton', () => {
+      localStorage.clear();
+      location.reload();
+    });
+
+//Достижения
+
+    this.add('#achievs', 'AchievementsField');
+
+    this.add('#achb', 'AchievementsButton',
+      () => {
+        this.closeopen('MenuField','AchievementsField');
+        this.$('AchievementsBackButton').onclick = () => {
+          this.closeopen('AchievementsField', 'MenuField')
+        }
+        revealAchievs();
+      });
+
+    this.add('#achbb', 'AchievementsBackButton',
+      () => {
+        this.closeopen('AchievementsField','MenuField')
+      });
+
+    this.add('#achievs_immortals', 'AchievementsImmortals',
+      () => {
+        Game.showCategoryAchievements('Immortals');
+        revealAchievs();
+      });
+
+    this.add('#achievs_aurora', 'AchievementsAurora',
+      () => {
+        Game.showCategoryAchievements('Aurora');
+        revealAchievs();
+      });
+
+    this.add('#achievsamount', 'AchievementsAmount');
+
+    //Создатели
+
+    this.add('#creators', 'CreatorsField');
+
+    this.add('#crb', 'CreatorsButton',
+      () => {
+        this.closeopen('MenuField','CreatorsField');
+      });
+
+    this.add('#cbb', 'CreatorsBackButton',
+      () => {
+        this.closeopen('CreatorsField','MenuField')
+      });
+
+    this.add('#RTemiy', 'RTemiyHiddenButton',
+      () => {
+        this.$('ConsoleField').style.visibility='visible';
+        Game.Achievements.Dev.unlock();
+        uploadProgress();
+      });
+
+    //Фавориты
+
+    this.add('#favours', 'FavouritesField');
+
+    this.add('#favouritesb', 'MenuFavouritesButton', () => {
+      this.closeopen('MenuField','FavouritesField');
+    });
+
+    this.add('#favbb', 'FavouritesBackButton', () => {
+      this.closeopen('FavouritesField','MenuField');
+    });
+
+    this.add('#favcoins', 'FavouriteCoins');
+    this.add('#favavatar', 'FavouriteAvatarContainer');
+    this.add('#favicons', 'FavouritesIcons');
+    this.add('#favlevel', 'FavouriteLevel');
+    this.add('#favleveltext', 'FavouriteLevelText');
+    this.add('#favlevelprogress', 'FavouriteLevelProgress');
+    this.add('#favlevelprogressbar', 'FavouriteLevelProgressBar');
+    this.add('#favavatarimage', 'FavouritesAvatar');
+    this.add('#favavatarname', 'FavouriteName');
+
+    // Загрузочный экран
+
+    this.add('#ls', 'LoadingScreen');
+
+    this.add('#loadback', 'LoadingBack');
+
+    this.add('#loadbackback', 'LoadingBackBack');
+
+    this.add('#loadtip', 'LoadingTip');
+
+    this.add('#loadtext', 'LoadingText');
+
+//Основное поле игры (слайд)
+
+    this.add('#mf', 'MainField');
+
+    this.add('#lsb', 'LastSlideButton',
+      () => {
+        Game.message('',true)
+      });
+
+//Иконки инвентаря
+
+    this.add('#goinv', 'OpenInventoryButton',
+      () => {
+        Game.showCategoryAchievements(localStorage.getItem('LastSave_Design'));
+        this.$('InventoryField').style.display = "flex";
+        this.$('InventoryField').setAttribute('class','fade-in');
+        this.$('OpenInventoryButton').setAttribute('class','');
+      });
+
+    this.add('#goach', 'GoAchievementsButton',
+      () => {
+        this.closeopen('MainField','AchievementsField');
+        this.$('InventoryField').setAttribute('class','fade-out');
+        this.$('AchievementsBackButton').onclick = () => {
+          this.closeopen('AchievementsField', 'MainField');
+        }
+        revealAchievs();
+      });
+
+    this.add('#leaveinv', 'LeaveInventoryButton',
+      () => {
+        this.$('InventoryField').setAttribute('class','fade-out');
+        setTimeout(()=>{
+          this.$('InventoryField').style.display = "none";
+        },1000)
+      });
+
+    this.add('#inv_mes', 'InventoryMessage');
+
+    this.add('#message', 'MessageField');
+
+    this.add('#messagetext', 'MessageText');
+
+    this.add('#pf', 'PictureField');
+
+    this.add('#brf', 'BorderField');
+
+    this.add('#tf', 'TextField');
+
+    this.add('#timerP', 'TimerProgressBar');
+
+    this.add('#bf', 'ButtonField');
+
+//Инвентарь
+
+    this.add('#if', 'InventoryField');
+
+    this.add('#inv', 'Inventory');
+
+    this.add('#atttable', 'AttitudeTableField');
+
+    this.add('#infoi', 'InfoPicture');
+
+    this.add('#infop', 'InfoText');
+
+    this.add('#infot', 'InfoArticle');
+
+    this.add('#backmb', 'BackToMenuButton',
+      () => {
+        this.closeopen('MainField','MenuField');
+        this.$('ContinueButton').style.display="block";
+        this.$('InventoryField').setAttribute(`class`,`fade-out`);
+        Game.Sounds.pauseAll();
+        this.$('LastSaveButton').style.display='none';
+      });
+
+//Dev
+
+    this.add('#consolefield', 'ConsoleField');
+
+    this.add('#console', 'Console');
+
+//Enter on enter
+
+    this.$('Console').addEventListener("keypress", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        eval('Game.' + this.$('Console').value);
+        this.$('Console').value = '';
+      }
+    });
+  }
+
+
+}
 class Item extends Stat {
   constructor(info) {
     super(info);
@@ -315,7 +1042,7 @@ class Item extends Stat {
   add(v) {
     super.add(v);
     this._container.style.display = 'inline-block';
-    OpenInventoryButton.setAttribute('class', 'blink');
+    Game.Interface.$('OpenInventoryButton').setAttribute('class', 'blink');
     this._setAmount();
     if (this._attitude <= 0) this._container.style.display = 'none';
   }
@@ -323,7 +1050,7 @@ class Item extends Stat {
   _createTable() {
     super._createTable();
     this._cell.id = 'itemtablecellpict';
-    Inventory.appendChild(this._container);
+    Game.Interface.$('Inventory').appendChild(this._container);
   }
 
   /** Обновляем количество */
@@ -338,31 +1065,31 @@ class Item extends Stat {
 
 }
 class Last_Save {
-  Save (scene){
-    Game.Progress.Save('LastSave');
+  save (scene){
+    Game.Progress.save('LastSave');
     localStorage.setItem('LastSave'+'_Played', '1');
     localStorage.setItem('LastSave_SlideNumber', scene.number);
     localStorage.setItem('LastSave_SlidePart', scene.part);
   }
 
-  Load (){
-    Game.Progress.Load('LastSave');
+  load (){
+    Game.Progress.load('LastSave');
     Game.Sounds.play('Music', localStorage.getItem('LastSave_MusicName'));
-    Game.Design.Change(localStorage.getItem('LastSave_Design'));
+    Game.Design.change(localStorage.getItem('LastSave_Design'));
     Game.LoadScreen(localStorage.getItem('LastSave_LS'));
     Game.Scenes[localStorage.getItem('LastSave_SlidePart')][localStorage.getItem('LastSave_SlideNumber')].begin();
   }
 
-  LastLoadCheck (){
+  checkLastLoad (){
     if (localStorage.getItem('LastSave' + '_Played')=='1'){
-      LastSaveButton.onclick = function (){
-        Game.LastSave.Load();
-        CloseOpen(MenuField,MainField);
-        LastSaveButton.style.display='none';
+      Game.Interface.$('LastSaveButton').onclick =  () =>{
+        this.load();
+        Game.Interface.closeopen('MenuField','MainField');
+        Game.Interface.$('LastSaveButton').style.display='none';
       }
     }
     else{
-      LastSaveButton.style.display='none';
+      Game.Interface.$('LastSaveButton').style.display='none';
     }
   }
 }
@@ -398,18 +1125,18 @@ class Person extends Stat {
   add(v) {
     super.add(v);
     this._container.style.display = 'inline-block';
-    OpenInventoryButton.setAttribute('class', 'blink');
-    this.SetEmoji();
+    Game.Interface.$('OpenInventoryButton').setAttribute('class', 'blink');
+    this._setEmoji();
   }
 
   _createTable() {
     super._createTable();
     this._cell.id = 'atttablecellpict';
-    AttitudeTableField.appendChild(this._container);
+    Game.Interface.$('AttitudeTableField').appendChild(this._container);
   }
 
   /** Устанавливаем эмодзи рядом с иконкой */
-  SetEmoji() {
+  _setEmoji() {
     if (this._attitude <= -1) this._textinfo.innerHTML = '<emoji>🙁</emoji><a>' + this._name;
 
     if (this._attitude == 0) this._textinfo.innerHTML = '<emoji>😶</emoji><a>' + this._name;
@@ -428,7 +1155,7 @@ class Progress {
    * Сохранение прогресса
    * @param {string} code Код сохранения части
    */
-  Save (code) {
+  save (code) {
     if(Game.PlayerName!=undefined || Game.PlayerName!=''){
       localStorage.setItem('PlayerName', Game.PlayerName);
     }
@@ -447,8 +1174,8 @@ class Progress {
    * Загрузка прогресса
    * @param {string} code Код загрузки части
    */
-  Load (code) {
-    Game.HideAllAttitudes();
+  load (code) {
+    Game.hideAllAttitudes();
     let story = localStorage.getItem('LastSave_Design');
     if(localStorage.getItem('PlayerName')!='' || localStorage.getItem('PlayerName')!=null){
       Game.PlayerName = localStorage.getItem('PlayerName');
@@ -461,14 +1188,14 @@ class Progress {
   }
 
   /** Сохраниение достижений*/
-  AchievementsSave () {
+  saveAchievements () {
     for (let prop in Game.Achievements) {
       localStorage.setItem('Achievement_' + prop, Game.Achievements[prop].unlocked);
     }
   }
 
   /** Загрузка достижений*/
-  AchievementsLoad () {
+  loadAchievements () {
     for (let prop in Game.Achievements) {
       Game.AllAchievs++;
       if (localStorage.getItem('Achievement_' + prop) == '1') {
@@ -479,7 +1206,31 @@ class Progress {
       if (Game.Achievements[prop].unlocked == 1) Game.Achievements[prop].unlock();
     }
   }
+
+  saveFavourites(){
+    for (let prop in Game.Stats) {
+      if (Game.Stats[prop] instanceof Person) {
+        localStorage.setItem('Fav_' + prop + "_score", Game.Stats[prop].score);
+      }
+    }
+    localStorage.setItem('Fav_coins', Game.Favourites._coins);
+    localStorage.setItem('Fav_coinsDate', Game.Favourites.lastGotCoins);
+  }
+
+  loadFavourites(){
+    for (let prop in Game.Stats) {
+      if (Game.Stats[prop] instanceof Person) {
+        if(localStorage.getItem('Fav_' + prop + "_score") === null) Game.Stats[prop].score = 5;
+          else Game.Stats[prop].score = parseInt(localStorage.getItem('Fav_' + prop + "_score"));
+      }
+    }
+    if (localStorage.getItem('Fav_coins') === null) Game.Favourites._coins = 0;
+    else Game.Favourites._coins = parseInt(localStorage.getItem('Fav_coins'));
+    if (localStorage.getItem('Fav_coinsDate') === null) Game.Favourites.lastGotCoins = new Date();
+    else Game.Favourites.lastGotCoins = localStorage.getItem('Fav_coinsDate');
+  }
 }
+
 /** Класс сцены - текст, картинка, текст кнопок, действия кнопок, активность кнопок, дополнительное действие */
 class Scene {
     /**
@@ -496,17 +1247,17 @@ class Scene {
      *
      * @param  {string} info.text Текст слайда
      *
-     * @param  {string[]|undefined} info.buttontext Текст кнопок
+     * @param  {string[]=} info.buttontext Текст кнопок
      *
      * @param  {function[]} info.buttonaction Действия кнопок
      *
-     * @param  {boolean[]} info.buttonactive Активность кнопок
+     * @param  {boolean[]=} info.buttonactive Активность кнопок
      *
-     * @param  {string|undefined} info.background Картинка слайда
+     * @param  {string=} info.background Картинка слайда
      *
      * @param  {function[]} info.buttonaction Текст слайда
      *
-     * @param  {function} info.condition Дополнительные действия при включении слайда
+     * @param  {function=} info.condition Дополнительные действия при включении слайда
      *
      */
     constructor(info) {
@@ -521,14 +1272,14 @@ class Scene {
     /** Запустить сцену */
     begin() {
         Game.LastSlide.add(this);
-        setTimeout(() => {Game.LastSave.Save(this);},250);
-        if (this.background == '') PictureField.style.display = 'none';
+        setTimeout(() => {Game.LastSave.save(this);},250);
+        if (this.background == '') Game.Interface.$('PictureField').style.display = 'none';
         else {
-                    PictureField.src = ROOTPATH + 'pictures/' + this.background + '.png';
-                    PictureField.style.display = 'block';
+            Game.Interface.$('PictureField').src = ROOTPATH + 'pictures/' + this.background + '.png';
+            Game.Interface.$('PictureField').style.display = 'block';
         }
         if (this.condition) this.condition();
-        TextField.innerHTML = this.text.replace("$Имя Игрока$", Game.PlayerName);
+        Game.Interface.$('TextField').innerHTML = this.text.replace("$Имя Игрока$", Game.PlayerName);
         this._checkInterface();
     }
 
@@ -577,26 +1328,26 @@ class Scene {
     /** Прячем единственную кнопку */
     _hideOnlyButton() {
         if (this.buttontext.length == 1 && this.buttontext[0]=='' && this.background == '') {
-            TextField.onclick = this.buttonaction[0];
-            TextField.setAttribute('style', 'padding-top: 180px; height: 100%');
+            Game.Interface.$('TextField').onclick = this.buttonaction[0];
+            Game.Interface.$('TextField').setAttribute('style', 'padding-top: 180px; height: 100%');
             document.getElementById(`b00`).style.display = 'none';
         }
 
         if (this.buttontext.length == 1 && this.buttontext[0]=='' && this.background != '') {
-            TextField.onclick = this.buttonaction[0];
-            TextField.setAttribute('style', 'padding-top: 0; height: 100%');
+            Game.Interface.$('TextField').onclick = this.buttonaction[0];
+            Game.Interface.$('TextField').setAttribute('style', 'padding-top: 0; height: 100%');
             document.getElementById(`b00`).style.display = 'none';
         }
 
         if (this.buttontext.length >= 2 && this.background == '') {
-            TextField.onclick = () => { };
-            TextField.setAttribute('style', 'padding-top: 150px; height: auto');
+            Game.Interface.$('TextField').onclick = () => { };
+            Game.Interface.$('TextField').setAttribute('style', 'padding-top: 150px; height: auto');
             document.getElementById(`b00`).style.vdisplay = 'block';
         }
 
         if (this.buttontext.length >= 2 && this.background != '') {
-            TextField.onclick = () => { };
-            TextField.setAttribute('style', 'padding-top: 0; height: auto');
+            Game.Interface.$('TextField').onclick = () => { };
+            Game.Interface.$('TextField').setAttribute('style', 'padding-top: 0; height: auto');
             document.getElementById(`b00`).style.vdisplay = 'block';
         }
     }
@@ -613,42 +1364,44 @@ class Scene {
     /** Убираем картинку если её нет и меняем расположение текста */
     _hidePicture() {
         if (this.background == '') {
-            PictureField.style.display = 'none';
-            BorderField.style.display = 'none';
+            Game.Interface.$('PictureField').style.display = 'none';
+            Game.Interface.$('BorderField').style.display = 'none';
         }
         else {
-            PictureField.style.display = 'block';
-            BorderField.style.display = 'block';
-            BorderField.setAttribute('class', 'fade-in');
-            TextField.setAttribute('class', 'fade-in');
-            setTimeout(() => { TextField.setAttribute('class', 'show'); }, 1000);
-
+            Game.Interface.$('PictureField').style.display = 'block';
+            Game.Interface.$('BorderField').style.display = 'block';
+            Game.Interface.$('BorderField').setAttribute('class', 'fade-in');
+            Game.Interface.$('TextField').setAttribute('class', 'fade-in');
+            setTimeout(() => {
+                Game.Interface.$('TextField').setAttribute('class', 'show');
+                }, 1000);
         }
     }
 }
 class Settings {
   constructor() {
-    this.AutomatiallyHideAlert = true;
+    this.automatiallyHideAlert = true;
     this._volume = 0.7;
     this.Zoom = 100;
   }
 
   /** Устанавливаем все настройки */
-  Set () {
-    this.SetVolume(SoundInput.value);
-    this.AutomatiallyHideAlert = AutomatiallyHideAlert.checked;
-    this.Zoom = ZoomInput.value;
+  set () {
+    this.setVolume(Game.Interface.$('SoundInput').value);
+    this.automatiallyHideAlert = Game.Interface.$('AutomatiallyHideAlert').checked;
     document.body.style.zoom = Game.Settings.Zoom + "%";
 
     localStorage.setItem('Settings.Volume', this._volume);
-    localStorage.setItem('Settings.AHA', this.AutomatiallyHideAlert);
+    localStorage.setItem('Settings.AHA', this.automatiallyHideAlert);
     localStorage.setItem('Settings.Zoom', this.Zoom);
   }
 
   /** Устанавливаем настройки звука */
-  SetVolume (a) {
+  setVolume (a) {
     this._volume = a;
     Game.Sounds.NS.volume = this._volume;
+    Game.Sounds.Ambient.volume = this._volume;
+    Game.Sounds.Music.volume = this._volume;
   }
 
   getVolume (){
@@ -656,20 +1409,22 @@ class Settings {
   }
 
   /** Загружаем настройки */
-  Load () {
-    localStorage.getItem('Settings.AHA' == 'true') ?  AutomatiallyHideAlert.checked = true  :  AutomatiallyHideAlert.checked = false;
-    SoundInput.value = localStorage.getItem('Settings.Volume');
-    //ZoomInput.value = localStorage.getItem('Settings.Zoom');
-    this.Set();
+  load () {
+    localStorage.getItem('Settings.AHA' == 'true') ?
+      Game.Interface.$('AutomatiallyHideAlert').checked = true
+      :
+      Game.Interface.$('AutomatiallyHideAlert').checked = false;
+    Game.Interface.$('SoundInput').value = localStorage.getItem('Settings.Volume');
+    this.set();
   }
 }
 /** Основные звуки и музыка*/
 class Sounds {
   constructor() {
-    this.Ambient = new Audio("sounds/Silence.mp3");
-    this.Music = new Audio("sounds/Silence.mp3");
-    this.NS = new Audio("sounds/noti.mp3");
-    this.Cheers = new Audio("sounds/Completed.mp3");
+    this.Ambient = new Audio("./sounds/Silence.mp3");
+    this.Music = new Audio("./sounds/Silence.mp3");
+    this.NS = new Audio("./sounds/noti.mp3");
+    this.Cheers = new Audio("./sounds/Completed.mp3");
   }
 
   /** Включаем новую музыку
@@ -714,7 +1469,6 @@ class Sounds {
   }
 }
 /** Истории в меню */
-
 class Story {
 
     /** @param {Object} values Передаём картинку и сразу же устанавливаем главы
@@ -732,19 +1486,26 @@ class Story {
         this.story = document.createElement('part');
         this.img = document.createElement('img');
         this.img.src = 'pictures/' + this.pict + '.png';
-        this.story.onclick = () => { ChapterField.innerHTML = ''; this.buildChapters() };
-        StoriesField.appendChild(this.story);
+        this.story.onclick = () => {
+            Game.Interface.$('ChapterField').innerHTML = '';
+            this.buildChapters()
+        };
+        Game.Interface.$('StoriesField').appendChild(this.story);
         this.story.appendChild(this.img);
     }
 
     /** Создаём и добавляем элементы глав */
     buildChapters(){
         this.backbutton = document.createElement('button');
-        this.backbutton.onclick = () => { CloseOpen(ChapterField,StoriesField); ChapterField.innerHTML = '';this.backbutton.remove();  }
-        ChapterField.appendChild(this.backbutton);
+        this.backbutton.onclick = () => {
+            Game.Interface.closeopen('ChapterField','StoriesField');
+            Game.Interface.$('ChapterField').innerHTML = '';
+            this.backbutton.remove();
+        }
+        Game.Interface.$('ChapterField').appendChild(this.backbutton);
         for(let x=0;x<this.chapters.length;x++){
             this.chapters[x].init();
-            CloseOpen(StoriesField,ChapterField);
+            Game.Interface.closeopen('StoriesField','ChapterField');
         }
     }
 }
@@ -770,7 +1531,7 @@ class Chapter {
         this.button = document.createElement('button');
         this.button.innerText = this.name;
         this.chapter.onclick = () => { this.buildParts();};
-        ChapterField.appendChild(this.chapter);
+        Game.Interface.$('ChapterField').appendChild(this.chapter);
         this.chapter.appendChild(this.img);
         this.chapter.appendChild(this.button);
     }
@@ -778,10 +1539,14 @@ class Chapter {
     /** Создаём и добавляем элементы частей */
     buildParts() {
         this.backbutton = document.createElement('button');
-        this.backbutton.onclick = () => { CloseOpen(PartField,ChapterField); PartField.innerHTML = ''; this.backbutton.remove();  }
-        PartField.appendChild(this.backbutton);
-        CloseOpen(ChapterField,PartField);
-        for (var x = 0; x < this.parts.length; x++) {
+        this.backbutton.onclick = () => {
+            Game.Interface.closeopen('PartField','ChapterField');
+            Game.Interface.$('PartField').innerHTML = '';
+            this.backbutton.remove();
+        }
+        Game.Interface.$('PartField').appendChild(this.backbutton);
+        Game.Interface.closeopen('ChapterField','PartField');
+        for (let x = 0; x < this.parts.length; x++) {
             if (localStorage.getItem(this.parts[x].code+'_Played')=='1' || localStorage.getItem(this.parts[x].code+'_God')!=null || x===0) {
                 this.parts[x].part = document.createElement('part');
                 this.parts[x].img = document.createElement('img');
@@ -789,7 +1554,7 @@ class Chapter {
                 this.parts[x].button = document.createElement('button');
                 this.parts[x].button.innerText = this.parts[x].name;
                 this.parts[x].part.onclick = this.parts[x].event;
-                PartField.appendChild(this.parts[x].part);
+                Game.Interface.$('PartField').appendChild(this.parts[x].part);
                 this.parts[x].part.appendChild(this.parts[x].img);
                 this.parts[x].part.appendChild(this.parts[x].button);
             }
@@ -954,9 +1719,8 @@ class Tags {
 }
 /** Таймер*/
 class Timer{
-  /** @param {string} soundTimer Повторяющийся звук таймера*/
-  constructor(soundTimer) {
-    this._sound = new Audio(soundTimer);
+  constructor() {
+    this._sound = new Audio('./sounds/timer.mp3');
     this._sound.loop = true;
   }
 
@@ -969,16 +1733,21 @@ class Timer{
     this.stop();
     this._sound.volume = Game.Settings.getVolume();
     this._sound.play();
-    TimerProgressBar.style.display = 'block';
-    this._settingsInterval = setInterval(() => { TimerProgressBar.value -= TimerProgressBar.max / seconds / 100; }, 10);
-    this._settings = setTimeout(() => { action(); Game.Timer.stop(); }, time);
+    Game.Interface.$('TimerProgressBar').style.display = 'block';
+    this._settingsInterval = setInterval(() => {
+      Game.Interface.$('TimerProgressBar').value -= Game.Interface.$('TimerProgressBar').max / seconds / 100;
+      }, 10);
+    this._settings = setTimeout(() => {
+      action();
+      Game.Timer.stop();
+      }, time);
   }
 
 /** Остановить таймер*/
   stop () {
     this._sound.pause();
-    TimerProgressBar.value = 100;
-    TimerProgressBar.style.display = 'none';
+    Game.Interface.$('TimerProgressBar').value = 100;
+    Game.Interface.$('TimerProgressBar').style.display = 'none';
     clearInterval(this._settingsInterval);
     clearTimeout(this._settings);
   }
@@ -1004,79 +1773,61 @@ class Timer{
 const ROOTPATH = '';
 
 //Game Variables
-const Game = {};
+const Game = new Engine();
 
-//Attitudes Conditions Items
-Game.Stats = {};
+/** Все картинки которые использовались во всех слайдах */
+const imagesPrechached = [];
 
-Game.HideAllAttitudes = function () {
-    for (let prop in Game.Stats) {
-        Game.Stats[prop]._show = false;
-        Game.Stats[prop].hide();
-    }
-    InfoText.innerHTML='';
-    InfoArticle.innerHTML='';
-    InfoPicture.src=ROOTPATH +'pictures/Interface/Unknown.png';
-    MessageField.setAttribute('class', 'hide');
-    MessageField.style.display = 'none';
+/** События по загрузки страницы */
+window.onload = function () {
+  Game.launch();
 }
 
-//Parts and Chapters and Stories
-Game.Stories = [];
 
-//Achievements
-Game.Achievements = {};
+//Отправка данных из формы
+const scriptURL = 'https://script.google.com/macros/s/AKfycbwkdBBtRSVcRisbB7pJubWxpx0GKRrag7R2oT4ecScLpCAmGJVXkrwBlEZEeX74pwVlNg/exec';
+const form = document.forms['submit-to-google-sheet'];
 
-Game.ShowCategoryAchievements = function (Story){
-    let amount = 0;
-    let completed = 0;
-    for (let prop in Game.Achievements) {
-        if(Game.Achievements[prop].story == Story) {
-            amount++;
-            Game.Achievements[prop].show();
-            if(Game.Achievements[prop].unlocked>=1)completed++;
-            AchievementsAmount.innerHTML = 'Получено достижений ' + completed + '/' + amount;
-        }
-        else Game.Achievements[prop].hide();
+form.addEventListener('submit', e => {
+  e.preventDefault()
+  fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+    .then(response => console.log())
+    .catch(error => console.error())
+});
+
+function AndroidApp (a){
+  try {
+    if(Game.canShowAds) {
+      javascript:return AndroidFunction[a]()
     }
+    else {Game.canShowAds=true;}
+  }
+  catch (e) {}
 }
-Game.AllAchievs = 0;
 
-//Parts of scenes
-Game.Scenes = {};
+//Изменение при закрытии/открытии вкладки
+let hidden, visibilityChange;
+let alreadyturnedoff = false;
+if (typeof document.hidden !== "undefined") {
+  hidden = "hidden";
+  visibilityChange = "visibilitychange";
+} else if (typeof document.mozHidden !== "undefined") {
+  hidden = "mozHidden";
+  visibilityChange = "mozvisibilitychange";
+} else if (typeof document.msHidden !== "undefined") {
+  hidden = "msHidden";
+  visibilityChange = "msvisibilitychange";
+} else if (typeof document.webkitHidden !== "undefined") {
+  hidden = "webkitHidden";
+  visibilityChange = "webkitvisibilitychange";
+}
 
-//Player name
-Game.PlayerName = '';
+document.addEventListener(visibilityChange, handleVisibilityChange, false);
 
-//Timer
-Game.Timer = new Timer('./sounds/timer.mp3');
-
-//Progress
-Game.Progress = new Progress();
-
-//Sounds
-Game.Sounds = new Sounds();
-
-//Settings
-Game.Settings = new Settings();
-
-//Effects
-Game.Effects = new Effects();
-
-//Design
-Game.Design = new Design();
-
-//Ads
-Game.canShowAds = false;
-
-//Last save
-Game.LastSave = new Last_Save();
-
-//Mini-game
-Game.MiniGame = {};
-
-//Last slides
-Game.LastSlide = new Last_Slide();
+function handleVisibilityChange() {
+  if(!alreadyturnedoff){Game.Sounds.pauseAll();alreadyturnedoff = true;}
+  else {Game.Sounds.resumeAll();alreadyturnedoff = false;}
+}
 function revealAchievs() {
   const reveals = document.querySelectorAll(".reveal");
   for (let i = 0; i < reveals.length; i++) {
@@ -1092,202 +1843,6 @@ function revealAchievs() {
   }
 }
 document.querySelector('#achievs').addEventListener("scroll", revealAchievs);
-/**
- * Узнать имя Главного героя
- * @param {function} action Действие после окончания
- */
-Game.askName = function (action) {
-    this.checkname = () => {
-        this.name = this.input.value;
-        if (this.name.length <= 1)this.text.innerText = 'Не менее 2 символов!';
-        else if (this.name.length >= 15)this.text.innerText = 'Максимум 15 символов!';
-        else if (!/^[а-яё]*$/i.test(this.name))this.text.innerText = 'Только русские буквы!';
-        else {
-            Game.PlayerName = this.name;
-            this.action();
-            MainField.style.display = 'block';
-            this.im.remove();
-            Game.SendData('устанавливает новое имя');
-            localStorage.setItem('PlayerName',Game.PlayerName);
-        }
-    };
-    MainField.style.display = 'none';
-    this.action = action;
-    this.im = document.createElement('im');
-    this.text = document.createElement('p');
-    this.text.innerText = 'Как меня зовут?'
-    this.input = document.createElement('input');
-    this.button = document.createElement('button');
-    this.button.innerHTML = 'Принять';
-    this.button.onclick = this.checkname;
-    document.body.appendChild(this.im);
-    this.im.appendChild(this.text);
-    this.im.appendChild(this.input);
-    this.im.appendChild(this.button);
-}
-const Editor = {};
-
-Editor.AddNewScene = function (){
-
-    container = document.createElement('scenenode');
-    container.appendChild(scenenumberinfo = document.createElement('p'));
-    scenenumberinfo.innerHTML = 'Номер сцены';
-    container.appendChild(scenenumber = document.createElement('textarea'));
-    scenenumber.setAttribute('class','ednumb');
-    container.appendChild(sceneimgsrcinfo = document.createElement('p'));
-    sceneimgsrcinfo.innerHTML = 'Директория картинки';
-    container.appendChild(sceneimgsrc = document.createElement('select'));
-    sceneimgsrc.appendChild(document.createElement('option'));
-    sceneimgsrc.lastChild.innerHTML='-';
-    for(k=0;k<PrechachedImages.length;k++){
-        sceneimgsrc.appendChild(document.createElement('option'));
-        sceneimgsrc.lastChild.innerHTML=PrechachedImages[k];
-    }
-    sceneimgsrc.onchange = () =>{
-        sceneimg.src = 'pictures/' + sceneimgsrc.value + '.png';
-    }
-    container.appendChild(sceneimg = document.createElement('img'));
-    container.appendChild(scenetextinfo = document.createElement('p'));
-    scenetextinfo.innerHTML = 'Текст слайда';
-    container.appendChild(scenetext = document.createElement('textarea'));
-    scenetext.setAttribute('class','edtex');
-
-    container.appendChild(scenebutton01textinfo = document.createElement('p'));
-    scenebutton01textinfo.innerHTML = 'Текст кнопки 1';
-    container.appendChild(scenebutton01 = document.createElement('textarea'));
-
-    container.appendChild(scenebutton01actinfo = document.createElement('p'));
-    scenebutton01actinfo.innerHTML = 'Действие кнопки';
-    container.appendChild(scenebutton01act = document.createElement('textarea'));
-
-    container.appendChild(scenebutton01actvinfo = document.createElement('p'));
-    scenebutton01actvinfo.innerHTML = 'Скрыть кнопку?';
-    container.appendChild(scenebutton01actv = document.createElement('textarea'));
-
-    container.appendChild(document.createElement('hr'));
-
-    container.appendChild(scenebutton02textinfo = document.createElement('p'));
-    scenebutton02textinfo.innerHTML = 'Текст кнопки 2';
-    container.appendChild(scenebutton02 = document.createElement('textarea'));
-
-    container.appendChild(scenebutton02actinfo = document.createElement('p'));
-    scenebutton02actinfo.innerHTML = 'Действие кнопки';
-    container.appendChild(scenebutton02act = document.createElement('textarea'));
-
-    container.appendChild(scenebutton02actvinfo = document.createElement('p'));
-    scenebutton02actvinfo.innerHTML = 'Скрыть кнопку?';
-    container.appendChild(scenebutton02actv = document.createElement('textarea'));
-
-    container.appendChild(document.createElement('hr'));
-
-    container.appendChild(scenebutton03textinfo = document.createElement('p'));
-    scenebutton03textinfo.innerHTML = 'Текст кнопки 3';
-    container.appendChild(scenebutton03 = document.createElement('textarea'));
-
-    container.appendChild(scenebutton03actinfo = document.createElement('p'));
-    scenebutton03actinfo.innerHTML = 'Действие кнопки';
-    container.appendChild(scenebutton03act = document.createElement('textarea'));
-
-    container.appendChild(scenebutton03actvinfo = document.createElement('p'));
-    scenebutton03actvinfo.innerHTML = 'Скрыть кнопку?';
-    container.appendChild(scenebutton03actv = document.createElement('textarea'));
-
-    container.appendChild(document.createElement('hr'));
-
-    container.appendChild(scenebutton04textinfo = document.createElement('p'));
-    scenebutton04textinfo.innerHTML = 'Текст кнопки 4';
-    container.appendChild(scenebutton04 = document.createElement('textarea'));
-
-    container.appendChild(scenebutton04actinfo = document.createElement('p'));
-    scenebutton04actinfo.innerHTML = 'Действие кнопки';
-    container.appendChild(scenebutton04act = document.createElement('textarea'));
-
-    container.appendChild(scenebutton04actvinfo = document.createElement('p'));
-    scenebutton04actvinfo.innerHTML = 'Скрыть кнопку?';
-    container.appendChild(scenebutton04actv = document.createElement('textarea'));
-
-    container.appendChild(document.createElement('hr'));
-
-    container.appendChild(scenebutton05textinfo = document.createElement('p'));
-    scenebutton05textinfo.innerHTML = 'Текст кнопки 5';
-    container.appendChild(scenebutton05 = document.createElement('textarea'));
-
-    container.appendChild(scenebutton05actinfo = document.createElement('p'));
-    scenebutton05actinfo.innerHTML = 'Действие кнопки';
-    container.appendChild(scenebutton05act = document.createElement('textarea'));
-
-    container.appendChild(scenebutton05actvinfo = document.createElement('p'));
-    scenebutton05actvinfo.innerHTML = 'Скрыть кнопку?';
-    container.appendChild(scenebutton05actv = document.createElement('textarea'));
-
-    container.appendChild(document.createElement('hr'));
-
-    container.appendChild(sceneadd = document.createElement('p'));
-    sceneadd.setAttribute('class','addscene')
-    EditorField.appendChild(container);
-
-    sceneadd.innerHTML = 'Добавить сцену';
-    sceneadd.onclick = () => {
-        EditorGenerated.value = EditorGenerated.value + `
-        Game.Scenes.Mod[${scenenumber.value}] =
-    new Scene({
-        text: '${scenetext.value}',
-        buttontext: [
-            ${"'"+Editor.ReturnButtonText(scenebutton01.value)+"'"}
-            ${Editor.ReturnButtonText(scenebutton02.value)}
-            ${Editor.ReturnButtonText(scenebutton03.value)}
-            ${Editor.ReturnButtonText(scenebutton04.value)}
-            ${Editor.ReturnButtonText(scenebutton05.value)}
-
-        ],
-        background: '${Editor.ReturnPictValue(sceneimgsrc.value)}',
-        buttonaction: [
-            ${Editor.ReturnButtonAction(scenebutton01act.value)}
-            ${Editor.ReturnButtonAction(scenebutton02act.value)}
-            ${Editor.ReturnButtonAction(scenebutton03act.value)}
-            ${Editor.ReturnButtonAction(scenebutton04act.value)}
-            ${Editor.ReturnButtonAction(scenebutton05act.value)}
-        ],
-
-    });`
-        EditorGenerated.value =  EditorGenerated.value.replace('$Перейти-','Game.Scenes.Mod[');
-        EditorGenerated.value =  EditorGenerated.value.replace('-Перейти$','].Begin();');
-        EditorGenerated.value =  EditorGenerated.value.replace('$Табличка-','Game.Message("');
-        EditorGenerated.value =  EditorGenerated.value.replace('-Табличка$','");');
-        EditorGenerated.value =  EditorGenerated.value.replace('$Отношения-','Game.Attitudes.');
-        EditorGenerated.value =  EditorGenerated.value.replace('$Колво-','.Add(');
-        EditorGenerated.value =  EditorGenerated.value.replace('-Отношения$',');');
-    container.remove();
-    }
-
-Editor.ReturnButtonText = function(a){
-        if (a!='') {
-            return '"'+a+'",'
-        } else{
-            return ''
-        }
-    }
-
-Editor.ReturnButtonAction = function(a){
-        if (a!='') {
-            return '() => {'+a+'},'
-        } else{
-            return ''
-        }
-    }
-}
-
-Editor.ReturnPictValue = function (a){
-    if(a=='-'){
-        return '';
-    }
-    else{
-        return a;
-    }
-}
-
-
-
 function getProgress(){
   return JSON.stringify(localStorage);
 }
@@ -1322,722 +1877,6 @@ function uploadProgress() {
   document.body.appendChild(c);
   c.appendChild(i);
 }
-//Все элементы
-
-/**
- * @const
- * Табличка уведомления о правилах
- */
-const PP = document.getElementById('PP');
-
-/**
- * @const
- * Дисклеймер
- */
-const Disclaimer = document.getElementById('disc');
-
-/**
- * @const
- * Кнопка принятия правил
- */
-const AcceptPolicyButton = document.getElementById('ap');
-AcceptPolicyButton.onclick= ()=>{localStorage.setItem('PPAccepted','1');window.location.reload();}
-
-/**
- * @const
- * Загрузочная полоса загрузки всех картинок
- */
-const StartGameLoadingProgress = document.getElementById('StartGameLoadingProgress');
-
-/**
- * @const
- * Текст процента загрузки
- */
-const StartGameLoadingPercent = document.getElementById('percent');
-
-/**
- * @const
- * Поле главного меню
- */
-const MenuField = document.getElementById('me');
-
-/**
- * @const
- * Кнопка "Продолжить игру"
- */
-const ContinueButton = document.getElementById('continuebutton');
-ContinueButton.onclick= ()=>{
-    CloseOpen(MenuField,MainField);
-    Game.Sounds.resumeAll();
-}
-
-/**
- * @const
- * Кнопка "Продолжить последнее сохранение"
- */
-const LastSaveButton = document.getElementById('lastsavebutton');
-
-/**
- * @const
- * Поле "Истории"
- */
-const StoriesField = document.getElementById('stories');
-
-/**
- * @const
- * Кнопка "Назад" из историй
- */
-const StoriesBackButton = document.getElementById('storiesbackbutton');
-StoriesBackButton.onclick = () => { CloseOpen(StoriesField,MenuField); }
-
-/**
- * @const
- * Кнопка "Истории"
- */
-const SavesButton = document.getElementById('saves');
-SavesButton.onclick = () => {CloseOpen(MenuField,StoriesField);}
-
-/**
- * @const
- * Поле "Части"
- */
-const PartField = document.getElementById('partf');
-
-/**
- * @const
- * Поле "Главы"
- */
-const ChapterField = document.getElementById('cf');
-
-//Настройки
-
-/**
- * @const
- * Кнопка "Настройки"
- */
-const SettingsButton = document.getElementById('settingsb');
-SettingsButton.onclick = () => {CloseOpen(MenuField,SettingsField);}
-
-/**
- * @const
- * Кнопка "Принять Настройки"
- */
-const AcceptSettingsButton = document.getElementById('acptsett');
-AcceptSettingsButton.onclick = () => {CloseOpen(SettingsField,MenuField); Game.Settings.Set();}
-
-/**
- * @const
- * Поле "Настройки"
- */
-const SettingsField = document.getElementById('sf');
-
-/**
- * @const
- * Ползунок звука
- */
-const SoundInput = document.getElementById('SI');
-
-/**
- * @const
- * Флажок "Автоматическое скрытие уведомлений"
- */
-const AutomatiallyHideAlert = document.getElementById('AHA');
-
-/**
- * @const
- * Ползунок масштаба
- */
-const ZoomInput = document.getElementById('ZI');
-ZoomInput.onchange = () =>{document.body.style.zoom=ZoomInput.value+'%'}
-
-/**
- * @const
- * Кнопка "Удалить настройки"
- */
-const DeleteSavedButton = document.getElementById('dsb');
-DeleteSavedButton.onclick = () => {localStorage.clear(); location.reload()}
-
-//Достижения
-
-/**
- * @const
- * Кнопка "Достижения"
- */
-const AchievementsButton = document.getElementById('achb');
-AchievementsButton.onclick = () => {
-    CloseOpen(MenuField,AchievementsField);
-    AchievementsBackButton.onclick = () => { CloseOpen(AchievementsField, MenuField);}
-    revealAchievs();
-}
-
-/**
- * @const
- * Кнопка "Назад" из достижений
- */
-const AchievementsBackButton = document.getElementById('achbb');
-AchievementsBackButton.onclick = () => {CloseOpen(AchievementsField,MenuField);}
-
-/**
- * @const
- * Кнопка "Достижения Бессмертных"
- */
-const AchievementsImmortals = document.getElementById('achievs_immortals');
-AchievementsImmortals.onclick = () => {Game.ShowCategoryAchievements('Immortals'); revealAchievs();}
-
-/**
- * @const
- * Кнопка "Достижения Авроры"
- */
-const AchievementsAurora = document.getElementById('achievs_aurora');
-AchievementsAurora.onclick = () => {Game.ShowCategoryAchievements('Aurora'); revealAchievs();}
-
-/**
- * @const
- * Поле "Достижения"
- */
-const AchievementsField = document.getElementById('achievs');
-
-/**
- * @const
- * Счётчик достижений
- */
-const AchievementsAmount = document.getElementById('achievsamount');
-
-//Создатели
-
-/**
- * @const
- * Поле "Создатели"
- */
-const CreatorsField = document.getElementById('creators');
-
-/**
- * @const
- * Кнопка "Создатели"
- */
-const CreatorsButton = document.getElementById('crb');
-CreatorsButton.onclick = () => {CloseOpen(MenuField,CreatorsField);}
-
-/**
- * @const
- * Кнопка "Назад" из создателей
- */
-const CreatorsBackButton = document.getElementById('cbb');
-CreatorsBackButton.onclick = () => {CloseOpen(CreatorsField,MenuField);}
-
-/**
- * @const
- * Скрытая кнопка "Консоль"
- */
-const RTemiyHiddenButton = document.getElementById('RTemiy');
-RTemiyHiddenButton.onclick = () => {
-    ConsoleField.style.visibility='visible';
-    Game.Achievements.Dev.unlock();
-    uploadProgress();
-}
-
-//Загрузочный экран
-
-/**
- * @const
- * Поле "Загрузочный экран"
- */
-const LoadingScreen = document.getElementById('ls');
-
-const LoadingBack = document.getElementById('loadback');
-
-const LoadingBackBack = document.getElementById('loadbackback');
-
-/**
- * @const
- * Подсказка "Нажмите чтобы продолжить"
- */
-const LoadingTip = document.getElementById('loadtip');
-
-/**
- * @const
- * Текст загрузочного экрана (неиспользуется)
- */
-const LoadingText = document.getElementById('loadtext');
-
-//Основное поле игры (слайд)
-
-/**
- * @const
- * Основное поле (слайд)
- */
-const MainField = document.getElementById('mf');
-
-/**
- * @const
- * Кнопка "Последний слайд"
- */
-const LastSlideButton = document.getElementById('lsb');
-LastSlideButton.onclick = () => {Game.Message('',true);}
-
-//Иконки инвентаря
-
-/**
- * @const
- * Кнопка "Открыть инвентарь"
- */
-const OpenInventoryButton = document.getElementById('goinv');
-OpenInventoryButton.onclick = () => {
-    Game.ShowCategoryAchievements(localStorage.getItem('LastSave_Design'));
-    InventoryField.style.display = "flex";
-    InventoryField.setAttribute('class','fade-in');
-    OpenInventoryButton.setAttribute('class','');
-}
-
-/**
- * @const
- * Кнопка "Перейти в достижения"
- */
-const GoAchievementsButton = document.getElementById('goach');
-GoAchievementsButton.onclick = () => {
-    CloseOpen(MainField,AchievementsField);
-    InventoryField.setAttribute('class','fade-out');
-    AchievementsBackButton.onclick = () => { CloseOpen(AchievementsField, MainField);}
-    revealAchievs();
-}
-
-/**
- * @const
- * Кнопка "Закрыть инвентарь"
- */
-const LeaveInventoryButton = document.getElementById('leaveinv');
-LeaveInventoryButton.onclick = () => {
-    InventoryField.setAttribute('class','fade-out');
-    setTimeout(()=>{InventoryField.style.display = "none";},1000)
-}
-
-/**
- * @const
- * Дополнительное уведомление
- */
-const InventoryMessage =  document.getElementById('inv_mes');
-
-/**
- * @const
- * Поле "Уведомление"
- */
-const MessageField = document.getElementById('message');
-
-/**
- * @const
- * Текст уведомления
- */
-const MessageText = document.getElementById('messagetext');
-
-/**
- * @const
- * Поле "Картинка слайда"
- */
-const PictureField = document.getElementById('pf');
-
-/**
- * @const
- * Поле "Рамка картинки слайда"
- */
-const BorderField = document.getElementById('brf');
-
-/**
- * @const
- * Поле "Текст слайда"
- */
-const TextField = document.getElementById('tf');
-
-/**
- * @const
- * Шкала времени таймера
- */
-const TimerProgressBar = document.getElementById('timerP');
-
-/**
- * @const
- * Поле "Кнопки"
- */
-const ButtonField = document.getElementById('bf');
-
-//Инвентарь
-
-/**
- * @const
- * Поле "Инвентарь"
- */
-const InventoryField = document.getElementById('if');
-
-/**
- * @const
- * Поле "Рюкзак"
- */
-const Inventory = document.getElementById('inv');
-
-/**
- * @const
- * Поле "Таблица отношений"
- */
-const AttitudeTableField = document.getElementById('atttable');
-
-/**
- * @const
- * Картинка "Подробное описание"
- */
-const InfoPicture = document.getElementById('infoi');
-
-/**
- * @const
- * Текст "Подробное описание"
- */
-const InfoText = document.getElementById('infop');
-
-/**
- * @const
- * Заглавие "Подробное описание"
- */
-const InfoArticle = document.getElementById('infot');
-
-/**
- * @const
- * Кнопка "Вернуться в меню"
- */
-const BackToMenuButton = document.getElementById('backmb');
-BackToMenuButton.onclick = () => {
-    CloseOpen(MainField,MenuField);
-    ContinueButton.style.display="block";
-    InventoryField.setAttribute(`class`,`fade-out`);
-    Game.Sounds.pauseAll();
-    LastSaveButton.style.display='none';
-}
-
-//Консоль
-/**
- * @const
- * Поле "Консоль"
- */
-const ConsoleField = document.getElementById('consolefield');
-
-//Editor
-const Console = document.getElementById('console');
-
-const EditorField = document.getElementById('editor');
-
-const EditorBackButton = document.getElementById('editorback');
-EditorBackButton.onclick = () => {CloseOpen(EditorField,MenuField)}
-
-const EditorNewButton = document.getElementById('editornew');
-EditorNewButton.onclick = () => { Editor.AddNewScene();}
-
-const EditorLoadButton = document.getElementById('editorload');
-EditorLoadButton.onclick = () => { EditorGenerated.value = localStorage.getItem('MOD')}
-
-const EditorStartButton = document.getElementById('editorstart');
-EditorStartButton.onclick = () => { CloseOpen(EditorField,MainField); Game.Scenes.Mod[0].begin();}
-
-const EditorSaveButton = document.getElementById('editorsave');
-EditorSaveButton.onclick = () => {
-    eval(EditorGenerated.value);
-    localStorage.setItem('MOD', EditorGenerated.value);
-}
-
-const EditorGenerated = document.getElementById('editorgenerated');
-
-//Additional functions and listeners
-/**
- *
- * @param {HTMLElement} a Поле для закрытия
- * @param {HTMLElement} b Поле для открытия
- */
-CloseOpen = function (a, b) {
-    a.style.display = 'none';
-    b.style.display = 'block';
-}
-
-//Enter on enter
-Console.addEventListener("keypress", function (event) {
-    if (event.key === "Enter") {
-        event.preventDefault();
-        eval('Game.' + Console.value);
-        Console.value = '';
-    }
-});
-
-
-
-/** @param {string} text Текст особого сообщения */
-Game.Inventory_Message = function (text){
-    InventoryMessage.innerHTML = '<a>'+"⠀"+text;
-    InventoryMessage.setAttribute('class','inv_mes_show');
-    setTimeout(()=>{InventoryMessage.setAttribute('class','');},3000)
-}
-/** После старта проверяем были ли приняты правила, а также устанавливаем настройки */
-Game.Launch = function () {
-    document.addEventListener('contextmenu', event => event.preventDefault());
-    if (localStorage.getItem('PPAccepted') !='1') {
-        PP.style.display='block';
-        Disclaimer.style.display='none';
-        MenuField.style.visibility='hidden';
-        localStorage.setItem('Settings.FirstLaunch', 'false');
-        Game.Settings.Set();
-    }
-    else {
-        Game.SendData('запускает игру');
-        Game.Settings.Load();
-        Game.Progress.AchievementsLoad();
-        Game.SetSceneNumbers();
-        Game.ShowCategoryAchievements('Immortals');
-        Game.LastSave.LastLoadCheck();
-        Game.LoadPictures(function () {
-            StartGameLoadingProgress.setAttribute('class', 'fade-out');
-            StartGameLoadingPercent.setAttribute('class', 'fade-out');
-            setTimeout(() => {
-                document.getElementsByTagName('disc')[0].setAttribute('class', 'fade-out');
-                setTimeout(() => {
-                    document.getElementsByTagName('disc')[0].style.display='none';
-                    MenuField.style.display='block';
-                }, 1000);
-            }, 1000);
-        });
-    }
-}
-/** События по загрузки страницы */
-window.onload = function () {
-    Game.Launch();
-}
-
-/** Показываем сцены для тестирования  */
-Game.ShowMeFeatures = function () {
-    Game.Scenes.Features[0].begin();
-}
-/**
- * Загрузочный экран
- * @param {string} part Код части
- */
-Game.LoadScreen = function (part) {
-    localStorage.setItem('LastSave_LS', part);
-    Game.LastSlide.refresh();
-    setTimeout(() => {
-        LoadingTip.innerHTML = '';
-        LoadingBack.src = '';
-        if (part == undefined) part = 'chapter';
-        LoadingBack.src = 'pictures/Covers/' + part + '.png';
-        LoadingBackBack.src = 'pictures/Covers/' + part + '.png';
-        LoadingScreen.style.zIndex = '3';
-        setTimeout(() => {
-            PartField.innerHTML = '';
-            PartField.style.display = 'none';
-            MainField.setAttribute('class', 'hide');
-            setTimeout(()=>{
-                LoadingScreen.style.display = 'block';
-                LoadingScreen.setAttribute('class', 'show');
-                MainField.style.display = "none";
-            },1000)
-
-            setTimeout(() => {
-                LoadingTip.innerHTML = '<p class="fade-ina">Нажмите, чтобы продолжить';
-                LoadingScreen.onclick = () => {
-                    AndroidApp ('showAd');
-                    setTimeout(() => { LoadingScreen.setAttribute('class', 'hide'); }, 1000);
-                    setTimeout(() => {
-                        LoadingScreen.style.display = 'none';
-                        MainField.setAttribute('class', 'show');
-                        MainField.style.display = "block";
-                        }, 2000);
-                    LoadingScreen.onclick = () => { }
-                }
-            }, 6000);
-        }, 0);
-    }, 0);
-
-
-}
-Game.MemoryUsed = function (){
-    let allStrings = '';
-    for(let key in window.localStorage){
-      if(window.localStorage.hasOwnProperty(key)){
-        allStrings += window.localStorage[key];
-      }
-    }
-    Game.Message(Math.floor(3 + ((allStrings.length*16)/(8*1024))) + 'кб спользовано')
-}
-/**
- * @param {string|undefined} text Текст сообщения
- * @param {boolean|undefined=} isSlide Является ли показом предыдущего слайда?
- */
-Game.Message = function (text, isSlide) {
-    MessageText.innerHTML = text.replace("$Имя Игрока$", Game.PlayerName);
-    if (isSlide){
-        MessageText.innerHTML = Game.LastSlide.text();
-        MessageField.setAttribute('class', 'hide');
-        MessageField.style.display = 'block';
-        setTimeout(() => { MessageField.setAttribute('class', 'show'); }, 100);
-    }
-    else{
-        setTimeout(() => { MessageField.setAttribute('class', 'slide-in-right'); }, 0);
-        setTimeout(() => { MessageField.style.display = 'block'; }, 100);
-        Game.Sounds.NS.play();
-    }
-    this.hideelem = () => {
-        MessageField.setAttribute('class', 'slide-out-right');
-        setTimeout(() => {
-            MessageField.style.display = 'none';
-        }, 1000);
-    }
-
-    clearTimeout(timer);
-
-    MessageField.onclick = this.hideelem;
-
-    if (Game.Settings.AutomatiallyHideAlert == true) var timer = setTimeout(() => {
-        MessageField.setAttribute('class', 'slide-out-right');
-        setTimeout(() => {
-            MessageField.style.display = 'none';
-        }, 1000);
-        }, 5000);
-}
-/** Все картинки которые использовались во всех слайдах */
-let PrechachedImages = [];
-
-/**
- * Загружаем картинки и убираем повторы
- * @param {function} callback Вызываем следующие функции по завершению загрузки
- */
-Game.LoadPictures = function (callback) {
-    let Pictures = [];
-    let AllPictures = 0;
-    let LoadedPictures = 0;
-    const QueuePict = function (a) {
-        Pictures[x] = document.createElement('img');
-        Pictures[x].style.display='none';
-        Pictures[x].src = ROOTPATH + 'pictures/' + a + ".png";
-        document.body.appendChild(Pictures[x]);
-        AllPictures++;
-        Pictures[x].onload = function () {
-            LoadedPictures++;
-            StartGameLoadingProgress.setAttribute('value', LoadedPictures);
-            StartGameLoadingPercent.innerText = Math.floor(LoadedPictures/PrechachedImages.length*100) + '%';
-            if(PrechachedImages[LoadedPictures] == undefined){}
-            else {
-                QueuePict(PrechachedImages[LoadedPictures]);
-            }
-        }
-    }
-
-    for (let prop in Game.Scenes) {
-        for (var x = 0; x < Game.Scenes[prop].length; x++) {
-            if (Game.Scenes[prop][x] == undefined || Game.Scenes[prop][x].background == '') { }
-            else PrechachedImages.push(Game.Scenes[prop][x].background);
-        }
-    }
-
-    for (let prop in Game.Stats) {
-        if (Game.Stats[prop].picture == undefined || Game.Stats[prop].picture == '') { }
-        else PrechachedImages.push(Game.Stats[prop].picture);
-    }
-
-for (var x = 0; x < Game.Stories.length; x++) {
-    PrechachedImages.push(Game.Stories[x].pict);
-        for (var y = 0; y < Game.Stories[x].chapters.length; y++) {
-            PrechachedImages.push(Game.Stories[x].chapters[y].pict);
-            for (var z = 0; z < Game.Stories[x].chapters[y].parts.length; z++) {
-                PrechachedImages.push(Game.Stories[x].chapters[y].parts[z].pict);
-                PrechachedImages.push('Covers/'+Game.Stories[x].chapters[y].parts[z].code);
-            }
-        }
-}
-for (var a = 0; a<PrechachedImages.length;a++){
-    for(var b = a+1;b<PrechachedImages.length;b++){
-        if(PrechachedImages[a]==PrechachedImages[b]){
-            PrechachedImages.splice(b,1);
-            b--;
-        }
-    }
-}
-
-    PrechachedImages.sort();
-
-
-QueuePict(PrechachedImages[0]);
-
-    StartGameLoadingProgress.setAttribute('max', PrechachedImages.length);
-
-    this.Check = function () {
-        PrechachedImages.length == LoadedPictures ? callback() : setTimeout(() => { this.Check(); }, 1000);
-    }
-
-    this.Check();
-}
-/** Присвоение номера сцене в зависимости от индекса массива*/
-Game.SetSceneNumbers = function (){
-    for (let prop in Game.Scenes) {
-        for (let x = 0; x < Game.Scenes[prop].length; x++) {
-            if(Game.Scenes[prop][x] != undefined) {
-                Game.Scenes[prop][x].number = x;
-                Game.Scenes[prop][x].part = prop;
-            }
-        }
-    }
-}
-const scriptURL = 'https://script.google.com/macros/s/AKfycbwkdBBtRSVcRisbB7pJubWxpx0GKRrag7R2oT4ecScLpCAmGJVXkrwBlEZEeX74pwVlNg/exec'
-        const form = document.forms['submit-to-google-sheet']
-
-        form.addEventListener('submit', e => {
-            e.preventDefault()
-            fetch(scriptURL, { method: 'POST', body: new FormData(form) })
-                .then(response => console.log())
-                .catch(error => console.error())
-        });
-
-Game.SendData = function (a) {
-    let today = new Date();
-    let dd = String(today.getDate()).padStart(2, '0');
-    let mm = String(today.getMonth() + 1).padStart(2, '0');
-    let yyyy = today.getFullYear();
-    let nowtime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    today = dd + '.' + mm + '.' + yyyy;
-
-    document.getElementById('#1').setAttribute('value', localStorage.getItem('PlayerName'));
-    document.getElementById('#2').setAttribute('value', today);
-    document.getElementById('#3').setAttribute('value', a);
-    document.getElementById('#4').setAttribute('value', nowtime);
-    document.getElementById('#5').setAttribute('value', Intl.DateTimeFormat().resolvedOptions().timeZone);
-    document.getElementById('#button').click();
-
-}
-
-function AndroidApp (a){
-    try {
-        if(Game.canShowAds) {
-            javascript:return AndroidFunction[a]()
-        }
-        else {Game.canShowAds=true;}
-    }
-    catch (e) {}
-}
-
-//AndroidApp ('showAd');
-let hidden, visibilityChange;
-let alreadyturnedoff = false;
-if (typeof document.hidden !== "undefined") {
-    hidden = "hidden";
-    visibilityChange = "visibilitychange";
-} else if (typeof document.mozHidden !== "undefined") {
-    hidden = "mozHidden";
-    visibilityChange = "mozvisibilitychange";
-} else if (typeof document.msHidden !== "undefined") {
-    hidden = "msHidden";
-    visibilityChange = "msvisibilitychange";
-} else if (typeof document.webkitHidden !== "undefined") {
-    hidden = "webkitHidden";
-    visibilityChange = "webkitvisibilitychange";
-}
-
-document.addEventListener(visibilityChange, handleVisibilityChange, false);
-
-function handleVisibilityChange() {
-    if(!alreadyturnedoff){Game.Sounds.pauseAll();alreadyturnedoff = true;}
-    else {Game.Sounds.resumeAll();alreadyturnedoff = false;}
-}
 Game.Scenes.Features = [];
 
 Game.Scenes.Features[0] =
@@ -2047,15 +1886,13 @@ Game.Scenes.Features[0] =
             `,
         buttontext: [
             'Перейти на часть',
-            'Сценарист (в разработке)',
             'Ничего',
 
         ],
         background: 'Persons/RTemiy',
         buttonaction: [
             () => { Game.Scenes.Features[5].begin(); },
-            () => { CloseOpen(MainField, EditorField);},
-            () => { CloseOpen(MainField, MenuField) },
+            () => { Game.Interface.closeopen('MainField', 'MenuField') },
         ],
     });
 
@@ -2113,7 +1950,7 @@ Game.Scenes.Features[100] =
       buttonactive: [true, false],
         buttontext: ['Вернуться в меню'],
         buttonaction: [() => {
-          CloseOpen(MainField,MenuField);
+          Game.Interface.closeopen('MainField','MenuField');
           Game.Sounds.pauseAll();
         }],
     });
@@ -2161,7 +1998,6 @@ Name[0] =
             },
         });
 */
-Game.Scenes.Mod = [];
 Game.Stories.push( new Story({
     name: 'Immortals',
     pict : 'Covers/Story',
@@ -2175,9 +2011,9 @@ Game.Stories.push( new Story({
                 code: 'Prologue',
                 event: function () {
 
-                    Game.Design.Change('Immortals');
+                    Game.Design.change('Immortals');
 
-                    Game.HideAllAttitudes();
+                    Game.hideAllAttitudes();
 
                     Game.Effects.DisableAll();
 
@@ -2192,9 +2028,9 @@ Game.Stories.push( new Story({
                 pict: 'Backgrounds/Lection',
                 event: function () {
 
-                    Game.Design.Change('Immortals');
+                    Game.Design.change('Immortals');
 
-                    Game.Progress.Load('FirstChapter');
+                    Game.Progress.load('FirstChapter');
 
                     Game.Effects.DisableAll();
 
@@ -2211,9 +2047,9 @@ Game.Stories.push( new Story({
                 pict: 'Backgrounds/NY',
                 event: function () {
 
-                    Game.Design.Change('Immortals');
+                    Game.Design.change('Immortals');
 
-                    Game.Progress.Load('TL');
+                    Game.Progress.load('TL');
 
                     Game.Effects.DisableAll();
 
@@ -2231,9 +2067,9 @@ Game.Stories.push( new Story({
                 pict: 'Backgrounds/Pompeii',
                 event: function () {
 
-                    Game.Design.Change('Immortals');
+                    Game.Design.change('Immortals');
 
-                    Game.Progress.Load('PP');
+                    Game.Progress.load('PP');
 
                     Game.Effects.DisableAll();
 
@@ -2251,13 +2087,13 @@ Game.Stories.push( new Story({
                 pict: 'Backgrounds/Ball',
                 event: function () {
 
-                    Game.Design.Change('Immortals');
+                    Game.Design.change('Immortals');
 
                     Game.Effects.DisableAll();
 
                     Game.LoadScreen('FP');
 
-                    Game.Progress.Load('FP');
+                    Game.Progress.load('FP');
 
                     if (Game.PlayerName === undefined || Game.PlayerName === '') Game.askName(() => {Game.Scenes.FC[0].begin(); })
                     Game.Scenes.FC[0].begin();
@@ -2271,13 +2107,13 @@ Game.Stories.push( new Story({
                 pict: 'Backgrounds/Lake',
                 event: function () {
 
-                    Game.Design.Change('Immortals');
+                    Game.Design.change('Immortals');
 
                     Game.Effects.DisableAll();
 
                     Game.LoadScreen('FifthPart');
 
-                    Game.Progress.Load('FifthPart');
+                    Game.Progress.load('FifthPart');
 
                     if (Game.PlayerName === undefined || Game.PlayerName === '') Game.askName(() => {Game.Scenes.FifthPart[0].begin(); })
                     Game.Scenes.FifthPart[0].begin();
@@ -2290,13 +2126,13 @@ Game.Stories.push( new Story({
                 pict: 'Tags/Q11',
                 event: function () {
 
-                    Game.Design.Change('Immortals');
+                    Game.Design.change('Immortals');
 
                     Game.Effects.DisableAll();
 
                     Game.LoadScreen('SixPart');
 
-                    Game.Progress.Load('SixPart');
+                    Game.Progress.load('SixPart');
 
                     if (Game.PlayerName === undefined || Game.PlayerName === '') Game.askName(() => {Game.Scenes.SixPart[0].begin(); })
                     Game.Scenes.SixPart[0].begin();
@@ -2323,9 +2159,9 @@ Game.Stories.push(
               code: 'Aurora_Prologue',
               event: function (){
 
-                  Game.Design.Change('Aurora');
+                  Game.Design.change('Aurora');
 
-                  Game.HideAllAttitudes();
+                  Game.hideAllAttitudes();
 
                   Game.Effects.DisableAll();
 
@@ -2340,9 +2176,9 @@ Game.Stories.push(
                   code: 'Aurora_Part01',
                   event: function (){
 
-                      Game.Design.Change('Aurora');
+                      Game.Design.change('Aurora');
 
-                      Game.Progress.Load('Aurora_Part01');
+                      Game.Progress.load('Aurora_Part01');
 
                       Game.Effects.DisableAll();
 
@@ -2357,9 +2193,9 @@ Game.Stories.push(
                   code: 'Aurora_Part02',
                   event: function (){
 
-                      Game.Design.Change('Aurora');
+                      Game.Design.change('Aurora');
 
-                      Game.Progress.Load('Aurora_Part02');
+                      Game.Progress.load('Aurora_Part02');
 
                       Game.Effects.DisableAll();
 
@@ -2375,9 +2211,9 @@ Game.Stories.push(
                   code: 'Aurora_Part03',
                   event: function (){
 
-                      Game.Design.Change('Aurora');
+                      Game.Design.change('Aurora');
 
-                      Game.Progress.Load('Aurora_Part03');
+                      Game.Progress.load('Aurora_Part03');
 
                       Game.Effects.DisableAll();
 
@@ -2810,7 +2646,7 @@ Game.Scenes.A_Part01[0] =
     Для меня это было счастливым временем, которое не ускользало даже под гнетом тяжелых испытаний судьбы.
         `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[1].begin(); Game.Stats.Aurora.add(0); Game.Message('В верхнем левом углу находится инвентарь, там вы можете посмотреть полезную информацию') }],
+    buttonaction: [() => { Game.Scenes.A_Part01[1].begin(); Game.Stats.Aurora.add(0); Game.message('В верхнем левом углу находится инвентарь, там вы можете посмотреть полезную информацию') }],
     background: 'Backgrounds/Aurora_House_Inside',
     condition: () => { Game.Sounds.play('Music', 'Lighthouse') }
   });
@@ -3050,7 +2886,7 @@ Game.Scenes.A_Part01[102] =
       <p>Да, мы были совершенно оторваны от других. Но наше уютное гнездышко и было всем этим гигантским миром. 
       `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[103].begin(); Game.Message('Сейчас вы сделаете свой первый выбор. Некоторые из них меняют сюжет незначительно, другие же ведут к серьезным переменам. Но помните, только Вам решать, какой вы видите свою главную героиню'); }],
+    buttonaction: [() => { Game.Scenes.A_Part01[103].begin(); Game.message('Сейчас вы сделаете свой первый выбор. Некоторые из них меняют сюжет незначительно, другие же ведут к серьезным переменам. Но помните, только Вам решать, какой вы видите свою главную героиню'); }],
     background: 'Backgrounds/Aurora_Lighthouse',
   });
 
@@ -3647,7 +3483,7 @@ Game.Scenes.A_Part01[57] =
     buttonaction: [() => {
       setTimeout(() => { Game.Scenes.A_Part02[0].begin(); }, 1000);
       Game.LoadScreen('Aurora_Part02');
-      Game.Progress.Save("Aurora_Part02");
+      Game.Progress.save("Aurora_Part02");
     }],
     background: 'Backgrounds/Aurora_Lighthouse_Night',
   });
@@ -3927,7 +3763,7 @@ Game.Scenes.A_Part02[22] =
     buttontext: [''],
     buttonaction: [() => {
       Game.Scenes.A_Part02[23].begin();
-      Game.Message('Отец благодарен за ваше благосклонное отношение. Его состояние улучшается');
+      Game.message('Отец благодарен за ваше благосклонное отношение. Его состояние улучшается');
       Game.Stats.Father.add(1);
     }],
     background: '',
@@ -3941,7 +3777,7 @@ Game.Scenes.A_Part02[23] =
     buttontext: [''],
     buttonaction: [() => {
       Game.Scenes.A_Part02[24].begin();
-      Game.Message('Вы принимаете жизнь такой, какая она есть. Благодаря вашему выбору дух Авроры крепчает')
+      Game.message('Вы принимаете жизнь такой, какая она есть. Благодаря вашему выбору дух Авроры крепчает')
       Game.Stats.Aurora.add(1);}],
     background: 'Persons/Aurora_Dad',
   });
@@ -3976,7 +3812,7 @@ Game.Scenes.A_Part02[26] =
     buttontext: [''],
     buttonaction: [() => {
       Game.Scenes.A_Part02[27].begin();
-      Game.Message('Отец продолжает винить себя в смерти матери. Его состояние ухудшается');
+      Game.message('Отец продолжает винить себя в смерти матери. Его состояние ухудшается');
       Game.Stats.Father.add(-1);
     }],
     background: 'Persons/Aurora_Dad',
@@ -3990,7 +3826,7 @@ Game.Scenes.A_Part02[27] =
     buttontext: [''],
     buttonaction: [() => {
       Game.Scenes.A_Part02[28].begin();
-      Game.Message('Вы не можете смириться с реальностью, с которой сталкиваетесь. Вследствие вашего выбора Аврора начинает больше сомневаться в себе')
+      Game.message('Вы не можете смириться с реальностью, с которой сталкиваетесь. Вследствие вашего выбора Аврора начинает больше сомневаться в себе')
       Game.Stats.Aurora.add(-1);
     }],
     background: 'Persons/Aurora_Dad',
@@ -4300,7 +4136,7 @@ Game.Scenes.A_Part02[55] =
     buttontext: [''],
     buttonaction: [() => {
       Game.Scenes.A_Part02[56].begin();
-      Game.Message('Так как ваша Аврора любит музыку, вам доступен дополнительный выбор музыки на повседневную жизнь девушки в городе');
+      Game.message('Так как ваша Аврора любит музыку, вам доступен дополнительный выбор музыки на повседневную жизнь девушки в городе');
     }],
     background: 'Persons/Aurora_Arthur',
   });
@@ -4618,7 +4454,7 @@ Game.Scenes.A_Part02[85] =
     Он не договорил, но его высказывания все равно отозвались теплом на сердце. Я не могла тогда представить, что мог придумать Артур, но его слова и действия невольно заставляли верить в светлый исход.
         `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[86].begin(); Game.Message('Артур становится ближе к Авроре'); Game.Stats.Arthur.add(1)}],
+    buttonaction: [() => { Game.Scenes.A_Part02[86].begin(); Game.message('Артур становится ближе к Авроре'); Game.Stats.Arthur.add(1)}],
     background: 'Persons/Aurora_Arthur',
   });
 
@@ -4681,7 +4517,7 @@ Game.Scenes.A_Part02[91] =
     Я вынырнула из воспоминаний, снова возвращаясь в салон автомобиля Артура.
         `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[92].begin(); Game.Message('Артуру приятно, что вы помните его поддержку'); Game.Stats.Arthur.add(1);}],
+    buttonaction: [() => { Game.Scenes.A_Part02[92].begin(); Game.message('Артуру приятно, что вы помните его поддержку'); Game.Stats.Arthur.add(1);}],
     background: 'Backgrounds/Aurora_Arthurs_Car',
   });
 
@@ -5270,7 +5106,7 @@ Game.Scenes.A_Part02[146] =
     buttonaction: [ () => {
       setTimeout(() => { Game.Scenes.A_Part03[0].begin(); }, 1000);
       Game.LoadScreen('Aurora_Part03');
-      Game.Progress.Save("Aurora_Part03");
+      Game.Progress.save("Aurora_Part03");
     }],
     background: 'Persons/Aurora_Kaleb',
   });
@@ -5391,7 +5227,7 @@ Game.Scenes.A_Part03[9] =
     condition: function () {
         Game.Sounds.play('Music',`Aurora_Daily_0${Game.Stats.Song.get}`);
         Game.Stats.Kaleb.add(0);
-        Game.Message('Вы вернулись в воспоминания')
+        Game.message('Вы вернулись в воспоминания')
     }
   });
 
@@ -5589,7 +5425,7 @@ Game.Scenes.A_Part03[25] =
     <p>- Не стоит. Я ничего такого не сделала и… 
         `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[26].begin(); Game.Message('Калебу понравилась ваша ложь. Он вернет должок'); Game.Stats.Kaleb.add(1); }],
+    buttonaction: [() => { Game.Scenes.A_Part03[26].begin(); Game.message('Калебу понравилась ваша ложь. Он вернет должок'); Game.Stats.Kaleb.add(1); }],
     background: 'Persons/Aurora_Kaleb',
   });
 
@@ -6132,7 +5968,7 @@ Game.Scenes.A_Part03[75] =
     buttontext: [''],
     buttonaction: [() => {
       Game.Scenes.A_Part03[76].begin();
-      Game.Message('У вас с Далией схожий интерес. Вы узнаете друг друга лучше');
+      Game.message('У вас с Далией схожий интерес. Вы узнаете друг друга лучше');
       Game.Stats.Dalia.add(1);
       Game.Achievements.A_Fan.unlock();
     }],
@@ -6223,7 +6059,7 @@ Game.Scenes.A_Part03[84] =
         `,
     buttontext: [''],
     buttonaction: [() => { Game.Scenes.A_Part03[85].begin();
-      Game.Message('У вас с Калебом схожий интерес. Вы узнаете друг друга лучше');
+      Game.message('У вас с Калебом схожий интерес. Вы узнаете друг друга лучше');
       Game.Stats.Kaleb.add(1);
       Game.Achievements.A_Fav_Writer.unlock();
     }],
@@ -7053,7 +6889,7 @@ Game.Scenes.A_Part03[157] =
     buttontext: [''],
     buttonaction: [() => {
       Game.Scenes.Features[100].begin();
-      Game.Progress.Save('Aurora_Part04');
+      Game.Progress.save('Aurora_Part04');
     }],
     background: 'Backgrounds/Aurora_Room',
     condition: function () {
@@ -7068,7 +6904,7 @@ Game.Scenes.A_Prologue[0] =
            А наши беззаботные деньки, наполненные смехом и в одночасье тяжелым грузом бремени, что резко обрушилось на нас?
         `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Prologue[1].begin(); Game.Message('В левом верхнем углу под иконкой рюкзака нажмите на стрелочку, чтобы посмотреть текст предыдущего слайда'); }],
+    buttonaction: [() => { Game.Scenes.A_Prologue[1].begin(); Game.message('В левом верхнем углу под иконкой рюкзака нажмите на стрелочку, чтобы посмотреть текст предыдущего слайда'); }],
     background: 'Backgrounds/Aurora_Writing',
     condition: () => { Game.Sounds.play('Music', 'Aurora') }
   });
@@ -7082,7 +6918,7 @@ Game.Scenes.A_Prologue[1] =
 
         `,
       buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Prologue[2].begin(); Game.Message('Эдгар По - “Сон во сне”'); }],
+      buttonaction: [() => { Game.Scenes.A_Prologue[2].begin(); Game.message('Эдгар По - “Сон во сне”'); }],
       background: 'Backgrounds/Aurora_Writing',
   });
 
@@ -7148,7 +6984,7 @@ Game.Scenes.A_Prologue[6] =
       buttonaction: [() => {
         setTimeout(() => { Game.Scenes.A_Part01[0].begin(); }, 1000);
         Game.LoadScreen('Aurora_Part01');
-        Game.Progress.Save("Aurora_Part01");
+        Game.Progress.save("Aurora_Part01");
 
       }],
       background: 'Backgrounds/Aurora_Writing',
@@ -7705,7 +7541,7 @@ Game.Scenes.FirstChapter[3] =
             <p>Я начала метаться по квартире в поисках необходимых мне вещей для занятий, затем оделась и спустилась вниз. Времени завтракать не было, поэтому я сразу выбежала на улицу.
         `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.FirstChapter[4].begin(); Game.Message('В инвентаре вы можете посмотреть отношения с персонажами и имеющиеся у вас предметы.') }],
+        buttonaction: [() => { Game.Scenes.FirstChapter[4].begin(); Game.message('В инвентаре вы можете посмотреть отношения с персонажами и имеющиеся у вас предметы.') }],
         background: 'Backgrounds/Room',
     });
 
@@ -7772,7 +7608,7 @@ Game.Scenes.FirstChapter[8] =
             'Сказать быть решительнее'
         ],
         buttonaction: [
-            () => { Game.Scenes.FirstChapter[9].begin(); Game.Message("Шерил приятна ваша забота"); Game.Stats.Cheryl.add(1); Game.Stats.Key01.add(1); },
+            () => { Game.Scenes.FirstChapter[9].begin(); Game.message("Шерил приятна ваша забота"); Game.Stats.Cheryl.add(1); Game.Stats.Key01.add(1); },
             () => { Game.Scenes.FirstChapter[10].begin(); Game.Stats.Key01.add(1); }
         ],
         background: 'Backgrounds/Phone',
@@ -7817,7 +7653,7 @@ Game.Scenes.FirstChapter[10] =
             Осознав, что я устала терпеть ее нытье, я сказала Шерил прямо. Если она хочет изменить свою жизнь, то пусть прекращает жить в этом доме и возьмет себя в руки.
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.FirstChapter[11].begin(); Game.Message("Шерил считает, что вы не воспринимаете ее всерьез и не оказываете поддержки"); Game.Stats.Cheryl.add(-1); }],
+        buttonaction: [() => { Game.Scenes.FirstChapter[11].begin(); Game.message("Шерил считает, что вы не воспринимаете ее всерьез и не оказываете поддержки"); Game.Stats.Cheryl.add(-1); }],
         background: 'Backgrounds/Phone',
     });
 
@@ -8004,8 +7840,8 @@ Game.Scenes.FirstChapter[20] =
             'Было всё равно'
         ],
         buttonaction: [
-            () => { Game.Scenes.FirstChapter[21].begin(); Game.Stats.Scarlett.add(1); Game.Message("Скарлетт дорожит вашей дружбой") },
-            () => { Game.Scenes.FirstChapter[22].begin(); Game.Stats.Scarlett.add(-1); Game.Message("Вы со Скарлетт не такие уж и близкие подруги") }
+            () => { Game.Scenes.FirstChapter[21].begin(); Game.Stats.Scarlett.add(1); Game.message("Скарлетт дорожит вашей дружбой") },
+            () => { Game.Scenes.FirstChapter[22].begin(); Game.Stats.Scarlett.add(-1); Game.message("Вы со Скарлетт не такие уж и близкие подруги") }
         ],
         background: 'Persons/Scarlett',
     });
@@ -8064,7 +7900,7 @@ Game.Scenes.FirstChapter[213] =
             `
     ,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.FirstChapter[24].begin(); Game.Message("Профессор рад, что никто не опоздал"); Game.Stats.Neitan.add(1) }],
+    buttonaction: [() => { Game.Scenes.FirstChapter[24].begin(); Game.message("Профессор рад, что никто не опоздал"); Game.Stats.Neitan.add(1) }],
     background: 'Persons/Neitan',
   });
 
@@ -8211,7 +8047,7 @@ Game.Scenes.FirstChapter[180] =
             `
         ,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.FirstChapter[24].begin(); Game.Message("Профессор недоволен вашим опозданием"); Game.Stats.Neitan.add(-1); }],
+        buttonaction: [() => { Game.Scenes.FirstChapter[24].begin(); Game.message("Профессор недоволен вашим опозданием"); Game.Stats.Neitan.add(-1); }],
         background: 'Persons/Neitan',
     });
 
@@ -8224,7 +8060,7 @@ Game.Scenes.FirstChapter[31] =
             `
         ,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.FirstChapter[32].begin(); Game.Message('В инвентаре вы можете посмотреть отношения с персонажами и имеющиеся у вас предметы.'); }],
+        buttonaction: [() => { Game.Scenes.FirstChapter[32].begin(); Game.message('В инвентаре вы можете посмотреть отношения с персонажами и имеющиеся у вас предметы.'); }],
         background: 'Backgrounds/Room',
     });
 
@@ -8293,9 +8129,9 @@ Game.Scenes.FirstChapter[34] =
             'Блины'
         ],
         buttonaction: [
-            () => { Game.Scenes.FirstChapter[35].begin(); Game.Message("Свежие фрукты в сочетании с йогуртом оказались очень питательными и вкусными.") },
-            () => { Game.Scenes.FirstChapter[35].begin(); Game.Message("Старая классика. Хлеб, сыр и колбаса, что может быть проще и вкуснее?") },
-            () => { Game.Scenes.FirstChapter[35].begin(); Game.Message("Я подогрела несколько блинов в микроволновке. Они оказались с мясом.") },
+            () => { Game.Scenes.FirstChapter[35].begin(); Game.message("Свежие фрукты в сочетании с йогуртом оказались очень питательными и вкусными.") },
+            () => { Game.Scenes.FirstChapter[35].begin(); Game.message("Старая классика. Хлеб, сыр и колбаса, что может быть проще и вкуснее?") },
+            () => { Game.Scenes.FirstChapter[35].begin(); Game.message("Я подогрела несколько блинов в микроволновке. Они оказались с мясом.") },
         ],
         background: 'Backgrounds/Kitchen',
     });
@@ -8419,7 +8255,7 @@ Game.Scenes.FirstChapter[132] =
             `
         ,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.FirstChapter[24].begin(); Game.Message("Профессор рад, что никто не опоздал"); Game.Stats.Neitan.add(1) }],
+        buttonaction: [() => { Game.Scenes.FirstChapter[24].begin(); Game.message("Профессор рад, что никто не опоздал"); Game.Stats.Neitan.add(1) }],
         background: 'Persons/Neitan',
     });
 
@@ -8437,10 +8273,10 @@ Game.Scenes.FirstChapter[42] =
         background: 'Backgrounds/Lection',
         condition: function () {
             if (Game.Stats.ForgotHomework.get <= 0) {
-                this.buttonaction[0] = () => { Game.Scenes.FirstChapter[43].begin(); Game.Message("Ваша текущая успеваемость “4”"); Game.Stats.Study.set(4); Game.Stats.Neitan.add(1) };
+                this.buttonaction[0] = () => { Game.Scenes.FirstChapter[43].begin(); Game.message("Ваша текущая успеваемость “4”"); Game.Stats.Study.set(4); Game.Stats.Neitan.add(1) };
             }
             else {
-                this.buttonaction[0] = () => { Game.Scenes.FirstChapter[44].begin(); Game.Message("Ваша текущая успеваемость “3”"); Game.Stats.Study.set(3) };
+                this.buttonaction[0] = () => { Game.Scenes.FirstChapter[44].begin(); Game.message("Ваша текущая успеваемость “3”"); Game.Stats.Study.set(3) };
             }
         }
     });
@@ -8655,7 +8491,7 @@ Game.Scenes.FirstChapter[54] =
         buttonaction: [() => {
             setTimeout(() => { Game.Scenes.TL[1].begin(); }, 1000);
             Game.LoadScreen('TL');
-            Game.Progress.Save("TL");
+            Game.Progress.save("TL");
         }],
         background: 'Backgrounds/Lection',
         condition: function () {
@@ -8672,7 +8508,7 @@ Game.Scenes.TL[1] =
             Но даже сквозь затуманенное сознание я видела незнакомое окружение.
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TL[2].begin(); Game.Message("<em>Нью-Йорк 1885 год"); Game.Effects.Flash(); }],
+        buttonaction: [() => { Game.Scenes.TL[2].begin(); Game.message("<em>Нью-Йорк 1885 год"); Game.Effects.Flash(); }],
         background: '',
         condition: function () { Game.Sounds.play('Music', 'NY'); }
     });
@@ -8808,7 +8644,7 @@ Game.Scenes.TL[10] =
             <p>- Все в порядке, просто голова закружилась,- я подыгрывала этому спектаклю моего подсознания.
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TL[11].begin(); Game.Message("Никола вам сочувствует"); Game.Stats.Nicola.add(1); }],
+        buttonaction: [() => { Game.Scenes.TL[11].begin(); Game.message("Никола вам сочувствует"); Game.Stats.Nicola.add(1); }],
         background: 'Persons/Nicola',
     });
 
@@ -8832,7 +8668,7 @@ Game.Scenes.TL[12] =
              что несмотря на затворнический образ жизни великого ученого -  Тесла был эмпатом.
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TL[13].begin(); Game.Message("Эмпат – это человек, который способен сопереживать другим.") }],
+        buttonaction: [() => { Game.Scenes.TL[13].begin(); Game.message("Эмпат – это человек, который способен сопереживать другим.") }],
         background: '',
     });
 
@@ -8882,7 +8718,7 @@ Game.Scenes.TL[14] =
             `,
         buttontext: [''],
         buttonaction: [() => {
-            Game.Scenes.TL[15].begin(); Game.Message("Никола рад поддержать подругу"); Game.Stats.Nicola.add(1);
+            Game.Scenes.TL[15].begin(); Game.message("Никола рад поддержать подругу"); Game.Stats.Nicola.add(1);
         }],
         background: 'Persons/Nicola',
     });
@@ -8905,7 +8741,7 @@ Game.Scenes.TL[16] =
             `,
         buttontext: [''],
         buttonaction: [() => {
-            Game.Scenes.TL[17].begin(); Game.Message("Вы услышали интересную информацию, которая может поменять развитие истории");
+            Game.Scenes.TL[17].begin(); Game.message("Вы услышали интересную информацию, которая может поменять развитие истории");
         }],
         background: 'Persons/Nicola',
     });
@@ -8925,12 +8761,12 @@ Game.Scenes.TL[17] =
           Game.Scenes.TL[21].activate(2); Game.Scenes.TL[23].activate(2); Game.Scenes.TL[24].activate(2); Game.Scenes.TL[26].activate(2);
           Game.Scenes.TL[21].activate(3); Game.Scenes.TL[23].activate(3); Game.Scenes.TL[24].activate(3); Game.Scenes.TL[26].activate(3);
             if (Game.Stats.Study.get >= 4) {
-                this.buttonaction[0] = () => { Game.Scenes.TL[18].begin(); Game.Message("Ваши знания помогли вам узнать больше об эпохе и открыли дополнительный выбор"); Game.Achievements.SmartGirl.unlock(); };
+                this.buttonaction[0] = () => { Game.Scenes.TL[18].begin(); Game.message("Ваши знания помогли вам узнать больше об эпохе и открыли дополнительный выбор"); Game.Achievements.SmartGirl.unlock(); };
             }
             else {
                 this.buttonaction[0] = () => {
                     Game.Scenes.TL[18].begin();
-                    Game.Message("Ваши знания не помогли вам узнать больше об эпохе и не открыли дополнительный выбор");
+                    Game.message("Ваши знания не помогли вам узнать больше об эпохе и не открыли дополнительный выбор");
                     Game.Scenes.TL[18].deactivate(0);
                     Game.Scenes.TL[23].deactivate(0);
                     Game.Scenes.TL[24].deactivate(0);
@@ -8990,7 +8826,7 @@ Game.Scenes.TL[20] =
             <p>- Но это не выход! Сколько раз ты уже проигрывал все, - я попыталась надавить на самое больное. - Это иллюзия, ты не зарабатываешь, а лишь только тратишь.
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TL[21].begin(); Game.Message("Тесла может прислушаться к вам в будущем"); }],
+        buttonaction: [() => { Game.Scenes.TL[21].begin(); Game.message("Тесла может прислушаться к вам в будущем"); }],
         background: 'Persons/Nicola',
     });
 //
@@ -9236,7 +9072,7 @@ Game.Scenes.TL[34] =
             <p>- Я - $Имя Игрока$, - было забавно наблюдать за его реакцией. Он явно выглядел  растеряно. 
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TL[35].begin(); Game.Message("Вы шокировали Теслу!"); Game.Achievements.ShockTesla.unlock(); }],
+        buttonaction: [() => { Game.Scenes.TL[35].begin(); Game.message("Вы шокировали Теслу!"); Game.Achievements.ShockTesla.unlock(); }],
         background: 'Persons/Nicola',
     });
 
@@ -9266,7 +9102,7 @@ Game.Scenes.TL[36] =
             <p>Я резко подступилась к Николе  и тепло обняла его. Крепко-крепко. Не ожидая от меня такого, он лишь стоял, словно статуя, не понимая, как реагировать на этот выпад. 
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TL[37].begin(); Game.Message("Тесла приятно удивлен"); Game.Stats.Nicola.add(1) }],
+        buttonaction: [() => { Game.Scenes.TL[37].begin(); Game.message("Тесла приятно удивлен"); Game.Stats.Nicola.add(1) }],
         background: 'Persons/Nicola',
     });
 
@@ -9290,7 +9126,7 @@ Game.Scenes.TL[38] =
             <p>Я резко подступилась к Николе  и чмокнула его в щеку. Не ожидая от меня такого, он лишь стоял, словно статуя, не понимая, как реагировать на этот выпад.
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TL[39].begin(); Game.Message("Тесла не оценил ваш порыв"); Game.Stats.Nicola.add(-1) }],
+        buttonaction: [() => { Game.Scenes.TL[39].begin(); Game.message("Тесла не оценил ваш порыв"); Game.Stats.Nicola.add(-1) }],
         background: 'Persons/Nicola',
     });
 
@@ -9314,7 +9150,7 @@ Game.Scenes.TL[40] =
             <p>– Катарина … 
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TL[41].begin(); Game.Message("Тесла думает, что вы поддерживаете его деятельность"); Game.Stats.Nicola.add(1) }],
+        buttonaction: [() => { Game.Scenes.TL[41].begin(); Game.message("Тесла думает, что вы поддерживаете его деятельность"); Game.Stats.Nicola.add(1) }],
         background: 'Persons/Nicola',
     });
 
@@ -9474,7 +9310,7 @@ Game.Scenes.TL[53] =
             <p>– Отложим визит к Редьярду Киплингу, идем сразу в больницу!
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TL[44].begin(); Game.Message("Тесла недоволен вашим поведением"); Game.Stats.Nicola.add(-1); }],
+        buttonaction: [() => { Game.Scenes.TL[44].begin(); Game.message("Тесла недоволен вашим поведением"); Game.Stats.Nicola.add(-1); }],
         background: 'Persons/Nicola',
     });
 
@@ -9604,7 +9440,7 @@ Game.Scenes.TC[0] =
             else {
                 this.buttonaction[0] = () => { Game.Scenes.TC[3].begin() };
             }
-            Game.Message('Наше время');
+            Game.message('Наше время');
             Game.Effects.Flash();
             AndroidApp ('showAd');
         }
@@ -9619,7 +9455,7 @@ Game.Scenes.TC[1] =
             <p>- Где-то минут 40… 
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TC[5].begin(); Game.Message("Вы со Скарлетт друзья, она за вас переживала"); }],
+        buttonaction: [() => { Game.Scenes.TC[5].begin(); Game.message("Вы со Скарлетт друзья, она за вас переживала"); }],
         background: 'Persons/Scarlett',
     });
 
@@ -9632,7 +9468,7 @@ Game.Scenes.TC[3] =
             <p>- Где-то минут 40… 
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TC[5].begin(); Game.Message("Вы не очень близки со Скарлетт, но она все равно переживала за тебя"); }],
+        buttonaction: [() => { Game.Scenes.TC[5].begin(); Game.message("Вы не очень близки со Скарлетт, но она все равно переживала за тебя"); }],
         background: 'Persons/Scarlett',
     });
 
@@ -9676,7 +9512,7 @@ Game.Scenes.TC[150] =
             'Ох, что же это было…'
         ],
         buttonaction: [
-            () => { Game.Scenes.TC[7].begin(); Game.Message("Леон волновался за вас"); Game.Stats.Leon.add(1); },
+            () => { Game.Scenes.TC[7].begin(); Game.message("Леон волновался за вас"); Game.Stats.Leon.add(1); },
             () => { Game.Scenes.TC[8].begin(); },
             () => { Game.Scenes.TC[9].begin(); },
             () => { Game.Scenes.TC[10].begin(); }
@@ -9702,7 +9538,7 @@ Game.Scenes.TC[8] =
             <p>- Забудь, сейчас не об этом надо думать. Самое главное - ты пришла в себя и твоей жизни ничего не угрожает.
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TC[11].begin(); Game.Message("Вы прилежная и ответственная ученица"); Game.Stats.Neitan.add(1); }],
+        buttonaction: [() => { Game.Scenes.TC[11].begin(); Game.message("Вы прилежная и ответственная ученица"); Game.Stats.Neitan.add(1); }],
         background: 'Persons/Neitan',
     });
 
@@ -9713,7 +9549,7 @@ Game.Scenes.TC[9] =
             <p>- Самое главное, что ты в порядке. Сейчас ни о чем другом переживать не надо. 
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TC[11].begin(); Game.Message("Скарлетт рада помочь"); Game.Stats.Scarlett.add(1) }],
+        buttonaction: [() => { Game.Scenes.TC[11].begin(); Game.message("Скарлетт рада помочь"); Game.Stats.Scarlett.add(1) }],
         background: 'Persons/Scarlett',
     });
 
@@ -9867,7 +9703,7 @@ Game.Scenes.TC[20] =
             'Шел рядом и поддерживал'
         ],
         buttonaction: [
-            () => { Game.Scenes.TC[21].begin(); Game.Message("Леон рад вам помочь"); Game.Stats.Leon.add(1); },
+            () => { Game.Scenes.TC[21].begin(); Game.message("Леон рад вам помочь"); Game.Stats.Leon.add(1); },
             () => { Game.Scenes.TC[24].begin(); }
         ],
         background: 'Persons/Leon',
@@ -10279,7 +10115,7 @@ Game.Scenes.TC[46] =
             <p>- Это  потрясающе, никогда не думала, что история может быть таким интересным предметом. 
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TC[47].begin(); Game.Message("Шерил заинтересовалась историей") }],
+        buttonaction: [() => { Game.Scenes.TC[47].begin(); Game.message("Шерил заинтересовалась историей") }],
         background: '',
     });
 
@@ -10299,7 +10135,7 @@ Game.Scenes.TC[48] =
             Я рассказа ту же байку про переутомление. Шерил почувствовала, что здесь что-то не так, ухмыльнулась,  и не стала продолжать разговор.
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TC[70].begin(); Game.Message('Шерил ощущает вашу неискренность'); Game.Stats.Cheryl.add(-1); }],
+        buttonaction: [() => { Game.Scenes.TC[70].begin(); Game.message('Шерил ощущает вашу неискренность'); Game.Stats.Cheryl.add(-1); }],
         background: 'Persons/Cheryl',
     });
 
@@ -10423,7 +10259,7 @@ Game.Scenes.TC[57] =
             Его поддержка помогала мне не упасть. Я чувствовала, как его руки крепко держали меня, направляя, не давая оступиться. 
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TC[58].begin(); Game.Message("Ваше сердце пропустило удар"); Game.Stats.Neitan.add(1) }],
+        buttonaction: [() => { Game.Scenes.TC[58].begin(); Game.message("Ваше сердце пропустило удар"); Game.Stats.Neitan.add(1) }],
         background: '',
     });
 
@@ -10699,7 +10535,7 @@ Game.Scenes.TC[76] =
             Спать совсем не хотелось, но и засиживаться долго нельзя. Организму нужен отдых.
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TC[77].begin(); Game.Stats.Activities.set(2); Game.Message('Вы можете сделать только 2 выбора!') }],
+        buttonaction: [() => { Game.Scenes.TC[77].begin(); Game.Stats.Activities.set(2); Game.message('Вы можете сделать только 2 выбора!') }],
       condition: function () {
         Game.Scenes.TC[77].activate(0);Game.Scenes.TC[77].activate(1);Game.Scenes.TC[77].activate(2);
         Game.Scenes.TC[80].activate(0);Game.Scenes.TC[80].activate(1);Game.Scenes.TC[80].activate(2);Game.Scenes.TC[80].activate(3);
@@ -10781,7 +10617,7 @@ Game.Scenes.TC[83] =
             `,
         buttontext: [''],
         buttonaction: [
-            () => { Game.Scenes.TC[101].begin(); Game.Message('Ваша семья становится крепче'); }
+            () => { Game.Scenes.TC[101].begin(); Game.message('Ваша семья становится крепче'); }
         ],
         background: 'Backgrounds/Nonopoly',
     });
@@ -10806,7 +10642,7 @@ Game.Scenes.TC[85] =
             `,
         buttontext: [''],
         buttonaction: [
-            () => { Game.Scenes.TC[101].begin(); Game.Message('Ваша семья становится крепче'); }],
+            () => { Game.Scenes.TC[101].begin(); Game.message('Ваша семья становится крепче'); }],
         background: 'Backgrounds/Kitchen',
     });
 
@@ -10817,7 +10653,7 @@ Game.Scenes.TC[86] =
             `,
         buttontext: [''],
         buttonaction: [
-            () => { Game.Scenes.TC[101].begin(); Game.Message('Ваша семья становится крепче'); }],
+            () => { Game.Scenes.TC[101].begin(); Game.message('Ваша семья становится крепче'); }],
         background: 'Backgrounds/Film',
     });
 
@@ -10829,7 +10665,7 @@ Game.Scenes.TC[79] =
             Тем более, что придется пропустить несколько дней. Я принялась выполнять домашнюю работу и читать лекции. Вечер получился продуктивным.
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TC[101].begin(); Game.Message('Вы прилежная ученица'); Game.Stats.Study.add(1) }],
+        buttonaction: [() => { Game.Scenes.TC[101].begin(); Game.message('Вы прилежная ученица'); Game.Stats.Study.add(1) }],
         background: 'Backgrounds/Hero_Sleeps',
         condition: function () {
             Game.Scenes.TC[77].deactivate(1);
@@ -10896,7 +10732,7 @@ Game.Scenes.TC[89] =
             Леон предложил как-нибудь встретиться и повторить вечер воспоминаний. 
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TC[101].begin(); Game.Message('Леон рад был поговорить с вами'); Game.Stats.Leon.add(1) }],
+        buttonaction: [() => { Game.Scenes.TC[101].begin(); Game.message('Леон рад был поговорить с вами'); Game.Stats.Leon.add(1) }],
         background: 'Backgrounds/Hero_Sleeps',
     });
 
@@ -10927,7 +10763,7 @@ Game.Scenes.TC[92] =
             Он пожелал мне спокойной ночи,  велел отдыхать и заниматься из дома. 
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TC[101].begin(); Game.Message('Нэйтан рад вас наставлять'); Game.Stats.Neitan.add(1) }],
+        buttonaction: [() => { Game.Scenes.TC[101].begin(); Game.message('Нэйтан рад вас наставлять'); Game.Stats.Neitan.add(1) }],
         background: 'Backgrounds/Hero_Sleeps',
     });
 
@@ -10951,7 +10787,7 @@ Game.Scenes.TC[94] =
             Мне был необходим этот разговор обо всем, что вызывало тревогу последние дни, разумеется, опуская момент с перемещением. У нас выдался очень душевный вечер. 
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TC[101].begin(); Game.Message('Скарлетт чудесно провела время'); Game.Stats.Scarlett.add(1) }],
+        buttonaction: [() => { Game.Scenes.TC[101].begin(); Game.message('Скарлетт чудесно провела время'); Game.Stats.Scarlett.add(1) }],
         background: 'Persons/Scarlett',
     });
 
@@ -10981,8 +10817,8 @@ Game.Scenes.TC[96] =
             'Было все равно'
         ],
         buttonaction: [
-            () => { Game.Scenes.TC[97].begin(); Game.Message('Скарлетт дорожит вашей дружбой'); Game.Stats.Scarlett.add(1) },
-            () => { Game.Scenes.TC[98].begin(); Game.Message('Вы со Скарлетт не такие уж и близкие подруги'); Game.Stats.Scarlett.add(-1) },
+            () => { Game.Scenes.TC[97].begin(); Game.message('Скарлетт дорожит вашей дружбой'); Game.Stats.Scarlett.add(1) },
+            () => { Game.Scenes.TC[98].begin(); Game.message('Вы со Скарлетт не такие уж и близкие подруги'); Game.Stats.Scarlett.add(-1) },
         ],
         background: 'Persons/Scarlett',
     });
@@ -11014,7 +10850,7 @@ Game.Scenes.TC[99] =
             <p>Это было отличной идеей, мы обе погрузились в мир без насущных проблем, которых было много у каждой из нас, и отдохнули. 
             `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.TC[101].begin(); Game.Message('Шерил всегда рада вашей компании'); Game.Stats.Cheryl.add(1) }],
+        buttonaction: [() => { Game.Scenes.TC[101].begin(); Game.message('Шерил всегда рада вашей компании'); Game.Stats.Cheryl.add(1) }],
         background: 'Backgrounds/Hero_Sleeps',
     });
 
@@ -11027,7 +10863,7 @@ Game.Scenes.TC[100] =
         buttonaction: [() => {
             setTimeout(() => { Game.Scenes.PP[1].begin(); }, 1000);
             Game.LoadScreen('PP');
-            Game.Progress.Save('PP');
+            Game.Progress.save('PP');
 
         }],
         background: 'Backgrounds/Hero_Sleeps',
@@ -11258,7 +11094,7 @@ Game.Scenes.PP[17] =
             `,
         buttontext: [''],
         background: "Persons/Stranger",
-        buttonaction: [() => { Game.Scenes.PP[20].begin(); Game.Message('Общение с вами приятно проводнику'); Game.Stats.God.add(1); }],
+        buttonaction: [() => { Game.Scenes.PP[20].begin(); Game.message('Общение с вами приятно проводнику'); Game.Stats.God.add(1); }],
     });
 
 Game.Scenes.PP[18] =
@@ -11271,7 +11107,7 @@ Game.Scenes.PP[18] =
             `,
         background: "Persons/Stranger",
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.PP[19].begin(); Game.Message('Общение с вами неприятно проводнику'); Game.Stats.God.add(-1); }],
+        buttonaction: [() => { Game.Scenes.PP[19].begin(); Game.message('Общение с вами неприятно проводнику'); Game.Stats.God.add(-1); }],
     });
 
 Game.Scenes.PP[19] =
@@ -11321,7 +11157,7 @@ Game.Scenes.PP[22] =
             `,
         background: "Backgrounds/Pompeii_Portal",
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.PP[23].begin(); Game.Message("<em>Помпеи 79 г. н.э."); Game.Effects.Flash(); }],
+        buttonaction: [() => { Game.Scenes.PP[23].begin(); Game.message("<em>Помпеи 79 г. н.э."); Game.Effects.Flash(); }],
     });
 
 Game.Scenes.PP[23] =
@@ -11373,7 +11209,7 @@ Game.Scenes.PP[26] =
             `,
         background: "Persons/Goddess",
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.PP[27].begin(); Game.Message('Юпитер в древнеримской мифологии - отец всех богов.');  }],
+        buttonaction: [() => { Game.Scenes.PP[27].begin(); Game.message('Юпитер в древнеримской мифологии - отец всех богов.');  }],
     });
 
 Game.Scenes.PP[27] =
@@ -11550,7 +11386,7 @@ Game.Scenes.PP[36] =
             `,
         background: "Persons/Stranger",
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.PP[37].begin(); Game.Message('Пантеон - группа богов, принадлежащих к одной религии или мифологии.') }],
+        buttonaction: [() => { Game.Scenes.PP[37].begin(); Game.message('Пантеон - группа богов, принадлежащих к одной религии или мифологии.') }],
     });
 
 Game.Scenes.PP[37] =
@@ -11630,7 +11466,7 @@ Game.Scenes.PN[1] =
         ],
         buttonaction: [
             () => { Game.Scenes.PN[2].begin(); },
-            () => { Game.Scenes.PN[7].begin(); Game.Message('Вы заработали деньги! (150)'); Game.Stats.Money.add(150) },
+            () => { Game.Scenes.PN[7].begin(); Game.message('Вы заработали деньги! (150)'); Game.Stats.Money.add(150) },
         ],
     });
 
@@ -11845,8 +11681,8 @@ Game.Scenes.PN[20] =
             'Заказать пиццу (150)',
             'Сделать бутерброды',],
         buttonaction: [
-            () => { Game.Scenes.PN[21].begin(); Game.Stats.Money.add(-200); Game.Message('Вы потратили деньги (200)'); Game.Achievements.Sushi.unlock(); },
-            () => { Game.Scenes.PN[26].begin(); Game.Stats.Money.add(-150); Game.Message('Вы потратили деньги (150)') },
+            () => { Game.Scenes.PN[21].begin(); Game.Stats.Money.add(-200); Game.message('Вы потратили деньги (200)'); Game.Achievements.Sushi.unlock(); },
+            () => { Game.Scenes.PN[26].begin(); Game.Stats.Money.add(-150); Game.message('Вы потратили деньги (150)') },
             () => { Game.Scenes.PN[31].begin(); },
         ],
     });
@@ -11879,7 +11715,7 @@ Game.Scenes.PN[22] =
         buttontext: [''],
         buttonaction: [() => {
             Game.Scenes.PN[24].begin();
-            Game.Message('Ваши друзья обрадовались вкусной еде!');
+            Game.message('Ваши друзья обрадовались вкусной еде!');
             Game.Stats.Leon.add(1);
             Game.Stats.Scarlett.add(1);
             Game.Stats.Cheryl.add(1);
@@ -11895,7 +11731,7 @@ Game.Scenes.PN[23] =
         buttontext: [''],
         buttonaction: [() => {
             Game.Scenes.PN[24].begin();
-            Game.Message('Ваши друзья обрадовались вкусной еде!');
+            Game.message('Ваши друзья обрадовались вкусной еде!');
             Game.Stats.Leon.add(1);
             Game.Stats.Scarlett.add(1);
             Game.Stats.Cheryl.add(1);
@@ -11955,7 +11791,7 @@ Game.Scenes.PN[28] =
         buttontext: [''],
         buttonaction: [() => {
             Game.Scenes.PN[29].begin();
-            Game.Message('Ваши друзья обрадовались вкусной еде!');
+            Game.message('Ваши друзья обрадовались вкусной еде!');
             Game.Stats.Leon.add(1);
             Game.Stats.Scarlett.add(1);
             Game.Stats.Cheryl.add(1);
@@ -11971,7 +11807,7 @@ Game.Scenes.PN[27] =
         buttontext: [''],
         buttonaction: [() => {
             Game.Scenes.PN[29].begin();
-            Game.Message('Ваши друзья обрадовались вкусной еде!');
+            Game.message('Ваши друзья обрадовались вкусной еде!');
             Game.Stats.Leon.add(1);
             Game.Stats.Scarlett.add(1);
             Game.Stats.Cheryl.add(1);
@@ -12023,7 +11859,7 @@ Game.Scenes.PN[32] =
         buttontext: [''],
         buttonaction: [() => {
             Game.Scenes.PN[34].begin();
-            Game.Message('Ваши друзья обрадовались вкусной еде!');
+            Game.message('Ваши друзья обрадовались вкусной еде!');
             Game.Stats.Leon.add(1);
             Game.Stats.Scarlett.add(1);
             Game.Stats.Cheryl.add(1);
@@ -12039,7 +11875,7 @@ Game.Scenes.PN[33] =
         buttontext: [''],
         buttonaction: [() => {
             Game.Scenes.PN[34].begin();
-            Game.Message('Ваши друзья обрадовались вкусной еде!');
+            Game.message('Ваши друзья обрадовались вкусной еде!');
             Game.Stats.Leon.add(1);
             Game.Stats.Scarlett.add(1);
             Game.Stats.Cheryl.add(1);
@@ -12369,7 +12205,7 @@ Game.Scenes.PN[57] =
         buttontext: [''],
         buttonaction: [() => { Game.Scenes.PN[58].begin(); Game.Effects.Disco.Stop(); }],
         condition: function () {
-            Game.Message("Отношения со Скарлетт и Леоном улучшились");
+            Game.message("Отношения со Скарлетт и Леоном улучшились");
             Game.Stats.Leon.add(1);
             Game.Stats.Scarlett.add(1);
             Game.Sounds.Cheers.play();
@@ -12526,7 +12362,7 @@ Game.Scenes.PN[66] =
             `,
         background: "Persons/Leon",
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.PN[83].begin(); Game.Message('Связь с Леоном становится крепче') }],
+        buttonaction: [() => { Game.Scenes.PN[83].begin(); Game.message('Связь с Леоном становится крепче') }],
     });
 
 Game.Scenes.PN[67] =
@@ -12607,7 +12443,7 @@ Game.Scenes.PN[72] =
             `,
         background: "Persons/Scarlett",
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.PN[83].begin(); Game.Message('Ваш совет заставил Скарлетт задуматься') }],
+        buttonaction: [() => { Game.Scenes.PN[83].begin(); Game.message('Ваш совет заставил Скарлетт задуматься') }],
     });
 
 Game.Scenes.PN[73] =
@@ -12630,7 +12466,7 @@ Game.Scenes.PN[74] =
             `,
         background: "Persons/Scarlett",
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.PN[83].begin(); Game.Message('Вы не поддержали Скарлетт'); }],
+        buttonaction: [() => { Game.Scenes.PN[83].begin(); Game.message('Вы не поддержали Скарлетт'); }],
     });
 
 Game.Scenes.PN[75] =
@@ -12711,7 +12547,7 @@ Game.Scenes.PN[80] =
             `,
         background: "Persons/Cheryl",
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.PN[83].begin(); Game.Message('Шерил знает, что нас вас можно положиться'); Game.Stats.Cheryl.add(1) }],
+        buttonaction: [() => { Game.Scenes.PN[83].begin(); Game.message('Шерил знает, что нас вас можно положиться'); Game.Stats.Cheryl.add(1) }],
     });
 
 Game.Scenes.PN[81] =
@@ -12736,7 +12572,7 @@ Game.Scenes.PN[82] =
             `,
         background: "Persons/Cheryl",
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.PN[83].begin(); Game.Message('Шерил становится решительнее, возможно именно это ей и нужно? '); Game.Stats.Cheryl.add(-1) }],
+        buttonaction: [() => { Game.Scenes.PN[83].begin(); Game.message('Шерил становится решительнее, возможно именно это ей и нужно? '); Game.Stats.Cheryl.add(-1) }],
     });
 
 Game.Scenes.PN[83] =
@@ -12764,7 +12600,7 @@ Game.Scenes.PN[84] =
             `,
         background: "",
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.PN[86].begin(); Game.Message('Состояние Шерил ухудшается'); Game.Stats.Cheryl.add(-1); }],
+        buttonaction: [() => { Game.Scenes.PN[86].begin(); Game.message('Состояние Шерил ухудшается'); Game.Stats.Cheryl.add(-1); }],
     });
 
 Game.Scenes.PN[85] =
@@ -12983,7 +12819,7 @@ Game.Scenes.PN[99] =
             `,
         background: "Backgrounds/Chair",
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.PN[102].begin(); Game.Message('За свою решимость вы получили нож!'); Game.Stats.Knife.add(1); Game.Achievements.FirstWeapon.unlock(); }],
+        buttonaction: [() => { Game.Scenes.PN[102].begin(); Game.message('За свою решимость вы получили нож!'); Game.Stats.Knife.add(1); Game.Achievements.FirstWeapon.unlock(); }],
     });
 
 Game.Scenes.PN[100] =
@@ -13201,7 +13037,7 @@ Game.Scenes.PN[115] =
             `,
         background: "Persons/Monster",
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.PN[116].begin(); Game.Message('К сожалению, не всегда надо бросаться в атаку… Вы сильно ранены!'); Game.Stats.BrokenHand.add(1); Game.Achievements.AttackMonster.unlock(); }],
+        buttonaction: [() => { Game.Scenes.PN[116].begin(); Game.message('К сожалению, не всегда надо бросаться в атаку… Вы сильно ранены!'); Game.Stats.BrokenHand.add(1); Game.Achievements.AttackMonster.unlock(); }],
     });
 
 Game.Scenes.PN[116] =
@@ -13500,7 +13336,7 @@ Game.Scenes.PN[134] =
           Game.LoadScreen('FP');
           Game.Effects.Gray.Stop();
           Game.Stats.Knife.add(-1);
-          Game.Progress.Save("FP");
+          Game.Progress.save("FP");
         }],
     });
 Game.Scenes.FC = [];
@@ -13513,7 +13349,7 @@ Game.Scenes.FC[0] = new Scene({
             `,
   background: "",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FC[1].begin(); Game.Message("<em>Нью-Йорк 1885 год"); }],
+  buttonaction: [() => { Game.Scenes.FC[1].begin(); Game.message("<em>Нью-Йорк 1885 год"); }],
   condition: () => {
     Game.Sounds.play('Music','Doctor');
   }
@@ -13828,7 +13664,7 @@ Game.Scenes.FC[22] = new Scene({
   buttontext: [''],
   buttonaction: [() => {
     Game.Scenes.FC[201].begin();
-    Game.Message('Благодаря хорошим отношениям с Теслой, вы узнаете его все лучше.');
+    Game.message('Благодаря хорошим отношениям с Теслой, вы узнаете его все лучше.');
     Game.Stats.Golden_Cross.add(1);
     Game.Achievements.Golden_Cross.unlock();
   }],
@@ -13860,7 +13696,7 @@ Game.Scenes.FC[23] = new Scene({
   buttontext: [''],
   buttonaction: [() => {
     Game.Scenes.FC[24].begin();
-    Game.Message('Ваши знания крепчают.');
+    Game.message('Ваши знания крепчают.');
     if(Game.Stats.Study.get<=4){Game.Stats.Study.add(1); }}
     ],
 });
@@ -14002,7 +13838,7 @@ Game.Scenes.FC[37] = new Scene({
             `,
   background: "Persons/Robert",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FC[38].begin(); Game.Message('Роберт всегда вас поддержит'); Game.Stats.Robert.attitude+=1; }],
+  buttonaction: [() => { Game.Scenes.FC[38].begin(); Game.message('Роберт всегда вас поддержит'); Game.Stats.Robert.attitude+=1; }],
 });
 
 Game.Scenes.FC[38] = new Scene({
@@ -14083,9 +13919,9 @@ Game.Scenes.FC[45] = new Scene({
   background: "Persons/Robert",
   buttontext: ['Занимаешься опасным бизнесом', 'Выслеживаешь монстров', 'Работаешь в полиции'],
   buttonaction: [
-    () => { Game.Scenes.FC[46].begin(); Game.Message('Вы сделали неверное предположение');},
-    () => { Game.Scenes.FC[47].begin(); Game.Message('Ваше предположение оказалось верным'); Game.Stats.Robert.attitude+=1; Game.Achievements.Guessed.unlock();},
-    () => { Game.Scenes.FC[48].begin(); Game.Message('Вы сделали неверное предположение')},
+    () => { Game.Scenes.FC[46].begin(); Game.message('Вы сделали неверное предположение');},
+    () => { Game.Scenes.FC[47].begin(); Game.message('Ваше предположение оказалось верным'); Game.Stats.Robert.attitude+=1; Game.Achievements.Guessed.unlock();},
+    () => { Game.Scenes.FC[48].begin(); Game.message('Вы сделали неверное предположение')},
   ],
 });
 
@@ -14326,7 +14162,7 @@ Game.Scenes.FC[66] = new Scene({
   buttonaction: [
     () => {
     Game.Scenes.FC[67].begin();
-    Game.Message('Вы решили оставить нож себе');
+    Game.message('Вы решили оставить нож себе');
     Game.Stats.Knife.add(1);
     Game.Achievements.KeepWeapon.unlock();
     },
@@ -14693,7 +14529,7 @@ Game.Scenes.FC[96] = new Scene({
        `,
   background: "Persons/Nicola",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FC[97].begin(); Game.Stats.Nicola.add(1); Game.Message('Вы дорогой человек для Николы')}],
+  buttonaction: [() => { Game.Scenes.FC[97].begin(); Game.Stats.Nicola.add(1); Game.message('Вы дорогой человек для Николы')}],
 });
 
 Game.Scenes.FC[97] = new Scene({
@@ -14891,7 +14727,7 @@ Game.Scenes.FC[112] = new Scene({
        `,
   background: "Persons/Robert",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FC[113].begin(); Game.Stats.Robert.add(1); Game.Message('Роберт запомнит ваш танец')}],
+  buttonaction: [() => { Game.Scenes.FC[113].begin(); Game.Stats.Robert.add(1); Game.message('Роберт запомнит ваш танец')}],
 });
 
 Game.Scenes.FC[113] = new Scene({
@@ -14937,7 +14773,7 @@ Game.Scenes.FC[117] = new Scene({
        `,
   background: "Persons/Robert",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FC[118].begin(); Game.Stats.Robert.add(1); Game.Message('Роберт запомнит ваш танец')}],
+  buttonaction: [() => { Game.Scenes.FC[118].begin(); Game.Stats.Robert.add(1); Game.message('Роберт запомнит ваш танец')}],
 });
 
 Game.Scenes.FC[118] = new Scene({
@@ -15300,7 +15136,7 @@ Game.Scenes.FC[152] = new Scene({
        `,
   background: "Persons/Antagonist",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FC[153].begin(); Game.Message('Мужчина держит свое слово'); Game.Stats.Antagonist.add(1)}],
+  buttonaction: [() => { Game.Scenes.FC[153].begin(); Game.message('Мужчина держит свое слово'); Game.Stats.Antagonist.add(1)}],
 });
 
 Game.Scenes.FC[153] = new Scene({
@@ -15367,7 +15203,7 @@ Game.Scenes.FC[158] = new Scene({
        `,
   background: "Persons/Antagonist",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FC[159].begin(); Game.Message('Мужчина еще попытается добиться вас.')}],
+  buttonaction: [() => { Game.Scenes.FC[159].begin(); Game.message('Мужчина еще попытается добиться вас.')}],
 });
 
 Game.Scenes.FC[159] = new Scene({
@@ -15472,7 +15308,7 @@ Game.Scenes.FC[167] = new Scene({
        `,
   background: "Persons/Nicola",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FC[168].begin(); Game.Message('Ваши знания помогают Тесле избавиться от зависимости.'); Game.Stats.Nicola.add(1); Game.Stats.HelpTesla.add(1); }],
+  buttonaction: [() => { Game.Scenes.FC[168].begin(); Game.message('Ваши знания помогают Тесле избавиться от зависимости.'); Game.Stats.Nicola.add(1); Game.Stats.HelpTesla.add(1); }],
 });
 
 Game.Scenes.FC[168] = new Scene({
@@ -15503,7 +15339,7 @@ Game.Scenes.FC[169] = new Scene({
        `,
   background: "Persons/Nicola",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FC[170].begin(); Game.Message('Ваших знаний недостаточно, чтобы помочь Тесле избавиться от зависимости.')}],
+  buttonaction: [() => { Game.Scenes.FC[170].begin(); Game.message('Ваших знаний недостаточно, чтобы помочь Тесле избавиться от зависимости.')}],
 });
 
 Game.Scenes.FC[170] = new Scene({
@@ -15706,7 +15542,7 @@ Game.Scenes.FC[187] = new Scene({
   buttonaction: [() => {
     setTimeout(() => { Game.Scenes.FifthPart[0].begin(); }, 1000);
     Game.LoadScreen('FifthPart');
-    Game.Progress.Save("FifthPart");
+    Game.Progress.save("FifthPart");
   }],
 });
 Game.Scenes.FifthPart = [];
@@ -15819,7 +15655,7 @@ Game.Scenes.FifthPart[7] = new Scene({
             `,
   background: "Persons/Robert",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[8].begin(); Game.Message('Вы хотите быть ближе к Роберту и, возможно, даже открыться ему.'); Game.Stats.Robert.add(1);  }],
+  buttonaction: [() => { Game.Scenes.FifthPart[8].begin(); Game.message('Вы хотите быть ближе к Роберту и, возможно, даже открыться ему.'); Game.Stats.Robert.add(1);  }],
 });
 
 Game.Scenes.FifthPart[8] = new Scene({
@@ -15917,7 +15753,7 @@ Game.Scenes.FifthPart[16] = new Scene({
             `,
   background: "Persons/Thomas",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[17].begin(); Game.Message('Вы узнаете Теслу все лучше'); Game.Stats.Nicola.add(1);  }],
+  buttonaction: [() => { Game.Scenes.FifthPart[17].begin(); Game.message('Вы узнаете Теслу все лучше'); Game.Stats.Nicola.add(1);  }],
 });
 
 Game.Scenes.FifthPart[17] = new Scene({
@@ -15969,7 +15805,7 @@ Game.Scenes.FifthPart[21] = new Scene({
             `,
   background: "Persons/Antagonist",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[22].begin(); Game.Message('К чему приведет ваша заинтересованность Эдвардом?'); Game.Stats.Neitan.add(1);  }],
+  buttonaction: [() => { Game.Scenes.FifthPart[22].begin(); Game.message('К чему приведет ваша заинтересованность Эдвардом?'); Game.Stats.Neitan.add(1);  }],
 });
 
 Game.Scenes.FifthPart[22] = new Scene({
@@ -16180,7 +16016,7 @@ Game.Scenes.FifthPart[41] = new Scene({
             `,
   background: "Persons/Leon",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[42].begin(); Game.Message('Леон благодарен за спасение от нотаций Скарлетт'); Game.Stats.Leon.add(1);  }],
+  buttonaction: [() => { Game.Scenes.FifthPart[42].begin(); Game.message('Леон благодарен за спасение от нотаций Скарлетт'); Game.Stats.Leon.add(1);  }],
 });
 
 Game.Scenes.FifthPart[42] = new Scene({
@@ -16218,7 +16054,7 @@ Game.Scenes.FifthPart[45] = new Scene({
             `,
   background: "Persons/Scarlett",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[46].begin(); Game.Message('Скарлетт рада вашей поддержке'); Game.Stats.Scarlett.add(1);  }],
+  buttonaction: [() => { Game.Scenes.FifthPart[46].begin(); Game.message('Скарлетт рада вашей поддержке'); Game.Stats.Scarlett.add(1);  }],
 });
 
 Game.Scenes.FifthPart[46] = new Scene({
@@ -16411,7 +16247,7 @@ Game.Scenes.FifthPart[63] = new Scene({
   buttontext: [''],
   buttonaction: [() => {
     Game.Scenes.FifthPart[64].begin();
-    Game.Message('<a style="font-weight: 800; color: #76adff">Вы играете от лица Нэйтана');
+    Game.message('<a style="font-weight: 800; color: #76adff">Вы играете от лица Нэйтана');
     Game.Sounds.play('Music','Neitan');
   }],
 });
@@ -16506,7 +16342,7 @@ Game.Scenes.FifthPart[78] = new Scene({
             `,
   background: "Persons/Leon",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[79].begin(); Game.Message('Связь братьев крепчает'); Game.Stats.Brothers.attitude+=1;}],
+  buttonaction: [() => { Game.Scenes.FifthPart[79].begin(); Game.message('Связь братьев крепчает'); Game.Stats.Brothers.attitude+=1;}],
 });
 
 Game.Scenes.FifthPart[79] = new Scene({
@@ -16566,7 +16402,7 @@ Game.Scenes.FifthPart[84] = new Scene({
             `,
   background: "Backgrounds/Car",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[85].begin(); Game.Message('Братья сильнее отдаляются');}],
+  buttonaction: [() => { Game.Scenes.FifthPart[85].begin(); Game.message('Братья сильнее отдаляются');}],
 });
 
 Game.Scenes.FifthPart[85] = new Scene({
@@ -16584,7 +16420,7 @@ Game.Scenes.FifthPart[86] = new Scene({
             `,
   background: "Backgrounds/Car",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[87].begin(); Game.Message('<a style="font-weight: 800; color: #edc4ff">Вы снова играете от лица главной героини'); Game.Sounds.play('Music','FirstChapter');}],
+  buttonaction: [() => { Game.Scenes.FifthPart[87].begin(); Game.message('<a style="font-weight: 800; color: #edc4ff">Вы снова играете от лица главной героини'); Game.Sounds.play('Music','FirstChapter');}],
 });
 
 Game.Scenes.FifthPart[87] = new Scene({
@@ -16679,7 +16515,7 @@ Game.Scenes.FifthPart[95] = new Scene({
   buttontext: [''],
   buttonaction: [() => {
     Game.Scenes.FifthPart[96].begin();
-    Game.Message('Вы предотвратили ссору ваших родителей');
+    Game.message('Вы предотвратили ссору ваших родителей');
     Game.Stats.Family.add(1);
     Game.Achievements.Psy.unlock();
   }],
@@ -16856,7 +16692,7 @@ Game.Scenes.FifthPart[113] = new Scene({
             `,
   background: "Backgrounds/Room",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[114].begin(); Game.Message('Вы не предотвратили ссору ваших родителей'); Game.Stats.Family.add(-1);}],
+  buttonaction: [() => { Game.Scenes.FifthPart[114].begin(); Game.message('Вы не предотвратили ссору ваших родителей'); Game.Stats.Family.add(-1);}],
 });
 
 Game.Scenes.FifthPart[114] = new Scene({
@@ -16973,7 +16809,7 @@ Game.Scenes.FifthPart[124] = new Scene({
             `,
   background: "Persons/Stranger",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[125].begin(); Game.Message('Вы не можете принять сторону проводника'); Game.Stats.God.add(1);}],
+  buttonaction: [() => { Game.Scenes.FifthPart[125].begin(); Game.message('Вы не можете принять сторону проводника'); Game.Stats.God.add(1);}],
 });
 
 Game.Scenes.FifthPart[125] = new Scene({
@@ -16993,7 +16829,7 @@ Game.Scenes.FifthPart[126] = new Scene({
             `,
   background: "Persons/Stranger",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[127].begin(); Game.Message('Вы на стороне проводника'); Game.Stats.God.add(1);}],
+  buttonaction: [() => { Game.Scenes.FifthPart[127].begin(); Game.message('Вы на стороне проводника'); Game.Stats.God.add(1);}],
 });
 
 Game.Scenes.FifthPart[127] = new Scene({
@@ -17092,11 +16928,11 @@ Game.Scenes.FifthPart[135] = new Scene({
 
     if (Game.Stats.Study.get<=4){
       Game.Stats.Study.add(1);
-      Game.Message('Ваша успеваемость продолжает расти');
+      Game.message('Ваша успеваемость продолжает расти');
     }
 
     if (Game.Stats.Study.get>=5){
-      Game.Message('Вы укрепляете свою успеваемость');
+      Game.message('Вы укрепляете свою успеваемость');
     }
 
   }],
@@ -17117,7 +16953,7 @@ Game.Scenes.FifthPart[137] = new Scene({
             `,
   background: "Backgrounds/Room",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[138].begin(); Game.Message('Вы заработали денег (+150)'); Game.Stats.Money.add(150);}],
+  buttonaction: [() => { Game.Scenes.FifthPart[138].begin(); Game.message('Вы заработали денег (+150)'); Game.Stats.Money.add(150);}],
 });
 
 Game.Scenes.FifthPart[138] = new Scene({
@@ -17129,7 +16965,7 @@ Game.Scenes.FifthPart[138] = new Scene({
   buttonaction: [() => {
     Game.Scenes.FifthPart[139].begin();
     Game.Stats.Study.add(-1);
-    Game.Message('Вы пропустили учебу, поэтому ваша успеваемость снизилась');
+    Game.message('Вы пропустили учебу, поэтому ваша успеваемость снизилась');
   }],
 });
 
@@ -17251,7 +17087,7 @@ Game.Scenes.FifthPart[149] = new Scene({
     if(Game.Stats.GoStudy.get>=1){
       this.buttonaction[0] = () => {
         Game.Scenes.FifthPart[150].begin();
-        Game.Message('Нэйтан гордится вашим стремлением к знаниям');
+        Game.message('Нэйтан гордится вашим стремлением к знаниям');
         Game.Stats.Neitan.add(1);
       }
     }
@@ -17529,7 +17365,7 @@ Game.Scenes.FifthPart[175] = new Scene({
   buttontext: [''],
   buttonaction: [() => {
     Game.Scenes.FifthPart[176].begin();
-    Game.Message('Между вами и Нэйтаном зарождается новое чувство');
+    Game.message('Между вами и Нэйтаном зарождается новое чувство');
     Game.Stats.Neitan.add(2);
     Game.Achievements.LakeNeitan.unlock();
   }],
@@ -17862,7 +17698,7 @@ Game.Scenes.FifthPart[207] = new Scene({
             `,
   background: "Backgrounds/Leon_Bike",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[208].begin(); Game.Message('Вы разделяете интересы Леона'); Game.Stats.Leon.add(1)}],
+  buttonaction: [() => { Game.Scenes.FifthPart[208].begin(); Game.message('Вы разделяете интересы Леона'); Game.Stats.Leon.add(1)}],
 });
 
 Game.Scenes.FifthPart[208] = new Scene({
@@ -17883,7 +17719,7 @@ Game.Scenes.FifthPart[209] = new Scene({
             `,
   background: "Backgrounds/Leon_Bike",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[210].begin(); Game.Message('Вы не разделяете интерес Леона'); Game.Stats.Leon.add(-1) }],
+  buttonaction: [() => { Game.Scenes.FifthPart[210].begin(); Game.message('Вы не разделяете интерес Леона'); Game.Stats.Leon.add(-1) }],
 });
 
 Game.Scenes.FifthPart[210] = new Scene({
@@ -18337,7 +18173,7 @@ Game.Scenes.FifthPart[252] = new Scene({
   buttontext: [''],
   buttonaction: [() => {
     Game.Scenes.FifthPart[253].begin();
-    Game.Message('Вы и Леон стали значительно ближе к друг другу');
+    Game.message('Вы и Леон стали значительно ближе к друг другу');
     Game.Stats.Leon.add(2);
     Game.Achievements.LakeLeon.unlock();
   }],
@@ -18678,7 +18514,7 @@ Game.Scenes.FifthPart[284] = new Scene({
             `,
   background: "Backgrounds/Lake_Taxi",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[285].begin(); Game.Message('Благодаря хорошим отношениям с Леоном, парень вызвался сам оплатить вам такси')}],
+  buttonaction: [() => { Game.Scenes.FifthPart[285].begin(); Game.message('Благодаря хорошим отношениям с Леоном, парень вызвался сам оплатить вам такси')}],
 });
 
 Game.Scenes.FifthPart[285] = new Scene({
@@ -18697,7 +18533,7 @@ Game.Scenes.FifthPart[286] = new Scene({
             `,
   background: "",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[287].begin(); Game.Message('Вы потратили часть своих денег (200)'); Game.Stats.Money.add(-200)}],
+  buttonaction: [() => { Game.Scenes.FifthPart[287].begin(); Game.message('Вы потратили часть своих денег (200)'); Game.Stats.Money.add(-200)}],
 });
 
 Game.Scenes.FifthPart[287] = new Scene({
@@ -19260,7 +19096,7 @@ Game.Scenes.FifthPart[337] = new Scene({
   buttontext: [''],
   buttonaction: [() => {
     Game.Scenes.FifthPart[338].begin();
-    Game.Message('Вы и Скарлетт все ближе узнаете друг друга');
+    Game.message('Вы и Скарлетт все ближе узнаете друг друга');
     Game.Stats.Stats.Scarlett.add(2);
     Game.Achievements.LakeScarlett.unlock();
   }],
@@ -19357,7 +19193,7 @@ Game.Scenes.FifthPart[345] = new Scene({
             `,
   background: "Persons/Scarlett_New",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[346].begin(); Game.Message('Ваш выбор еды расстроил Скарлетт'); Game.Stats.Scarlett.add(-1); Game.Stats.Crisps.add(-1);}],
+  buttonaction: [() => { Game.Scenes.FifthPart[346].begin(); Game.message('Ваш выбор еды расстроил Скарлетт'); Game.Stats.Scarlett.add(-1); Game.Stats.Crisps.add(-1);}],
 });
 
 Game.Scenes.FifthPart[346] = new Scene({
@@ -19378,7 +19214,7 @@ Game.Scenes.FifthPart[347] = new Scene({
             `,
   background: "Persons/Scarlett_New",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[348].begin(); Game.Message('Ваш выбор еды обрадовал Скарлетт'); Game.Stats.Scarlett.add(1); Game.Stats.TurkeySandw.add(-1);}],
+  buttonaction: [() => { Game.Scenes.FifthPart[348].begin(); Game.message('Ваш выбор еды обрадовал Скарлетт'); Game.Stats.Scarlett.add(1); Game.Stats.TurkeySandw.add(-1);}],
 });
 
 Game.Scenes.FifthPart[348] = new Scene({
@@ -19400,7 +19236,7 @@ Game.Scenes.FifthPart[349] = new Scene({
             `,
   background: "Persons/Scarlett_New",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[350].begin(); Game.Message('Ваш выбор еды расстроил Скарлетт'); Game.Stats.Scarlett.add(-1); Game.Stats.SausageSandw.add(-1);}],
+  buttonaction: [() => { Game.Scenes.FifthPart[350].begin(); Game.message('Ваш выбор еды расстроил Скарлетт'); Game.Stats.Scarlett.add(-1); Game.Stats.SausageSandw.add(-1);}],
 });
 
 Game.Scenes.FifthPart[350] = new Scene({
@@ -19425,7 +19261,7 @@ Game.Scenes.FifthPart[351] = new Scene({
   buttontext: [''],
   buttonaction: [() => {
     Game.Scenes.FifthPart[352].begin();
-    Game.Message('Ваш выбор еды обрадовал Скарлетт');
+    Game.message('Ваш выбор еды обрадовал Скарлетт');
     Game.Stats.Scarlett.add(1); Game.Stats.FruitsYogurt.add(-1);}],
 });
 
@@ -19595,7 +19431,7 @@ Game.Scenes.FifthPart[366] = new Scene({
             `,
   background: "Persons/Scarlett_New",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[367].begin(); Game.Message('Вы получили новый предмет'); Game.Stats.Corkscrew.add(1);}],
+  buttonaction: [() => { Game.Scenes.FifthPart[367].begin(); Game.message('Вы получили новый предмет'); Game.Stats.Corkscrew.add(1);}],
 });
 
 Game.Scenes.FifthPart[367] = new Scene({
@@ -19738,7 +19574,7 @@ Game.Scenes.FifthPart[379] = new Scene({
             `,
   background: "Persons/Scarlett_New",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[380].begin(); Game.Message('Благодаря хорошим отношениям со Скарлетт, девушка сама вызвалась оплатить вам такси');}],
+  buttonaction: [() => { Game.Scenes.FifthPart[380].begin(); Game.message('Благодаря хорошим отношениям со Скарлетт, девушка сама вызвалась оплатить вам такси');}],
 });
 
 Game.Scenes.FifthPart[380] = new Scene({
@@ -19759,7 +19595,7 @@ Game.Scenes.FifthPart[381] = new Scene({
             `,
   background: "",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[382].begin(); Game.Message('Вы потратили часть своих денег (200)'); Game.Stats.Money.add(-200)}],
+  buttonaction: [() => { Game.Scenes.FifthPart[382].begin(); Game.message('Вы потратили часть своих денег (200)'); Game.Stats.Money.add(-200)}],
 });
 
 Game.Scenes.FifthPart[382] = new Scene({
@@ -20354,7 +20190,7 @@ Game.Scenes.FifthPart[434] = new Scene({
   buttonaction: [() => {
     Game.Scenes.FifthPart[435].begin();
     Game.Sounds.play('Music','Lake');
-    Game.Message('Ваши предыдущие действия подтолкнули Шерил стать более самостоятельной');
+    Game.message('Ваши предыдущие действия подтолкнули Шерил стать более самостоятельной');
     Game.Achievements.LakeCheryl.unlock();}],
 });
 
@@ -20396,7 +20232,7 @@ Game.Scenes.FifthPart[438] = new Scene({
             `,
   background: "Persons/Cheryl_New",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[439].begin(); Game.Message('Ваши предыдущие действия подтолкнули Шерил больше полагаться на вас, чем на себя ');}],
+  buttonaction: [() => { Game.Scenes.FifthPart[439].begin(); Game.message('Ваши предыдущие действия подтолкнули Шерил больше полагаться на вас, чем на себя ');}],
 });
 
 Game.Scenes.FifthPart[439] = new Scene({
@@ -20784,7 +20620,7 @@ Game.Scenes.FifthPart[474] = new Scene({
             `,
   background: "",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.FifthPart[475].begin(); Game.Message('Вы потратили часть своих денег (200)'); Game.Stats.Money.add(-200)}],
+  buttonaction: [() => { Game.Scenes.FifthPart[475].begin(); Game.message('Вы потратили часть своих денег (200)'); Game.Stats.Money.add(-200)}],
 });
 
 Game.Scenes.FifthPart[475] = new Scene({
@@ -21168,7 +21004,7 @@ Game.Scenes.FifthPart[509] = new Scene({
   buttonaction: [() => {
     setTimeout(() => { Game.Scenes.SixPart[0].begin(); }, 1000);
     Game.LoadScreen('SixPart');
-    Game.Progress.Save("SixPart");
+    Game.Progress.save("SixPart");
   }],
 });
 Game.Scenes.SixPart = [];
@@ -21185,7 +21021,7 @@ Game.Scenes.SixPart[0] = new Scene({
   buttonaction: [() => { Game.Scenes.SixPart[1].begin();  }],
   condition: () => {
     Game.Sounds.play('Music','Pompeii');
-    Game.Message('<i>Помпеи 79 г. н.э.');
+    Game.message('<i>Помпеи 79 г. н.э.');
   }
 });
 
@@ -21362,7 +21198,7 @@ Game.Scenes.SixPart[17] = new Scene({
             `,
   background: "Interface/Unknown",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.SixPart[18].begin(); Game.Message('Онерария - Римское торговое судно');}],
+  buttonaction: [() => { Game.Scenes.SixPart[18].begin(); Game.message('Онерария - Римское торговое судно');}],
 });
 
 Game.Scenes.SixPart[18] = new Scene({
@@ -21518,7 +21354,7 @@ Game.Scenes.Prologue[0] =
             К спасению или уничтожению - решать только тебе. Полагаю, у тебя много вопросов. Задавай.
         `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.Prologue[1].begin(); Game.Message('В левом верхнем углу под иконкой рюкзака нажмите на стрелочку, чтобы посмотреть текст предыдущего слайда.'); }],
+        buttonaction: [() => { Game.Scenes.Prologue[1].begin(); Game.message('В левом верхнем углу под иконкой рюкзака нажмите на стрелочку, чтобы посмотреть текст предыдущего слайда.'); }],
         background: 'Backgrounds/Abstraction',
         condition: () => { Game.Sounds.play('Music', 'Prologue'); }
 
@@ -21654,7 +21490,7 @@ Game.Scenes.Prologue[17] =
             <p>- Что это за место?
         `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.Prologue[5].begin(); Game.Message("Серафим - высший ангельский чин, наиболее приближенный к Богу."); }],
+        buttonaction: [() => { Game.Scenes.Prologue[5].begin(); Game.message("Серафим - высший ангельский чин, наиболее приближенный к Богу."); }],
         background: 'Persons/Stranger',
     });
 
@@ -21740,7 +21576,7 @@ Game.Scenes.Prologue[19] =
             - На этом мы закончим. Я понимаю, что тебя интересует многое. Но время не ждет. Готова ли ты вспомнить, что пережила?
         `,
         buttontext: [''],
-        buttonaction: [() => { Game.Scenes.Prologue[8].begin(); Game.Message('Сейчас вы сделаете свой первый выбор. Некоторые из них меняют сюжет незначительно, другие же ведут к серьезным переменам. Но помните, только Вам решать, какой вы видите свою главную героиню.'); }],
+        buttonaction: [() => { Game.Scenes.Prologue[8].begin(); Game.message('Сейчас вы сделаете свой первый выбор. Некоторые из них меняют сюжет незначительно, другие же ведут к серьезным переменам. Но помните, только Вам решать, какой вы видите свою главную героиню.'); }],
         background: 'Persons/Stranger',
     });
 
@@ -21756,8 +21592,8 @@ Game.Scenes.Prologue[8] =
             'Продолжала замерзать'
         ],
         buttonaction: [
-            () => { Game.Message("Проводнику приятно, что вы послушались его"); Game.Scenes.Prologue[11].begin(); Game.Stats.God.add(1); },
-            () => { Game.Message("Проводник другого и не ожидал…"); Game.Scenes.Prologue[9].begin(); Game.Stats.God.add(0); }
+            () => { Game.message("Проводнику приятно, что вы послушались его"); Game.Scenes.Prologue[11].begin(); Game.Stats.God.add(1); },
+            () => { Game.message("Проводник другого и не ожидал…"); Game.Scenes.Prologue[9].begin(); Game.Stats.God.add(0); }
         ],
         background: 'Persons/Stranger',
     });
@@ -21800,7 +21636,7 @@ Game.Scenes.Prologue[10] =
         buttonaction: [() => {
             setTimeout(() => { Game.Scenes.FirstChapter[0].begin(); }, 1000);
             Game.LoadScreen('FirstChapter');
-            Game.Progress.Save("FirstChapter");
+            Game.Progress.save("FirstChapter");
 
         }],
         background: 'Backgrounds/Door',
