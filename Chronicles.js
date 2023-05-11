@@ -670,13 +670,18 @@ class Favourites{
     this._personSelectedElement.classList.remove('favico_selected');
     this._personSelectedElement = element;
     this._personSelectedElement.classList.add('favico_selected');
-    Game.Interface.$('FavouriteAvatarContainer').classList.add('emptyavatar');
+    Game.Interface.$('FavouriteLevelText').classList.add('emptyavatar');
+    Game.Interface.$('FavouritesAvatar').classList.add('emptyavatar');
+    Game.Interface.$('FavouriteName').classList.add('emptyavatar');
     setTimeout(()=>{
       Game.Interface.$('FavouritesAvatar').src = element.src;
       Game.Interface.$('FavouriteName').innerText = Game.Stats[name]._name;
       this._setScore(name);
+      this._setLevelColor(name);
 
-      Game.Interface.$('FavouriteAvatarContainer').classList.remove('emptyavatar');
+      Game.Interface.$('FavouriteLevelText').classList.remove('emptyavatar');
+      Game.Interface.$('FavouritesAvatar').classList.remove('emptyavatar');
+      Game.Interface.$('FavouriteName').classList.remove('emptyavatar');
     },500);
     Game.Interface.$('FavouriteLevel').onclick = () =>{
       this._addScore(name);
@@ -686,10 +691,11 @@ class Favourites{
 
   _addScore(name){
     if(this._coins>=1) {
+      this._coins-=1;
       Game.Stats[name].score++;
       this._setScore(name);
       this._animateProgressBar();
-      this._coins-=1;
+      this._setLevelColor(name);
       this._setCoinsAmount();
       Game.Progress.saveFavourites();
     }
@@ -698,6 +704,33 @@ class Favourites{
       setTimeout(()=>{
         Game.Interface.$('FavouriteCoins').style.color='';
       },500);
+    }
+  }
+
+  _setLevelColor(name){
+    let level = this._countLevel(name);
+    if(level>=1) {
+      Game.Interface.$('FavouriteLevel').style.backgroundColor = '';
+      Game.Interface.$('FavouriteLevel').style.borderColor = '';
+    }
+    if(level>=2) {
+      Game.Interface.$('FavouriteLevel').style.backgroundColor = 'green';
+      Game.Interface.$('FavouriteLevel').style.borderColor = 'DarkOliveGreen';
+    }
+
+    if(level>=3) {
+      Game.Interface.$('FavouriteLevel').style.backgroundColor = 'Cyan';
+      Game.Interface.$('FavouriteLevel').style.borderColor = 'DarkBlue';
+    }
+
+    if(level>=4) {
+      Game.Interface.$('FavouriteLevel').style.backgroundColor = 'DarkOrchid';
+      Game.Interface.$('FavouriteLevel').style.borderColor = 'DarkMagenta';
+    }
+
+    if(level>=5) {
+      Game.Interface.$('FavouriteLevel').style.backgroundColor = 'Fuchsia';
+      Game.Interface.$('FavouriteLevel').style.borderColor = 'black';
     }
   }
 
@@ -711,7 +744,7 @@ class Favourites{
   _setScore(name){
     Game.Interface.$('FavouriteLevelText').innerText = this._countLevel(name);
 
-    Game.Interface.$('FavouriteLevelProgressBar').style.width =  this._currentProgress(name) + 20 + '%';
+    Game.Interface.$('FavouriteLevelProgressBar').style.width =  this._currentProgress(name) + 25 + '%';
   }
 
   _currentProgress(name){

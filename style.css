@@ -1441,9 +1441,11 @@ access{
   right: 10px;
   width: 80px;
   position: fixed;
-  border: red solid 1px;
   border: 1px solid rgba(170, 170, 170, 0.315);
   border-radius: 5px;
+  background: rgba(165, 0, 255, 0.09);
+  background: linear-gradient(90deg, rgba(165, 0, 255, 0.09) 0%, rgb(0 0 0 / 39%) 80%);
+  background: -webkit-linear-gradient(90deg, rgba(165, 0, 255, 0.09) 0%, rgb(0 0 0 / 39%) 80%);
   transition: color 0.5s ease-in-out;
 }
 
@@ -1475,17 +1477,20 @@ access{
   align-items: center;
   top: -1vh;
   left: 1vw;
-  border: solid orange 2px;
+  border: solid black 2px;
   border-radius: 50%;
   width: 50px;
   height: 50px;
-  background: yellow;
-  box-shadow: 0 0 10px yellow;
+  background: grey;
+  box-shadow: 0 0 10px white;
+  transition: all 0.5s ease-in-out;
+  z-index: 3;
 }
 
 #favleveltext{
   color: black;
   font-size: var(--bigtext);
+  transition: opacity 0.5s ease-in-out;
 }
 
 #favlevelprogress{
@@ -1493,22 +1498,24 @@ access{
   background: black;
   width: 90%;
   height: 25px;
-  border-radius: 10px;
+  border-radius: 50px;
   overflow: hidden;
 }
 
 #favlevelprogressbar{
   background-color: rgba(57, 255, 119, 0.4);
+  border-radius: 50px;
   width: 60%;
   height: 100%;
   transition: all 0.5s ease-in-out;
 }
 
 #favavatarimage{
-  border: 3px gray inset;
+  border: 1px solid rgba(170, 170, 170, 0.5);
   width: 90%;
   height: auto;
-  border-radius: 15px;
+  border-radius: 5px;
+  transition: opacity 0.5s ease-in-out;
 }
 
 #favavatarname{
@@ -1526,6 +1533,7 @@ access{
   background: rgba(165, 0, 255, 0.09);
   background: linear-gradient(90deg, rgba(165, 0, 255, 0.09) 0%, rgb(0 0 0 / 39%) 80%);
   background: -webkit-linear-gradient(90deg, rgba(165, 0, 255, 0.09) 0%, rgb(0 0 0 / 39%) 80%);
+  transition: opacity 0.5s ease-in-out;
 }
 
 #favtrofy{
@@ -1557,6 +1565,26 @@ access{
 
 .emptyavatar{
   opacity: 0;
+}
+
+.favcoinhelp{
+  position: absolute;
+  right: 95px;
+  top: 11px;
+  width: 267px;
+  visibility: hidden;
+  opacity: 0;
+  border-radius: 10px;
+  border: 1px solid rgba(170, 170, 170, 0.315);
+  background: rgba(165, 0, 255, 0.09);
+  background: linear-gradient(90deg, rgba(165, 0, 255, 0.09) 0%, rgb(0 0 0 / 39%) 80%);
+  background: -webkit-linear-gradient(90deg, rgba(165, 0, 255, 0.09) 0%, rgb(0 0 0 / 39%) 80%);
+  transition: all 0.5s ease-in-out;
+}
+
+#favcoins:active ~ .favcoinhelp{
+  opacity: 1;
+  visibility: visible;
 }
 me>img{
     position:initial;
