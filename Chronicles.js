@@ -676,8 +676,7 @@ class Favourites{
     setTimeout(()=>{
       Game.Interface.$('FavouritesAvatar').src = element.src;
       Game.Interface.$('FavouriteName').innerText = Game.Stats[name]._name;
-      this._setScore(name);
-      this._setLevelColor(name);
+      this._setLevel(name);
 
       Game.Interface.$('FavouriteLevelText').classList.remove('emptyavatar');
       Game.Interface.$('FavouritesAvatar').classList.remove('emptyavatar');
@@ -693,9 +692,8 @@ class Favourites{
     if(this._coins>=1) {
       this._coins-=1;
       Game.Stats[name].score++;
-      this._setScore(name);
+      this._setLevel(name);
       this._animateProgressBar();
-      this._setLevelColor(name);
       this._setCoinsAmount();
       Game.Progress.saveFavourites();
     }
@@ -741,10 +739,16 @@ class Favourites{
     },500)
   }
 
-  _setScore(name){
-    Game.Interface.$('FavouriteLevelText').innerText = this._countLevel(name);
+  _setScore(name,amount=0){
+    Game.Interface.$('FavouriteLevelProgressBar').style.width =  this._currentProgress(name) + amount + '%';
+  }
 
-    Game.Interface.$('FavouriteLevelProgressBar').style.width =  this._currentProgress(name) + 25 + '%';
+  _setLevel(name){
+    this._setLevelColor(name);
+    Game.Interface.$('FavouriteLevelText').innerText = this._countLevel(name);
+    if(this._currentProgress(name)>=80)this._setScore(name,20);
+    else this._setScore(name);
+
   }
 
   _currentProgress(name){
