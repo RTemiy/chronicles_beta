@@ -632,6 +632,7 @@ class Engine {
   }
 
 }
+/** Менеджер меню фаворитов*/
 class Favourites{
   constructor() {
     this._coins = 0;
@@ -640,6 +641,7 @@ class Favourites{
     this.lastGotCoins = {};
   }
 
+  /** Добавляем всех персонажей */
   addAllPersons(){
     for(let item in Game.Stats){
       if (Game.Stats[item] instanceof Person){
@@ -651,10 +653,12 @@ class Favourites{
     this._setCoinsAmount();
   }
 
+  /**  Рендерим кол-во монет */
   _setCoinsAmount(){
     Game.Interface.$('FavouriteCoins').innerText = '🪙 ' + this._coins;
   }
 
+  /** Добавляем персонажа*/
   _addPerson(picture,name){
     let objName = name;
     let el = document.createElement('img');
@@ -666,6 +670,7 @@ class Favourites{
     Game.Interface.$('FavouritesIcons').appendChild(el);
   }
 
+  /** Выбор персонажп*/
   _selectPerson(element, name){
     this._personSelectedElement.classList.remove('favico_selected');
     this._personSelectedElement = element;
@@ -688,12 +693,13 @@ class Favourites{
 
   }
 
+  /** Покупка прогрессии за монету*/
   _addScore(name){
     if(this._coins>=1) {
       this._coins-=1;
       Game.Stats[name].score++;
       this._setLevel(name);
-      this._animateProgressBar();
+      this._animate();
       this._setCoinsAmount();
       Game.Progress.saveFavourites();
     }
@@ -705,6 +711,7 @@ class Favourites{
     }
   }
 
+  /** Установить цвет при определенном уровне*/
   _setLevelColor(name){
     let level = this._countLevel(name);
     if(level>=1) {
@@ -732,6 +739,14 @@ class Favourites{
     }
   }
 
+  _animate(){
+    this._animateCoin();
+    setTimeout(()=>{
+      this._animateProgressBar();
+    },1500);
+  }
+
+  /** Анимация прокачки прогрессии*/
   _animateProgressBar(){
     Game.Interface.$('FavouriteLevelProgressBar').style.backgroundColor='yellow';
     setTimeout(()=>{
@@ -739,10 +754,19 @@ class Favourites{
     },500)
   }
 
-  _setScore(name,amount=0){
-    Game.Interface.$('FavouriteLevelProgressBar').style.width =  this._currentProgress(name) + amount + '%';
+  _animateCoin(){
+    Game.Interface.$('CoinCoin').classList.remove('getcoin');
+    setTimeout(()=>{Game.Interface.$('CoinCoin').classList.add('getcoin');},100)
   }
 
+  /** Установить прогрессию*/
+  _setScore(name,amount=0){
+    setTimeout(()=>{
+      Game.Interface.$('FavouriteLevelProgressBar').style.width =  this._currentProgress(name) + amount + '%';
+      },1500);
+  }
+
+  /** Установить уровень*/
   _setLevel(name){
     this._setLevelColor(name);
     Game.Interface.$('FavouriteLevelText').innerText = this._countLevel(name);
@@ -751,14 +775,17 @@ class Favourites{
 
   }
 
+  /** Получает процент прогрессии*/
   _currentProgress(name){
     return Game.Stats[name].score % (5 * this._countLevel(name)) / 0.05;
   }
 
+  /** Считает уровень*/
   _countLevel(name){
     return Math.floor(Game.Stats[name].score / 5);
   }
 
+  /** Проверка на получение монеты*/
   checkDates(){
     let today = new Date();
     let lastDate = new Date (this.lastGotCoins)
@@ -770,6 +797,7 @@ class Favourites{
     }
   }
 
+  /** Считает разницу дней*/
   _daysBetween(first, second) {
 
     // Copy date parts of the timestamps, discarding the time parts.
@@ -955,6 +983,7 @@ class Interface {
     });
 
     this.add('#favcoins', 'FavouriteCoins');
+    this.add('#coinanim', 'CoinCoin');
     this.add('#favavatar', 'FavouriteAvatarContainer');
     this.add('#favicons', 'FavouritesIcons');
     this.add('#favlevel', 'FavouriteLevel');
