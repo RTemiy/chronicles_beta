@@ -557,14 +557,7 @@ class Engine {
         }
       }
     }
-    for (var a = 0; a<imagesPrechached.length; a++){
-      for(var b = a+1; b<imagesPrechached.length; b++){
-        if(imagesPrechached[a]==imagesPrechached[b]){
-          imagesPrechached.splice(b,1);
-          b--;
-        }
-      }
-    }
+    imagesPrechached = [...new Set(imagesPrechached)];
 
     imagesPrechached.sort();
 
@@ -598,7 +591,7 @@ class Engine {
     }
   }
 
-  /** ЗАполняем форму и отправляем данные*/
+  /** Заполняем форму и отправляем данные*/
   sendData (a) {
     let today = new Date();
     let dd = String(today.getDate()).padStart(2, '0');
@@ -628,7 +621,7 @@ class Engine {
         allStrings += window.localStorage[key];
       }
     }
-    this.message(Math.floor(3 + ((allStrings.length*16)/(8*1024))) + 'кб спользовано')
+    console.log(Math.floor(3 + ((allStrings.length*16)/(8*1024))) + 'кб спользовано');
   }
 
 }
@@ -638,6 +631,7 @@ class Favourites{
     this._coins = 0;
     this._personSelectedElement = {};
     this._personSelectedName = '';
+    this._currentName = '';
     this.lastGotCoins = {};
   }
 
@@ -664,7 +658,7 @@ class Favourites{
     let el = document.createElement('img');
     el.src = `./pictures/${picture}.png`;
     el.classList.add('favico');
-    el.onclick = (el) =>{
+    el.onclick = el =>{
       this._selectPerson(el.target,objName);
     }
     Game.Interface.$('FavouritesIcons').appendChild(el);
@@ -672,6 +666,7 @@ class Favourites{
 
   /** Выбор персонажп*/
   _selectPerson(element, name){
+    this._currentName = name;
     this._personSelectedElement.classList.remove('favico_selected');
     this._personSelectedElement = element;
     this._personSelectedElement.classList.add('favico_selected');
@@ -681,24 +676,23 @@ class Favourites{
     setTimeout(()=>{
       Game.Interface.$('FavouritesAvatar').src = element.src;
       Game.Interface.$('FavouriteName').innerText = Game.Stats[name]._name;
-      this._setLevel(name);
+      this._setLevel();
 
       Game.Interface.$('FavouriteLevelText').classList.remove('emptyavatar');
       Game.Interface.$('FavouritesAvatar').classList.remove('emptyavatar');
       Game.Interface.$('FavouriteName').classList.remove('emptyavatar');
     },500);
     Game.Interface.$('FavouriteLevel').onclick = () =>{
-      this._addScore(name);
+      this._addScore();
     }
-
   }
 
   /** Покупка прогрессии за монету*/
-  _addScore(name){
+  _addScore(){
     if(this._coins>=1) {
       this._coins-=1;
-      Game.Stats[name].score++;
-      this._setLevel(name);
+      Game.Stats[this._currentName].score++;
+      this._setLevel();
       this._animate();
       this._setCoinsAmount();
       Game.Progress.saveFavourites();
@@ -712,8 +706,8 @@ class Favourites{
   }
 
   /** Установить цвет при определенном уровне*/
-  _setLevelColor(name){
-    let level = this._countLevel(name);
+  _setLevelColor(){
+    let level = this._countLevel(this._currentName);
     if(level>=1) {
       Game.Interface.$('FavouriteLevel').style.backgroundColor = '';
       Game.Interface.$('FavouriteLevel').style.borderColor = '';
@@ -742,47 +736,49 @@ class Favourites{
   _animate(){
     this._animateCoin();
     setTimeout(()=>{
-      this._animateProgressBar();
+      this._animateProgressBarColor();
     },1500);
   }
 
   /** Анимация прокачки прогрессии*/
-  _animateProgressBar(){
+  _animateProgressBarColor(){
     Game.Interface.$('FavouriteLevelProgressBar').style.backgroundColor='yellow';
     setTimeout(()=>{
       Game.Interface.$('FavouriteLevelProgressBar').style.backgroundColor='';
-    },500)
+    },500);
   }
 
   _animateCoin(){
-    Game.Interface.$('CoinCoin').classList.remove('getcoin');
-    setTimeout(()=>{Game.Interface.$('CoinCoin').classList.add('getcoin');},100)
+    let c = document.createElement('div');
+    c.id = 'coinanim';
+    c.innerText = '🪙';
+    c.classList.add('getcoin');
+    Game.Interface.$('FavouritesField').prepend(c);
+    setTimeout(()=> {c.remove()},2000);
   }
 
   /** Установить прогрессию*/
-  _setScore(name,amount=0){
-    setTimeout(()=>{
-      Game.Interface.$('FavouriteLevelProgressBar').style.width =  this._currentProgress(name) + amount + '%';
-      },1500);
+  _setProgressBarScore(amount=0){
+      Game.Interface.$('FavouriteLevelProgressBar').style.width =  this._currentProgress() + amount + '%';
   }
 
   /** Установить уровень*/
-  _setLevel(name){
-    this._setLevelColor(name);
-    Game.Interface.$('FavouriteLevelText').innerText = this._countLevel(name);
-    if(this._currentProgress(name)>=80)this._setScore(name,20);
-    else this._setScore(name);
+  _setLevel(){
+    this._setLevelColor();
+    Game.Interface.$('FavouriteLevelText').innerText = this._countLevel();
+    if(this._currentProgress()>=80)this._setProgressBarScore(20);
+    else this._setProgressBarScore();
 
   }
 
   /** Получает процент прогрессии*/
-  _currentProgress(name){
-    return Game.Stats[name].score % (5 * this._countLevel(name)) / 0.05;
+  _currentProgress(){
+    return Game.Stats[this._currentName].score % (5 * this._countLevel()) / 0.05;
   }
 
   /** Считает уровень*/
-  _countLevel(name){
-    return Math.floor(Game.Stats[name].score / 5);
+  _countLevel(){
+    return Math.floor(Game.Stats[this._currentName].score / 5);
   }
 
   /** Проверка на получение монеты*/
@@ -800,16 +796,16 @@ class Favourites{
   /** Считает разницу дней*/
   _daysBetween(first, second) {
 
-    // Copy date parts of the timestamps, discarding the time parts.
+    //  Части дн=-ей без минут и секунд
     let one = new Date(first.getFullYear(), first.getMonth(), first.getDate());
     let two = new Date(second.getFullYear(), second.getMonth(), second.getDate());
 
-    // Do the math.
+    // Считаем милисекунды
     let millisecondsPerDay = 1000 * 60 * 60 * 24;
     let millisBetween = two.getTime() - one.getTime();
     let days = millisBetween / millisecondsPerDay;
 
-    // Round down.
+    // Округляем
     return Math.round(days);
   }
 }
@@ -983,7 +979,6 @@ class Interface {
     });
 
     this.add('#favcoins', 'FavouriteCoins');
-    this.add('#coinanim', 'CoinCoin');
     this.add('#favavatar', 'FavouriteAvatarContainer');
     this.add('#favicons', 'FavouritesIcons');
     this.add('#favlevel', 'FavouriteLevel');
@@ -1842,13 +1837,67 @@ const ROOTPATH = '';
 const Game = new Engine();
 
 /** Все картинки которые использовались во всех слайдах */
-const imagesPrechached = [];
+let imagesPrechached = [];
 
 /** События по загрузки страницы */
 window.onload = function () {
   Game.launch();
 }
 
+
+// Achievs reveal effect
+function revealAchievs() {
+  const reveals = document.querySelectorAll(".reveal");
+  for (let i = 0; i < reveals.length; i++) {
+    let windowHeight = window.innerHeight;
+    let elementTop = reveals[i].getBoundingClientRect().top;
+    let elementBottom = reveals[i].getBoundingClientRect().bottom;
+    let elementVisible = 60;
+    if (elementTop > windowHeight - elementVisible || elementBottom < elementVisible) {
+      reveals[i].classList.remove("active");
+    } else {
+      reveals[i].classList.add("active");
+    }
+  }
+}
+document.querySelector('#achievs').addEventListener("scroll", revealAchievs);
+
+
+// Load Upload Saves
+function getProgress(){
+  return JSON.stringify(localStorage);
+}
+
+function downloadProgress() {
+  let a = document.createElement("a");
+  let file = new Blob([getProgress()], {type: 'application/json'});
+  a.href = URL.createObjectURL(file);
+  a.download = 'Chronicles_Progress';
+  a.click();
+}
+
+function uploadProgress() {
+  const c = document.createElement('div');
+  c.style.position = 'absolute';
+  const i = document.createElement('input');
+  i.type = 'file';
+  const readFile = () =>{
+    const reader = new FileReader();
+    reader.readAsText(i.files[0]);
+    reader.onload = () =>{
+      const SV = JSON.parse(reader.result);
+      for (let prop in SV){
+        localStorage.setItem(prop, SV[prop]);
+      }
+      location.reload()
+    }
+  }
+  i.addEventListener('change',()=>{
+    readFile();
+  });
+  document.body.appendChild(c);
+  c.appendChild(i);
+}
 
 //Отправка данных из формы
 const scriptURL = 'https://script.google.com/macros/s/AKfycbwkdBBtRSVcRisbB7pJubWxpx0GKRrag7R2oT4ecScLpCAmGJVXkrwBlEZEeX74pwVlNg/exec';
@@ -1893,55 +1942,6 @@ document.addEventListener(visibilityChange, handleVisibilityChange, false);
 function handleVisibilityChange() {
   if(!alreadyturnedoff){Game.Sounds.pauseAll();alreadyturnedoff = true;}
   else {Game.Sounds.resumeAll();alreadyturnedoff = false;}
-}
-function revealAchievs() {
-  const reveals = document.querySelectorAll(".reveal");
-  for (let i = 0; i < reveals.length; i++) {
-    let windowHeight = window.innerHeight;
-    let elementTop = reveals[i].getBoundingClientRect().top;
-    let elementBottom = reveals[i].getBoundingClientRect().bottom;
-    let elementVisible = 60;
-    if (elementTop > windowHeight - elementVisible || elementBottom < elementVisible) {
-      reveals[i].classList.remove("active");
-    } else {
-      reveals[i].classList.add("active");
-    }
-  }
-}
-document.querySelector('#achievs').addEventListener("scroll", revealAchievs);
-function getProgress(){
-  return JSON.stringify(localStorage);
-}
-
-function downloadProgress() {
-  let a = document.createElement("a");
-  let file = new Blob([getProgress()], {type: 'application/json'});
-  a.href = URL.createObjectURL(file);
-  a.download = 'Chronicles_Progress';
-  a.click();
-}
-
-function uploadProgress() {
-  const c = document.createElement('div');
-  c.style.position = 'absolute';
-  const i = document.createElement('input');
-  i.type = 'file';
-  const readFile = () =>{
-    const reader = new FileReader();
-    reader.readAsText(i.files[0]);
-    reader.onload = () =>{
-      const SV = JSON.parse(reader.result);
-      for (let prop in SV){
-        localStorage.setItem(prop, SV[prop]);
-      }
-      location.reload()
-    }
-  }
-  i.addEventListener('change',()=>{
-    readFile();
-  });
-  document.body.appendChild(c);
-  c.appendChild(i);
 }
 Game.Scenes.Features = [];
 
@@ -21204,7 +21204,7 @@ Game.Scenes.SixPart[11] = new Scene({
 
 Game.Scenes.SixPart[12] = new Scene({
   text: `
-    Гай аккуратно положил девушку на скамью. Ее бледное лицо озарило несколько солнечных лучей, а глаза невольно зашевелились от яркого света. 
+    Гай аккуратно положил девушку на скамью. Ее бледное лицо озарило несколько солнечных лучей, а глаза невольно зашевелились от яркого света.
     <p>- Вот так вот. Ты не должна засыпать, - мужчина отошел от девушки и громко крикнул. - Матушка! 
             `,
   background: "Persons/Goddess",
@@ -21408,7 +21408,267 @@ Game.Scenes.SixPart[30] = new Scene({
             `,
   background: "Interface/Unknown",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.SixPart[31].begin();  }],
+  buttonaction: [() => {
+    Game.Scenes.SixPart[31].begin();
+    Game.message('<i>1899 год, окраины Колорадо-Спрингс');
+    Game.Sounds.play('Music','WildWest01');
+  }],
+});
+
+Game.Scenes.SixPart[31] = new Scene({
+  text: `
+    Треск горящих дров вперемешку с громкими голосами - заставили меня постепенно пробудиться. 
+    <p>Приоткрыв глаза, я увидела костер и кромешную темноту вокруг. Было холодно, складывалось ощущение, что мое тело лежит на земле, а совсем замерзнуть мне не позволяет тепло, исходящее от яркого пламени. 
+            `,
+  background: "Interface/Unknown",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[32].begin();  }],
+});
+
+Game.Scenes.SixPart[32] = new Scene({
+  text: `
+    “Без сомнения я уже оказалась в теле Катарины. Но где я? Неужели еще одна нежелательная встреча с Александром?”
+    <p>Я услышала, как незнакомый хриплый мужской голос стал говорить:
+    <p>- Господа, так как наша дама благополучно уснула, предлагаю опрокинуть по стаканчику чего-нибудь крепкого. 
+            `,
+  background: "Interface/Unknown",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[33].begin();  }],
+});
+
+Game.Scenes.SixPart[33] = new Scene({
+  text: `
+    - Куртис, мы приехали сюда не ради отдыха. У нас важная миссия. 
+    <p>- Никола, когда ты уже прекратишь быть таким занудой? Вон, Роберт уже взял все в свои руки и наливает. Правильно делает. 
+    <p>- Право, вы сведете меня с ума. Как хорошо, что Катарина не видит этого кошмара. 
+            `,
+  background: "Interface/Unknown",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[34].begin();  }],
+});
+
+Game.Scenes.SixPart[34] = new Scene({
+  text: `
+    Я хотела встать. Хотела подать знак, что слышу их, что могу присоединиться к беседе. Но тело казалось невероятно тяжелым. По неведомым причинам я не могла пошевелить и пальцем, а мысли было сложно собрать в хоть какое-то подобие порядка. 
+    <p>“Как будто бы каждое новое перемещение дается труднее предыдущего.” 
+            `,
+  background: "Interface/Unknown",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[35].begin();  }],
+});
+
+Game.Scenes.SixPart[35] = new Scene({
+  text: `
+    И все же я нашла в себе силы слушать дальнейшие разговоры. 
+    <p>- Давайте же выпьем за удачную экспедицию, - голос Роберта звучал искренне и задорно. 
+    <p>Мужчины дружно крикнули: “Ура!” - и звонко чокнулись. 
+            `,
+  background: "Interface/Unknown",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[36].begin();  }],
+});
+
+Game.Scenes.SixPart[36] = new Scene({
+  text: `
+    - Кхм, - недовольный тон Николы было сложно с кем-то перепутать. - Я предлагаю разойтись спать, так как завтра нам надо рано вставать. Мы почти добрались до пункта назначения. 
+    <p>- Знаете, - Куртис говорил шепотом, добавляя голосу нотки загадочности. -  А давайте я вам поведаю о местной легенде индейцев. Атмосфера слишком к этому располагает. 
+            `,
+  background: "Interface/Unknown",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[37].begin();  }],
+});
+
+Game.Scenes.SixPart[37] = new Scene({
+  text: `
+    - Ты серьезно? - Роберт обреченно вздохнул. - Как по мне, это все бредни, которыми пугают белых. Друзья, давайте не будем омрачать наш вечер и…
+    <p>- Погоди, - Тесла заинтересовался предложением. - Откуда ты узнал об этой легенде? 
+    <p>- Вы не поверите, если я вам скажу, что от самого представителя племени.
+            `,
+  background: "Interface/Unknown",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[38].begin();  }],
+});
+
+Game.Scenes.SixPart[38] = new Scene({
+  text: `
+    - О чем я и говорю, - Роберт звонко поставил что-то на твердую поверхность. - Наплели тебе с три короба, а ты и рад верить, Куртис. 
+    <p>- Нет-нет, - Никола перебил Роберта. - Расскажи, пожалуйста. А вдруг это связано с тем, что мы ищем? 
+    <p>- Может быть и связано, но мы приехали сюда не сказки слушать, - Роберт подлил в пустые стаканы спиртного и отпил, задумчиво подняв голову к звездам. - Но вы правы, возможно, атмосфера и правда располагает к небылицам.
+            `,
+  background: "Interface/Unknown",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[39].begin();  }],
+});
+
+Game.Scenes.SixPart[39] = new Scene({
+  text: `
+    - Господа, предлагаю послушать историю, а уж после - рассуждать. Даже если это и бред, то история все равно заслуживает право на существование. 
+    <p>Куртис выдержал драматическую паузу, видимо дожидаясь, пока его собеседники успокоятся, а затем начал свой рассказ. 
+            `,
+  background: "Interface/Unknown",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[40].begin();  }],
+});
+
+Game.Scenes.SixPart[40] = new Scene({
+  text: `
+    - В начале сотворения мира, Серый Орел был хранителем солнца, луны, звезд, пресной воды и огня. Мудрый Орел был посланником небес. Так случилось, что он не жаловал людей за их нечистые помыслы, поэтому прятал от них заветные блага, поместив их в каменный диск.
+    <p>– В те далекие времена люди выживали без воды и огня, пока величественная птица бережно хранила свой артефакт скрытым от любопытных глаз. 
+            `,
+  background: "Interface/Unknown",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[41].begin();  }],
+});
+
+Game.Scenes.SixPart[41] = new Scene({
+  text: `
+    - У Серого Орла была прекрасная дочь, которую он оберегал и хранил так же внимательно, как драгоценный артефакт.  Однажды появился в деревне незнакомец, который случайно увидел дочь Орла и влюбился без памяти. 
+
+            `,
+  background: "Interface/Unknown",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[42].begin();  }],
+});
+
+Game.Scenes.SixPart[42] = new Scene({
+  text: `
+    - Но не мог путник просить любви этой красавицы, потому что несмотря на его красоту, он вызывал особенную неприязнь у окружающих из-за своих черных, как смоль, перьев. И решил он превратить себя в снежно-белую птицу, чтобы понравиться дочери Орла.  
+
+            `,
+  background: "Interface/Unknown",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[43].begin();  }],
+});
+
+Game.Scenes.SixPart[43] = new Scene({
+  text: `
+    - Пришел он как-то к местному шаману и говорит: «А сделай мои перья белоснежными, как чистый снег». Отвечает ему колдун: «Ты рожден вороном им и останешься. Нет такой силы, которая поменяла бы твою суть». Ворон не сдавался: «Я небесам молился, только на тебя надежда осталась, помоги мне».
+
+            `,
+  background: "Interface/Unknown",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[44].begin();  }],
+});
+
+Game.Scenes.SixPart[44] = new Scene({
+  text: `
+    - Шаман долго думал, три дня и три ночи, совета спрашивал у богов и вот на четвертый день приходит к ворону и говорит: «Будь по твоему, птица. Но помни, истинный твой лик обратно вернётся, коли воспротивишься воле богов!»
+
+            `,
+  background: "Interface/Unknown",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[45].begin();  }],
+});
+
+Game.Scenes.SixPart[45] = new Scene({
+  text: `
+    - И сдержал слово колдун, на следующий день проснулся ворон белоснежным, как чистый снег.
+            `,
+  background: "Interface/Unknown",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[46].begin();  }],
+});
+
+Game.Scenes.SixPart[46] = new Scene({
+  text: `
+    - Увидев новый облик путника, дочь Орла обратила на него свой взор. Встречались они тайком, чтобы не вызвать гнев Серого Орла. Но однажды его дочь осмелилась пригласить своего возлюбленного в их дом, чтобы просить у отца благословения.
+            `,
+  background: "Interface/Unknown",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[47].begin();  }],
+});
+
+Game.Scenes.SixPart[47] = new Scene({
+  text: `
+    - И когда ворон увидел загадочный каменный диск с надписями на нем, то в миг понял, что должен сделать. Артефакт манил птицу и улучив момент, когда его оставили без внимания, он выкрал ценность и поспешил покинуть обитель Серого Орла.  
+            `,
+  background: "Interface/Unknown",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[48].begin();  }],
+});
+
+Game.Scenes.SixPart[48] = new Scene({
+  text: `
+    - Полетел ворон с диском в самую чащу леса и вдруг услышал голос: «Зачем ты потревожил божественную силу?» Ворон растерялся, но поняв, что голос исходит изнутри артефакта, ответил: «Люди голодают и умирают, неужели боги так разгневаны, что не могут поделиться своими дарами с нуждающимися?» 
+            `,
+  background: "Interface/Unknown",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[49].begin();  }],
+});
+
+Game.Scenes.SixPart[49] = new Scene({
+  text: `
+     - Голос внутри стал яростнее: «Как ты смеешь оценивать Богов, мальчишка!»
+     <p>И вдруг диск зашипел, затрещал и из сердцевины начало исходить свечение. Ворон испугался и выронил диск.
+            `,
+  background: "Interface/Unknown",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[50].begin();  }],
+});
+
+Game.Scenes.SixPart[50] = new Scene({
+  text: `
+     - Разбился он на четыре части. Освободив заветные блага, ворон решил отдать их людям. Солнце, луну и звезды он поместил на небо. Воду расплескал на землю, даруя шанс зародиться новой жизни. 
+            `,
+  background: "Interface/Unknown",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[51].begin();  }],
+});
+
+Game.Scenes.SixPart[51] = new Scene({
+  text: `
+     - Огонь пугал людей и ворон никак не мог найти ему место. Так долго держал он в клюве горящий уголек, что дым пропитал его перья, окрасив их в черный цвет. Увидев, что вернулся его прежний облик и не осталось следа от белоснежных крыльев, он выпустил горящее несчастье.
+            `,
+  background: "Interface/Unknown",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[52].begin();  }],
+});
+
+Game.Scenes.SixPart[52] = new Scene({
+  text: `
+     - Ударилась головешка о камни и полетели искры. Перестали люди боятся этого блага и с тех самых пор, если стукнуть камень о камень, то появится огонь, что не раз потом согреет человека.
+            `,
+  background: "Interface/Unknown",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[53].begin();  }],
+});
+
+Game.Scenes.SixPart[53] = new Scene({
+  text: `
+     - Обретя свой прежний вид, ему ничего не оставалось, кроме как принять судьбу и завершить дело до конца. Куски некогда цельного каменного диска, он разбросал по всему миру. 
+            `,
+  background: "Interface/Unknown",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[54].begin();  }],
+});
+
+Game.Scenes.SixPart[54] = new Scene({
+  text: `
+     - Последняя его воля звучала так: «Не должна божественная сила одному принадлежать».
+            `,
+  background: "Interface/Unknown",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[55].begin();  }],
+});
+
+Game.Scenes.SixPart[55] = new Scene({
+  text: `
+     Мне казалось, что я перестала дышать, пока слушала эту историю.
+     <p>“Как только люди смогли все так связать? Интересно, какое историческое событие легло в основу этой легенды? И существовал ли когда-то такой артефакт?”
+            `,
+  background: "Interface/Unknown",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[56].begin();  }],
+});
+
+Game.Scenes.SixPart[56] = new Scene({
+  text: `
+     Но с другой стороны, это может быть просто байкой, как верно заметил Роберт. Не стоит придумывать себе вымышленных связей с реальностью. 
+     <p>Даже не знаю, что и думать…
+            `,
+  background: "Interface/Unknown",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[57].begin();  }],
 });
 Game.Scenes.Prologue = [];
 
