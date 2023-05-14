@@ -65,6 +65,7 @@ class Achievement {
     hide(){
         this._a.style.display = 'none';
     }
+
 }
 
 /** Класс "отношений" (переменных) на которые могут повлият игроки */
@@ -80,7 +81,8 @@ class Stat {
      * @param {string|undefined} info.picture Картинка
      * @param {boolean|undefined} info.show Показать изначально в нивентаре?
      * @param {string} info.story История к которой привязан стат
-     * @param {function | undefined} info.tapAction Событие при использовании предмета
+     * @param {function=} info.isUnlocked История к которой привязан стат
+     * @param {function=} info.tapAction Событие при использовании предмета
      */
     constructor(info) {
         this._name = info.name || '';
@@ -93,6 +95,8 @@ class Stat {
         this._tapped = false;
         this._tapAction = info.tapAction || undefined;
         this.score = 5;
+        this.isUnlocked = info.isUnlocked || function () {return false};
+        this.trophies = [];
         this._createTable();
     }
 
@@ -576,7 +580,6 @@ class Engine {
     Game.Progress.loadFavourites();
     Game.Favourites.checkDates();
     Game.Progress.saveFavourites();
-    Game.Favourites.addAllPersons();
   }
 
   /** Присвоение номера сцене в зависимости от индекса массива*/
@@ -637,14 +640,23 @@ class Favourites{
 
   /** Добавляем всех персонажей */
   addAllPersons(){
+    Game.Interface.$('FavouritesIcons').textContent = '';
     for(let item in Game.Stats){
-      if (Game.Stats[item] instanceof Person){
+      if (Game.Stats[item] instanceof Person && Game.Stats[item].isUnlocked() === true){
         this._addPerson(Game.Stats[item]._picture, item);
       }
     }
     this._personSelectedElement = Game.Interface.$('FavouritesIcons').firstChild;
-    Game.Interface.$('FavouritesIcons').firstChild.click();
-    this._setCoinsAmount();
+    if(Game.Interface.$('FavouritesIcons').firstChild === null) {
+      Game.Interface.$('MenuFavouritesButton').style.color = 'red';
+      setTimeout(()=>{Game.Interface.closeopen('FavouritesField','MenuField');},100);
+    }
+    else {
+      Game.Interface.$('MenuFavouritesButton').style.color = '';
+      Game.Interface.$('FavouritesIcons').firstChild.click();
+      this._setCoinsAmount();
+    }
+
   }
 
   /**  Рендерим кол-во монет */
@@ -971,6 +983,7 @@ class Interface {
     this.add('#favours', 'FavouritesField');
 
     this.add('#favouritesb', 'MenuFavouritesButton', () => {
+      Game.Favourites.addAllPersons();
       this.closeopen('MenuField','FavouritesField');
     });
 
@@ -2606,6 +2619,9 @@ Game.Stats.Aurora = new Person({
     title: 'В моей жизни происходит много значимых перемен.',
     text: 'Интересно, какие еще сюрпризы преподнесет судьба?',
     story: 'Aurora',
+    isUnlocked: function () {
+        return Game.Achievements.A_Part01Completed.unlocked >= 1;
+    }
 });
 
 Game.Stats.Father = new Person({
@@ -7186,6 +7202,7 @@ Game.Achievements.Golden_Cross = new Achievement ({
     title: 'Наследие',
     text: 'Получить подарок от Николы',
     story: 'Immortals',
+
 });
 
 Game.Achievements.Guessed = new Achievement ({
@@ -7308,6 +7325,9 @@ Game.Stats.Cheryl = new Person({
     title: 'Шерил все реже улыбается… Ее жизни что-то угрожает? ',
     text: 'Девушка живет в соседнем доме. Мы с ней довольно близко общаемся, часто проводим время вместе. Она мне как сестра.',
     story: 'Immortals',
+    isUnlocked: function () {
+        return Game.Achievements.LakeCheryl.unlocked >= 1;
+    }
 });
 
 Game.Stats.Scarlett = new Person({
@@ -7316,6 +7336,9 @@ Game.Stats.Scarlett = new Person({
     title: 'Кажется, что в последнее время Скар сама не своя. Могу ли я ей помочь?',
     text: 'Моя подруга, с которой мы учимся в одном университете. Она умная и довольно активная. Никогда не упустит возможности читать мне нотации.',
     story: 'Immortals',
+    isUnlocked: function () {
+        return Game.Achievements.LakeScarlett.unlocked >= 1;
+    }
 });
 
 Game.Stats.Neitan = new Person({
@@ -7324,6 +7347,9 @@ Game.Stats.Neitan = new Person({
     title: 'Он знаток своего дела и любитель повторять про “важность” учебы.',
     text: 'Профессор, который уже несколько лет преподает историю в нашем университете. Его харизма и обаяние прекрасно сочетаются с его острым умом.',
     story: 'Immortals',
+    isUnlocked: function () {
+        return Game.Achievements.LakeNeitan.unlocked >= 1;
+    }
 });
 
 Game.Stats.Nicola = new Person({
@@ -7332,6 +7358,9 @@ Game.Stats.Nicola = new Person({
     title: 'Это он? Великий ученый? Я не схожу с ума?',
     text: ` Инженер и учёный-физик, изобретатель в области электротехники и радиотехники. “Я не тружусь более для настоящего, я тружусь для будущего.”`,
     story: 'Immortals',
+    isUnlocked: function () {
+        return Game.Achievements.Golden_Cross.unlocked >= 1;
+    }
 
 });
 
@@ -7341,6 +7370,9 @@ Game.Stats.Leon = new Person({
     title: 'Мы снова общаемся с ним, как в старые добрые времена…',
     text: 'Мой хороший друг, одногрупник, брат профессора Нэйтана. Леон всегда был очень заботлив и внимателен к окружающим. У него большие планы на жизнь, которые он хочет воплотить в ближайшее время.',
     story: 'Immortals',
+    isUnlocked: function () {
+        return Game.Achievements.LakeLeon.unlocked >= 1;
+    }
 });
 
 Game.Stats.Antagonist = new Person({
@@ -7349,6 +7381,9 @@ Game.Stats.Antagonist = new Person({
     title: 'Странный мужчина, который одержим Катариной.',
     text: 'Я ничего о нем не знаю. Он определенно внушает страх, но я не могу избавиться от чувства заинтересованности. Мне хочется докопаться до его мотивов. Что я найду в общении с ним? Ответы или только боль?',
     story: 'Immortals',
+    isUnlocked: function () {
+        return Game.Achievements.LoveEvil.unlocked >= 1;
+    }
 });
 
 Game.Stats.Robert = new Person({
