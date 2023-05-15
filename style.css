@@ -1499,6 +1499,7 @@ access{
   margin: auto;
   padding: 20px 0;
   display: flex;
+  justify-content: center;
   flex-direction: row;
   height: 70px;
   overflow: hidden;
@@ -1509,6 +1510,7 @@ access{
   margin: auto;
   position: relative;
   margin-top: 10px;
+  max-width: 400px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1536,7 +1538,7 @@ access{
 #favleveltext{
   color: black;
   font-size: var(--bigtext);
-  transition: opacity 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
 }
 
 #favlevelprogress{
@@ -1559,11 +1561,15 @@ access{
 }
 
 #favavatarimage{
-  border: 1px solid rgba(170, 170, 170, 0.5);
-  width: 80%;
-  height: auto;
-  border-radius: 5px;
+  width: 100%;
   transition: opacity 0.5s ease-in-out;
+}
+
+.favavatarimabeborder{
+  height: auto;
+  width: 80%;
+  border: 1px solid rgba(170, 170, 170, 0.5);
+  border-radius: 5px;
 }
 
 #favavatarname{
@@ -1581,13 +1587,14 @@ access{
   background: rgba(165, 0, 255, 0.09);
   background: linear-gradient(90deg, rgba(165, 0, 255, 0.09) 0%, rgb(0 0 0 / 39%) 80%);
   background: -webkit-linear-gradient(90deg, rgba(165, 0, 255, 0.09) 0%, rgb(0 0 0 / 39%) 80%);
-  transition: opacity 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
 }
 
 #favtrofy{
   margin: auto;
   margin-top: 35px;
   width: 90%;
+  max-width: 400px;
   height: 30vh;
   border: 1px solid rgba(147, 147, 147, 0.53);
   background: rgba(165, 0, 255, 0.09);

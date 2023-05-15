@@ -636,6 +636,7 @@ class Favourites{
     this._personSelectedName = '';
     this._currentName = '';
     this.lastGotCoins = {};
+    this._maxLevel = 4;
   }
 
   /** Добавляем всех персонажей */
@@ -684,7 +685,7 @@ class Favourites{
     this._personSelectedElement.classList.add('favico_selected');
     Game.Interface.$('FavouriteLevelText').classList.add('emptyavatar');
     Game.Interface.$('FavouritesAvatar').classList.add('emptyavatar');
-    Game.Interface.$('FavouriteName').classList.add('emptyavatar');
+    Game.Interface.$('FavouriteName').style.color = 'transparent';
     setTimeout(()=>{
       Game.Interface.$('FavouritesAvatar').src = element.src;
       Game.Interface.$('FavouriteName').innerText = Game.Stats[name]._name;
@@ -692,7 +693,7 @@ class Favourites{
 
       Game.Interface.$('FavouriteLevelText').classList.remove('emptyavatar');
       Game.Interface.$('FavouritesAvatar').classList.remove('emptyavatar');
-      Game.Interface.$('FavouriteName').classList.remove('emptyavatar');
+      Game.Interface.$('FavouriteName').style.color = '';
     },500);
     Game.Interface.$('FavouriteLevel').onclick = () =>{
       this._addScore();
@@ -701,7 +702,7 @@ class Favourites{
 
   /** Покупка прогрессии за монету*/
   _addScore(){
-    if(this._coins>=1) {
+    if(this._coins>=1 && this._countLevel() <= this._maxLevel) {
       this._coins-=1;
       Game.Stats[this._currentName].score++;
       this._setLevel();
@@ -711,8 +712,10 @@ class Favourites{
     }
     else{
       Game.Interface.$('FavouriteCoins').style.color='red';
+      Game.Interface.$('FavouriteLevelText').style.color='red';
       setTimeout(()=>{
         Game.Interface.$('FavouriteCoins').style.color='';
+        Game.Interface.$('FavouriteLevelText').style.color='';
       },500);
     }
   }
