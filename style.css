@@ -1566,6 +1566,7 @@ access{
 }
 
 .favavatarimabeborder{
+  overflow: hidden;
   height: auto;
   width: 80%;
   border: 1px solid rgba(170, 170, 170, 0.5);
