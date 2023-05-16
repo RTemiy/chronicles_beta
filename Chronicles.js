@@ -82,6 +82,7 @@ class Stat {
      * @param {boolean|undefined} info.show Показать изначально в нивентаре?
      * @param {string} info.story История к которой привязан стат
      * @param {function=} info.isUnlocked История к которой привязан стат
+     * @param {Trophies=} info.trophies Трофеи для фаворитов
      * @param {function=} info.tapAction Событие при использовании предмета
      */
     constructor(info) {
@@ -96,7 +97,7 @@ class Stat {
         this._tapAction = info.tapAction || undefined;
         this.score = 5;
         this.isUnlocked = info.isUnlocked || function () {return undefined};
-        this.trophies = [];
+        this.trophies = info.trophies || undefined;
         this._createTable();
     }
 
@@ -699,14 +700,17 @@ class Favourites{
     this._personSelectedElement.classList.add('favico_selected');
     Game.Interface.$('FavouriteLevelText').classList.add('emptyavatar');
     Game.Interface.$('FavouritesAvatar').classList.add('emptyavatar');
+    Game.Interface.$('FavouriteTrophies').classList.add('emptyavatar');
     Game.Interface.$('FavouriteName').style.color = 'transparent';
     setTimeout(()=>{
       Game.Interface.$('FavouritesAvatar').src = element.src;
       Game.Interface.$('FavouriteName').innerText = Game.Stats[name]._name;
       this._setLevel();
+      Game.Stats[this._currentName].trophies.renderTrophies();
 
       Game.Interface.$('FavouriteLevelText').classList.remove('emptyavatar');
       Game.Interface.$('FavouritesAvatar').classList.remove('emptyavatar');
+      Game.Interface.$('FavouriteTrophies').classList.remove('emptyavatar');
       Game.Interface.$('FavouriteName').style.color = '';
     },500);
     Game.Interface.$('FavouriteLevel').onclick = () =>{
@@ -722,6 +726,7 @@ class Favourites{
       this._setLevel();
       this._animate();
       this._setCoinsAmount();
+      Game.Stats[this._currentName].trophies.renderTrophies();
       Game.Progress.saveFavourites();
     }
     else{
@@ -840,6 +845,10 @@ class Favourites{
 
     // Округляем
     return Math.round(days);
+  }
+
+  getLevel(name){
+    return Math.floor(Game.Stats[name].score / 5);
   }
 }
 class Interface {
@@ -1022,6 +1031,11 @@ class Interface {
     this.add('#favlevelprogressbar', 'FavouriteLevelProgressBar');
     this.add('#favavatarimage', 'FavouritesAvatar');
     this.add('#favavatarname', 'FavouriteName');
+    this.add('#favtrofy', 'FavouriteTrophies');
+    this.add('#favtrophymes', 'FavouriteTrophiesMessage');
+    this.add('#favtrophymesimg', 'FavouriteTrophiesImage');
+    this.add('#favtrophymestitle', 'FavouriteTrophiesTitle');
+    this.add('#favtrophymestext', 'FavouriteTrophiesText');
 
     // Загрузочный экран
 
@@ -1853,6 +1867,51 @@ class Timer{
   }
 
 }
+class Trophies {
+  constructor(...trophies) {
+    this._trophies = trophies;
+    this._trophies.forEach(trophy => {this._addTrophy(trophy)});
+  }
+
+  _addTrophy(trophy){
+    this[trophy.name] = {};
+    this[trophy.name].title = trophy.title;
+    this[trophy.name].picture = trophy.picture;
+    this[trophy.name].text = trophy.text;
+    this[trophy.name].action = trophy.action || undefined;
+    this[trophy.name].isUnlocked = trophy.isUnlocked;
+  }
+
+  renderTrophies(){
+    Game.Interface.$('FavouriteTrophies').innerText = '';
+    this._trophies.forEach(trophy => {
+      let el = document.createElement('div');
+      el.classList.add('favtrophyel');
+      let img = document.createElement('img');
+      if (trophy.isUnlocked() === false){
+        img.src = './pictures/Items/Lock.png';
+      }
+      else{
+        img.src = './pictures/' + trophy.picture + '.png';
+      }
+
+      el.onclick = () => {
+        Game.Interface.$('FavouriteTrophiesMessage').classList.remove('trophymeshide');
+        Game.Interface.$('FavouriteTrophiesImage').src = img.src;
+        Game.Interface.$('FavouriteTrophiesTitle').innerText = trophy.title;
+        Game.Interface.$('FavouriteTrophiesText').innerText = trophy.text;
+        setTimeout(()=>{
+          Game.Interface.$('FavouriteTrophiesMessage').classList.add('trophymeshide');
+        },3000);
+      }
+
+      el.append(img);
+      Game.Interface.$('FavouriteTrophies').append(el);
+    });
+
+
+  }
+}
 /**
  *
  * @source: https://github.com/RTemiy/Chronicles/
@@ -2647,7 +2706,18 @@ Game.Stats.Aurora = new Person({
     story: 'Aurora',
     isUnlocked: function () {
         return Game.Achievements.A_Part01Completed.unlocked >= 1;
-    }
+    },
+    trophies: new Trophies(
+      {
+          name : 'Aurora_Border',
+          title : 'Легендарная рамка',
+          picture : 'Items/Cup',
+          text : 'Награда за максимальный уровень фаворита',
+          isUnlocked: function () {
+              return Game.Favourites.getLevel('Aurora') >= 5;
+          }
+    },
+      ),
 });
 
 Game.Stats.Father = new Person({
@@ -7353,7 +7423,18 @@ Game.Stats.Cheryl = new Person({
     story: 'Immortals',
     isUnlocked: function () {
         return Game.Achievements.LakeCheryl.unlocked >= 1;
-    }
+    },
+    trophies: new Trophies(
+      {
+          name : 'Aurora_Border',
+          title : 'Легендарная рамка',
+          picture : 'Items/Cup',
+          text : 'Награда за максимальный уровень фаворита',
+          isUnlocked: function () {
+              return Game.Favourites.getLevel('Cheryl') >= 5;
+          }
+      },
+    ),
 });
 
 Game.Stats.Scarlett = new Person({
@@ -7364,7 +7445,18 @@ Game.Stats.Scarlett = new Person({
     story: 'Immortals',
     isUnlocked: function () {
         return Game.Achievements.LakeScarlett.unlocked >= 1;
-    }
+    },
+    trophies: new Trophies(
+      {
+          name : 'Aurora_Border',
+          title : 'Легендарная рамка',
+          picture : 'Items/Cup',
+          text : 'Награда за максимальный уровень фаворита',
+          isUnlocked: function () {
+              return Game.Favourites.getLevel('Scarlett') >= 5;
+          }
+      },
+    ),
 });
 
 Game.Stats.Neitan = new Person({
@@ -7375,7 +7467,18 @@ Game.Stats.Neitan = new Person({
     story: 'Immortals',
     isUnlocked: function () {
         return Game.Achievements.LakeNeitan.unlocked >= 1;
-    }
+    },
+    trophies: new Trophies(
+      {
+          name : 'Aurora_Border',
+          title : 'Легендарная рамка',
+          picture : 'Items/Cup',
+          text : 'Награда за максимальный уровень фаворита',
+          isUnlocked: function () {
+              return Game.Favourites.getLevel('Neitan') >= 5;
+          }
+      },
+    ),
 });
 
 Game.Stats.Nicola = new Person({
@@ -7386,7 +7489,18 @@ Game.Stats.Nicola = new Person({
     story: 'Immortals',
     isUnlocked: function () {
         return Game.Achievements.Golden_Cross.unlocked >= 1;
-    }
+    },
+    trophies: new Trophies(
+      {
+          name : 'Aurora_Border',
+          title : 'Легендарная рамка',
+          picture : 'Items/Cup',
+          text : 'Награда за максимальный уровень фаворита',
+          isUnlocked: function () {
+              return Game.Favourites.getLevel('Nicola') >= 5;
+          }
+      },
+    ),
 
 });
 
@@ -7398,7 +7512,18 @@ Game.Stats.Leon = new Person({
     story: 'Immortals',
     isUnlocked: function () {
         return Game.Achievements.LakeLeon.unlocked >= 1;
-    }
+    },
+    trophies: new Trophies(
+      {
+          name : 'Aurora_Border',
+          title : 'Легендарная рамка',
+          picture : 'Items/Cup',
+          text : 'Награда за максимальный уровень фаворита',
+          isUnlocked: function () {
+              return Game.Favourites.getLevel('Leon') >= 5;
+          }
+      },
+    ),
 });
 
 Game.Stats.Antagonist = new Person({
@@ -7409,7 +7534,18 @@ Game.Stats.Antagonist = new Person({
     story: 'Immortals',
     isUnlocked: function () {
         return Game.Achievements.LoveEvil.unlocked >= 1;
-    }
+    },
+    trophies: new Trophies(
+      {
+          name : 'Aurora_Border',
+          title : 'Легендарная рамка',
+          picture : 'Items/Cup',
+          text : 'Награда за максимальный уровень фаворита',
+          isUnlocked: function () {
+              return Game.Favourites.getLevel('Antagonist') >= 5;
+          }
+      },
+    ),
 });
 
 Game.Stats.Robert = new Person({

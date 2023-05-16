@@ -1592,18 +1592,6 @@ access{
   transition: all 0.5s ease-in-out;
 }
 
-#favtrofy{
-  margin: auto;
-  margin-top: 35px;
-  width: 90%;
-  max-width: 400px;
-  height: 30vh;
-  border: 1px solid rgba(147, 147, 147, 0.53);
-  background: rgba(165, 0, 255, 0.09);
-  background: linear-gradient(90deg, rgba(165, 0, 255, 0.09) 0%, rgb(0 0 0 / 39%) 80%);
-  background: -webkit-linear-gradient(90deg, rgba(165, 0, 255, 0.09) 0%, rgb(0 0 0 / 39%) 80%);
-}
-
 .favico{
   margin-right: 15px;
   border-radius: 50%;
@@ -1662,29 +1650,105 @@ access{
   position: absolute;
 }
 
+.favtrophyel{
+  width: 70px;
+  height: 70px;
+  border: 1px solid rgba(170, 170, 170, 0.315);
+  background: rgba(165, 0, 255, 0.09);
+  background: linear-gradient(90deg, rgba(165, 0, 255, 0.09) 0%, rgb(0 0 0 / 39%) 80%);
+  background: -webkit-linear-gradient(90deg, rgba(165, 0, 255, 0.09) 0%, rgb(0 0 0 / 39%) 80%);
+}
+
+#favtrofy{
+  margin: auto;
+  margin-top: 35px;
+  width: 90%;
+  max-width: 400px;
+  height: 30vh;
+  border: 1px solid rgba(147, 147, 147, 0.53);
+  background: rgba(165, 0, 255, 0.09);
+  background: linear-gradient(90deg, rgba(165, 0, 255, 0.09) 0%, rgb(0 0 0 / 39%) 80%);
+  background: -webkit-linear-gradient(90deg, rgba(165, 0, 255, 0.09) 0%, rgb(0 0 0 / 39%) 80%);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 70px);
+  grid-template-rows: repeat(auto-fill, 70px);
+  justify-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  transition: all 0.5s ease-in-out;
+}
+
+.favtrophyel>img{
+  width: inherit;
+  height: auto;
+}
+
+#favtrophymes{
+  display: flex;
+  position: fixed;
+  padding: 10px;
+  border-radius: 10px;
+  top: 25vh;
+  left: -2%;
+  margin: auto;
+  z-index: 5;
+  max-width: 90%;
+  border: 1px solid rgba(170, 170, 170, 0.8);
+  background: rgba(165, 0, 255, 0.09);
+  background: linear-gradient(90deg, rgba(165, 0, 255, 0.5) 0%, rgb(0 0 0 / 80%) 80%);
+  background: -webkit-linear-gradient(90deg, rgba(165, 0, 255, 0.5) 0%, rgb(0 0 0 / 80%) 80%);
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-content: center;
+  align-items: center;
+  transition: all 0.5s ease-in-out;
+
+}
+
+.trophymeshide{
+  visibility: hidden;
+  opacity: 0;
+}
+
+#favtrophymesimg{
+  width: 100px;
+  height: auto;
+  border: 1px solid white;
+  border-radius: 15px;
+}
+
+#favtrophymestitle{
+  font-size: var(--bigtext);
+}
+
+#favtrophymestext{
+  text-align: center;
+  max-width: 70%;
+}
+
 @property --angle {
-  syntax: '<angle>';
-  initial-value: 0deg;
-  inherits: false;
+syntax: '<angle>';
+initial-value: 0deg;
+inherits: false;
 }
 
 .favfulllevelborder{
-  border: 3px solid;
-  border-image: conic-gradient(from var(--angle), transparent, fuchsia, transparent, transparent, fuchsia, transparent, transparent) 1;
-  animation: 10s favfulllevelborder linear infinite;
-  -webkit-animation: 10s favfulllevelborder linear infinite;;
+border: 3px solid;
+border-image: conic-gradient(from var(--angle), transparent, fuchsia, transparent, transparent, fuchsia, transparent, transparent) 1;
+animation: 10s favfulllevelborder linear infinite;
+-webkit-animation: 10s favfulllevelborder linear infinite;;
 }
 
 @keyframes favfulllevelborder {
-  to {
-    --angle: 360deg;
-  }
+to {
+--angle: 360deg;
+}
 }
 
 @-webkit-keyframes favfulllevelborder {
-  to {
-    --angle: 360deg;
-  }
+to {
+--angle: 360deg;
+}
 }
 me>img{
     position:initial;
