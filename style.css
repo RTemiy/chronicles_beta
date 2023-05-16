@@ -1555,7 +1555,7 @@ access{
 #favlevelprogressbar{
   background-color: rgba(57, 255, 119, 0.4);
   border-radius: 50px;
-  width: 60%;
+  width: 0;
   height: 100%;
   transition: all 0.5s ease-in-out;
 }

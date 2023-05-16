@@ -655,15 +655,15 @@ class Favourites{
     }
 
     this._personSelectedElement = Game.Interface.$('FavouritesIcons').firstChild;
-    if(Game.Interface.$('FavouritesIcons').firstChild === null) {
+    if(Game.Interface.$('FavouritesIcons').firstChild.src.includes('Lock.png')) {
       Game.Interface.$('MenuFavouritesButton').style.color = 'red';
       setTimeout(()=>{Game.Interface.closeopen('FavouritesField','MenuField');},100);
     }
     else {
       Game.Interface.$('MenuFavouritesButton').style.color = '';
       Game.Interface.$('FavouritesIcons').firstChild.click();
-      this._setCoinsAmount();
     }
+    this._setCoinsAmount();
 
   }
 
