@@ -426,6 +426,7 @@
         transform: rotateY(45deg) scale(0.1);
     }
 }
+
 ls{
     margin: auto;
     height: 100vh;
@@ -1499,7 +1500,6 @@ access{
   margin: auto;
   padding: 20px 0;
   display: flex;
-  justify-content: center;
   flex-direction: row;
   height: 70px;
   overflow: hidden;
@@ -1565,12 +1565,13 @@ access{
   transition: opacity 0.5s ease-in-out;
 }
 
-.favavatarimabeborder{
+.favavatarimageborder{
   overflow: hidden;
   height: auto;
   width: 80%;
   border: 1px solid rgba(170, 170, 170, 0.5);
   border-radius: 5px;
+  transition: all 0.1s ease-in-out;
 }
 
 #favavatarname{
@@ -1611,6 +1612,16 @@ access{
   transition: all 0.5s ease-in-out;
 }
 
+.favicolocked{
+  margin-right: 15px;
+  border-radius: 15px;
+  border: none;
+  outline: none;
+  box-shadow: 0 0 13px grey;
+  background-color: #ffffff40;
+  width: 70px;
+}
+
 .favico:first-child{
   margin-left: 15px;
 }
@@ -1649,6 +1660,31 @@ access{
   opacity: 0;
   text-align: center;
   position: absolute;
+}
+
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.favfulllevelborder{
+  border: 3px solid;
+  border-image: conic-gradient(from var(--angle), transparent, fuchsia, transparent, transparent, fuchsia, transparent, transparent) 1;
+  animation: 10s favfulllevelborder linear infinite;
+  -webkit-animation: 10s favfulllevelborder linear infinite;;
+}
+
+@keyframes favfulllevelborder {
+  to {
+    --angle: 360deg;
+  }
+}
+
+@-webkit-keyframes favfulllevelborder {
+  to {
+    --angle: 360deg;
+  }
 }
 me>img{
     position:initial;

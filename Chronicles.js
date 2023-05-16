@@ -95,7 +95,7 @@ class Stat {
         this._tapped = false;
         this._tapAction = info.tapAction || undefined;
         this.score = 5;
-        this.isUnlocked = info.isUnlocked || function () {return false};
+        this.isUnlocked = info.isUnlocked || function () {return undefined};
         this.trophies = [];
         this._createTable();
     }
@@ -476,7 +476,6 @@ class Engine {
    * @param {boolean|undefined=} isSlide Является ли показом предыдущего слайда?
    */
   message (text, isSlide) {
-    this.Interface.$('MessageText').innerHTML = text.replace("$Имя Игрока$", this.PlayerName);
     if (isSlide){
       this.Interface.$('MessageText').innerHTML = this.LastSlide.text();
       this.Interface.$('MessageField').setAttribute('class', 'hide');
@@ -505,6 +504,7 @@ class Engine {
         this.Interface.$('MessageField').style.display = 'none';
       }, 1000);
     }, 5000);
+    this.Interface.$('MessageText').innerHTML = text.replace("$Имя Игрока$", this.PlayerName);
   }
 
   /** @param {string} text Текст особого сообщения */
@@ -624,7 +624,7 @@ class Engine {
         allStrings += window.localStorage[key];
       }
     }
-    console.log(Math.floor(3 + ((allStrings.length*16)/(8*1024))) + 'кб спользовано');
+    console.log(Math.floor(3 + ((allStrings.length*16)/(8*1024))) + 'кб использовано');
   }
 
 }
@@ -647,6 +647,13 @@ class Favourites{
         this._addPerson(Game.Stats[item]._picture, item);
       }
     }
+
+    for(let item in Game.Stats){
+      if (Game.Stats[item] instanceof Person && Game.Stats[item].isUnlocked() !== undefined && Game.Stats[item].isUnlocked() !== true){
+        this._addPerson(Game.Stats[item]._picture, item, true);
+      }
+    }
+
     this._personSelectedElement = Game.Interface.$('FavouritesIcons').firstChild;
     if(Game.Interface.$('FavouritesIcons').firstChild === null) {
       Game.Interface.$('MenuFavouritesButton').style.color = 'red';
@@ -666,14 +673,21 @@ class Favourites{
   }
 
   /** Добавляем персонажа*/
-  _addPerson(picture,name){
+  _addPerson(picture,name, locked){
     let objName = name;
     let el = document.createElement('img');
-    el.src = `./pictures/${picture}.png`;
-    el.classList.add('favico');
-    el.onclick = el =>{
-      this._selectPerson(el.target,objName);
+    if (!locked){
+      el.src = `./pictures/${picture}.png`;
+      el.classList.add('favico');
+      el.onclick = el =>{
+        this._selectPerson(el.target,objName);
+      }
     }
+    else{
+      el.src = `./pictures/Items/Lock.png`;
+      el.classList.add('favicolocked');
+    }
+
     Game.Interface.$('FavouritesIcons').appendChild(el);
   }
 
@@ -745,6 +759,10 @@ class Favourites{
     if(level>=5) {
       Game.Interface.$('FavouriteLevel').style.backgroundColor = 'Fuchsia';
       Game.Interface.$('FavouriteLevel').style.borderColor = 'black';
+      Game.Interface.$('FavouriteBorder').classList.add('favfulllevelborder');
+    }
+    else{
+      Game.Interface.$('FavouriteBorder').classList.remove('favfulllevelborder');
     }
   }
 
@@ -998,6 +1016,7 @@ class Interface {
     this.add('#favavatar', 'FavouriteAvatarContainer');
     this.add('#favicons', 'FavouritesIcons');
     this.add('#favlevel', 'FavouriteLevel');
+    this.add('.favavatarimageborder', 'FavouriteBorder');
     this.add('#favleveltext', 'FavouriteLevelText');
     this.add('#favlevelprogress', 'FavouriteLevelProgress');
     this.add('#favlevelprogressbar', 'FavouriteLevelProgressBar');
