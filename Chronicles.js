@@ -1643,17 +1643,21 @@ class Chapter {
         Game.Interface.$('PartField').appendChild(this.backbutton);
         Game.Interface.closeopen('ChapterField','PartField');
         for (let x = 0; x < this.parts.length; x++) {
+            this.parts[x].part = document.createElement('part');
+            this.parts[x].img = document.createElement('img');
+            this.parts[x].img.src = ROOTPATH + 'pictures/' + this.parts[x].pict + '.png';
+            this.parts[x].button = document.createElement('button');
+            this.parts[x].button.innerText = this.parts[x].name;
             if (localStorage.getItem(this.parts[x].code+'_Played')=='1' || localStorage.getItem(this.parts[x].code+'_God')!=null || x===0) {
-                this.parts[x].part = document.createElement('part');
-                this.parts[x].img = document.createElement('img');
-                this.parts[x].img.src = ROOTPATH + 'pictures/' + this.parts[x].pict + '.png';
-                this.parts[x].button = document.createElement('button');
-                this.parts[x].button.innerText = this.parts[x].name;
                 this.parts[x].part.onclick = this.parts[x].event;
-                Game.Interface.$('PartField').appendChild(this.parts[x].part);
-                this.parts[x].part.appendChild(this.parts[x].img);
-                this.parts[x].part.appendChild(this.parts[x].button);
             }
+            else{
+                this.parts[x].button.style = 'filter: saturate(100%);';
+                this.parts[x].img.style = 'filter: saturate(0%);';
+            }
+            Game.Interface.$('PartField').appendChild(this.parts[x].part);
+            this.parts[x].part.appendChild(this.parts[x].img);
+            this.parts[x].part.appendChild(this.parts[x].button);
         }
     }
 }
