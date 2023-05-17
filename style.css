@@ -1779,6 +1779,18 @@ access{
   max-width: 70%;
 }
 
+#favtrophymesbutton{
+  margin-top: 5px;
+  text-shadow: 0 0 5px white;
+  color: black;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid rgba(170, 170, 170, 0.8);
+  background: rgba(165, 0, 255, 0.09);
+  background: linear-gradient(90deg, rgba(165, 0, 255, 0.5) 0%, rgba(255, 255, 255, 0.8) 80%);
+  background: -webkit-linear-gradient(90deg, rgba(165, 0, 255, 0.5) 0%, rgba(255, 255, 255, 0.8) 80%);
+}
+
 @property --angle {
 syntax: '<angle>';
 initial-value: 0deg;

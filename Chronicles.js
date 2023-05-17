@@ -1036,6 +1036,7 @@ class Interface {
     this.add('#favtrophymesimg', 'FavouriteTrophiesImage');
     this.add('#favtrophymestitle', 'FavouriteTrophiesTitle');
     this.add('#favtrophymestext', 'FavouriteTrophiesText');
+    this.add('#favtrophymesbutton', 'FavouriteTrophiesButton');
 
     // Загрузочный экран
 
@@ -1891,6 +1892,9 @@ class Trophies {
         Game.Interface.$('FavouriteTrophiesImage').src = img.src;
         Game.Interface.$('FavouriteTrophiesTitle').innerText = trophy.title;
         Game.Interface.$('FavouriteTrophiesText').innerText = trophy.text;
+        if (trophy.isUnlocked() === true && trophy.action !== undefined) Game.Interface.$('FavouriteTrophiesButton').style.display = 'block';
+        else Game.Interface.$('FavouriteTrophiesButton').style.display = 'none';
+
         setTimeout(()=>{
           Game.Interface.$('FavouriteTrophiesMessage').classList.add('trophymeshide');
           Game.Interface.$('FavouriteTrophiesMessage').classList.remove('trophymesshow');
