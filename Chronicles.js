@@ -1870,16 +1870,6 @@ class Timer{
 class Trophies {
   constructor(...trophies) {
     this._trophies = trophies;
-    this._trophies.forEach(trophy => {this._addTrophy(trophy)});
-  }
-
-  _addTrophy(trophy){
-    this[trophy.name] = {};
-    this[trophy.name].title = trophy.title;
-    this[trophy.name].picture = trophy.picture;
-    this[trophy.name].text = trophy.text;
-    this[trophy.name].action = trophy.action || undefined;
-    this[trophy.name].isUnlocked = trophy.isUnlocked;
   }
 
   renderTrophies(){
@@ -1897,19 +1887,29 @@ class Trophies {
 
       el.onclick = () => {
         Game.Interface.$('FavouriteTrophiesMessage').classList.remove('trophymeshide');
+        Game.Interface.$('FavouriteTrophiesMessage').classList.add('trophymesshow');
         Game.Interface.$('FavouriteTrophiesImage').src = img.src;
         Game.Interface.$('FavouriteTrophiesTitle').innerText = trophy.title;
         Game.Interface.$('FavouriteTrophiesText').innerText = trophy.text;
         setTimeout(()=>{
           Game.Interface.$('FavouriteTrophiesMessage').classList.add('trophymeshide');
+          Game.Interface.$('FavouriteTrophiesMessage').classList.remove('trophymesshow');
         },3000);
       }
 
       el.append(img);
       Game.Interface.$('FavouriteTrophies').append(el);
     });
+  }
 
+  getTrophy(name){
+    return this._trophies.find((el) => {
+      if(el.name === name) return el;
+    });
+  }
 
+  unlock(name){
+    localStorage.setItem('Trophy_' + this.getTrophy(name).name, '1');
   }
 }
 /**
@@ -2709,7 +2709,7 @@ Game.Stats.Aurora = new Person({
     },
     trophies: new Trophies(
       {
-          name : 'Aurora_Border',
+          name : 'Border',
           title : 'Легендарная рамка',
           picture : 'Items/Cup',
           text : 'Награда за максимальный уровень фаворита',
@@ -7426,7 +7426,7 @@ Game.Stats.Cheryl = new Person({
     },
     trophies: new Trophies(
       {
-          name : 'Aurora_Border',
+          name : 'Border',
           title : 'Легендарная рамка',
           picture : 'Items/Cup',
           text : 'Награда за максимальный уровень фаворита',
@@ -7448,7 +7448,7 @@ Game.Stats.Scarlett = new Person({
     },
     trophies: new Trophies(
       {
-          name : 'Aurora_Border',
+          name : 'Border',
           title : 'Легендарная рамка',
           picture : 'Items/Cup',
           text : 'Награда за максимальный уровень фаворита',
@@ -7470,7 +7470,7 @@ Game.Stats.Neitan = new Person({
     },
     trophies: new Trophies(
       {
-          name : 'Aurora_Border',
+          name : 'Border',
           title : 'Легендарная рамка',
           picture : 'Items/Cup',
           text : 'Награда за максимальный уровень фаворита',
@@ -7492,7 +7492,7 @@ Game.Stats.Nicola = new Person({
     },
     trophies: new Trophies(
       {
-          name : 'Aurora_Border',
+          name : 'Border',
           title : 'Легендарная рамка',
           picture : 'Items/Cup',
           text : 'Награда за максимальный уровень фаворита',
@@ -7515,7 +7515,7 @@ Game.Stats.Leon = new Person({
     },
     trophies: new Trophies(
       {
-          name : 'Aurora_Border',
+          name : 'Border',
           title : 'Легендарная рамка',
           picture : 'Items/Cup',
           text : 'Награда за максимальный уровень фаворита',
@@ -7537,7 +7537,7 @@ Game.Stats.Antagonist = new Person({
     },
     trophies: new Trophies(
       {
-          name : 'Aurora_Border',
+          name : 'Border',
           title : 'Легендарная рамка',
           picture : 'Items/Cup',
           text : 'Награда за максимальный уровень фаворита',
