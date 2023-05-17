@@ -1329,7 +1329,7 @@ achievement {
     background: linear-gradient(135deg, rgba(153, 0, 255, 0), rgba(183, 94, 255, 0.28));
     background: -webkit-linear-gradient(135deg, rgba(153, 0, 255, 0), rgba(183, 94, 255, 0.28));
     background-size: 150% 150%;
-    box-shadow: inset 0px 0px 5px 1px rgb(0 0 0 / 77%);
+    box-shadow: inset 0 0 5px 1px rgb(0 0 0 / 77%);
     grid-template-columns: min-content 1fr;
     grid-template-rows: min-content min-content;
 }
@@ -1579,7 +1579,7 @@ access{
   width: 50px;
   height: 50px;
   background: grey;
-  box-shadow: 0 0 10px white;
+  box-shadow: inset 0 0 5px 1px rgb(0 0 0 / 77%);
   transition: all 0.5s ease-in-out;
   z-index: 3;
 }
@@ -1591,8 +1591,11 @@ access{
 }
 
 #favlevelprogress{
-  border: 1px solid white;
-  background: black;
+  background: rgba(165, 0, 255, 0.09);
+  background: linear-gradient(135deg, rgba(153, 0, 255, 0), rgba(183, 94, 255, 0.28));
+  background: -webkit-linear-gradient(135deg, rgba(153, 0, 255, 0), rgba(183, 94, 255, 0.28));
+  background-size: 150% 150%;
+  box-shadow: inset 0 0 5px 1px rgb(0 0 0 / 77%);
   width: 90%;
   height: 25px;
   border-radius: 50px;
@@ -1603,8 +1606,9 @@ access{
 
 #favlevelprogressbar{
   background-color: rgba(57, 255, 119, 0.4);
+  background-size: 150% 150%;
+  box-shadow: inset 0 0 5px 1px rgb(0 0 0 / 77%);
   border-radius: 50px;
-  width: 0;
   height: 100%;
   transition: all 0.5s ease-in-out;
 }
@@ -1654,9 +1658,12 @@ access{
   border-radius: 15px;
   border: none;
   outline: none;
-  box-shadow: 0 0 13px grey;
-  background-color: #ffffff40;
   width: 70px;
+  background: rgba(165, 0, 255, 0.09);
+  background: linear-gradient(135deg, rgba(153, 0, 255, 0), rgba(183, 94, 255, 0.28));
+  background: -webkit-linear-gradient(135deg, rgba(153, 0, 255, 0), rgba(183, 94, 255, 0.28));
+  background-size: 150% 150%;
+  box-shadow: 0 0 13px black, inset 0 0 5px 1px rgb(0 0 0 / 77%);
 }
 
 .favico:first-child{
@@ -1702,10 +1709,12 @@ access{
 .favtrophyel{
   width: 70px;
   height: 70px;
-  border: 1px solid rgba(170, 170, 170, 0.315);
+  border-radius: 10px;
   background: rgba(165, 0, 255, 0.09);
-  background: linear-gradient(90deg, rgba(165, 0, 255, 0.09) 0%, rgb(0 0 0 / 39%) 80%);
-  background: -webkit-linear-gradient(90deg, rgba(165, 0, 255, 0.09) 0%, rgb(0 0 0 / 39%) 80%);
+  background: linear-gradient(135deg, rgba(153, 0, 255, 0), rgba(183, 94, 255, 0.28));
+  background: -webkit-linear-gradient(135deg, rgba(153, 0, 255, 0), rgba(183, 94, 255, 0.28));
+  background-size: 150% 150%;
+  box-shadow: inset 0 0 5px 1px rgb(0 0 0 / 77%);
 }
 
 #favtrofy{
@@ -1714,10 +1723,12 @@ access{
   width: 90%;
   max-width: 400px;
   height: 30vh;
-  border: 1px solid rgba(147, 147, 147, 0.53);
+  border-radius: 10px;
   background: rgba(165, 0, 255, 0.09);
-  background: linear-gradient(90deg, rgba(165, 0, 255, 0.09) 0%, rgb(0 0 0 / 39%) 80%);
-  background: -webkit-linear-gradient(90deg, rgba(165, 0, 255, 0.09) 0%, rgb(0 0 0 / 39%) 80%);
+  background: linear-gradient(135deg, rgba(153, 0, 255, 0), rgba(183, 94, 255, 0.28));
+  background: -webkit-linear-gradient(135deg, rgba(153, 0, 255, 0), rgba(183, 94, 255, 0.28));
+  background-size: 150% 150%;
+  box-shadow: inset 0 0 5px 1px rgb(0 0 0 / 77%);
   display: grid;
   grid-template-columns: repeat(auto-fill, 70px);
   grid-template-rows: repeat(auto-fill, 70px);
@@ -1742,10 +1753,11 @@ access{
   margin: auto;
   z-index: 5;
   max-width: 90%;
-  border: 1px solid rgba(170, 170, 170, 0.8);
   background: rgba(165, 0, 255, 0.09);
-  background: linear-gradient(90deg, rgba(165, 0, 255, 0.5) 0%, rgb(0 0 0 / 80%) 80%);
-  background: -webkit-linear-gradient(90deg, rgba(165, 0, 255, 0.5) 0%, rgb(0 0 0 / 80%) 80%);
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(85, 38, 121, 0.73));
+  background: -webkit-linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(85, 38, 121, 0.73));
+  background-size: 150% 150%;
+  box-shadow: inset 0 0 5px 1px rgb(0 0 0 / 77%);
   flex-direction: column;
   flex-wrap: nowrap;
   align-content: center;
@@ -1771,10 +1783,12 @@ access{
 }
 
 #favtrophymestitle{
+  color: white;
   font-size: var(--bigtext);
 }
 
 #favtrophymestext{
+  color: white;
   text-align: center;
   max-width: 70%;
 }
