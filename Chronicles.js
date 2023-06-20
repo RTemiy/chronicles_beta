@@ -3,18 +3,17 @@
 class Achievement {
 
     /**
-     * @param {Object} object Объект с параметрами достижения
-     * @param {string} object.title Название достижения
-     * @param {string} object.text Описание достижения
-     * @param {string} object.picture Картинка достижения
-     * @param {string} object.story Код истории достижения
+     * @param {string} title Название достижения
+     * @param {string} text Описание достижения
+     * @param {string} picture Картинка достижения
+     * @param {string} story Код истории достижения
      */
-    constructor(object) {
-        this._title = object.title;
-        this._text = '<hr>' + object.text+ '<p>';
-        this._picture = 'pictures/' + object.picture + '.png';
+    constructor({title,text,picture,story}) {
+        this._title = title;
+        this._text = '<hr>' + text+ '<p>';
+        this._picture = 'pictures/' + picture + '.png';
         this.unlocked = 0;
-        this.story = object.story;
+        this.story = story;
         this._init();
     }
 
@@ -72,32 +71,43 @@ class Achievement {
 
 class Stat {
     /**
-     * @param {Object} info Объект с параметрами "отношений"
-     * @param {string} info.name Имя или название
-     * @param {number|undefined} info.attitude Начальное значение
-     * @param {string|undefined} info.title Краткое описание
-     * @param {string|undefined} info.text Полное описание
-     * @param {string|undefined} info.type Тип
-     * @param {string|undefined} info.picture Картинка
-     * @param {boolean|undefined} info.show Показать изначально в нивентаре?
-     * @param {string} info.story История к которой привязан стат
-     * @param {function=} info.isUnlocked История к которой привязан стат
-     * @param {Trophies=} info.trophies Трофеи для фаворитов
-     * @param {function=} info.tapAction Событие при использовании предмета
+     * @param {string} name Имя или название
+     * @param {number=} attitude Начальное значение
+     * @param {string=} title Краткое описание
+     * @param {string=} text Полное описание
+     * @param {string=} type Тип
+     * @param {string=} picture Картинка
+     * @param {boolean=} show Показать изначально в нивентаре?
+     * @param {string} story История к которой привязан стат
+     * @param {function=} isUnlocked История к которой привязан стат
+     * @param {Trophies=} trophies Трофеи для фаворитов
+     * @param {function=} tapAction Событие при использовании предмета
      */
-    constructor(info) {
-        this._name = info.name || '';
-        this._attitude = info.attitude || 0;
-        this._title = info.title || '';
-        this._text = info.text || '';
-        this._picture = info.picture || '';
-        this._show = info.show || false;
-        this._story = info.story;
+    constructor({
+                    name,
+                    attitude,
+                    title,
+                    text,
+                    type,
+                    picture,
+                    show,
+                    story,
+                    isUnlocked,
+                    trophies,
+                    tapAction
+                }) {
+        this._name = name || '';
+        this._attitude = attitude || 0;
+        this._title = title || '';
+        this._text = text || '';
+        this._picture = picture || '';
+        this._show = show || false;
+        this._story = story;
         this._tapped = false;
-        this._tapAction = info.tapAction || undefined;
+        this._tapAction = tapAction || undefined;
         this.score = 5;
-        this.isUnlocked = info.isUnlocked || function () {return undefined};
-        this.trophies = info.trophies || undefined;
+        this.isUnlocked = isUnlocked || function () {return undefined};
+        this.trophies = trophies || undefined;
         this._createTable();
     }
 
@@ -171,9 +181,6 @@ class Stat {
     }
 }
 class Choice extends Stat {
-  constructor(info) {
-    super(info);
-  }
   add(v) {
     super.add(v);
     Game.sendData('выбирает '+this._name+': '+this._attitude);
@@ -578,9 +585,9 @@ class Engine {
   }
 
   initFavourites(){
-    Game.Progress.loadFavourites();
+  /*  Game.Progress.loadFavourites();
     Game.Favourites.checkDates();
-    Game.Progress.saveFavourites();
+    Game.Progress.saveFavourites();*/
   }
 
   /** Присвоение номера сцене в зависимости от индекса массива*/
@@ -604,12 +611,12 @@ class Engine {
     let nowtime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     today = dd + '.' + mm + '.' + yyyy;
 
-    document.getElementById('#1').setAttribute('value', localStorage.getItem('PlayerName'));
-    document.getElementById('#2').setAttribute('value', today);
-    document.getElementById('#3').setAttribute('value', a);
-    document.getElementById('#4').setAttribute('value', nowtime);
-    document.getElementById('#5').setAttribute('value', Intl.DateTimeFormat().resolvedOptions().timeZone);
-    document.getElementById('#button').click();
+    form.PlayerName.value = localStorage.getItem('PlayerName');
+    form.Date.value = today;
+    form.Action.value = a;
+    form.Time.value = nowtime;
+    form.Region.value = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    form.button.click();
   }
 
   /** Показываем сцены для тестирования  */
@@ -695,22 +702,26 @@ class Favourites{
   /** Выбор персонажп*/
   _selectPerson(element, name){
     this._currentName = name;
+    this._renderPersonSelection(element)
+  }
+
+  _renderPersonSelection(element){
     this._personSelectedElement.classList.remove('favico_selected');
     this._personSelectedElement = element;
     this._personSelectedElement.classList.add('favico_selected');
     Game.Interface.$('FavouriteLevelText').classList.add('emptyavatar');
     Game.Interface.$('FavouritesAvatar').classList.add('emptyavatar');
-    Game.Interface.$('FavouriteTrophies').classList.add('emptyavatar');
+    Array.from(Game.Interface.$('FavouriteTrophies').children).forEach(el => {el.classList.add('emptyavatar');});
     Game.Interface.$('FavouriteName').style.color = 'transparent';
     setTimeout(()=>{
       Game.Interface.$('FavouritesAvatar').src = element.src;
-      Game.Interface.$('FavouriteName').innerText = Game.Stats[name]._name;
+      Game.Interface.$('FavouriteName').innerText = Game.Stats[this._currentName]._name;
       this._setLevel();
       Game.Stats[this._currentName].trophies.renderTrophies();
 
       Game.Interface.$('FavouriteLevelText').classList.remove('emptyavatar');
       Game.Interface.$('FavouritesAvatar').classList.remove('emptyavatar');
-      Game.Interface.$('FavouriteTrophies').classList.remove('emptyavatar');
+      Array.from(Game.Interface.$('FavouriteTrophies').children).forEach(el => {el.classList.remove('emptyavatar');});
       Game.Interface.$('FavouriteName').style.color = '';
     },500);
     Game.Interface.$('FavouriteLevel').onclick = () =>{
@@ -1146,9 +1157,6 @@ class Interface {
 
 }
 class Item extends Stat {
-  constructor(info) {
-    super(info);
-  }
 
   add(v) {
     super.add(v);
@@ -1229,9 +1237,6 @@ class Last_Slide {
   }
 }
 class Person extends Stat {
-  constructor(info) {
-    super(info);
-  }
 
   add(v) {
     super.add(v);
@@ -1346,38 +1351,26 @@ class Progress {
 class Scene {
     /**
      *
-     * @param {
-     * {
-     *  buttontext: string[]|undefined,
-     *  condition: function|undefined,
-     *  background: string|undefined,
-     *  buttonaction: function[],
-     *  text: string
-     * }
-     * } info сюда отправляем все вводные данные
+     * @param  {string} text Текст слайда
      *
-     * @param  {string} info.text Текст слайда
+     * @param  {string[]=} buttontext Текст кнопок
      *
-     * @param  {string[]=} info.buttontext Текст кнопок
+     * @param  {function[]} buttonaction Действия кнопок
      *
-     * @param  {function[]} info.buttonaction Действия кнопок
+     * @param  {boolean[]=} buttonactive Активность кнопок
      *
-     * @param  {boolean[]=} info.buttonactive Активность кнопок
+     * @param  {string=} background Картинка слайда
      *
-     * @param  {string=} info.background Картинка слайда
-     *
-     * @param  {function[]} info.buttonaction Текст слайда
-     *
-     * @param  {function=} info.condition Дополнительные действия при включении слайда
+     * @param  {function=} condition Дополнительные действия при включении слайда
      *
      */
-    constructor(info) {
-        this.text = info.text || '';
-        this.buttontext = info.buttontext;
-        this.buttonaction = info.buttonaction;
-        this.buttonactive = info.buttonactive;
-        this.background = info.background || "";
-        this.condition = info.condition;
+    constructor({text,buttontext,buttonaction,buttonactive,background,condition}) {
+        this.text = text || '';
+        this.buttontext = buttontext;
+        this.buttonaction = buttonaction;
+        this.buttonactive = buttonactive;
+        this.background = background || "";
+        this.condition = condition;
     }
 
     /** Запустить сцену */
@@ -2291,7 +2284,7 @@ Game.Stories.push( new Story({
             new Part({
                 name: 'Часть 6',
                 code: 'SixPart',
-                pict: 'Tags/Q11',
+                pict: 'Backgrounds/House_Immortals',
                 event: function () {
 
                     Game.Design.change('Immortals');
@@ -21398,7 +21391,7 @@ Game.Scenes.SixPart[11] = new Scene({
     Проследовав за мужчиной, я оказалась в просторном доме. Он был, классической для тех времен, квадратной формы с несколькими комнатами по бокам. В центре располагался скромный сад с уютными местами для отдыха. 
     <p>“Видимо, эта семья достаточно зарабатывает благодаря торговле. Это потрясающее место.”
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/House_Immortals",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[12].begin();  }],
 });
@@ -21419,7 +21412,7 @@ Game.Scenes.SixPart[13] = new Scene({
     <p>- Сынок, почему ты так рано? Что-то случилось в лавке?
     <p>- Мама, тут… - он показал пальцем на раненую. 
             `,
-  background: "Interface/Unknown",
+  background: "Persons/Mother_PP",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[14].begin();  }],
 });
@@ -21430,7 +21423,7 @@ Game.Scenes.SixPart[14] = new Scene({
     <p>- Я не знаю, все произошло так резко... Она потеряла сознание на площади и я решил помочь ей. 
     <p>Женщина осматривала больную, проверяя дыхание. 
             `,
-  background: "Interface/Unknown",
+  background: "Persons/Mother_PP",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[15].begin();  }],
 });
@@ -21442,7 +21435,7 @@ Game.Scenes.SixPart[15] = new Scene({
     <p>- Конечно, будет. 
     <p>- То, что говорили про нее люди. Проклятье. Гнев богов. Почему они так испугались?
             `,
-  background: "Interface/Unknown",
+  background: "Persons/Mother_PP",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[16].begin();  }],
 });
@@ -21452,7 +21445,7 @@ Game.Scenes.SixPart[16] = new Scene({
     Женщина глубоко вздохнула. Было видно, что она не хотела отвечать на этот вопрос, но взглянув в заинтересованные глаза сына, все же произнесла:
     <p>- Есть поверье, что такие раны остаются на человеке, которого покинули боги. Некого рода знак, что всевышние разгневаны.
             `,
-  background: "Interface/Unknown",
+  background: "Persons/Mother_PP",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[17].begin();  }],
 });
@@ -21463,7 +21456,7 @@ Game.Scenes.SixPart[17] = new Scene({
     <p>- Во всем виноват страх, сын мой. Мы же сделаем все, что в наших силах, чтобы помочь несчастной. Чтобы она не сотворила, это останется на ее совести. 
     <p>Гай широко улыбнулся и положил маме руку на плечо в знак одобрения ее действий. 
             `,
-  background: "Interface/Unknown",
+  background: "Persons/Mother_PP",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[18].begin(); Game.message('Онерария - Римское торговое судно');}],
 });
@@ -21474,7 +21467,7 @@ Game.Scenes.SixPart[18] = new Scene({
     <p>- От Марка не было весточки? 
     <p>- Нет. Но онерария должна прибыть сегодня к вечеру. Не волнуйся. 
             `,
-  background: "Interface/Unknown",
+  background: "Persons/Mother_PP",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[19].begin();  }],
 });
@@ -21485,7 +21478,7 @@ Game.Scenes.SixPart[19] = new Scene({
     <p>- Должно быть помогают отцу на винограднике. Луций обещал быть со мной сегодня и торговать, но отец настоял, чтобы он помог ему. 
     <p>- Хорошо. В последнее время все так заняты. Уже и не помню, когда мы вместе собирались за одним столом.
             `,
-  background: "Interface/Unknown",
+  background: "Persons/Mother_PP",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[20].begin();  }],
 });
@@ -21497,7 +21490,7 @@ Game.Scenes.SixPart[20] = new Scene({
     <p>- Отнесем эту девушку в мою комнату. Я приготовлю настой, который облегчит ее страдания. 
     <p>Гай с легкостью поднял девушку на руки и они скрылись за дверьми. 
             `,
-  background: "Interface/Unknown",
+  background: "Persons/Mother_PP",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[21].begin(); Game.Sounds.play('Music','Prologue');  }],
 });
@@ -21573,7 +21566,7 @@ Game.Scenes.SixPart[27] = new Scene({
     - Теперь тебе предстоит окунуться в не менее интересный период жизни Николы Теслы. Будь наготове. 
     <p>- Мне все равно не сбежать от этого. Единственный вариант - идти дальше и бороться до конца. 
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/Abstraction",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[28].begin();  }],
 });
@@ -21584,7 +21577,7 @@ Game.Scenes.SixPart[28] = new Scene({
     <p>- Почему? - я недоуменно взглянула на него.
     <p>- Раньше последовало бы множество вопросов или даже протестов. А сейчас, я вижу уверенную в себе девушку, которая смотрит на что-то новое с высоко поднятой головой. Но больше всего поражает твоя готовность броситься в самое пекло. 
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/Abstraction",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[29].begin();  }],
 });
@@ -21595,7 +21588,7 @@ Game.Scenes.SixPart[29] = new Scene({
     <p>- Запомни одну вещь. Дальше - не будет легче. Это путешествие будет ломать тебя, и не раз. Но вопреки всему, ты снова будешь подниматься, подобно фениксу, что раз за разом возрождается из пепла.
     <p>- Я не строю иллюзий о “радужном конце”. Но благодарю за твое неравнодушие и наставления. 
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/Abstraction",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[30].begin();  }],
 });
@@ -21607,11 +21600,12 @@ Game.Scenes.SixPart[30] = new Scene({
     <p>Проводник ничего не ответил, лишь жестом указал на дверь. 
     <p>- До скорой встречи, - махнув рукой на прощание, я отправилась дальше покорять девятнадцатый век. 
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/Abstraction",
   buttontext: [''],
   buttonaction: [() => {
     Game.Scenes.SixPart[31].begin();
     Game.message('<i>1899 год, окраины Колорадо-Спрингс');
+    Game.Effects.Gray();
     Game.Sounds.play('Music','WildWest01');
   }],
 });
@@ -21621,7 +21615,7 @@ Game.Scenes.SixPart[31] = new Scene({
     Треск горящих дров вперемешку с громкими голосами - заставили меня постепенно пробудиться. 
     <p>Приоткрыв глаза, я увидела костер и кромешную темноту вокруг. Было холодно, складывалось ощущение, что мое тело лежит на земле, а совсем замерзнуть мне не позволяет тепло, исходящее от яркого пламени. 
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/Camp_Night",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[32].begin();  }],
 });
@@ -21632,7 +21626,7 @@ Game.Scenes.SixPart[32] = new Scene({
     <p>Я услышала, как незнакомый хриплый мужской голос стал говорить:
     <p>- Господа, так как наша дама благополучно уснула, предлагаю опрокинуть по стаканчику чего-нибудь крепкого. 
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/Camp_Night",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[33].begin();  }],
 });
@@ -21643,7 +21637,7 @@ Game.Scenes.SixPart[33] = new Scene({
     <p>- Никола, когда ты уже прекратишь быть таким занудой? Вон, Роберт уже взял все в свои руки и наливает. Правильно делает. 
     <p>- Право, вы сведете меня с ума. Как хорошо, что Катарина не видит этого кошмара. 
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/Camp_Night",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[34].begin();  }],
 });
@@ -21653,7 +21647,7 @@ Game.Scenes.SixPart[34] = new Scene({
     Я хотела встать. Хотела подать знак, что слышу их, что могу присоединиться к беседе. Но тело казалось невероятно тяжелым. По неведомым причинам я не могла пошевелить и пальцем, а мысли было сложно собрать в хоть какое-то подобие порядка. 
     <p>“Как будто бы каждое новое перемещение дается труднее предыдущего.” 
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/Camp_Night",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[35].begin();  }],
 });
@@ -21664,7 +21658,7 @@ Game.Scenes.SixPart[35] = new Scene({
     <p>- Давайте же выпьем за удачную экспедицию, - голос Роберта звучал искренне и задорно. 
     <p>Мужчины дружно крикнули: “Ура!” - и звонко чокнулись. 
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/Camp_Night",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[36].begin();  }],
 });
@@ -21674,7 +21668,7 @@ Game.Scenes.SixPart[36] = new Scene({
     - Кхм, - недовольный тон Николы было сложно с кем-то перепутать. - Я предлагаю разойтись спать, так как завтра нам надо рано вставать. Мы почти добрались до пункта назначения. 
     <p>- Знаете, - Куртис говорил шепотом, добавляя голосу нотки загадочности. -  А давайте я вам поведаю о местной легенде индейцев. Атмосфера слишком к этому располагает. 
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/Camp_Night",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[37].begin();  }],
 });
@@ -21685,7 +21679,7 @@ Game.Scenes.SixPart[37] = new Scene({
     <p>- Погоди, - Тесла заинтересовался предложением. - Откуда ты узнал об этой легенде? 
     <p>- Вы не поверите, если я вам скажу, что от самого представителя племени.
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/Camp_Night",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[38].begin();  }],
 });
@@ -21696,7 +21690,7 @@ Game.Scenes.SixPart[38] = new Scene({
     <p>- Нет-нет, - Никола перебил Роберта. - Расскажи, пожалуйста. А вдруг это связано с тем, что мы ищем? 
     <p>- Может быть и связано, но мы приехали сюда не сказки слушать, - Роберт подлил в пустые стаканы спиртного и отпил, задумчиво подняв голову к звездам. - Но вы правы, возможно, атмосфера и правда располагает к небылицам.
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/Camp_Night",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[39].begin();  }],
 });
@@ -21706,7 +21700,7 @@ Game.Scenes.SixPart[39] = new Scene({
     - Господа, предлагаю послушать историю, а уж после - рассуждать. Даже если это и бред, то история все равно заслуживает право на существование. 
     <p>Куртис выдержал драматическую паузу, видимо дожидаясь, пока его собеседники успокоятся, а затем начал свой рассказ. 
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/Camp_Night",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[40].begin();  }],
 });
@@ -21716,7 +21710,7 @@ Game.Scenes.SixPart[40] = new Scene({
     - В начале сотворения мира, Серый Орел был хранителем солнца, луны, звезд, пресной воды и огня. Мудрый Орел был посланником небес. Так случилось, что он не жаловал людей за их нечистые помыслы, поэтому прятал от них заветные блага, поместив их в каменный диск.
     <p>– В те далекие времена люди выживали без воды и огня, пока величественная птица бережно хранила свой артефакт скрытым от любопытных глаз. 
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/Legend_Scene_01",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[41].begin();  }],
 });
@@ -21724,9 +21718,8 @@ Game.Scenes.SixPart[40] = new Scene({
 Game.Scenes.SixPart[41] = new Scene({
   text: `
     - У Серого Орла была прекрасная дочь, которую он оберегал и хранил так же внимательно, как драгоценный артефакт.  Однажды появился в деревне незнакомец, который случайно увидел дочь Орла и влюбился без памяти. 
-
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/Legend_Scene_02",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[42].begin();  }],
 });
@@ -21734,9 +21727,8 @@ Game.Scenes.SixPart[41] = new Scene({
 Game.Scenes.SixPart[42] = new Scene({
   text: `
     - Но не мог путник просить любви этой красавицы, потому что несмотря на его красоту, он вызывал особенную неприязнь у окружающих из-за своих черных, как смоль, перьев. И решил он превратить себя в снежно-белую птицу, чтобы понравиться дочери Орла.  
-
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/Legend_Scene_03",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[43].begin();  }],
 });
@@ -21744,9 +21736,8 @@ Game.Scenes.SixPart[42] = new Scene({
 Game.Scenes.SixPart[43] = new Scene({
   text: `
     - Пришел он как-то к местному шаману и говорит: «А сделай мои перья белоснежными, как чистый снег». Отвечает ему колдун: «Ты рожден вороном им и останешься. Нет такой силы, которая поменяла бы твою суть». Ворон не сдавался: «Я небесам молился, только на тебя надежда осталась, помоги мне».
-
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/Legend_Scene_04",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[44].begin();  }],
 });
@@ -21754,9 +21745,8 @@ Game.Scenes.SixPart[43] = new Scene({
 Game.Scenes.SixPart[44] = new Scene({
   text: `
     - Шаман долго думал, три дня и три ночи, совета спрашивал у богов и вот на четвертый день приходит к ворону и говорит: «Будь по твоему, птица. Но помни, истинный твой лик обратно вернётся, коли воспротивишься воле богов!»
-
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/Legend_Scene_04",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[45].begin();  }],
 });
@@ -21765,7 +21755,7 @@ Game.Scenes.SixPart[45] = new Scene({
   text: `
     - И сдержал слово колдун, на следующий день проснулся ворон белоснежным, как чистый снег.
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/Legend_Scene_05",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[46].begin();  }],
 });
@@ -21774,7 +21764,7 @@ Game.Scenes.SixPart[46] = new Scene({
   text: `
     - Увидев новый облик путника, дочь Орла обратила на него свой взор. Встречались они тайком, чтобы не вызвать гнев Серого Орла. Но однажды его дочь осмелилась пригласить своего возлюбленного в их дом, чтобы просить у отца благословения.
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/Legend_Scene_05",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[47].begin();  }],
 });
@@ -21783,7 +21773,7 @@ Game.Scenes.SixPart[47] = new Scene({
   text: `
     - И когда ворон увидел загадочный каменный диск с надписями на нем, то в миг понял, что должен сделать. Артефакт манил птицу и улучив момент, когда его оставили без внимания, он выкрал ценность и поспешил покинуть обитель Серого Орла.  
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/Legend_Scene_06",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[48].begin();  }],
 });
@@ -21792,7 +21782,7 @@ Game.Scenes.SixPart[48] = new Scene({
   text: `
     - Полетел ворон с диском в самую чащу леса и вдруг услышал голос: «Зачем ты потревожил божественную силу?» Ворон растерялся, но поняв, что голос исходит изнутри артефакта, ответил: «Люди голодают и умирают, неужели боги так разгневаны, что не могут поделиться своими дарами с нуждающимися?» 
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/Legend_Scene_06",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[49].begin();  }],
 });
@@ -21802,7 +21792,7 @@ Game.Scenes.SixPart[49] = new Scene({
      - Голос внутри стал яростнее: «Как ты смеешь оценивать Богов, мальчишка!»
      <p>И вдруг диск зашипел, затрещал и из сердцевины начало исходить свечение. Ворон испугался и выронил диск.
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/Legend_Scene_06",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[50].begin();  }],
 });
@@ -21811,7 +21801,7 @@ Game.Scenes.SixPart[50] = new Scene({
   text: `
      - Разбился он на четыре части. Освободив заветные блага, ворон решил отдать их людям. Солнце, луну и звезды он поместил на небо. Воду расплескал на землю, даруя шанс зародиться новой жизни. 
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/Legend_Scene_07",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[51].begin();  }],
 });
@@ -21820,7 +21810,7 @@ Game.Scenes.SixPart[51] = new Scene({
   text: `
      - Огонь пугал людей и ворон никак не мог найти ему место. Так долго держал он в клюве горящий уголек, что дым пропитал его перья, окрасив их в черный цвет. Увидев, что вернулся его прежний облик и не осталось следа от белоснежных крыльев, он выпустил горящее несчастье.
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/Legend_Scene_07",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[52].begin();  }],
 });
@@ -21829,7 +21819,7 @@ Game.Scenes.SixPart[52] = new Scene({
   text: `
      - Ударилась головешка о камни и полетели искры. Перестали люди боятся этого блага и с тех самых пор, если стукнуть камень о камень, то появится огонь, что не раз потом согреет человека.
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/Legend_Scene_07",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[53].begin();  }],
 });
@@ -21838,7 +21828,7 @@ Game.Scenes.SixPart[53] = new Scene({
   text: `
      - Обретя свой прежний вид, ему ничего не оставалось, кроме как принять судьбу и завершить дело до конца. Куски некогда цельного каменного диска, он разбросал по всему миру. 
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/Legend_Scene_07",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[54].begin();  }],
 });
@@ -21847,7 +21837,7 @@ Game.Scenes.SixPart[54] = new Scene({
   text: `
      - Последняя его воля звучала так: «Не должна божественная сила одному принадлежать».
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/Legend_Scene_07",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[55].begin();  }],
 });
@@ -21857,7 +21847,7 @@ Game.Scenes.SixPart[55] = new Scene({
      Мне казалось, что я перестала дышать, пока слушала эту историю.
      <p>“Как только люди смогли все так связать? Интересно, какое историческое событие легло в основу этой легенды? И существовал ли когда-то такой артефакт?”
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/Camp_Night",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[56].begin();  }],
 });
@@ -21867,7 +21857,7 @@ Game.Scenes.SixPart[56] = new Scene({
      Но с другой стороны, это может быть просто байкой, как верно заметил Роберт. Не стоит придумывать себе вымышленных связей с реальностью. 
      <p>Даже не знаю, что и думать…
             `,
-  background: "Interface/Unknown",
+  background: "Backgrounds/Camp_Night",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[57].begin();  }],
 });
