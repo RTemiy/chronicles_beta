@@ -203,7 +203,7 @@ class Interface {
 
     this.add('#lsb', 'LastSlideButton',
       () => {
-        Game.message('',true)
+        Game.message(Game.LastSlide.text(),true)
       });
 
 //Иконки инвентаря
@@ -1335,12 +1335,12 @@ class Scene {
 
     /** Запустить сцену */
     begin() {
-        Game.LastSlide.add(this);
         setTimeout(() => {Game.LastSave.save(this);},250);
         this.setBackground(this.background)
         if (this.condition) this.condition();
         Game.Interface.$('TextField').innerHTML = this.text.replace("$Имя Игрока$", Game.PlayerName);
         this._checkInterface();
+        Game.LastSlide.add(this);
     }
 
     setBackground(picture){
@@ -1743,7 +1743,6 @@ class Timer{
    */
   message (text, isSlide) {
     if (isSlide){
-      this.Interface.$('MessageText').innerHTML = this.LastSlide.text();
       this.Interface.$('MessageField').setAttribute('class', 'hide');
       this.Interface.$('MessageField').style.display = 'block';
       setTimeout(() => { this.Interface.$('MessageField').setAttribute('class', 'show'); }, 100);
@@ -16769,7 +16768,7 @@ Game.Scenes.SixPart[17] = new Scene({
 
 Game.Scenes.SixPart[18] = new Scene({
   text: `
-    Ухаживая за таинственной незнакомкой женщина уточнила у своего сына:
+    Ухаживая за таинственной незнакомкой, женщина уточнила у своего сына:
     <p>- От Марка не было весточки? 
     <p>- Нет. Но онерария должна прибыть сегодня к вечеру. Не волнуйся. 
             `,
@@ -16858,7 +16857,7 @@ Game.Scenes.SixPart[25] = new Scene({
 
 Game.Scenes.SixPart[26] = new Scene({
   text: `
-    - И так, очередное перемещение позади. Пора приступать к следующему не менее важному шагу. 
+    - И так, очередное перемещение позади. Пора приступать к следующему важному шагу. 
     <p>- Я готова. 
     <p>- Хорошо, - проводник развел руками, образовывая очертания моего следующего пути. 
             `,
@@ -18109,7 +18108,47 @@ Game.Scenes.SixPart[132] = new Scene({
     () => { Game.Scenes.SixPart[1000].begin()},
     () => { Game.Scenes.SixPart[1000].begin()},
   ],
+});
 
+Game.Scenes.SixPart[133] = new Scene({
+  text: `
+    Я нерешительным жестом указала на Николу, чем вызвала одобрительные хлопки Леонарда и суровый взгляд Роберта. 
+    <p>- Вот так да, - Куртис положил руку на плечо мужа Катарины. - Не расстраивайся. Желание дамы - закон. 
+            `,
+  background: "Persons/Nicola",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[134].begin()}],
+});
+
+Game.Scenes.SixPart[134] = new Scene({
+  text: `
+    Роберт лишь промолчал и забрался на лошадь:
+    <p>- Выдвигаемся, - медленно набирая скорость кинул он напоследок. 
+    <p>Никола, удивленный моим решением, галантно протянул мне руку, помогая забраться на скакуна. 
+            `,
+  background: "Persons/Nicola",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[135].begin()}],
+});
+
+Game.Scenes.SixPart[135] = new Scene({
+  text: `
+    Лучи восходящего солнца окрашивали землю в теплые цвета, придавая окружению живость. Было приятно ощущать прохладу, пришедшую после ночи.
+    <p>Мы скакали по бескрайним прериям, оставляя позади себя только пыль и тишину. В этот момент казалось, что это только наш мир и у нас есть свобода выбирать свой путь. 
+            `,
+  background: "Backgrounds/Horseriding",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[136].begin(); Game.message('Тесла был рад прокатиться с вами'); Game.Stats.Nicola.add(1)}],
+});
+
+Game.Scenes.SixPart[136] = new Scene({
+  text: `
+    Я обняла Николу за талию и наслаждалась легкими порывами ветра. Тесла держался в седле уверенно, но был слишком сосредоточен на дороге. Я буквально чувствовала его напряжение, а перед каждой кочкой он заблаговременно сбавлял скорость и постоянно спрашивал о моем самочувствии. 
+    <p>Это было по-своему мило, хоть и немного чересчур для меня, ведь я не привыкла к такой опеке.  
+            `,
+  background: "Backgrounds/Horseriding",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[1000].begin()}],
 });Game.Stories.push(
   new Story ({
     name: 'Aurora',
