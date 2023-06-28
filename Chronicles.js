@@ -1,5 +1,297 @@
+class Interface {
+  constructor() {
+    this._elements = {};
+    this._init();
+  }
 
-/** Класс достижения*/
+  /**
+   * @param {string} nameSelector
+   * @param {string} name
+   * @param {function=}  clickAction
+   */
+  add(nameSelector,name,clickAction){
+    this._elements[name] = document.querySelector(nameSelector);
+    this._elements[name].onclick = clickAction;
+    return this._elements[name];
+  }
+
+  $(name){
+    return this._elements[name];
+  }
+
+  /**
+   * @param {string} elementClose Имя поля для закрытия
+   * @param {string} elementOpen Имя поля для открытия
+   */
+  closeopen(elementClose, elementOpen){
+    this.$(elementClose).style.display = 'none';
+    this.$(elementOpen).style.display = 'block';
+  }
+
+  _init(){
+    //Все элементы
+
+//Дисклеймер
+    this.add('#PP','PP');
+
+    this.add('#disc','Disclaimer');
+
+    this.add(
+      '#ap',
+      'AcceptPolicyButton',
+      ()=>{
+        localStorage.setItem('PPAccepted','1');
+        window.location.reload();
+      }
+    );
+
+    this.add('#StartGameLoadingProgress','StartGameLoadingProgress');
+
+    this.add('#percent', 'StartGameLoadingPercent');
+
+
+//Поле меню
+
+    this.add('#me','MenuField');
+
+    this.add('#continuebutton','ContinueButton',
+      ()=>{
+        this.closeopen('MenuField','MainField');
+        Game.Sounds.resumeAll();
+      });
+
+    this.add('#lastsavebutton','LastSaveButton');
+
+//Истории и сохранения
+
+    this.add('#stories','StoriesField');
+
+    this.add('#storiesbackbutton', 'StoriesBackButton',
+      () => {
+        this.closeopen('StoriesField','MenuField');
+      });
+
+    this.add('#saves', 'SavesButton',
+      () => {
+        this.closeopen('MenuField','StoriesField')
+      });
+
+    this.add('#partf','PartField');
+
+    this.add('#cf','ChapterField');
+
+//Настройки
+
+    this.add('#sf', 'SettingsField');
+
+    this.add('#settingsb', 'SettingsButton', () => {
+      this.closeopen('MenuField','SettingsField')
+    });
+
+    this.add('#acptsett', 'AcceptSettingsButton', () => {
+      this.closeopen('SettingsField','MenuField');
+      Game.Settings.set();
+    });
+
+    this.add('#SI', 'SoundInput');
+
+    this.add('#AHA', 'AutomatiallyHideAlert');
+
+    this.add('#dsb', 'DeleteSavedButton', () => {
+      localStorage.clear();
+      location.reload();
+    });
+
+//Достижения
+
+    this.add('#achievs', 'AchievementsField');
+
+    this.add('#achb', 'AchievementsButton',
+      () => {
+        this.closeopen('MenuField','AchievementsField');
+        this.$('AchievementsBackButton').onclick = () => {
+          this.closeopen('AchievementsField', 'MenuField')
+        }
+        revealAchievs();
+      });
+
+    this.add('#achbb', 'AchievementsBackButton',
+      () => {
+        this.closeopen('AchievementsField','MenuField')
+      });
+
+    this.add('#achievs_immortals', 'AchievementsImmortals',
+      () => {
+        Achievement.showCategory('Immortals');
+        revealAchievs();
+      });
+
+    this.add('#achievs_aurora', 'AchievementsAurora',
+      () => {
+        Achievement.showCategory('Aurora');
+        revealAchievs();
+      });
+
+    this.add('#achievsamount', 'AchievementsAmount');
+
+    //Создатели
+
+    this.add('#creators', 'CreatorsField');
+
+    this.add('#crb', 'CreatorsButton',
+      () => {
+        this.closeopen('MenuField','CreatorsField');
+      });
+
+    this.add('#cbb', 'CreatorsBackButton',
+      () => {
+        this.closeopen('CreatorsField','MenuField')
+      });
+
+    this.add('#RTemiy', 'RTemiyHiddenButton',
+      () => {
+        this.$('ConsoleField').style.visibility='visible';
+        Game.Achievements.Dev.unlock();
+        uploadProgress();
+      });
+
+    //Фавориты
+
+    this.add('#favours', 'FavouritesField');
+
+    this.add('#favouritesb', 'MenuFavouritesButton', () => {
+      Game.Favourites.addAllPersons();
+      this.closeopen('MenuField','FavouritesField');
+    });
+
+    this.add('#favbb', 'FavouritesBackButton', () => {
+      this.closeopen('FavouritesField','MenuField');
+    });
+
+    this.add('#favcoins', 'FavouriteCoins');
+    this.add('#favavatar', 'FavouriteAvatarContainer');
+    this.add('#favicons', 'FavouritesIcons');
+    this.add('#favlevel', 'FavouriteLevel');
+    this.add('.favavatarimageborder', 'FavouriteBorder');
+    this.add('#favleveltext', 'FavouriteLevelText');
+    this.add('#favlevelprogress', 'FavouriteLevelProgress');
+    this.add('#favlevelprogressbar', 'FavouriteLevelProgressBar');
+    this.add('#favavatarimage', 'FavouritesAvatar');
+    this.add('#favavatarname', 'FavouriteName');
+    this.add('#favtrofy', 'FavouriteTrophies');
+    this.add('#favtrophymes', 'FavouriteTrophiesMessage');
+    this.add('#favtrophymesimg', 'FavouriteTrophiesImage');
+    this.add('#favtrophymestitle', 'FavouriteTrophiesTitle');
+    this.add('#favtrophymestext', 'FavouriteTrophiesText');
+    this.add('#favtrophymesbutton', 'FavouriteTrophiesButton');
+
+    // Загрузочный экран
+
+    this.add('#ls', 'LoadingScreen');
+
+    this.add('#loadback', 'LoadingBack');
+
+    this.add('#loadbackback', 'LoadingBackBack');
+
+    this.add('#loadtip', 'LoadingTip');
+
+    this.add('#loadtext', 'LoadingText');
+
+//Основное поле игры (слайд)
+
+    this.add('#mf', 'MainField');
+
+    this.add('#lsb', 'LastSlideButton',
+      () => {
+        Game.message('',true)
+      });
+
+//Иконки инвентаря
+
+    this.add('#goinv', 'OpenInventoryButton',
+      () => {
+        Achievement.showCategory(localStorage.getItem('LastSave_Design'));
+        this.$('InventoryField').style.display = "flex";
+        this.$('InventoryField').setAttribute('class','fade-in');
+        this.$('OpenInventoryButton').setAttribute('class','');
+      });
+
+    this.add('#goach', 'GoAchievementsButton',
+      () => {
+        this.closeopen('MainField','AchievementsField');
+        this.$('InventoryField').setAttribute('class','fade-out');
+        this.$('AchievementsBackButton').onclick = () => {
+          this.closeopen('AchievementsField', 'MainField');
+        }
+        revealAchievs();
+      });
+
+    this.add('#leaveinv', 'LeaveInventoryButton',
+      () => {
+        this.$('InventoryField').setAttribute('class','fade-out');
+        setTimeout(()=>{
+          this.$('InventoryField').style.display = "none";
+        },1000)
+      });
+
+    this.add('#inv_mes', 'InventoryMessage');
+
+    this.add('#message', 'MessageField');
+
+    this.add('#messagetext', 'MessageText');
+
+    this.add('#pf', 'PictureField');
+
+    this.add('#brf', 'BorderField');
+
+    this.add('#tf', 'TextField');
+
+    this.add('#timerP', 'TimerProgressBar');
+
+    this.add('#bf', 'ButtonField');
+
+//Инвентарь
+
+    this.add('#if', 'InventoryField');
+
+    this.add('#inv', 'Inventory');
+
+    this.add('#atttable', 'AttitudeTableField');
+
+    this.add('#infoi', 'InfoPicture');
+
+    this.add('#infop', 'InfoText');
+
+    this.add('#infot', 'InfoArticle');
+
+    this.add('#backmb', 'BackToMenuButton',
+      () => {
+        this.closeopen('MainField','MenuField');
+        this.$('ContinueButton').style.display="block";
+        this.$('InventoryField').setAttribute(`class`,`fade-out`);
+        Game.Sounds.pauseAll();
+        this.$('LastSaveButton').style.display='none';
+      });
+
+//Dev
+
+    this.add('#consolefield', 'ConsoleField');
+
+    this.add('#console', 'Console');
+
+//Enter on enter
+
+    this.$('Console').addEventListener("keypress", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        eval('Game.' + this.$('Console').value);
+        this.$('Console').value = '';
+      }
+    });
+  }
+
+
+}/** Класс достижения*/
 class Achievement {
 
     /**
@@ -15,6 +307,23 @@ class Achievement {
         this.unlocked = 0;
         this.story = story;
         this._init();
+    }
+
+    /** Показываем определенную категорию достижений
+     * @param {string} Story Код истории
+     */
+    static showCategory (Story){
+        let amount = 0;
+        let completed = 0;
+        for (let prop in Game.Achievements) {
+            if(Game.Achievements[prop].story == Story) {
+                amount++;
+                Game.Achievements[prop].show();
+                if(Game.Achievements[prop].unlocked>=1)completed++;
+                Game.Interface.$('AchievementsAmount').innerHTML = 'Получено достижений ' + completed + '/' + amount;
+            }
+            else Game.Achievements[prop].hide();
+        }
     }
 
     /** Создаём и добавляем элементы на страницу достижений */
@@ -65,578 +374,142 @@ class Achievement {
         this._a.style.display = 'none';
     }
 
-}
-
-/** Класс "отношений" (переменных) на которые могут повлият игроки */
-
-class Stat {
-    /**
-     * @param {string} name Имя или название
-     * @param {number=} attitude Начальное значение
-     * @param {string=} title Краткое описание
-     * @param {string=} text Полное описание
-     * @param {string=} type Тип
-     * @param {string=} picture Картинка
-     * @param {boolean=} show Показать изначально в нивентаре?
-     * @param {string} story История к которой привязан стат
-     * @param {function=} isUnlocked История к которой привязан стат
-     * @param {Trophies=} trophies Трофеи для фаворитов
-     * @param {function=} tapAction Событие при использовании предмета
-     */
-    constructor({
-                    name,
-                    attitude,
-                    title,
-                    text,
-                    type,
-                    picture,
-                    show,
-                    story,
-                    isUnlocked,
-                    trophies,
-                    tapAction
-                }) {
-        this._name = name || '';
-        this._attitude = attitude || 0;
-        this._title = title || '';
-        this._text = text || '';
-        this._picture = picture || '';
-        this._show = show || false;
-        this._story = story;
-        this._tapped = false;
-        this._tapAction = tapAction || undefined;
-        this.score = 5;
-        this.isUnlocked = isUnlocked || function () {return undefined};
-        this.trophies = trophies || undefined;
-        this._createTable();
-    }
-
-    /** Добавляем значение. Если добавили значение к "отношению" и если это не выбор, то он появляется в инвентаре, если предмет, то если равен нулю, то исчезает
-     *  @param {number} v Значение
-     */
-    add(v) {
-        Game.Interface.$('InfoPicture').setAttribute('class', 'hide');
-        Game.Interface.$('InfoText').setAttribute('class','hide');
-        Game.Interface.$('InfoArticle').setAttribute('class','hide');
-        this._show = true;
-        this._attitude += v;
-    }
-
-    /** Устанавливает конкретное значение
-     * @param {number} a Значение
-     */
-    set(a) {
-        this._attitude = a;
-        this.add(0);
-    }
-
-    /** Получаем значение */
-    get get() {
-        return (this._attitude);
-    }
-
-    /** Создаём и добавляем элементы в инвентарь */
-    _createTable() {
-        if (this._picture != '') {
-            this._container = document.createElement('cont');
-            this._container.id = 'atttablecell';
-            this._container.style.display = 'none';
-            this._textinfo = document.createElement('te');
-            this._cell = document.createElement('img');
-            this._container.appendChild(this._cell);
-            this._container.appendChild(this._textinfo);
-            this._cell.src = ROOTPATH+'pictures/' + this._picture + '.png';
-            this._container.addEventListener('click', () => {
-                setTimeout(() => {
-                    Game.Interface.$('InfoPicture').setAttribute('class', 'show');
-                    Game.Interface.$('InfoText').setAttribute('class','show');
-                    Game.Interface.$('InfoArticle').setAttribute('class','show');
-                    }, 0);
-                setTimeout(() => {
-                    Game.Interface.$('InfoPicture').src = ROOTPATH + 'pictures/' + this._picture + '.png';
-                    Game.Interface.$('InfoPicture').setAttribute('class', 'typewriter');
-                    Game.Interface.$('InfoText').setAttribute('class','typewriter');
-                    Game.Interface.$('InfoArticle').setAttribute('class','typewriter');
-                    Game.Interface.$('InfoText').innerHTML = this._title;
-                    Game.Interface.$('InfoArticle').innerHTML = '<hr>' + this._text;
-                    }, 5);
-            });
-            if(this._tapAction) this._container.addEventListener('click', () => { this._handleDoubleTap();});
-        }
-    }
-
-    _handleDoubleTap(){
-        if(this._tapped) this._tapAction();
-        this._tapped = true;
-        setTimeout(()=>{this._tapped = false},600);
-    }
-
-    /** Прячем элемент */
-    hide() {
-        try {
-            this._attitude = 0;
-            this._container.style.display = 'none';
-        }
-        catch (error) {}
-    }
-}
-class Choice extends Stat {
-  add(v) {
-    super.add(v);
-    Game.sendData('выбирает '+this._name+': '+this._attitude);
-  }
-}
-class Design {
-  /**
-   * Изменить оформление
-   * @param {string} Background Фон слайдов
-   * @param {string} Border Рамка для картинки слайда
-   * @param {string} Color Цвет шрифта
-   * @param {string} Font Семейство шрифта
-   * @param {string} Stroke Обводка шрифта
-   */
-    _changeInterface (Background, Border, Color, Font, Stroke){
-    Game.Interface.$('MainField').style.backgroundImage = 'url(pictures/Interface/'+Background+'.png)';
-    Game.Interface.$('BorderField').src = 'pictures/Interface/'+Border+'.png';
-    let Root = document.querySelector(':root');
-    Root.style.setProperty('--simplecolor', Color);
-    Root.style.setProperty('--font', Font);
-    Root.style.setProperty('--stroke', Stroke);
+}class Settings {
+  constructor() {
+    this.automatiallyHideAlert = true;
+    this._volume = 0.7;
+    this.Zoom = 100;
   }
 
-  /** Изменить стиль кнопок
-   *
-   * @param {string} chapter Название Истории
-   */
-  change (chapter){
-    localStorage.setItem('LastSave_Design', chapter);
-    switch (chapter) {
+  /** Устанавливаем все настройки */
+  set () {
+    this.setVolume(Game.Interface.$('SoundInput').value);
+    this.automatiallyHideAlert = Game.Interface.$('AutomatiallyHideAlert').checked;
+    document.body.style.zoom = Game.Settings.Zoom + "%";
 
-      default:
-        this._changeInterface(
-          'back',
-          'border',
-          '#f2daffed',
-          '"Times New Roman", Times, serif',
-          '0'
-        );
-        this._styleButtons(
-          'margin-top: 0',
-          'background-image: url("./pictures/Interface/button.png"); border: 0; box-shadow: 0;'
-        );
-        break;
-
-      case 'Aurora':
-        this._changeInterface(
-          'A_back',
-          'A_border',
-          'white',
-          'Century Gothic Regular',
-          '0'
-        );
-        this._styleButtons(
-          'margin-top: 0',
-          'background-image: url("./pictures/Interface/button.png"); border: 0; box-shadow: 0;'
-        );
-        break;
-
-      case 'AEP':
-        this._changeInterface(
-          'R_back',
-          'R_border',
-          'white',
-          'Courier New',
-          '3px rgba(0, 208, 255, 0.2)'
-        );
-        this._styleButtons(
-          'margin-top: 20px',
-          'background-image: none; border: 1px blue solid; box-shadow: 0 0 5px blue, inset 0 0 5px blue'
-        );
-        break;
-    }
+    localStorage.setItem('Settings.Volume', this._volume);
+    localStorage.setItem('Settings.AHA', this.automatiallyHideAlert);
+    localStorage.setItem('Settings.Zoom', this.Zoom);
   }
 
-  /** Изменить стиль кнопок
-   * @param {string} buttonfieldastyle Стиль поля для кнопок
-   * @param {string} buttonsstyle Стиль каждой кнопки
+  /** Устанавливаем настройки звука */
+  setVolume (a) {
+    this._volume = a;
+    Game.Sounds.NS.volume = this._volume;
+    Game.Sounds.Ambient.volume = this._volume;
+    Game.Sounds.Music.volume = this._volume;
+  }
+
+  getVolume (){
+    return this._volume;
+  }
+
+  /** Загружаем настройки */
+  load () {
+    localStorage.getItem('Settings.AHA' == 'true') ?
+      Game.Interface.$('AutomatiallyHideAlert').checked = true
+      :
+      Game.Interface.$('AutomatiallyHideAlert').checked = false;
+    Game.Interface.$('SoundInput').value = localStorage.getItem('Settings.Volume');
+    this.set();
+  }
+}/** Основные звуки и музыка*/
+class Sounds {
+  constructor() {
+    this.Ambient = new Audio("./sounds/Silence.mp3");
+    this.Music = new Audio("./sounds/Silence.mp3");
+    this.NS = new Audio("./sounds/noti.mp3");
+    this.Cheers = new Audio("./sounds/Completed.mp3");
+  }
+
+  /** Включаем новую музыку
+   * @param {string} type Тип музыки
+   * @param {string} name Название звука
    */
-  _styleButtons (buttonfieldastyle, buttonsstyle) {
-    let Buttons = document.querySelector('#bf');
-    Buttons.style = buttonfieldastyle;
-    Buttons.childNodes.forEach(function (element) {
-      element.style = buttonsstyle;
+  play(type, name){
+    localStorage.setItem('LastSave_MusicName', name);
+    if (Game.Settings.getVolume() != 0) {
+      let x = setInterval(()=>{this[type].volume-=0.1},100);
+      setTimeout(()=>{clearInterval(x)},700);
+    }
+    setTimeout(()=>{
+      this[type].pause();
+      this[type] = new Audio('sounds/' + name + '.mp3');
+      this[type].currentTime = 0;
+      this[type].loop = true;
+      this[type].volume = Game.Settings.getVolume();
+      this[type].play();
+    },800);
+  }
+
+  /** Останавливаем конкретный звук
+   * @param {string} type Тип музыки
+   */
+  stop (type) {
+    this[type].currentTime = 0;
+    this[type].pause();
+    this[type] = new Audio('sounds/Silence.mp3');
+  }
+
+  /** Ставим на паузу все звуки */
+  pauseAll () {
+    this.Ambient.pause();
+    this.Music.pause();
+  }
+
+  /** Воспроизводим все звуки */
+  resumeAll () {
+    this.Ambient.play();
+    this.Music.play();
+  }
+}class Trophies {
+  constructor(...trophies) {
+    this._trophies = trophies;
+  }
+
+  renderTrophies(){
+    Game.Interface.$('FavouriteTrophies').innerText = '';
+    this._trophies.forEach(trophy => {
+      let el = document.createElement('div');
+      el.classList.add('favtrophyel');
+      let img = document.createElement('img');
+      if (trophy.isUnlocked() === false){
+        img.src = './pictures/Items/Lock.png';
+      }
+      else{
+        img.src = './pictures/' + trophy.picture + '.png';
+      }
+
+      el.onclick = () => {
+        Game.Interface.$('FavouriteTrophiesMessage').classList.remove('trophymeshide');
+        Game.Interface.$('FavouriteTrophiesMessage').classList.add('trophymesshow');
+        Game.Interface.$('FavouriteTrophiesImage').src = img.src;
+        Game.Interface.$('FavouriteTrophiesTitle').innerText = trophy.title;
+        Game.Interface.$('FavouriteTrophiesText').innerText = trophy.text;
+        if (trophy.isUnlocked() === true && trophy.action !== undefined) Game.Interface.$('FavouriteTrophiesButton').style.display = 'block';
+        else Game.Interface.$('FavouriteTrophiesButton').style.display = 'none';
+
+        setTimeout(()=>{
+          Game.Interface.$('FavouriteTrophiesMessage').classList.add('trophymeshide');
+          Game.Interface.$('FavouriteTrophiesMessage').classList.remove('trophymesshow');
+        },3000);
+      }
+
+      el.append(img);
+      Game.Interface.$('FavouriteTrophies').append(el);
     });
   }
-}
-class Effects {
-  constructor() {
 
-    /** Эффект вспышки */
-    this.Flash = function () {
-      Game.Interface.$('MainField').setAttribute('class', 'flash');
-      setTimeout(() => {
-        Game.Interface.$('MainField').setAttribute('class', '');
-      }, 5000);
-    }
-
-    /** Эффект диско */
-    this.Disco = function () {
-      Game.Interface.$('PictureField').setAttribute('class', 'disco');
-    }
-
-    /** Эффект диско выключить */
-    this.Disco.Stop = function () {
-      Game.Interface.$('PictureField').setAttribute('class', '');
-    }
-
-    /** Эффект понурости */
-    this.Gray = function () {
-      Game.Interface.$('MainField').setAttribute('class', 'sad');
-    }
-
-    /** Эффект понурости выключить */
-    this.Gray.Stop = function () {
-      Game.Interface.$('MainField').setAttribute('class', '');
-    }
-
-
-    /** Эффект воспоминаний */
-    this.Mem = function() {
-      Game.Interface.$('MainField').setAttribute('class', 'memory');
-    }
-
-    /** Эффект воспоминаний выключить */
-    this.Mem.Stop = function (){
-      Game.Interface.$('MainField').setAttribute('class', '');
-    }
-
-    /** Выключить эффекты */
-    this.DisableAll = function () {
-      this.Gray.Stop();
-      this.Disco.Stop();
-      this.Mem.Stop()
-    }
-
+  getTrophy(name){
+    return this._trophies.find((el) => {
+      if(el.name === name) return el;
+    });
   }
 
-}
-class Engine {
-  constructor() {
-    this.Interface = new Interface();
-    this.Stats = [];
-    this.Stories = [];
-    this.Achievements = {};
-    this.AllAchievs = 0;
-    this.Scenes = {};
-    this.PlayerName = '';
-    this.Timer = new Timer();
-    this.Progress = new Progress();
-    this.Sounds = new Sounds();
-    this.Settings = new Settings();
-    this.Effects = new Effects();
-    this.Design = new Design();
-    this.canShowAds = false;
-    this.LastSave = new Last_Save();
-    this.Minigame = {};
-    this.LastSlide = new Last_Slide();
-    this.Favourites = new Favourites();
+  unlock(name){
+    localStorage.setItem('Trophy_' + this.getTrophy(name).name, '1');
   }
-
-  /** Прячем любые статы*/
-  hideAllAttitudes () {
-    for (let prop in this.Stats) {
-      this.Stats[prop]._show = false;
-      this.Stats[prop].hide();
-    }
-    this.Interface.$('InfoText').innerHTML='';
-    this.Interface.$('InfoArticle').innerHTML='';
-    this.Interface.$('InfoPicture').src=ROOTPATH +'pictures/Interface/Unknown.png';
-    this.Interface.$('MessageField').setAttribute('class', 'hide');
-    this.Interface.$('MessageField').style.display = 'none';
-  }
-
-  /** Показываем определенную категорию достижений
-   * @param {string} Story Код истории
-   */
-  showCategoryAchievements (Story){
-    let amount = 0;
-    let completed = 0;
-    for (let prop in this.Achievements) {
-      if(this.Achievements[prop].story == Story) {
-        amount++;
-        this.Achievements[prop].show();
-        if(this.Achievements[prop].unlocked>=1)completed++;
-        this.Interface.$('AchievementsAmount').innerHTML = 'Получено достижений ' + completed + '/' + amount;
-      }
-      else this.Achievements[prop].hide();
-    }
-  }
-
-  /**
-   * Узнать имя Главного героя
-   * @param {function} action Действие после окончания
-   */
-  askName (action) {
-    this.checkname = () => {
-      this.name = this.input.value;
-      if (this.name.length <= 1) this.text.innerText = 'Не менее 2 символов!';
-      else if (this.name.length >= 15) this.text.innerText = 'Максимум 15 символов!';
-      else if (!/^[а-яё]*$/i.test(this.name)) this.text.innerText = 'Только русские буквы!';
-      else {
-        this.PlayerName = this.name;
-        this.action();
-        this.Interface.$('MainField').style.display = 'block';
-        this.im.remove();
-        this.sendData('устанавливает новое имя');
-        localStorage.setItem('PlayerName',this.PlayerName);
-      }
-    };
-    this.Interface.$('MainField').style.display = 'none';
-    this.action = action;
-    this.im = document.createElement('im');
-    this.text = document.createElement('p');
-    this.text.innerText = 'Как меня зовут?'
-    this.input = document.createElement('input');
-    this.button = document.createElement('button');
-    this.button.innerHTML = 'Принять';
-    this.button.onclick = this.checkname;
-    document.body.appendChild(this.im);
-    this.im.appendChild(this.text);
-    this.im.appendChild(this.input);
-    this.im.appendChild(this.button);
-  }
-
-  /** После старта проверяем были ли приняты правила, а также устанавливаем настройки */
-  launch () {
-    document.addEventListener('contextmenu', event => event.preventDefault());
-    if (localStorage.getItem('PPAccepted') !='1') {
-      this.Interface.$('PP').style.display='block';
-      this.Interface.$('Disclaimer').style.display='none';
-      this.Interface.$('MenuField').style.visibility='hidden';
-      localStorage.setItem('Settings.FirstLaunch', 'false');
-      this.Settings.set();
-    }
-    else {
-      this.sendData('запускает игру');
-      this.Settings.load();
-      this.Progress.loadAchievements();
-      this.setScenesNumbers();
-      this.showCategoryAchievements('Immortals');
-      this.LastSave.checkLastLoad();
-      this.initFavourites();
-      this.loadPictures(() => {
-        this.Interface.$('StartGameLoadingProgress').setAttribute('class', 'fade-out');
-        this.Interface.$('StartGameLoadingPercent').setAttribute('class', 'fade-out');
-        setTimeout(() => {
-          document.getElementsByTagName('disc')[0].setAttribute('class', 'fade-out');
-          setTimeout(() => {
-            document.getElementsByTagName('disc')[0].style.display='none';
-            this.Interface.$('MenuField').style.display='block';
-          }, 1000);
-        }, 1000);
-      });
-    }
-  }
-
-  /**
-   * Загрузочный экран
-   * @param {string} part Код части
-   */
-  LoadScreen (part) {
-    localStorage.setItem('LastSave_LS', part);
-    this.LastSlide.refresh();
-    setTimeout(() => {
-      this.Interface.$('LoadingTip').innerHTML = '';
-      this.Interface.$('LoadingBack').src = '';
-      if (part == undefined) part = 'chapter';
-      this.Interface.$('LoadingBack').src = 'pictures/Covers/' + part + '.png';
-      this.Interface.$('LoadingBackBack').src = 'pictures/Covers/' + part + '.png';
-      this.Interface.$('LoadingScreen').style.zIndex = '3';
-      setTimeout(() => {
-        this.Interface.$('PartField').innerHTML = '';
-        this.Interface.$('PartField').style.display = 'none';
-        this.Interface.$('MainField').setAttribute('class', 'hide');
-        setTimeout(()=>{
-          this.Interface.$('LoadingScreen').style.display = 'block';
-          this.Interface.$('LoadingScreen').setAttribute('class', 'show');
-          this.Interface.$('MainField').style.display = "none";
-        },1000)
-
-        setTimeout(() => {
-          this.Interface.$('LoadingTip').innerHTML = '<p class="fade-ina">Нажмите, чтобы продолжить';
-          this.Interface.$('LoadingScreen').onclick = () => {
-            AndroidApp ('showAd');
-            setTimeout(() => { this.Interface.$('LoadingScreen').setAttribute('class', 'hide'); }, 1000);
-            setTimeout(() => {
-              this.Interface.$('LoadingScreen').style.display = 'none';
-              this.Interface.$('MainField').setAttribute('class', 'show');
-              this.Interface.$('MainField').style.display = "block";
-            }, 2000);
-            this.Interface.$('LoadingScreen').onclick = () => { }
-          }
-        }, 6000);
-      }, 0);
-    }, 0);
-  }
-
-  /**
-   * @param {string|undefined} text Текст сообщения
-   * @param {boolean|undefined=} isSlide Является ли показом предыдущего слайда?
-   */
-  message (text, isSlide) {
-    if (isSlide){
-      this.Interface.$('MessageText').innerHTML = this.LastSlide.text();
-      this.Interface.$('MessageField').setAttribute('class', 'hide');
-      this.Interface.$('MessageField').style.display = 'block';
-      setTimeout(() => { this.Interface.$('MessageField').setAttribute('class', 'show'); }, 100);
-    }
-    else{
-      setTimeout(() => { this.Interface.$('MessageField').setAttribute('class', 'slide-in-right'); }, 0);
-      setTimeout(() => { this.Interface.$('MessageField').style.display = 'block'; }, 100);
-      this.Sounds.NS.play();
-    }
-    this.hideelem = () => {
-      this.Interface.$('MessageField').setAttribute('class', 'slide-out-right');
-      setTimeout(() => {
-        this.Interface.$('MessageField').style.display = 'none';
-      }, 1000);
-    }
-
-    clearTimeout(timer);
-
-    this.Interface.$('MessageField').onclick = this.hideelem;
-
-    if (this.Settings.automatiallyHideAlert == true) var timer = setTimeout(() => {
-      this.Interface.$('MessageField').setAttribute('class', 'slide-out-right');
-      setTimeout(() => {
-        this.Interface.$('MessageField').style.display = 'none';
-      }, 1000);
-    }, 5000);
-    this.Interface.$('MessageText').innerHTML = text.replace("$Имя Игрока$", this.PlayerName);
-  }
-
-  /** @param {string} text Текст особого сообщения */
-  inventoryMessage (text){
-    this.Interface.$('InventoryMessage').innerHTML = '<a>'+"⠀"+text;
-    this.Interface.$('InventoryMessage').setAttribute('class','inv_mes_show');
-    setTimeout(()=>{this.Interface.$('InventoryMessage').setAttribute('class','');},3000)
-  }
-
-  /**
-   * Загружаем картинки и убираем повторы
-   * @param {function} callback Вызываем следующие функции по завершению загрузки
-   */
-  loadPictures (callback) {
-    let pictures = [];
-    let picturesTotal = 0;
-    let picturesLoaded = 0;
-    const queuePictures = a => {
-      pictures[x] = document.createElement('img');
-      pictures[x].style.display='none';
-      pictures[x].src = ROOTPATH + 'pictures/' + a + ".png";
-      document.body.appendChild(pictures[x]);
-      picturesTotal++;
-      pictures[x].onload = () => {
-        picturesLoaded++;
-        this.Interface.$('StartGameLoadingProgress').setAttribute('value', picturesLoaded);
-        this.Interface.$('StartGameLoadingPercent').innerText = Math.floor(picturesLoaded/imagesPrechached.length*100) + '%';
-        if(imagesPrechached[picturesLoaded] == undefined){}
-        else {
-          queuePictures(imagesPrechached[picturesLoaded]);
-        }
-      }
-    }
-
-    for (let prop in this.Scenes) {
-      for (var x = 0; x < this.Scenes[prop].length; x++) {
-        if (this.Scenes[prop][x] == undefined || this.Scenes[prop][x].background == '') { }
-        else imagesPrechached.push(this.Scenes[prop][x].background);
-      }
-    }
-
-    for (let prop in this.Stats) {
-      if (this.Stats[prop].picture == undefined || this.Stats[prop].picture == '') { }
-      else imagesPrechached.push(this.Stats[prop].picture);
-    }
-
-    for (var x = 0; x < this.Stories.length; x++) {
-      imagesPrechached.push(this.Stories[x].pict);
-      for (var y = 0; y < this.Stories[x].chapters.length; y++) {
-        imagesPrechached.push(this.Stories[x].chapters[y].pict);
-        for (var z = 0; z < this.Stories[x].chapters[y].parts.length; z++) {
-          imagesPrechached.push(this.Stories[x].chapters[y].parts[z].pict);
-          imagesPrechached.push('Covers/'+this.Stories[x].chapters[y].parts[z].code);
-        }
-      }
-    }
-    imagesPrechached = [...new Set(imagesPrechached)];
-
-    imagesPrechached.sort();
-
-    queuePictures(imagesPrechached[0]);
-
-    this.Interface.$('StartGameLoadingProgress').setAttribute('max', imagesPrechached.length);
-
-    this.checkTotalLoadedPictures = function () {
-      imagesPrechached.length == picturesLoaded ? callback() : setTimeout(() => { this.checkTotalLoadedPictures(); }, 1000);
-    }
-
-    this.checkTotalLoadedPictures();
-  }
-
-  initFavourites(){
-  /*  Game.Progress.loadFavourites();
-    Game.Favourites.checkDates();
-    Game.Progress.saveFavourites();*/
-  }
-
-  /** Присвоение номера сцене в зависимости от индекса массива*/
-  setScenesNumbers (){
-    for (let prop in this.Scenes) {
-      for (let x = 0; x < this.Scenes[prop].length; x++) {
-        if(this.Scenes[prop][x] != undefined) {
-          this.Scenes[prop][x].number = x;
-          this.Scenes[prop][x].part = prop;
-        }
-      }
-    }
-  }
-
-  /** Заполняем форму и отправляем данные*/
-  sendData (a) {
-    let today = new Date();
-    let dd = String(today.getDate()).padStart(2, '0');
-    let mm = String(today.getMonth() + 1).padStart(2, '0');
-    let yyyy = today.getFullYear();
-    let nowtime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    today = dd + '.' + mm + '.' + yyyy;
-
-    form.PlayerName.value = localStorage.getItem('PlayerName');
-    form.Date.value = today;
-    form.Action.value = a;
-    form.Time.value = nowtime;
-    form.Region.value = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    form.button.click();
-  }
-
-  /** Показываем сцены для тестирования  */
-  showMeFeatures () {
-    this.Scenes.Features[0].begin();
-  }
-
-  /** Показывает сообщение о количесве занимаеймой внутренней памяти*/
-  usedMemory (){
-    let allStrings = '';
-    for(let key in window.localStorage){
-      if(window.localStorage.hasOwnProperty(key)){
-        allStrings += window.localStorage[key];
-      }
-    }
-    console.log(Math.floor(3 + ((allStrings.length*16)/(8*1024))) + 'кб использовано');
-  }
-
-}
-/** Менеджер меню фаворитов*/
+}/** Менеджер меню фаворитов*/
 class Favourites{
   constructor() {
     this._coins = 0;
@@ -862,308 +735,141 @@ class Favourites{
     return Math.floor(Game.Stats[name].score / 5);
   }
 }
-class Interface {
-  constructor() {
-    this._elements = {};
-    this._init();
-  }
+/** Класс "отношений" (переменных) на которые могут повлият игроки */
 
-  /**
-   * @param {string} nameSelector
-   * @param {string} name
-   * @param {function=}  clickAction
-   */
-  add(nameSelector,name,clickAction){
-    this._elements[name] = document.querySelector(nameSelector);
-    this._elements[name].onclick = clickAction;
-    return this._elements[name];
-  }
+class Stat {
+    /**
+     * @param {string} name Имя или название
+     * @param {number=} attitude Начальное значение
+     * @param {string=} title Краткое описание
+     * @param {string=} text Полное описание
+     * @param {string=} type Тип
+     * @param {string=} picture Картинка
+     * @param {boolean=} show Показать изначально в нивентаре?
+     * @param {string} story История к которой привязан стат
+     * @param {function=} isUnlocked История к которой привязан стат
+     * @param {Trophies=} trophies Трофеи для фаворитов
+     * @param {function=} tapAction Событие при использовании предмета
+     */
+    constructor({
+                    name,
+                    attitude,
+                    title,
+                    text,
+                    type,
+                    picture,
+                    show,
+                    story,
+                    isUnlocked,
+                    trophies,
+                    tapAction
+                }) {
+        this._name = name || '';
+        this.attitude = attitude || 0;
+        this._title = title || '';
+        this._text = text || '';
+        this._picture = picture || '';
+        this._show = show || false;
+        this._story = story;
+        this._tapped = false;
+        this._tapAction = tapAction || undefined;
+        this.score = 5;
+        this.isUnlocked = isUnlocked || function () {return undefined};
+        this.trophies = trophies || undefined;
+        this._createTable();
+    }
 
-  $(name){
-    return this._elements[name];
-  }
-
-  /**
-   * @param {string} elementClose Имя поля для закрытия
-   * @param {string} elementOpen Имя поля для открытия
-   */
-  closeopen(elementClose, elementOpen){
-    this.$(elementClose).style.display = 'none';
-    this.$(elementOpen).style.display = 'block';
-  }
-
-  _init(){
-    //Все элементы
-
-//Дисклеймер
-    this.add('#PP','PP');
-
-    this.add('#disc','Disclaimer');
-
-    this.add(
-      '#ap',
-      'AcceptPolicyButton',
-      ()=>{
-        localStorage.setItem('PPAccepted','1');
-        window.location.reload();
-      }
-    );
-
-    this.add('#StartGameLoadingProgress','StartGameLoadingProgress');
-
-    this.add('#percent', 'StartGameLoadingPercent');
-
-
-//Поле меню
-
-    this.add('#me','MenuField');
-
-    this.add('#continuebutton','ContinueButton',
-      ()=>{
-        this.closeopen('MenuField','MainField');
-        Game.Sounds.resumeAll();
-      });
-
-    this.add('#lastsavebutton','LastSaveButton');
-
-//Истории и сохранения
-
-    this.add('#stories','StoriesField');
-
-    this.add('#storiesbackbutton', 'StoriesBackButton',
-      () => {
-        this.closeopen('StoriesField','MenuField');
-      });
-
-    this.add('#saves', 'SavesButton',
-      () => {
-        this.closeopen('MenuField','StoriesField')
-      });
-
-    this.add('#partf','PartField');
-
-    this.add('#cf','ChapterField');
-
-//Настройки
-
-    this.add('#sf', 'SettingsField');
-
-    this.add('#settingsb', 'SettingsButton', () => {
-      this.closeopen('MenuField','SettingsField')
-    });
-
-    this.add('#acptsett', 'AcceptSettingsButton', () => {
-      this.closeopen('SettingsField','MenuField');
-      Game.Settings.set();
-    });
-
-    this.add('#SI', 'SoundInput');
-
-    this.add('#AHA', 'AutomatiallyHideAlert');
-
-    this.add('#dsb', 'DeleteSavedButton', () => {
-      localStorage.clear();
-      location.reload();
-    });
-
-//Достижения
-
-    this.add('#achievs', 'AchievementsField');
-
-    this.add('#achb', 'AchievementsButton',
-      () => {
-        this.closeopen('MenuField','AchievementsField');
-        this.$('AchievementsBackButton').onclick = () => {
-          this.closeopen('AchievementsField', 'MenuField')
+    static hideAll(){
+        for(let obj in Game.Stats){
+            Game.Stats[obj].hide();
+            Game.Stats[obj]._show = false;
         }
-        revealAchievs();
-      });
+        Game.Interface.$('InfoText').innerHTML='';
+        Game.Interface.$('InfoArticle').innerHTML='';
+        Game.Interface.$('InfoPicture').src=ROOTPATH +'pictures/Interface/Unknown.png';
+        Game.Interface.$('MessageField').setAttribute('class', 'hide');
+        Game.Interface.$('MessageField').style.display = 'none';
+    }
 
-    this.add('#achbb', 'AchievementsBackButton',
-      () => {
-        this.closeopen('AchievementsField','MenuField')
-      });
+    /** Добавляем значение. Если добавили значение к "отношению" и если это не выбор, то он появляется в инвентаре, если предмет, то если равен нулю, то исчезает
+     *  @param {number} v Значение
+     */
+    add(v) {
+        Game.Interface.$('InfoPicture').setAttribute('class', 'hide');
+        Game.Interface.$('InfoText').setAttribute('class','hide');
+        Game.Interface.$('InfoArticle').setAttribute('class','hide');
+        this._show = true;
+        this.attitude += v;
+    }
 
-    this.add('#achievs_immortals', 'AchievementsImmortals',
-      () => {
-        Game.showCategoryAchievements('Immortals');
-        revealAchievs();
-      });
+    /** Устанавливает конкретное значение
+     * @param {number} a Значение
+     */
+    set(a) {
+        this.attitude = a;
+        this.add(0);
+    }
 
-    this.add('#achievs_aurora', 'AchievementsAurora',
-      () => {
-        Game.showCategoryAchievements('Aurora');
-        revealAchievs();
-      });
+    /** Получаем значение */
+    get get() {
+        return (this.attitude);
+    }
 
-    this.add('#achievsamount', 'AchievementsAmount');
-
-    //Создатели
-
-    this.add('#creators', 'CreatorsField');
-
-    this.add('#crb', 'CreatorsButton',
-      () => {
-        this.closeopen('MenuField','CreatorsField');
-      });
-
-    this.add('#cbb', 'CreatorsBackButton',
-      () => {
-        this.closeopen('CreatorsField','MenuField')
-      });
-
-    this.add('#RTemiy', 'RTemiyHiddenButton',
-      () => {
-        this.$('ConsoleField').style.visibility='visible';
-        Game.Achievements.Dev.unlock();
-        uploadProgress();
-      });
-
-    //Фавориты
-
-    this.add('#favours', 'FavouritesField');
-
-    this.add('#favouritesb', 'MenuFavouritesButton', () => {
-      Game.Favourites.addAllPersons();
-      this.closeopen('MenuField','FavouritesField');
-    });
-
-    this.add('#favbb', 'FavouritesBackButton', () => {
-      this.closeopen('FavouritesField','MenuField');
-    });
-
-    this.add('#favcoins', 'FavouriteCoins');
-    this.add('#favavatar', 'FavouriteAvatarContainer');
-    this.add('#favicons', 'FavouritesIcons');
-    this.add('#favlevel', 'FavouriteLevel');
-    this.add('.favavatarimageborder', 'FavouriteBorder');
-    this.add('#favleveltext', 'FavouriteLevelText');
-    this.add('#favlevelprogress', 'FavouriteLevelProgress');
-    this.add('#favlevelprogressbar', 'FavouriteLevelProgressBar');
-    this.add('#favavatarimage', 'FavouritesAvatar');
-    this.add('#favavatarname', 'FavouriteName');
-    this.add('#favtrofy', 'FavouriteTrophies');
-    this.add('#favtrophymes', 'FavouriteTrophiesMessage');
-    this.add('#favtrophymesimg', 'FavouriteTrophiesImage');
-    this.add('#favtrophymestitle', 'FavouriteTrophiesTitle');
-    this.add('#favtrophymestext', 'FavouriteTrophiesText');
-    this.add('#favtrophymesbutton', 'FavouriteTrophiesButton');
-
-    // Загрузочный экран
-
-    this.add('#ls', 'LoadingScreen');
-
-    this.add('#loadback', 'LoadingBack');
-
-    this.add('#loadbackback', 'LoadingBackBack');
-
-    this.add('#loadtip', 'LoadingTip');
-
-    this.add('#loadtext', 'LoadingText');
-
-//Основное поле игры (слайд)
-
-    this.add('#mf', 'MainField');
-
-    this.add('#lsb', 'LastSlideButton',
-      () => {
-        Game.message('',true)
-      });
-
-//Иконки инвентаря
-
-    this.add('#goinv', 'OpenInventoryButton',
-      () => {
-        Game.showCategoryAchievements(localStorage.getItem('LastSave_Design'));
-        this.$('InventoryField').style.display = "flex";
-        this.$('InventoryField').setAttribute('class','fade-in');
-        this.$('OpenInventoryButton').setAttribute('class','');
-      });
-
-    this.add('#goach', 'GoAchievementsButton',
-      () => {
-        this.closeopen('MainField','AchievementsField');
-        this.$('InventoryField').setAttribute('class','fade-out');
-        this.$('AchievementsBackButton').onclick = () => {
-          this.closeopen('AchievementsField', 'MainField');
+    /** Создаём и добавляем элементы в инвентарь */
+    _createTable() {
+        if (this._picture != '') {
+            this._container = document.createElement('cont');
+            this._container.id = 'atttablecell';
+            this._container.style.display = 'none';
+            this._textinfo = document.createElement('te');
+            this._cell = document.createElement('img');
+            this._container.appendChild(this._cell);
+            this._container.appendChild(this._textinfo);
+            this._cell.src = ROOTPATH+'pictures/' + this._picture + '.png';
+            this._container.addEventListener('click', () => {
+                    Game.Interface.$('InfoPicture').setAttribute('class', 'typewriter-out');
+                    Game.Interface.$('InfoText').setAttribute('class','typewriter-out');
+                    Game.Interface.$('InfoArticle').setAttribute('class','typewriter-out');
+                    setTimeout(() => {
+                        Game.Interface.$('InfoPicture').src = ROOTPATH + 'pictures/' + this._picture + '.png';
+                        Game.Interface.$('InfoPicture').setAttribute('class', 'typewriter');
+                        Game.Interface.$('InfoText').setAttribute('class','typewriter');
+                        Game.Interface.$('InfoArticle').setAttribute('class','typewriter');
+                        Game.Interface.$('InfoText').innerHTML = this._title;
+                        Game.Interface.$('InfoArticle').innerHTML = '<hr>' + this._text;
+                        }, 1000);
+            });
+            this._tapAction ? this._container.addEventListener('click', () => {this._handleDoubleTap()}) : {}
         }
-        revealAchievs();
-      });
+    }
 
-    this.add('#leaveinv', 'LeaveInventoryButton',
-      () => {
-        this.$('InventoryField').setAttribute('class','fade-out');
-        setTimeout(()=>{
-          this.$('InventoryField').style.display = "none";
-        },1000)
-      });
+    _handleDoubleTap(){
+        if(this._tapped) this._tapAction();
+        this._tapped = true;
+        setTimeout(()=>{this._tapped = false},600);
+    }
 
-    this.add('#inv_mes', 'InventoryMessage');
-
-    this.add('#message', 'MessageField');
-
-    this.add('#messagetext', 'MessageText');
-
-    this.add('#pf', 'PictureField');
-
-    this.add('#brf', 'BorderField');
-
-    this.add('#tf', 'TextField');
-
-    this.add('#timerP', 'TimerProgressBar');
-
-    this.add('#bf', 'ButtonField');
-
-//Инвентарь
-
-    this.add('#if', 'InventoryField');
-
-    this.add('#inv', 'Inventory');
-
-    this.add('#atttable', 'AttitudeTableField');
-
-    this.add('#infoi', 'InfoPicture');
-
-    this.add('#infop', 'InfoText');
-
-    this.add('#infot', 'InfoArticle');
-
-    this.add('#backmb', 'BackToMenuButton',
-      () => {
-        this.closeopen('MainField','MenuField');
-        this.$('ContinueButton').style.display="block";
-        this.$('InventoryField').setAttribute(`class`,`fade-out`);
-        Game.Sounds.pauseAll();
-        this.$('LastSaveButton').style.display='none';
-      });
-
-//Dev
-
-    this.add('#consolefield', 'ConsoleField');
-
-    this.add('#console', 'Console');
-
-//Enter on enter
-
-    this.$('Console').addEventListener("keypress", function (event) {
-      if (event.key === "Enter") {
-        event.preventDefault();
-        eval('Game.' + this.$('Console').value);
-        this.$('Console').value = '';
-      }
-    });
+    /** Прячем элемент */
+    hide() {
+        try {
+            this.attitude = 0;
+            this._container.style.display = 'none';
+        }
+        catch (error) {}
+    }
+}class Choice extends Stat {
+  add(v) {
+    super.add(v);
+    Game.sendData('выбирает '+this._name+': '+this.attitude);
   }
-
-
-}
-class Item extends Stat {
+}class Item extends Stat {
 
   add(v) {
     super.add(v);
     this._container.style.display = 'inline-block';
     Game.Interface.$('OpenInventoryButton').setAttribute('class', 'blink');
     this._setAmount();
-    if (this._attitude <= 0) this._container.style.display = 'none';
+    if (this.attitude <= 0) this._container.style.display = 'none';
   }
 
   _createTable() {
@@ -1174,15 +880,256 @@ class Item extends Stat {
 
   /** Обновляем количество */
   _setAmount() {
-    if(this._attitude>=2) {
-      this._textinfo.innerHTML = '<amount>' + this._attitude + '</amount><a>' + this._name;
+    if(this.attitude>=2) {
+      this._textinfo.innerHTML = '<amount>' + this.attitude + '</amount><a>' + this._name;
     }
     else{
       this._textinfo.innerHTML = '<amount>' + '</amount><a>' + this._name;
     }
   }
 
+}class Person extends Stat {
+
+  add(v) {
+    super.add(v);
+    this._container.style.display = 'inline-block';
+    Game.Interface.$('OpenInventoryButton').setAttribute('class', 'blink');
+    this._setEmoji();
+  }
+
+  _createTable() {
+    super._createTable();
+    this._cell.id = 'atttablecellpict';
+    Game.Interface.$('AttitudeTableField').appendChild(this._container);
+  }
+
+  /** Устанавливаем эмодзи рядом с иконкой */
+  _setEmoji() {
+    this._textinfo.innerHTML = '<emoji>'+ this.attitude + '</emoji><a>' + this._name
+    /*this._attitude <= -1 ? this._textinfo.innerHTML = '<emoji>🙁</emoji><a>' + this._name :
+
+      this._attitude == 0 ? this._textinfo.innerHTML = '<emoji>😶</emoji><a>' + this._name :
+
+        this._attitude >= 10 ? this._textinfo.innerHTML = '<emoji>🥰</emoji><a>' + this._name :
+
+          this._attitude >= 6 ? this._textinfo.innerHTML = '<emoji>😏</emoji><a>' + this._name :
+
+            this._attitude >= 1 ? this._textinfo.innerHTML = '<emoji>😌</emoji><a>' + this._name :
+
+              {}*/
+  }
+
+}class Design {
+  /**
+   * Изменить оформление
+   * @param {string} Background Фон слайдов
+   * @param {string} Border Рамка для картинки слайда
+   * @param {string} Color Цвет шрифта
+   * @param {string} Font Семейство шрифта
+   * @param {string} Stroke Обводка шрифта
+   */
+    _changeInterface (Background, Border, Color, Font, Stroke){
+    Game.Interface.$('MainField').style.backgroundImage = 'url(pictures/Interface/'+Background+'.png)';
+    Game.Interface.$('BorderField').src = 'pictures/Interface/'+Border+'.png';
+    let Root = document.querySelector(':root');
+    Root.style.setProperty('--simplecolor', Color);
+    Root.style.setProperty('--font', Font);
+    Root.style.setProperty('--stroke', Stroke);
+  }
+
+  /** Изменить стиль кнопок
+   *
+   * @param {string} chapter Название Истории
+   */
+  change (chapter){
+    localStorage.setItem('LastSave_Design', chapter);
+    switch (chapter) {
+
+      default:
+        this._changeInterface(
+          'back',
+          'border',
+          '#f2daffed',
+          '"Times New Roman", Times, serif',
+          '0'
+        );
+        this._styleButtons(
+          'margin-top: 0',
+          'background-image: url("./pictures/Interface/button.png"); border: 0; box-shadow: 0;'
+        );
+        break;
+
+      case 'Aurora':
+        this._changeInterface(
+          'A_back',
+          'A_border',
+          'white',
+          'Century Gothic Regular',
+          '0'
+        );
+        this._styleButtons(
+          'margin-top: 0',
+          'background-image: url("./pictures/Interface/button.png"); border: 0; box-shadow: 0;'
+        );
+        break;
+
+      case 'AEP':
+        this._changeInterface(
+          'R_back',
+          'R_border',
+          'white',
+          'Courier New',
+          '3px rgba(0, 208, 255, 0.2)'
+        );
+        this._styleButtons(
+          'margin-top: 20px',
+          'background-image: none; border: 1px blue solid; box-shadow: 0 0 5px blue, inset 0 0 5px blue'
+        );
+        break;
+    }
+  }
+
+  /** Изменить стиль кнопок
+   * @param {string} buttonfieldastyle Стиль поля для кнопок
+   * @param {string} buttonsstyle Стиль каждой кнопки
+   */
+  _styleButtons (buttonfieldastyle, buttonsstyle) {
+    let Buttons = document.querySelector('#bf');
+    Buttons.style = buttonfieldastyle;
+    Buttons.childNodes.forEach(function (element) {
+      element.style = buttonsstyle;
+    });
+  }
+}class Effects {
+  constructor() {
+
+    /** Эффект вспышки */
+    this.Flash = function () {
+      Game.Interface.$('MainField').setAttribute('class', 'flash');
+      setTimeout(() => {
+        Game.Interface.$('MainField').setAttribute('class', '');
+      }, 5000);
+    }
+
+    /** Эффект диско */
+    this.Disco = function () {
+      Game.Interface.$('PictureField').setAttribute('class', 'disco');
+    }
+
+    /** Эффект диско выключить */
+    this.Disco.Stop = function () {
+      Game.Interface.$('PictureField').setAttribute('class', '');
+    }
+
+    /** Эффект понурости */
+    this.Gray = function () {
+      Game.Interface.$('MainField').setAttribute('class', 'sad');
+    }
+
+    /** Эффект понурости выключить */
+    this.Gray.Stop = function () {
+      Game.Interface.$('MainField').setAttribute('class', '');
+    }
+
+
+    /** Эффект воспоминаний */
+    this.Mem = function() {
+      Game.Interface.$('MainField').setAttribute('class', 'memory');
+    }
+
+    /** Эффект воспоминаний выключить */
+    this.Mem.Stop = function (){
+      Game.Interface.$('MainField').setAttribute('class', '');
+    }
+
+    /** Выключить эффекты */
+    this.DisableAll = function () {
+      this.Gray.Stop();
+      this.Disco.Stop();
+      this.Mem.Stop()
+    }
+
+  }
+
+}class Progress {
+  /**
+   * Сохранение прогресса
+   * @param {string} code Код сохранения части
+   */
+  save (code) {
+    if(Game.PlayerName!=undefined || Game.PlayerName!=''){
+      localStorage.setItem('PlayerName', Game.PlayerName);
+    }
+    localStorage.setItem(code+'_Played', '1');
+
+    let story = localStorage.getItem('LastSave_Design');
+    for (let prop in Game.Stats) {
+      if (Game.Stats[prop]._story == story) {
+        localStorage.setItem(code + '_' + prop + "_show", Game.Stats[prop]._show);
+        localStorage.setItem(code + '_' + prop, Game.Stats[prop].attitude);
+      }
+    }
+  }
+
+  /**
+   * Загрузка прогресса
+   * @param {string} code Код загрузки части
+   */
+  load (code) {
+    Stat.hideAll();
+    let story = localStorage.getItem('LastSave_Design');
+    if(localStorage.getItem('PlayerName')!='' || localStorage.getItem('PlayerName')!=null){
+      Game.PlayerName = localStorage.getItem('PlayerName');
+    }
+    for (let prop in Game.Stats) {
+      if (Game.Stats[prop]._story == story) {
+        if (localStorage.getItem(code + "_" + prop + '_show') == 'true') Game.Stats[prop].set(parseInt(localStorage.getItem(code + "_" + prop)));
+      }
+    }
+  }
+
+  /** Сохраниение достижений*/
+  saveAchievements () {
+    for (let prop in Game.Achievements) {
+      localStorage.setItem('Achievement_' + prop, Game.Achievements[prop].unlocked);
+    }
+  }
+
+  /** Загрузка достижений*/
+  loadAchievements () {
+    for (let prop in Game.Achievements) {
+      Game.AllAchievs++;
+      if (localStorage.getItem('Achievement_' + prop) == '1') {
+        Game.Achievements[prop].unlocked = 1;
+      }
+    }
+    for (let prop in Game.Achievements) {
+      if (Game.Achievements[prop].unlocked == 1) Game.Achievements[prop].unlock();
+    }
+  }
+
+  saveFavourites(){
+    for (let prop in Game.Stats) {
+      if (Game.Stats[prop] instanceof Person) {
+        localStorage.setItem('Fav_' + prop + "_score", Game.Stats[prop].score);
+      }
+    }
+    localStorage.setItem('Fav_coins', Game.Favourites._coins);
+    localStorage.setItem('Fav_coinsDate', Game.Favourites.lastGotCoins);
+  }
+
+  loadFavourites(){
+    for (let prop in Game.Stats) {
+      if (Game.Stats[prop] instanceof Person) {
+        if(localStorage.getItem('Fav_' + prop + "_score") === null) Game.Stats[prop].score = 5;
+          else Game.Stats[prop].score = parseInt(localStorage.getItem('Fav_' + prop + "_score"));
+      }
+    }
+    localStorage.getItem('Fav_coins') === null ? Game.Favourites._coins = 0 : Game.Favourites._coins = parseInt(localStorage.getItem('Fav_coins'));
+    localStorage.getItem('Fav_coinsDate') === null ? Game.Favourites.lastGotCoins = new Date() : Game.Favourites.lastGotCoins = localStorage.getItem('Fav_coinsDate');
+  }
 }
+
 class Last_Save {
   save (scene){
     Game.Progress.save('LastSave');
@@ -1211,8 +1158,7 @@ class Last_Save {
       Game.Interface.$('LastSaveButton').style.display='none';
     }
   }
-}
-class Last_Slide {
+}class Last_Slide {
   constructor() {
     this.slides = [];
   }
@@ -1235,344 +1181,7 @@ class Last_Slide {
   refresh(){
     this.slides = [];
   }
-}
-class Person extends Stat {
-
-  add(v) {
-    super.add(v);
-    this._container.style.display = 'inline-block';
-    Game.Interface.$('OpenInventoryButton').setAttribute('class', 'blink');
-    this._setEmoji();
-  }
-
-  _createTable() {
-    super._createTable();
-    this._cell.id = 'atttablecellpict';
-    Game.Interface.$('AttitudeTableField').appendChild(this._container);
-  }
-
-  /** Устанавливаем эмодзи рядом с иконкой */
-  _setEmoji() {
-    if (this._attitude <= -1) this._textinfo.innerHTML = '<emoji>🙁</emoji><a>' + this._name;
-
-    if (this._attitude == 0) this._textinfo.innerHTML = '<emoji>😶</emoji><a>' + this._name;
-
-    if (this._attitude >= 1) this._textinfo.innerHTML = '<emoji>😌</emoji><a>' + this._name;
-
-    if (this._attitude >= 6) this._textinfo.innerHTML = '<emoji>😏</emoji><a>' + this._name;
-
-    if (this._attitude >= 10) this._textinfo.innerHTML = '<emoji>🥰</emoji><a>' + this._name;
-
-  }
-
-}
-class Progress {
-  /**
-   * Сохранение прогресса
-   * @param {string} code Код сохранения части
-   */
-  save (code) {
-    if(Game.PlayerName!=undefined || Game.PlayerName!=''){
-      localStorage.setItem('PlayerName', Game.PlayerName);
-    }
-    localStorage.setItem(code+'_Played', '1');
-
-    let story = localStorage.getItem('LastSave_Design');
-    for (let prop in Game.Stats) {
-      if (Game.Stats[prop]._story == story) {
-        localStorage.setItem(code + '_' + prop + "_show", Game.Stats[prop]._show);
-        localStorage.setItem(code + '_' + prop, Game.Stats[prop]._attitude);
-      }
-    }
-  }
-
-  /**
-   * Загрузка прогресса
-   * @param {string} code Код загрузки части
-   */
-  load (code) {
-    Game.hideAllAttitudes();
-    let story = localStorage.getItem('LastSave_Design');
-    if(localStorage.getItem('PlayerName')!='' || localStorage.getItem('PlayerName')!=null){
-      Game.PlayerName = localStorage.getItem('PlayerName');
-    }
-    for (let prop in Game.Stats) {
-      if (Game.Stats[prop]._story == story) {
-        if (localStorage.getItem(code + "_" + prop + '_show') == 'true') Game.Stats[prop].set(parseInt(localStorage.getItem(code + "_" + prop)));
-      }
-    }
-  }
-
-  /** Сохраниение достижений*/
-  saveAchievements () {
-    for (let prop in Game.Achievements) {
-      localStorage.setItem('Achievement_' + prop, Game.Achievements[prop].unlocked);
-    }
-  }
-
-  /** Загрузка достижений*/
-  loadAchievements () {
-    for (let prop in Game.Achievements) {
-      Game.AllAchievs++;
-      if (localStorage.getItem('Achievement_' + prop) == '1') {
-        Game.Achievements[prop].unlocked = 1;
-      }
-    }
-    for (var prop in Game.Achievements) {
-      if (Game.Achievements[prop].unlocked == 1) Game.Achievements[prop].unlock();
-    }
-  }
-
-  saveFavourites(){
-    for (let prop in Game.Stats) {
-      if (Game.Stats[prop] instanceof Person) {
-        localStorage.setItem('Fav_' + prop + "_score", Game.Stats[prop].score);
-      }
-    }
-    localStorage.setItem('Fav_coins', Game.Favourites._coins);
-    localStorage.setItem('Fav_coinsDate', Game.Favourites.lastGotCoins);
-  }
-
-  loadFavourites(){
-    for (let prop in Game.Stats) {
-      if (Game.Stats[prop] instanceof Person) {
-        if(localStorage.getItem('Fav_' + prop + "_score") === null) Game.Stats[prop].score = 5;
-          else Game.Stats[prop].score = parseInt(localStorage.getItem('Fav_' + prop + "_score"));
-      }
-    }
-    if (localStorage.getItem('Fav_coins') === null) Game.Favourites._coins = 0;
-    else Game.Favourites._coins = parseInt(localStorage.getItem('Fav_coins'));
-    if (localStorage.getItem('Fav_coinsDate') === null) Game.Favourites.lastGotCoins = new Date();
-    else Game.Favourites.lastGotCoins = localStorage.getItem('Fav_coinsDate');
-  }
-}
-
-/** Класс сцены - текст, картинка, текст кнопок, действия кнопок, активность кнопок, дополнительное действие */
-class Scene {
-    /**
-     *
-     * @param  {string} text Текст слайда
-     *
-     * @param  {string[]=} buttontext Текст кнопок
-     *
-     * @param  {function[]} buttonaction Действия кнопок
-     *
-     * @param  {boolean[]=} buttonactive Активность кнопок
-     *
-     * @param  {string=} background Картинка слайда
-     *
-     * @param  {function=} condition Дополнительные действия при включении слайда
-     *
-     */
-    constructor({text,buttontext,buttonaction,buttonactive,background,condition}) {
-        this.text = text || '';
-        this.buttontext = buttontext;
-        this.buttonaction = buttonaction;
-        this.buttonactive = buttonactive;
-        this.background = background || "";
-        this.condition = condition;
-    }
-
-    /** Запустить сцену */
-    begin() {
-        Game.LastSlide.add(this);
-        setTimeout(() => {Game.LastSave.save(this);},250);
-        if (this.background == '') Game.Interface.$('PictureField').style.display = 'none';
-        else {
-            Game.Interface.$('PictureField').src = ROOTPATH + 'pictures/' + this.background + '.png';
-            Game.Interface.$('PictureField').style.display = 'block';
-        }
-        if (this.condition) this.condition();
-        Game.Interface.$('TextField').innerHTML = this.text.replace("$Имя Игрока$", Game.PlayerName);
-        this._checkInterface();
-    }
-
-    /** Отправная точка проверки элементов слайда */
-    _checkInterface() {
-        this._hideUnusableButtons();
-        this._hideOnlyButton();
-        this._setButtonValues();
-        this._hidePicture();
-    }
-
-    /** Прячем неиспользуемые кнопки */
-    _hideUnusableButtons() {
-        for (let x = 0; x < 5; x++) {
-            document.getElementById(`b0${x}`).setAttribute('class', 'fade-in');
-            setTimeout(() => { document.getElementById(`b0${x}`).setAttribute('class', 'show'); }, 1000);
-            try {
-                if (this.buttontext[x] == undefined || this.buttontext[x]=='') document.getElementById(`b0${x}`).style.display = 'none';
-                else {
-                    document.getElementById(`b0${x}`).style.display = 'block';
-                    if (this.buttonactive[x] == false) document.getElementById(`b0${x}`).style.display = 'none';
-
-                }
-            }
-            catch (error) { }
-        }
-    }
-
-    /** Установить текст кнопок и заодно изменить размер */
-    _setButtonValues() {
-        for (let x = 0; x < this.buttontext.length; x++) {
-            document.getElementById(`b0${x}`).innerHTML = this.buttontext[x];
-            document.getElementById(`b0${x}`).onclick = this.buttonaction[x];
-
-            if(document.getElementById(`b0${x}`).textContent.length <=28 ){
-                document.getElementById(`b0${x}`).style.height = '6vh';
-                document.getElementById(`b0${x}`).style.backgroundSize = '100% 6.1vh';
-            }
-            else{
-                document.getElementById(`b0${x}`).style.height = '7.8vh';
-                document.getElementById(`b0${x}`).style.backgroundSize = '105% 9.1vh';
-            }
-        }
-    }
-
-    /** Прячем единственную кнопку */
-    _hideOnlyButton() {
-        if (this.buttontext.length == 1 && this.buttontext[0]=='' && this.background == '') {
-            Game.Interface.$('TextField').onclick = this.buttonaction[0];
-            Game.Interface.$('TextField').setAttribute('style', 'padding-top: 180px; height: 100%');
-            document.getElementById(`b00`).style.display = 'none';
-        }
-
-        if (this.buttontext.length == 1 && this.buttontext[0]=='' && this.background != '') {
-            Game.Interface.$('TextField').onclick = this.buttonaction[0];
-            Game.Interface.$('TextField').setAttribute('style', 'padding-top: 0; height: 100%');
-            document.getElementById(`b00`).style.display = 'none';
-        }
-
-        if (this.buttontext.length >= 2 && this.background == '') {
-            Game.Interface.$('TextField').onclick = () => { };
-            Game.Interface.$('TextField').setAttribute('style', 'padding-top: 150px; height: auto');
-            document.getElementById(`b00`).style.vdisplay = 'block';
-        }
-
-        if (this.buttontext.length >= 2 && this.background != '') {
-            Game.Interface.$('TextField').onclick = () => { };
-            Game.Interface.$('TextField').setAttribute('style', 'padding-top: 0; height: auto');
-            document.getElementById(`b00`).style.vdisplay = 'block';
-        }
-    }
-
-    /** Отключаем кнопку */
-    deactivate(a) {
-        this.buttonactive[a] = false;
-    }
-
-    activate(a) {
-        this.buttonactive[a] = true;
-    }
-
-    /** Убираем картинку если её нет и меняем расположение текста */
-    _hidePicture() {
-        if (this.background == '') {
-            Game.Interface.$('PictureField').style.display = 'none';
-            Game.Interface.$('BorderField').style.display = 'none';
-        }
-        else {
-            Game.Interface.$('PictureField').style.display = 'block';
-            Game.Interface.$('BorderField').style.display = 'block';
-            Game.Interface.$('BorderField').setAttribute('class', 'fade-in');
-            Game.Interface.$('TextField').setAttribute('class', 'fade-in');
-            setTimeout(() => {
-                Game.Interface.$('TextField').setAttribute('class', 'show');
-                }, 1000);
-        }
-    }
-}
-class Settings {
-  constructor() {
-    this.automatiallyHideAlert = true;
-    this._volume = 0.7;
-    this.Zoom = 100;
-  }
-
-  /** Устанавливаем все настройки */
-  set () {
-    this.setVolume(Game.Interface.$('SoundInput').value);
-    this.automatiallyHideAlert = Game.Interface.$('AutomatiallyHideAlert').checked;
-    document.body.style.zoom = Game.Settings.Zoom + "%";
-
-    localStorage.setItem('Settings.Volume', this._volume);
-    localStorage.setItem('Settings.AHA', this.automatiallyHideAlert);
-    localStorage.setItem('Settings.Zoom', this.Zoom);
-  }
-
-  /** Устанавливаем настройки звука */
-  setVolume (a) {
-    this._volume = a;
-    Game.Sounds.NS.volume = this._volume;
-    Game.Sounds.Ambient.volume = this._volume;
-    Game.Sounds.Music.volume = this._volume;
-  }
-
-  getVolume (){
-    return this._volume;
-  }
-
-  /** Загружаем настройки */
-  load () {
-    localStorage.getItem('Settings.AHA' == 'true') ?
-      Game.Interface.$('AutomatiallyHideAlert').checked = true
-      :
-      Game.Interface.$('AutomatiallyHideAlert').checked = false;
-    Game.Interface.$('SoundInput').value = localStorage.getItem('Settings.Volume');
-    this.set();
-  }
-}
-/** Основные звуки и музыка*/
-class Sounds {
-  constructor() {
-    this.Ambient = new Audio("./sounds/Silence.mp3");
-    this.Music = new Audio("./sounds/Silence.mp3");
-    this.NS = new Audio("./sounds/noti.mp3");
-    this.Cheers = new Audio("./sounds/Completed.mp3");
-  }
-
-  /** Включаем новую музыку
-   * @param {string} type Тип музыки
-   * @param {string} name Название звука
-   */
-  play(type, name){
-    localStorage.setItem('LastSave_MusicName', name);
-    if (Game.Settings.getVolume() != 0) {
-      let x = setInterval(()=>{this[type].volume-=0.1},100);
-      setTimeout(()=>{clearInterval(x)},700);
-    }
-    setTimeout(()=>{
-      this[type].pause();
-      this[type] = new Audio('sounds/' + name + '.mp3');
-      this[type].currentTime = 0;
-      this[type].loop = true;
-      this[type].volume = Game.Settings.getVolume();
-      this[type].play();
-    },800);
-  }
-
-  /** Останавливаем конкретный звук
-   * @param {string} type Тип музыки
-   */
-  stop (type) {
-    this[type].currentTime = 0;
-    this[type].pause();
-    this[type] = new Audio('sounds/Silence.mp3');
-  }
-
-  /** Ставим на паузу все звуки */
-  pauseAll () {
-    this.Ambient.pause();
-    this.Music.pause();
-  }
-
-  /** Воспроизводим все звуки */
-  resumeAll () {
-    this.Ambient.play();
-    this.Music.play();
-  }
-}
-/** Истории в меню */
+}/** Истории в меню */
 class Story {
 
     /** @param {Object} values Передаём картинку и сразу же устанавливаем главы
@@ -1687,8 +1296,137 @@ class Part {
         this.code = values.code;
         this.event = values.event;
     }
-}
-/** Мини-игра "упрощенные пятнаки"*/
+}/** Класс сцены - текст, картинка, текст кнопок, действия кнопок, активность кнопок, дополнительное действие */
+class Scene {
+    /**
+     *
+     * @param  {string} text Текст слайда
+     *
+     * @param  {string[]=} buttontext Текст кнопок
+     *
+     * @param  {function[]} buttonaction Действия кнопок
+     *
+     * @param  {boolean[]=} buttonactive Активность кнопок
+     *
+     * @param  {string=} background Картинка слайда
+     *
+     * @param  {function=} condition Дополнительные действия при включении слайда
+     *
+     */
+    constructor({text,buttontext,buttonaction,buttonactive,background,condition}) {
+        this.text = text || '';
+        this.buttontext = buttontext;
+        this.buttonaction = buttonaction;
+        this.buttonactive = buttonactive;
+        this.background = background || "";
+        this.condition = condition;
+    }
+
+    /** Запустить сцену */
+    begin() {
+        Game.LastSlide.add(this);
+        setTimeout(() => {Game.LastSave.save(this);},250);
+        this.setBackground(this.background)
+        if (this.condition) this.condition();
+        Game.Interface.$('TextField').innerHTML = this.text.replace("$Имя Игрока$", Game.PlayerName);
+        this._checkInterface();
+    }
+
+    setBackground(picture){
+        if (picture == '') {
+            Game.Interface.$('PictureField').style.display = 'none';
+            Game.Interface.$('BorderField').style.display = 'none';
+        }
+        else {
+            Game.Interface.$('PictureField').src = ROOTPATH + 'pictures/' + picture + '.png';
+            Game.Interface.$('PictureField').style.display = 'block';
+            Game.Interface.$('BorderField').style.display = 'block';
+            Game.Interface.$('BorderField').setAttribute('class', 'fade-in');
+            Game.Interface.$('TextField').setAttribute('class', 'fade-in');
+            setTimeout(() => {
+                Game.Interface.$('TextField').setAttribute('class', 'show');
+            }, 1000);
+        }
+    }
+
+    /** Отправная точка проверки элементов слайда */
+    _checkInterface() {
+        this._hideUnusableButtons();
+        this._hideOnlyButton();
+        this._setButtonValues();
+    }
+
+    /** Прячем неиспользуемые кнопки */
+    _hideUnusableButtons() {
+        for (let x = 0; x < 5; x++) {
+            document.getElementById(`b0${x}`).setAttribute('class', 'fade-in');
+            setTimeout(() => { document.getElementById(`b0${x}`).setAttribute('class', 'show'); }, 1000);
+            try {
+                if (this.buttontext[x] == undefined || this.buttontext[x]=='') document.getElementById(`b0${x}`).style.display = 'none';
+                else {
+                    document.getElementById(`b0${x}`).style.display = 'block';
+                    if (this.buttonactive[x] == false) document.getElementById(`b0${x}`).style.display = 'none';
+
+                }
+            }
+            catch (error) { }
+        }
+    }
+
+    /** Установить текст кнопок и заодно изменить размер */
+    _setButtonValues() {
+        for (let x = 0; x < this.buttontext.length; x++) {
+            document.getElementById(`b0${x}`).innerHTML = this.buttontext[x];
+            document.getElementById(`b0${x}`).onclick = this.buttonaction[x];
+
+            if(document.getElementById(`b0${x}`).textContent.length <=28 ){
+                document.getElementById(`b0${x}`).style.height = '6vh';
+                document.getElementById(`b0${x}`).style.backgroundSize = '100% 6.1vh';
+            }
+            else{
+                document.getElementById(`b0${x}`).style.height = '7.8vh';
+                document.getElementById(`b0${x}`).style.backgroundSize = '105% 9.1vh';
+            }
+        }
+    }
+
+    /** Прячем единственную кнопку */
+    _hideOnlyButton() {
+        if (this.buttontext.length == 1 && this.buttontext[0]=='' && this.background == '') {
+            Game.Interface.$('TextField').onclick = this.buttonaction[0];
+            Game.Interface.$('TextField').setAttribute('style', 'padding-top: 180px; height: 100%');
+            document.getElementById(`b00`).style.display = 'none';
+        }
+
+        if (this.buttontext.length == 1 && this.buttontext[0]=='' && this.background != '') {
+            Game.Interface.$('TextField').onclick = this.buttonaction[0];
+            Game.Interface.$('TextField').setAttribute('style', 'padding-top: 0; height: 100%');
+            document.getElementById(`b00`).style.display = 'none';
+        }
+
+        if (this.buttontext.length >= 2 && this.background == '') {
+            Game.Interface.$('TextField').onclick = () => { };
+            Game.Interface.$('TextField').setAttribute('style', 'padding-top: 150px; height: auto');
+            document.getElementById(`b00`).style.vdisplay = 'block';
+        }
+
+        if (this.buttontext.length >= 2 && this.background != '') {
+            Game.Interface.$('TextField').onclick = () => { };
+            Game.Interface.$('TextField').setAttribute('style', 'padding-top: 0; height: auto');
+            document.getElementById(`b00`).style.vdisplay = 'block';
+        }
+    }
+
+    /** Отключаем кнопку */
+    deactivate(a) {
+        this.buttonactive[a] = false;
+    }
+
+    activate(a) {
+        this.buttonactive[a] = true;
+    }
+
+}/** Мини-игра "упрощенные пятнаки"*/
 class Tags {
   /**
    * @param {documentElement} mainfield Элемент, куда добавляется игра
@@ -1824,8 +1562,7 @@ class Tags {
       },5000);
     }
   }
-}
-/** Таймер*/
+}/** Таймер*/
 class Timer{
   constructor() {
     this._sound = new Audio('./sounds/timer.mp3');
@@ -1860,72 +1597,292 @@ class Timer{
     clearTimeout(this._settings);
   }
 
-}
-class Trophies {
-  constructor(...trophies) {
-    this._trophies = trophies;
+}class Engine {
+  constructor() {
+    this.Interface = new Interface();
+    this.Stats = [];
+    this.Stories = [];
+    this.Achievements = {};
+    this.AllAchievs = 0;
+    this.Scenes = {};
+    this.PlayerName = '';
+    this.Timer = new Timer();
+    this.Progress = new Progress();
+    this.Sounds = new Sounds();
+    this.Settings = new Settings();
+    this.Effects = new Effects();
+    this.Design = new Design();
+    this.canShowAds = false;
+    this.LastSave = new Last_Save();
+    this.Minigame = {};
+    this.LastSlide = new Last_Slide();
+    this.Favourites = new Favourites();
   }
 
-  renderTrophies(){
-    Game.Interface.$('FavouriteTrophies').innerText = '';
-    this._trophies.forEach(trophy => {
-      let el = document.createElement('div');
-      el.classList.add('favtrophyel');
-      let img = document.createElement('img');
-      if (trophy.isUnlocked() === false){
-        img.src = './pictures/Items/Lock.png';
+  /**
+   * Узнать имя Главного героя
+   * @param {function} action Действие после окончания
+   */
+  askName (action) {
+    this.checkname = () => {
+      this.name = this.input.value;
+      if (this.name.length <= 1) this.text.innerText = 'Не менее 2 символов!';
+      else if (this.name.length >= 15) this.text.innerText = 'Максимум 15 символов!';
+      else if (!/^[а-яё]*$/i.test(this.name)) this.text.innerText = 'Только русские буквы!';
+      else {
+        this.PlayerName = this.name;
+        this.action();
+        this.Interface.$('MainField').style.display = 'block';
+        this.im.remove();
+        this.sendData('устанавливает новое имя');
+        localStorage.setItem('PlayerName',this.PlayerName);
       }
-      else{
-        img.src = './pictures/' + trophy.picture + '.png';
-      }
+    };
+    this.Interface.$('MainField').style.display = 'none';
+    this.action = action;
+    this.im = document.createElement('im');
+    this.text = document.createElement('p');
+    this.text.innerText = 'Как меня зовут?'
+    this.input = document.createElement('input');
+    this.button = document.createElement('button');
+    this.button.innerHTML = 'Принять';
+    this.button.onclick = this.checkname;
+    document.body.appendChild(this.im);
+    this.im.appendChild(this.text);
+    this.im.appendChild(this.input);
+    this.im.appendChild(this.button);
+  }
 
-      el.onclick = () => {
-        Game.Interface.$('FavouriteTrophiesMessage').classList.remove('trophymeshide');
-        Game.Interface.$('FavouriteTrophiesMessage').classList.add('trophymesshow');
-        Game.Interface.$('FavouriteTrophiesImage').src = img.src;
-        Game.Interface.$('FavouriteTrophiesTitle').innerText = trophy.title;
-        Game.Interface.$('FavouriteTrophiesText').innerText = trophy.text;
-        if (trophy.isUnlocked() === true && trophy.action !== undefined) Game.Interface.$('FavouriteTrophiesButton').style.display = 'block';
-        else Game.Interface.$('FavouriteTrophiesButton').style.display = 'none';
+  /** После старта проверяем были ли приняты правила, а также устанавливаем настройки */
+  launch () {
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    if (localStorage.getItem('PPAccepted') !='1') {
+      this.Interface.$('PP').style.display='block';
+      this.Interface.$('Disclaimer').style.display='none';
+      this.Interface.$('MenuField').style.visibility='hidden';
+      localStorage.setItem('Settings.FirstLaunch', 'false');
+      this.Settings.set();
+    }
+    else {
+      this.sendData('запускает игру');
+      this.Settings.load();
+      this.Progress.loadAchievements();
+      this.setScenesNumbers();
+      Achievement.showCategory('Immortals');
+      this.LastSave.checkLastLoad();
+      this.initFavourites();
+      this.loadPictures(() => {
+        this.Interface.$('StartGameLoadingProgress').setAttribute('class', 'fade-out');
+        this.Interface.$('StartGameLoadingPercent').setAttribute('class', 'fade-out');
+        setTimeout(() => {
+          document.getElementsByTagName('disc')[0].setAttribute('class', 'fade-out');
+          setTimeout(() => {
+            document.getElementsByTagName('disc')[0].style.display='none';
+            this.Interface.$('MenuField').style.display='block';
+          }, 1000);
+        }, 1000);
+      });
+    }
+  }
 
+  /**
+   * Загрузочный экран
+   * @param {string} part Код части
+   */
+  LoadScreen (part) {
+    localStorage.setItem('LastSave_LS', part);
+    this.LastSlide.refresh();
+    setTimeout(() => {
+      this.Interface.$('LoadingTip').innerHTML = '';
+      this.Interface.$('LoadingBack').src = '';
+      if (part == undefined) part = 'chapter';
+      this.Interface.$('LoadingBack').src = 'pictures/Covers/' + part + '.png';
+      this.Interface.$('LoadingBackBack').src = 'pictures/Covers/' + part + '.png';
+      this.Interface.$('LoadingScreen').style.zIndex = '3';
+      setTimeout(() => {
+        this.Interface.$('PartField').innerHTML = '';
+        this.Interface.$('PartField').style.display = 'none';
+        this.Interface.$('MainField').setAttribute('class', 'hide');
         setTimeout(()=>{
-          Game.Interface.$('FavouriteTrophiesMessage').classList.add('trophymeshide');
-          Game.Interface.$('FavouriteTrophiesMessage').classList.remove('trophymesshow');
-        },3000);
+          this.Interface.$('LoadingScreen').style.display = 'block';
+          this.Interface.$('LoadingScreen').setAttribute('class', 'show');
+          this.Interface.$('MainField').style.display = "none";
+        },1000)
+
+        setTimeout(() => {
+          this.Interface.$('LoadingTip').innerHTML = '<p class="fade-ina">Нажмите, чтобы продолжить';
+          this.Interface.$('LoadingScreen').onclick = () => {
+            AndroidApp ('showAd');
+            setTimeout(() => { this.Interface.$('LoadingScreen').setAttribute('class', 'hide'); }, 1000);
+            setTimeout(() => {
+              this.Interface.$('LoadingScreen').style.display = 'none';
+              this.Interface.$('MainField').setAttribute('class', 'show');
+              this.Interface.$('MainField').style.display = "block";
+            }, 2000);
+            this.Interface.$('LoadingScreen').onclick = () => { }
+          }
+        }, 6000);
+      }, 0);
+    }, 0);
+  }
+
+  /**
+   * @param {string|undefined} text Текст сообщения
+   * @param {boolean|undefined=} isSlide Является ли показом предыдущего слайда?
+   */
+  message (text, isSlide) {
+    if (isSlide){
+      this.Interface.$('MessageText').innerHTML = this.LastSlide.text();
+      this.Interface.$('MessageField').setAttribute('class', 'hide');
+      this.Interface.$('MessageField').style.display = 'block';
+      setTimeout(() => { this.Interface.$('MessageField').setAttribute('class', 'show'); }, 100);
+    }
+    else{
+      setTimeout(() => { this.Interface.$('MessageField').setAttribute('class', 'slide-in-right'); }, 0);
+      setTimeout(() => { this.Interface.$('MessageField').style.display = 'block'; }, 100);
+      this.Sounds.NS.play();
+    }
+    this.hideelem = () => {
+      this.Interface.$('MessageField').setAttribute('class', 'slide-out-right');
+      setTimeout(() => {
+        this.Interface.$('MessageField').style.display = 'none';
+      }, 1000);
+    }
+
+    clearTimeout(timer);
+
+    this.Interface.$('MessageField').onclick = this.hideelem;
+
+    if (this.Settings.automatiallyHideAlert == true) var timer = setTimeout(() => {
+      this.Interface.$('MessageField').setAttribute('class', 'slide-out-right');
+      setTimeout(() => {
+        this.Interface.$('MessageField').style.display = 'none';
+      }, 1000);
+    }, 5000);
+    this.Interface.$('MessageText').innerHTML = text.replace("$Имя Игрока$", this.PlayerName);
+  }
+
+  /** @param {string} text Текст особого сообщения */
+  inventoryMessage (text){
+    this.Interface.$('InventoryMessage').innerHTML = '<a>'+"⠀"+text;
+    this.Interface.$('InventoryMessage').setAttribute('class','inv_mes_show');
+    setTimeout(()=>{this.Interface.$('InventoryMessage').setAttribute('class','');},3000)
+  }
+
+  /**
+   * Загружаем картинки и убираем повторы
+   * @param {function} callback Вызываем следующие функции по завершению загрузки
+   */
+  loadPictures (callback) {
+    let pictures = [];
+    let picturesTotal = 0;
+    let picturesLoaded = 0;
+    const queuePictures = a => {
+      pictures[x] = document.createElement('img');
+      pictures[x].style.display='none';
+      pictures[x].src = ROOTPATH + 'pictures/' + a + ".png";
+      document.body.appendChild(pictures[x]);
+      picturesTotal++;
+      pictures[x].onload = () => {
+        picturesLoaded++;
+        this.Interface.$('StartGameLoadingProgress').setAttribute('value', picturesLoaded);
+        this.Interface.$('StartGameLoadingPercent').innerText = Math.floor(picturesLoaded/imagesPrechached.length*100) + '%';
+        if(imagesPrechached[picturesLoaded] == undefined){}
+        else {
+          queuePictures(imagesPrechached[picturesLoaded]);
+        }
       }
+    }
 
-      el.append(img);
-      Game.Interface.$('FavouriteTrophies').append(el);
-    });
+    for (let prop in this.Scenes) {
+      for (var x = 0; x < this.Scenes[prop].length; x++) {
+        if (this.Scenes[prop][x] == undefined || this.Scenes[prop][x].background == '') { }
+        else imagesPrechached.push(this.Scenes[prop][x].background);
+      }
+    }
+
+    for (let prop in this.Stats) {
+      if (this.Stats[prop].picture == undefined || this.Stats[prop].picture == '') { }
+      else imagesPrechached.push(this.Stats[prop].picture);
+    }
+
+    for (var x = 0; x < this.Stories.length; x++) {
+      imagesPrechached.push(this.Stories[x].pict);
+      for (var y = 0; y < this.Stories[x].chapters.length; y++) {
+        imagesPrechached.push(this.Stories[x].chapters[y].pict);
+        for (var z = 0; z < this.Stories[x].chapters[y].parts.length; z++) {
+          imagesPrechached.push(this.Stories[x].chapters[y].parts[z].pict);
+          imagesPrechached.push('Covers/'+this.Stories[x].chapters[y].parts[z].code);
+        }
+      }
+    }
+    imagesPrechached = [...new Set(imagesPrechached)];
+
+    imagesPrechached.sort();
+
+    queuePictures(imagesPrechached[0]);
+
+    this.Interface.$('StartGameLoadingProgress').setAttribute('max', imagesPrechached.length);
+
+    this.checkTotalLoadedPictures = function () {
+      imagesPrechached.length == picturesLoaded ? callback() : setTimeout(() => { this.checkTotalLoadedPictures(); }, 1000);
+    }
+
+    this.checkTotalLoadedPictures();
   }
 
-  getTrophy(name){
-    return this._trophies.find((el) => {
-      if(el.name === name) return el;
-    });
+  initFavourites(){
+  /*Game.Progress.loadFavourites();
+    Game.Favourites.checkDates();
+    Game.Progress.saveFavourites();*/
   }
 
-  unlock(name){
-    localStorage.setItem('Trophy_' + this.getTrophy(name).name, '1');
+  /** Присвоение номера сцене в зависимости от индекса массива*/
+  setScenesNumbers (){
+    for (let prop in this.Scenes) {
+      for (let x = 0; x < this.Scenes[prop].length; x++) {
+        if(this.Scenes[prop][x] != undefined) {
+          this.Scenes[prop][x].number = x;
+          this.Scenes[prop][x].part = prop;
+        }
+      }
+    }
   }
-}
-/**
- *
- * @source: https://github.com/RTemiy/Chronicles/
- *
- * @licstart The following is the entire license notice for the
- *  JavaScript code in this page.
- *
- * Copyright (C) 2022 Artemiy "RTemiy" G.
- *
- * The JavaScript code in this page is provided under CC BY-NC 3.0 license
- * https://creativecommons.org/licenses/by-nc/3.0/legalcode
- *
- * @licend The above is the entire license notice for the JavaScript code in this page.
- *
- */
 
-//Path to files
+  /** Заполняем форму и отправляем данные*/
+  sendData (a) {
+    let today = new Date();
+    let dd = String(today.getDate()).padStart(2, '0');
+    let mm = String(today.getMonth() + 1).padStart(2, '0');
+    let yyyy = today.getFullYear();
+    let nowtime = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    today = dd + '.' + mm + '.' + yyyy;
+
+    form.PlayerName.value = localStorage.getItem('PlayerName');
+    form.Date.value = today;
+    form.Action.value = a;
+    form.Time.value = nowtime;
+    form.Region.value = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    form.button.click();
+  }
+
+  /** Показываем сцены для тестирования  */
+  showMeFeatures () {
+    this.Scenes.Features[0].begin();
+  }
+
+  /** Показывает сообщение о количесве занимаеймой внутренней памяти*/
+  usedMemory (){
+    let allStrings = '';
+    for(let key in window.localStorage){
+      if(window.localStorage.hasOwnProperty(key)){
+        allStrings += window.localStorage[key];
+      }
+    }
+    console.log(Math.floor(3 + ((allStrings.length*16)/(8*1024))) + 'кб использовано');
+  }
+
+}//Path to files
 const ROOTPATH = '';
 
 //Game Variables
@@ -1935,7 +1892,7 @@ const Game = new Engine();
 let imagesPrechached = [];
 
 /** События по загрузки страницы */
-window.onload = function () {
+window.onload = () => {
   Game.launch();
 }
 
@@ -1943,18 +1900,19 @@ window.onload = function () {
 // Achievs reveal effect
 function revealAchievs() {
   const reveals = document.querySelectorAll(".reveal");
-  for (let i = 0; i < reveals.length; i++) {
+  reveals.forEach(el=>{
     let windowHeight = window.innerHeight;
-    let elementTop = reveals[i].getBoundingClientRect().top;
-    let elementBottom = reveals[i].getBoundingClientRect().bottom;
+    let elementTop = el.getBoundingClientRect().top;
+    let elementBottom = el.getBoundingClientRect().bottom;
     let elementVisible = 60;
     if (elementTop > windowHeight - elementVisible || elementBottom < elementVisible) {
-      reveals[i].classList.remove("active");
+      el.classList.remove("active");
     } else {
-      reveals[i].classList.add("active");
+      el.classList.add("active");
     }
-  }
+  })
 }
+
 document.querySelector('#achievs').addEventListener("scroll", revealAchievs);
 
 
@@ -1967,8 +1925,9 @@ function downloadProgress() {
   let a = document.createElement("a");
   let file = new Blob([getProgress()], {type: 'application/json'});
   a.href = URL.createObjectURL(file);
+  a.innerText = 'Скачать прогресс'
   a.download = 'Chronicles_Progress';
-  a.click();
+  document.body.appendChild(a)
 }
 
 function uploadProgress() {
@@ -1990,6 +1949,7 @@ function uploadProgress() {
   i.addEventListener('change',()=>{
     readFile();
   });
+  downloadProgress();
   document.body.appendChild(c);
   c.appendChild(i);
 }
@@ -2037,5372 +1997,153 @@ document.addEventListener(visibilityChange, handleVisibilityChange, false);
 function handleVisibilityChange() {
   if(!alreadyturnedoff){Game.Sounds.pauseAll();alreadyturnedoff = true;}
   else {Game.Sounds.resumeAll();alreadyturnedoff = false;}
-}
-Game.Scenes.Features = [];
+}Game.Stories.push( new Story({
+  name: 'Immortals',
+  pict : 'Covers/Story',
+  chapters : [ new Chapter({
+    name: 'Глава 1',
+    pict: 'Persons/Stranger',
+    parts: [
+      new Part({
+        name: 'Пролог',
+        pict: 'Backgrounds/Abstraction_Hero',
+        code: 'Prologue',
+        event: function () {
 
-Game.Scenes.Features[0] =
-    new Scene({
-        text: `
-            Привет! Это меню доступа к ранним возможностям и тестирования функций, что тебе показать?
-            `,
-        buttontext: [
-            'Перейти на часть',
-            'Ничего',
+          Game.Design.change('Immortals');
 
-        ],
-        background: 'Persons/RTemiy',
-        buttonaction: [
-            () => { Game.Scenes.Features[5].begin(); },
-            () => { Game.Interface.closeopen('MainField', 'MenuField') },
-        ],
-    });
+          Stat.hideAll();
 
-Game.Scenes.Features[4] =
-    new Scene({
-        text: `
-            Привет! Это история "Бессмертные: последняя надежда" Куда тебя переместить?
-            `,
-        buttontext: [
-            'Часть 1',
-            'Часть 2',
-            'Часть 3',
-            'Часть 4',
-        ],
-        background: 'Persons/Masha',
-        buttonaction: [
-            () => { Game.Scenes.FirstChapter[101].begin(); },
-            () => { Game.Scenes.TL[1].begin(); },
-            () => { Game.Scenes.PP[1].begin(); },
-            () => { Game.Scenes.PP[1].begin(); },
-        ],
-    });
+          Game.Effects.DisableAll();
 
-Game.Scenes.Features[6] =
-  new Scene({
-    text: `
-            Привет! Это история "Аврора" Куда тебя переместить?
-            `,
-    buttontext: [
-            'Часть 1',
+          Game.LoadScreen('Prologue');
+
+          Game.Scenes.Prologue[0].begin();
+        },
+      }),
+      new Part({
+        name: 'Часть 1',
+        code: 'FirstChapter',
+        pict: 'Backgrounds/Lection',
+        event: function () {
+
+          Game.Design.change('Immortals');
+
+          Game.Progress.load('FirstChapter');
+
+          Game.Effects.DisableAll();
+
+          Game.LoadScreen('FirstChapter');
+
+          if (Game.PlayerName === undefined || Game.PlayerName === '') Game.askName(() => {Game.Scenes.FirstChapter[0].begin(); })
+          Game.Scenes.FirstChapter[0].begin();
+
+        },
+      }),
+      new Part({
+        name: 'Часть 2',
+        code: 'TL',
+        pict: 'Backgrounds/NY',
+        event: function () {
+
+          Game.Design.change('Immortals');
+
+          Game.Progress.load('TL');
+
+          Game.Effects.DisableAll();
+
+          Game.LoadScreen('TL');
+
+          if (Game.PlayerName === undefined || Game.PlayerName === '') Game.askName(() => {Game.Scenes.TL[1].begin(); })
+          Game.Scenes.TL[1].begin();
+
+        },
+      }),
+
+      new Part({
+        name: 'Часть 3',
+        code: 'PP',
+        pict: 'Backgrounds/Pompeii',
+        event: function () {
+
+          Game.Design.change('Immortals');
+
+          Game.Progress.load('PP');
+
+          Game.Effects.DisableAll();
+
+          Game.LoadScreen('PP');
+
+          if (Game.PlayerName === undefined || Game.PlayerName === '') Game.askName(() => {Game.Scenes.PP[1].begin(); })
+          Game.Scenes.PP[1].begin();
+
+        },
+      }),
+
+      new Part({
+        name: 'Часть 4',
+        code: 'FP',
+        pict: 'Backgrounds/Ball',
+        event: function () {
+
+          Game.Design.change('Immortals');
+
+          Game.Effects.DisableAll();
+
+          Game.LoadScreen('FP');
+
+          Game.Progress.load('FP');
+
+          if (Game.PlayerName === undefined || Game.PlayerName === '') Game.askName(() => {Game.Scenes.FC[0].begin(); })
+          Game.Scenes.FC[0].begin();
+
+        },
+      }),
+
+      new Part({
+        name: 'Часть 5',
+        code: 'FifthPart',
+        pict: 'Backgrounds/Lake',
+        event: function () {
+
+          Game.Design.change('Immortals');
+
+          Game.Effects.DisableAll();
+
+          Game.LoadScreen('FifthPart');
+
+          Game.Progress.load('FifthPart');
+
+          if (Game.PlayerName === undefined || Game.PlayerName === '') Game.askName(() => {Game.Scenes.FifthPart[0].begin(); })
+          Game.Scenes.FifthPart[0].begin();
+
+        },
+      }),
+      new Part({
+        name: 'Часть 6',
+        code: 'SixPart',
+        pict: 'Backgrounds/House_Immortals',
+        event: function () {
+
+          Game.Design.change('Immortals');
+
+          Game.Effects.DisableAll();
+
+          Game.LoadScreen('SixPart');
+
+          Game.Progress.load('SixPart');
+
+          if (Game.PlayerName === undefined || Game.PlayerName === '') Game.askName(() => {Game.Scenes.SixPart[0].begin(); })
+          Game.Scenes.SixPart[0].begin();
+
+        },
+      }),
     ],
-    background: 'Persons/Masha',
-    buttonaction: [
-      () => { },
-    ],
-  });
-
-Game.Scenes.Features[100] =
-    new Scene({
-        text: `
-            <p>
-            <p>
-            <p>Продолжение следует! 
-
-            <p>Дата выхода следующего обновления: 20 мая
-
-            <p>Очень ждём вас в нашем телеграмм канале - <a href="https://t.me/chronicles_game" target="_blank">Перейти</a>
-
-            <p>Там вы сможете пообщаться с нами, узнать на каком этапе находится разработка игры. 
-            И не стесняйтесь сообщать об ошибках, ведь только С ВАШЕЙ ПОМОЩЬЮ мы сможем стать лучше!
-
-            <p>Будем очень рады вашей оценке! Пожалуйста, оставляйте отзывы на странице нашего приложения в Google Play - <a href="https://play.google.com/store/apps/details?id=com.mva.chronicles" target="_blank">Перейти</a>
-            `,
-        background: "",
-      buttonactive: [true, false],
-        buttontext: ['Вернуться в меню'],
-        buttonaction: [() => {
-          Game.Interface.closeopen('MainField','MenuField');
-          Game.Sounds.pauseAll();
-        }],
-    });
-
-Game.Scenes.Features[5] =
-  new Scene({
-    text: `
-            Привет! Выбери историю
-            `,
-    buttontext: [
-      'Бессмертные: Последняя надежда',
-      'Аврора',
-    ],
-    background: 'Persons/Masha',
-    buttonaction: [
-      () => { Game.Scenes.Features[4].begin(); },
-      () => { Game.Scenes.Features[6].begin() },
-    ],
-  });
-
-/* ЗАГОТОВКА
-Name[0] =
-        new Scene({
-            text: `
-
-            `,
-            buttontext: [
-                '',
-                '',
-                '',
-                '',
-                ''
-                ],
-            buttonaction: [
-                ()=>{},
-                ()=>{},
-                ()=>{},
-                ()=>{},
-                ()=>{}
-            ],
-            buttonactive: [, , , ,],
-            background : '',
-            condition : function (){
-
-            },
-        });
-*/
-Game.Stories.push( new Story({
-    name: 'Immortals',
-    pict : 'Covers/Story',
-    chapters : [ new Chapter({
-        name: 'Глава 1',
-        pict: 'Persons/Stranger',
-        parts: [
-            new Part({
-                name: 'Пролог',
-                pict: 'Backgrounds/Abstraction_Hero',
-                code: 'Prologue',
-                event: function () {
-
-                    Game.Design.change('Immortals');
-
-                    Game.hideAllAttitudes();
-
-                    Game.Effects.DisableAll();
-
-                    Game.LoadScreen('Prologue');
-
-                    Game.Scenes.Prologue[0].begin();
-                },
-            }),
-            new Part({
-                name: 'Часть 1',
-                code: 'FirstChapter',
-                pict: 'Backgrounds/Lection',
-                event: function () {
-
-                    Game.Design.change('Immortals');
-
-                    Game.Progress.load('FirstChapter');
-
-                    Game.Effects.DisableAll();
-
-                    Game.LoadScreen('FirstChapter');
-
-                    if (Game.PlayerName === undefined || Game.PlayerName === '') Game.askName(() => {Game.Scenes.FirstChapter[0].begin(); })
-                    Game.Scenes.FirstChapter[0].begin();
-
-                },
-            }),
-            new Part({
-                name: 'Часть 2',
-                code: 'TL',
-                pict: 'Backgrounds/NY',
-                event: function () {
-
-                    Game.Design.change('Immortals');
-
-                    Game.Progress.load('TL');
-
-                    Game.Effects.DisableAll();
-
-                    Game.LoadScreen('TL');
-
-                    if (Game.PlayerName === undefined || Game.PlayerName === '') Game.askName(() => {Game.Scenes.TL[1].begin(); })
-                    Game.Scenes.TL[1].begin();
-
-                },
-            }),
-
-            new Part({
-                name: 'Часть 3',
-                code: 'PP',
-                pict: 'Backgrounds/Pompeii',
-                event: function () {
-
-                    Game.Design.change('Immortals');
-
-                    Game.Progress.load('PP');
-
-                    Game.Effects.DisableAll();
-
-                    Game.LoadScreen('PP');
-
-                    if (Game.PlayerName === undefined || Game.PlayerName === '') Game.askName(() => {Game.Scenes.PP[1].begin(); })
-                    Game.Scenes.PP[1].begin();
-
-                },
-            }),
-
-            new Part({
-                name: 'Часть 4',
-                code: 'FP',
-                pict: 'Backgrounds/Ball',
-                event: function () {
-
-                    Game.Design.change('Immortals');
-
-                    Game.Effects.DisableAll();
-
-                    Game.LoadScreen('FP');
-
-                    Game.Progress.load('FP');
-
-                    if (Game.PlayerName === undefined || Game.PlayerName === '') Game.askName(() => {Game.Scenes.FC[0].begin(); })
-                    Game.Scenes.FC[0].begin();
-
-                },
-            }),
-
-            new Part({
-                name: 'Часть 5',
-                code: 'FifthPart',
-                pict: 'Backgrounds/Lake',
-                event: function () {
-
-                    Game.Design.change('Immortals');
-
-                    Game.Effects.DisableAll();
-
-                    Game.LoadScreen('FifthPart');
-
-                    Game.Progress.load('FifthPart');
-
-                    if (Game.PlayerName === undefined || Game.PlayerName === '') Game.askName(() => {Game.Scenes.FifthPart[0].begin(); })
-                    Game.Scenes.FifthPart[0].begin();
-
-                },
-            }),
-            new Part({
-                name: 'Часть 6',
-                code: 'SixPart',
-                pict: 'Backgrounds/House_Immortals',
-                event: function () {
-
-                    Game.Design.change('Immortals');
-
-                    Game.Effects.DisableAll();
-
-                    Game.LoadScreen('SixPart');
-
-                    Game.Progress.load('SixPart');
-
-                    if (Game.PlayerName === undefined || Game.PlayerName === '') Game.askName(() => {Game.Scenes.SixPart[0].begin(); })
-                    Game.Scenes.SixPart[0].begin();
-
-                },
-            }),
-        ],
-    })
-
-
-    ]
-}));
-
-Game.Stories.push(
-  new Story ({
-      name: 'Aurora',
-      pict: 'Covers/Aurora',
-      chapters: [ new Chapter ({
-          name: 'Глава 1',
-          pict: 'Backgrounds/Aurora_Lighthouse',
-          parts: [ new Part ({
-              name: 'Пролог',
-              pict: 'Backgrounds/Aurora_Writing',
-              code: 'Aurora_Prologue',
-              event: function (){
-
-                  Game.Design.change('Aurora');
-
-                  Game.hideAllAttitudes();
-
-                  Game.Effects.DisableAll();
-
-                  Game.LoadScreen('Aurora_Prologue');
-
-                  Game.Scenes.A_Prologue[0].begin();
-              }
-          }),
-              new Part ({
-                  name: 'Часть 1',
-                  pict: 'Backgrounds/Aurora_House_Inside',
-                  code: 'Aurora_Part01',
-                  event: function (){
-
-                      Game.Design.change('Aurora');
-
-                      Game.Progress.load('Aurora_Part01');
-
-                      Game.Effects.DisableAll();
-
-                      Game.LoadScreen('Aurora_Part01');
-
-                      Game.Scenes.A_Part01[0].begin();
-                  }
-              }),
-              new Part ({
-                  name: 'Часть 2',
-                  pict: 'Backgrounds/Aurora_Univer',
-                  code: 'Aurora_Part02',
-                  event: function (){
-
-                      Game.Design.change('Aurora');
-
-                      Game.Progress.load('Aurora_Part02');
-
-                      Game.Effects.DisableAll();
-
-                      Game.LoadScreen('Aurora_Part02');
-
-                      Game.Scenes.A_Part02[0].begin();
-
-                  }
-              }),
-              new Part ({
-                  name: 'Часть 3',
-                  pict: 'Backgrounds/Aurora_SW_Streets',
-                  code: 'Aurora_Part03',
-                  event: function (){
-
-                      Game.Design.change('Aurora');
-
-                      Game.Progress.load('Aurora_Part03');
-
-                      Game.Effects.DisableAll();
-
-                      Game.LoadScreen('Aurora_Part03');
-
-                      Game.Scenes.A_Part03[0].begin();
-
-                  }
-              }),
-          ],
-      })],
   })
-);
 
-/*
-Game.Stories.push(
-  new Story ({
-      name: 'AEP',
-      pict: 'Covers/AEP',
-      chapters: [ new Chapter ({
-          name: 'Глава 1',
-          pict: 'Backgrounds/AEP_Col',
-          parts: [ new Part ({
-              name: 'Пролог',
-              pict: 'Backgrounds/AEP_Col',
-              code: 'AEP_Prologue',
-              event: function (){
 
-                  Game.Design.Change('AEP');
-
-                  Game.HideAllAttitudes();
-
-                  Game.Effects.DisableAll();
-
-                  Game.LoadScreen('AEP_Prologue');
-
-                  Game.Scenes.AEP_Prologue[0].Begin();
-              }
-          }),
-          ],
-      })],
-  })
-);
-*/
-/*
-Game.Scenes.AEP_Prologue = [];
-
-Game.Scenes.AEP_Prologue[0] =
-  new Scene({
-    text: `
-      Стоя на арене величественного Колизея, я и представить не могла, что когда-нибудь окажусь в подобной ситуации.
-      <p>Оглушающие выстрелы свистели у меня над головой.  А я, лежа в раскорячку, просто не понимала, куда себя деть. Меня окружали дурацкие древние колонны, которые я охотно использовала как укрытие.
-        `,
-    buttontext: [''],
-    buttonaction: [() => {
-        Game.Scenes.AEP_Prologue[1].Begin();
-        Game.Message('Сейчас вы сделаете свой первый выбор. Многие меняют сюжет незначительно, другие же ведут к серьезным переменам. Но помните - это только ваша история. Решите, какой вы видите свою главную героиню.');
-    }],
-    background: 'Backgrounds/AEP_Col',
-    condition: () => { Game.Sounds.Play('Music', 'AEP_Prologue'); }
-  });
-
-Game.Scenes.AEP_Prologue[1] =
-  new Scene({ text: `
-      Рядом со мной устроился Джон, мой сокурсник, который судорожно пытался вставить патроны в барабан простенького маленького револьвера.
-      <p>Я не могла смотреть на его жалкие попытки сделать что-то сносное, поэтому:
-        `,
-      buttontext: ['Отобрала пушку','Отвернулась','Стукнула его хорошенько'],
-      buttonaction: [
-        () => {Game.Scenes.AEP_Prologue[2].Begin();},
-        () => {Game.Scenes.AEP_Prologue[4].Begin();},
-        () => {Game.Scenes.AEP_Prologue[7].Begin();},
-      ],
-      background: 'Persons/AEP_John',
-  });
-
-Game.Scenes.AEP_Prologue[2] =
-  new Scene({ text: `
-      - Хей, - недоуменно проговорил парень. - Ты же даже пользоваться им не умеешь!
-      <p>- Все интуитивно понятно, вставить патроны, взвести курок… - я с легкостью проделывала все махинации. - Я жить хочу, а ты, черт тебя подери, не можешь элементарно зарядить пушку. Еще и втянул нас во все это.
-        `,
-    buttontext: [''],
-    buttonaction: [() => {Game.Scenes.AEP_Prologue[3].Begin();},
-    ],
-    background: 'Persons/AEP_John',
-  });
-
-Game.Scenes.AEP_Prologue[3] =
-  new Scene({ text: `
-      - Втянул во все это?! Лучше бы спросила своего дружка Мэтта, который переспал чуть ли не со всем университетом и ввязался в разборки с плохими дядьками…
-      <p>- Самое время обосрать Мэтта, а не искать выход из ситуации. Такими темпами мы здесь скоро подохнем.
-        `,
-    buttontext: [''],
-    buttonaction: [() => {Game.Scenes.AEP_Prologue[9].Begin();},
-    ],
-    background: 'Persons/AEP_John',
-  });
-
-Game.Scenes.AEP_Prologue[4] =
-  new Scene({ text: `
-      Не в силах смотреть на сие “извращение”, я решила проверить обстановку и медленно выглянула из укрытия. Особой пользы это не принесло.
-      <p>“Мда. Только пули свистят над головой… Очень лирично. И почему до сих пор не приехала полиция? Как только власти допускают перестрелку на чертовом историческом объекте?”
-        `,
-    buttontext: [''],
-    buttonaction: [() => {Game.Scenes.AEP_Prologue[5].Begin();},
-    ],
-    background: 'Backgrounds/AEP_Col',
-  });
-
-Game.Scenes.AEP_Prologue[5] =
-  new Scene({ text: `
-      Джон наконец-то закончил возиться с револьвером.
-      <p>- Что будем делать? - с нетерпением спросила я.
-      <p>- Откуда я знаю? У меня опыта в таких делах не больше, чем у тебя. Или ты думаешь, что я решу все по щелчку пальцев?
-        `,
-    buttontext: [''],
-    buttonaction: [() => {Game.Scenes.AEP_Prologue[6].Begin();},
-    ],
-    background: 'Persons/AEP_John',
-  });
-
-Game.Scenes.AEP_Prologue[6] =
-  new Scene({ text: `
-      - Я надеялась, - нервная усмешка не сходила с моего лица. - Но у нас хотя бы есть оружие, это увеличивает наши шансы.
-      <p>- На что? - парень съежился после моего утверждения - Умереть?
-        `,
-    buttontext: [''],
-    buttonaction: [() => {Game.Scenes.AEP_Prologue[9].Begin();},
-    ],
-    background: 'Persons/AEP_John',
-  });
-
-Game.Scenes.AEP_Prologue[7] =
-  new Scene({ text: `
-      Удар пришелся по затылку. Джон от неожиданности выронил револьвер, а вместе с ним и пули, которые затерялись в ночной темноте.
-      <p>- Ты больная или как? - парень судорожно пытался нащупать выпавшие патроны.
-        `,
-    buttontext: [''],
-    buttonaction: [() => {Game.Scenes.AEP_Prologue[8].Begin();},
-    ],
-    background: 'Persons/AEP_John',
-  });
-
-Game.Scenes.AEP_Prologue[8] =
-  new Scene({ text: `
-      - Я не виновата, что у тебя руки из одного места…
-      <p>Джон схватился за голову и стал причитать о скорой смерти. Было бессмысленно его успокаивать. Если уж он что-то напридумывал, то так и будет на этом зациклен.
-        `,
-    buttontext: [''],
-    buttonaction: [() => {Game.Scenes.AEP_Prologue[9].Begin();},
-    ],
-    background: 'Persons/AEP_John',
-  });
-
-Game.Scenes.AEP_Prologue[9] =
-  new Scene({ text: `
-      - Сука… - Джон стал паниковать еще сильнее. - Долбанный университет, долбанные богатенькие детки.
-        `,
-    buttontext: [''],
-    buttonaction: [() => {Game.AskName(() => {Game.Scenes.AEP_Prologue[10].Begin()});},
-    ],
-    background: 'Persons/AEP_John',
-  });
-
-Game.Scenes.AEP_Prologue[10] =
-  new Scene({ text: `
-      - $Имя Игрока$, давай сваливать.
-      <p>- Наконец-то дельное предложение.
-        `,
-    buttontext: [''],
-    buttonaction: [() => {Game.Scenes.AEP_Prologue[11].Begin();},
-    ],
-    background: 'Persons/AEP_John',
-  });
-
-Game.Scenes.AEP_Prologue[11] =
-  new Scene({ text: `
-      Мы старались красться, словно ниндзя. Мне казалось, что мы не потеряли сознание только из-за зашкаливающего адреналина. Минута, другая. В ушах звенит все сильнее из-за звуков выстрелов.
-      <p>“Когда же это закончится?”
-        `,
-    buttontext: [''],
-    buttonaction: [() => {Game.Scenes.AEP_Prologue[12].Begin();},
-    ],
-    background: 'Backgrounds/AEP_Col',
-  });
-
-Game.Scenes.AEP_Prologue[12] =
-  new Scene({ text: `
-      Мы были уверены, что вот-вот выберемся и этот кошмар останется позади. Однако когда выход был так близко, нас как щенят поймали за шкирку.
-      <p>С нами не церемонились. Джона - сразу лицом в пол, а меня схватил за подбородок один из бандитов  и стал рассматривать, словно я была как товар на полке магазина.
-        `,
-    buttontext: [''],
-    buttonaction: [() => {Game.Scenes.AEP_Prologue[13].Begin();},
-    ],
-    background: 'Backgrounds/AEP_Col',
-  });
-
-Game.Scenes.AEP_Prologue[13] =
-  new Scene({ text: `
-      - А ничего такая, сгодится же на одну ночь? - он обращался к своему коллеге, который держал Джона.
-      <p>- Да ты себя видел? Она даже под страхом смерти ноги перед тобой не раздвинет, - мужчины громко рассмеялись. - Потянуло на молоденьких? Сейчас босс разберется с козлами  которые не понимают, когда надо держать язык за зубами - вот и делай, что хочешь. А пока долг - превыше всего.
-        `,
-    buttontext: [''],
-    buttonaction: [() => {Game.Scenes.AEP_Prologue[14].Begin();},
-    ],
-    background: 'Backgrounds/AEP_Col',
-  });
-
-Game.Scenes.AEP_Prologue[14] =
-  new Scene({ text: `
-      - Пф, - страшный мужчина средних лет со шрамами по всему лицу облизнулся. - А так хочется попробовать.
-      <p>Он надел на меня наручники и грубо бросил на землю.
-        `,
-    buttontext: [''],
-    buttonaction: [() => {Game.Scenes.AEP_Prologue[15].Begin();},
-    ],
-    background: 'Backgrounds/AEP_Col',
-  });
-
-Game.Scenes.AEP_Prologue[15] =
-  new Scene({ text: `
-      Казалось, прошла вечность с тех пор, как бандиты вновь обратили на нас внимание. В этот раз они были не одни, а в сопровождение своего лидера.
-      <p>- Ты? - я не могла сдержать удивления.
-        `,
-    buttontext: [''],
-    buttonaction: [() => {Game.Scenes.AEP_Prologue[16].Begin();},
-    ],
-    background: 'Backgrounds/AEP_Col',
-  });
-
-Game.Scenes.AEP_Prologue[16] =
-  new Scene({ text: `
-      - Так-так, - он провел рукой по моей грязной щеке. - Какие интересные у нас гости.
-      <p>Мужчина наставил свой окровавленный пистолет прямо мне к виску и проговорил:
-      <p>- Поиграем?
-        `,
-    buttontext: [''],
-    buttonaction: [() => {Game.Scenes.AEP_Prologue[17].Begin();},
-    ],
-    background: 'Backgrounds/AEP_Col',
-  });
-  */
-Game.Achievements.A_PrologueCompleted = new Achievement ({
-  picture: 'Backgrounds/Aurora_Writing',
-  title: 'Дневник',
-  text: 'Аврора начинает свой рассказ',
-  story: 'Aurora',
-});
-
-Game.Achievements.A_Artist = new Achievement ({
-  picture: 'Backgrounds/Aurora_Album',
-  title: 'Художник',
-  text: 'Выберете в качестве основного хобби рисование',
-  story: 'Aurora',
-});
-
-Game.Achievements.A_Writer = new Achievement ({
-  picture: 'Backgrounds/Aurora_Writing',
-  title: 'Писатель',
-  text: 'Выберете в качестве основного хобби писательство',
-  story: 'Aurora',
-});
-
-Game.Achievements.A_Musician = new Achievement ({
-  picture: 'Backgrounds/Aurora_WM',
-  title: 'Музыкант',
-  text: 'Выберете в качестве основного хобби музыку',
-  story: 'Aurora',
-});
-
-Game.Achievements.A_Part01Completed = new Achievement ({
-  picture: 'Backgrounds/Aurora_Lighthouse_Night',
-  title: 'Новая жизнь',
-  text: 'Отправьтесь с Авророй в неизвестное будущее',
-  story: 'Aurora',
-});
-
-Game.Achievements.A_Musicality = new Achievement ({
-  picture: 'Backgrounds/Aurora_Disc',
-  title: 'Меломан',
-  text: 'Выберите музыку по вкусу',
-  story: 'Aurora',
-});
-
-Game.Achievements.A_Part02Completed = new Achievement ({
-  picture: 'Backgrounds/Aurora_Univer',
-  title: 'Студенческие будни',
-  text: 'Завершите вторую часть интересной встречей',
-  story: 'Aurora',
-});
-
-Game.Achievements.A_Fan = new Achievement ({
-  picture: 'Backgrounds/Aurora_Solist_Picture',
-  title: 'Фанатка',
-  text: 'Познакомьтесь с любимчиком Далии',
-  story: 'Aurora',
-});
-
-Game.Achievements.A_Fav_Writer = new Achievement ({
-  picture: 'Backgrounds/Aurora_Writing',
-  title: 'Любимый писатель',
-  text: 'Узнайте интерес Калеба',
-  story: 'Aurora',
-});
-
-Game.Achievements.A_PayBack = new Achievement ({
-  picture: 'Persons/Aurora_Kaleb',
-  title: 'Должник',
-  text: 'Помогите Калебу избежать встречи с Далией',
-  story: 'Aurora',
-});
-
-Game.Achievements.A_Part03Completed = new Achievement ({
-  picture: 'Backgrounds/Aurora_Room',
-  title: 'Знакомство',
-  text: 'Завершите третью часть, отдыхая после насыщенного дня',
-  story: 'Aurora',
-});
-//Characters
-
-Game.Stats.Aurora = new Person({
-    name: 'Аврора',
-    picture: 'Persons/Aurora_Aurora',
-    title: 'В моей жизни происходит много значимых перемен.',
-    text: 'Интересно, какие еще сюрпризы преподнесет судьба?',
-    story: 'Aurora',
-    isUnlocked: function () {
-        return Game.Achievements.A_Part01Completed.unlocked >= 1;
-    },
-    trophies: new Trophies(
-      {
-          name : 'Border',
-          title : 'Легендарная рамка',
-          picture : 'Items/Cup',
-          text : 'Награда за максимальный уровень фаворита',
-          isUnlocked: function () {
-              return Game.Favourites.getLevel('Aurora') >= 5;
-          }
-    },
-      ),
-});
-
-Game.Stats.Father = new Person({
-    name: 'Папа',
-    picture: 'Persons/Aurora_Dad',
-    title: 'Мой единственный родной человек.',
-    text: 'Ему пришлось нелегко: работа, потеря дорогих людей. Его состояние нестабильно - я должна сделать все, чтобы помочь ему.',
-    story: 'Aurora',
-});
-
-Game.Stats.Yan = new Person({
-    name: 'Ян',
-    picture: 'Persons/Aurora_Yan',
-    title: 'Самый близкий друг для меня. Мой старший брат.',
-    text: 'Его загадочное исчезновение до сих пор отзывается болью у меня в сердце. Но я не собираюсь терять надежду.',
-    story: 'Aurora',
-});
-
-Game.Stats.Arthur = new Person({
-    name: 'Артур',
-    picture: 'Persons/Aurora_Arthur',
-    title: 'Внук бывшего смотрителя маяка. Добрый и понимающий парень.',
-    text: 'Именно он был рядом в самые трудные моменты моей жизни. Я не понимаю, какие чувства испытываю к нему, но время все расставит на свои места.',
-    story: 'Aurora',
-});
-
-Game.Stats.Kaleb = new Person({
-    name: 'Калеб',
-    picture: 'Persons/Aurora_Kaleb',
-    title: 'Наглый и самовлюбленный студент, с которым я столкнулась в библиотеке.',
-    text: 'Его происхождение окутано тайной, что мне предстоит выяснить. Кем же он окажется по итогу: надежным соратником в моем путешествии или злейшим врагом?',
-    story: 'Aurora',
-});
-
-Game.Stats.Dalia = new Person({
-    name: 'Далия',
-    picture: 'Persons/Aurora_Dalia',
-    title: 'Заводная девушка, которая с первой нашей встречи внесла хаос в мою жизнь.',
-    text: 'Открытая и располагающая к себе особа, которая, кажется, берет от жизни все. В свое время, именно она побудила меня начать вести дневник.',
-    story: 'Aurora',
-});
-
-//Conditions
-
-Game.Stats.Drawing = new Choice({
-    name: 'заниматься рисованием',
-    story: 'Aurora',
-});
-
-Game.Stats.Writing = new Choice({
-    name: 'заниматься писательством',
-    story: 'Aurora',
-});
-
-Game.Stats.Music = new Choice({
-    name: 'быть меломаном',
-    story: 'Aurora',
-});
-
-Game.Stats.Pragmatic = new Choice({
-    name: 'быть прагматичной',
-    story: 'Aurora',
-});
-
-Game.Stats.Romantic = new Choice({
-    name: 'быть романтичной',
-    story: 'Aurora',
-});
-
-Game.Stats.Song = new Choice({
-    name: 'выбрала песню',
-    story: 'Aurora',
-});
-
-Game.Stats.BetrayKaleb = new Choice({
-    name: 'предала Калеба',
-    story: 'Aurora',
-});
-
-//Items
-
-Game.Stats.Trial_Pass = new Item({
-    name: 'Пропуск',
-    picture: 'Items/Aurora_Trial_Pass',
-    title: 'Временный пропуск Авроры',
-    text: 'Его вручил мне Артур, чтобы я могла пройти в университет в любое время',
-    story: 'Aurora',
-});
-
-Game.Stats.Mothers_Photo = new Item({
-    name: 'Фото',
-    picture: 'Items/Aurora_Mother',
-    title: 'Фотография женщины с подписью',
-    text: 'Возможно, эта фотография принадлежит Калебу. Снизу виднеется надпись на французском: “Моя семья”',
-    story: 'Aurora',
-});
-Game.Scenes.A_Part01 = [];
-
-Game.Scenes.A_Part01[0] =
-  new Scene({
-    text: `
-    Я родилась в полной и любящей семье на окраине небольшого шведского городка. 
-    Нас было четверо: заботливые родители, я и старший брат, всегда спешивший на помощь. 
-    Для меня это было счастливым временем, которое не ускользало даже под гнетом тяжелых испытаний судьбы.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[1].begin(); Game.Stats.Aurora.add(0); Game.message('В верхнем левом углу находится инвентарь, там вы можете посмотреть полезную информацию') }],
-    background: 'Backgrounds/Aurora_House_Inside',
-    condition: () => { Game.Sounds.play('Music', 'Lighthouse') }
-  });
-
-Game.Scenes.A_Part01[1] =
-  new Scene({
-      text: `
-      Своего детства я практически не помню. 
-      Но мой подростковый период проходил далеко не в сказочных реалиях. 
-        `,
-      buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Part01[100].begin(); }],
-      background: 'Backgrounds/Aurora_House_Inside',
-  });
-
-Game.Scenes.A_Part01[100] =
-  new Scene({
-    text: `
-      Чтобы прокормить семью, отец пробовался на разные работы: был поваром, строителем и даже грузчиком. Но в маленьких городках жизнь будто бы заколдована на обреченность. 
-      <p>Стабильность медленно ускользала, а на смену приходили голод и прочие недуги. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[2].begin(); }],
-    background: 'Persons/Aurora_Dad',
-  });
-
-Game.Scenes.A_Part01[2] =
-  new Scene({
-      text: `
-      Однако все изменилось, когда папин хороший знакомый предложил ему работу. 
-      Она была несложная. Необходимо было помогать пожилому человеку, работающему смотрителем маяка. В дополнение к этому, за нее обещали хорошо платить.
-        `,
-      buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Part01[3].begin(); }],
-      background: 'Persons/Aurora_Dad',
-  });
-
-Game.Scenes.A_Part01[3] =
-  new Scene({
-      text: `
-      Мало кто хотел связывать свою жизнь со служением морю, если так можно выразиться. Быть вдали от всех цивилизованных благ, где единственными друзьями будут тишина и природа. 
-      <p>Но отцу было все равно. Наше благополучие стояло на первом месте. 
-        `,
-      buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Part01[4].begin(); }],
-      background: 'Persons/Aurora_Dad',
-  });
-
-Game.Scenes.A_Part01[4] =
-  new Scene({
-      text: `
-      В начале он работал в качестве помощника. Милый дедушка оказался не только хорошим учителем, но и прекрасным собеседником. Он обучил папу всем тонкостям работы и пророчил ему свое место. 
-      <p>Мы могли не видеть отца месяцами. Тоска по родному теплу росла с каждым днем. Но мы не сдавались.
-        `,
-      buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Part01[5].begin(); }],
-      background: 'Persons/Aurora_Dad',
-  });
-
-Game.Scenes.A_Part01[5] =
-  new Scene({
-      text: `
-     Мама была для меня примером стойкости и воли к жизни. Даже несмотря на свое слабое здоровье, она старалась быть сильной. Подрабатывала и успевала ухаривать за домом.
-        `,
-      buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Part01[6].begin(); }],
-      background: 'Backgrounds/Aurora_House_Inside',
-  });
-
-Game.Scenes.A_Part01[6] =
-  new Scene({
-      text: `
-     Старший брат, по имени Ян, всегда вдохновлял меня и не давал падать духом. В свои шестнадцать лет он не знал проблем с учебой, успевал работать в небольшой продуктовой лавке на полставки и оставаться крепким мужским плечом для меня и мамы. 
-        `,
-      buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Part01[7].begin(); }],
-      background: 'Persons/Aurora_Yan',
-  });
-
-Game.Scenes.A_Part01[7] =
-  new Scene({
-      text: `
-      Ян был моим самым близким другом. Я всегда делилась с ним сокровенными тайнами или безумными идеями. А он, в свою очередь, поддерживал и наставлял, как подобает старшему брату.  
-      <p>Мы могли часами разговаривать и понимать друг друга практически без слов, а его любящие объятия укрывали меня от грустных мыслей.
-          `,
-      buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Part01[8].begin(); }],
-      background: 'Persons/Aurora_Yan',
-  });
-
-Game.Scenes.A_Part01[8] =
-  new Scene({
-      text: `
-     Он часто говорил мне: 
-     <p>- Вот увидишь, Аврора. Я построю нам мост в светлое будущее. 
-     <p>Но все изменилось, когда в один из дней он не пришел домой. 
-          `,
-      buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Part01[9].begin(); Game.Stats.Yan.add(0); }],
-      background: 'Persons/Aurora_Yan',
-  });
-
-Game.Scenes.A_Part01[9] =
-  new Scene({
-      text: `
-     Это было не в его духе. Ян всегда сообщал нам о своих передвижениях или внезапных задержках. 
-     Но именно в тот проклятый весенний день, когда брату было семнадцать лет - он будто бы испарился из нашего города. 
-          `,
-      buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Part01[101].begin(); }],
-      background: 'Backgrounds/Aurora_Missing',
-  });
-
-Game.Scenes.A_Part01[101] =
-  new Scene({
-    text: `
-      Отец был на работе, поэтому я и мама самостоятельно организовали поиски с помощью неравнодушных соседей. 
-      Мы обращались в полицию, развешивали плакаты с его изображением. Все жители нашего маленького городка были подключены к поискам Яна, но его след так и не смогли найти… 
-          `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[10].begin(); }],
-    background: 'Backgrounds/Aurora_Missing',
-  });
-
-Game.Scenes.A_Part01[10] =
-  new Scene({
-      text: `
-     Полиция выдвинула банальные теории. Якобы брат просто сбежал из дома, захотел новой жизни и отправился покорять столицу. 
-     И как бы мы не отрицали версию полиции, как бы не старались найти его, поиск не сдвигался с мертвой точки. 
-      <p>Никто не собирался сдаваться. Но чем больше времени проходило, тем быстрее угасала наша надежда. 
-          `,
-      buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Part01[11].begin(); }],
-      background: 'Backgrounds/Aurora_Missing',
-  });
-
-Game.Scenes.A_Part01[11] =
-  new Scene({
-    text: `
-     В условиях нестабильности мы прожили долгие годы. Нашу жизнь омрачила тоска по Яну и, казалось, ничто не могло этого изменить. 
-    <p>Однако когда мне исполнилось восемнадцать лет, будто бы по волшебству последовали первые положительные перемены. 
-          `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[12].begin(); }],
-    background: 'Backgrounds/Aurora_House_Inside',
-  });
-
-Game.Scenes.A_Part01[12] =
-  new Scene({
-    text: `
-     В один дождливый день на пороге объявился отец. Полностью промокший он вошел в дом. То ли слезы текли по его щекам, то ли капли дождя. Скорее всего все вперемешку. 
-    <p>Спустя несколько долгих секунд он произнес всего одну фразу:
-    <p>- Смотритель умер. 
-          `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[13].begin(); }],
-    background: 'Persons/Aurora_Dad',
-  });
-
-Game.Scenes.A_Part01[13] =
-  new Scene({
-    text: `
-     Дальнейшее решение перевернуло наш мир. Единственное, что мог сделать папа, чтобы мы жили в благополучии - это занять место смотрителя. Но это также означало, что мы совсем потеряем связь с друг другом. 
-          `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[14].begin(); }],
-    background: 'Backgrounds/Aurora_House_Inside',
-  });
-
-Game.Scenes.A_Part01[14] =
-  new Scene({
-    text: `
-      <p>Я хорошо помню тот день. Мама кинулась в объятия отца, плача ему в плечо. Она произнесла лишь одно:
-      <p>- Поехали. 
-      <p>У меня не было причин отказываться. В школе я не завела друзей, единственный по-настоящему близкий человек пропал, дальнейших планов на жизнь у меня не было.
-      <p>Но любящая семья, бережно относящаяся ко мне - вот, за что хотелось цепляться. 
-      `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[15].begin(); }],
-    background: 'Backgrounds/Aurora_House_Inside',
-  });
-
-Game.Scenes.A_Part01[15] =
-  new Scene({
-    text: `
-      Я отправилась в ванную, чтобы умыться и привести себя в порядок. 
-      Расчесала свои светлые, немного непослушные локоны. 
-      Умылась и накрасила губы моим любимым розовым бальзамом - мамин подарок. 
-      Она всегда говорила, что мне очень идет этот цвет, да и выглядела я не такой бледной, как обычно. 
-      `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[16].begin(); }],
-    background: 'Persons/Aurora_Aurora',
-  });
-
-Game.Scenes.A_Part01[16] =
-  new Scene({
-    text: `
-      В отражении зеркала мне показалась немного растерянного вида девушка, которая не представляла свою дальнейшую жизнь. 
-      Но которая четко осознавала - сейчас происходит абсолютно непредсказуемый поворот в ее судьбе. 
-      И возможно именно благодаря этим переменам - все наладится. 
-      `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[17].begin(); }],
-    background: 'Persons/Aurora_Aurora',
-  });
-
-Game.Scenes.A_Part01[17] =
-  new Scene({
-    text: `
-      Выйдя из ванны, я начала медленно обходить наш домик, с которым связано столько воспоминаний. 
-      Слегка касаясь вещей, я начала представлять картинки из моей жизни. 
-      `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[106].begin();}],
-    background: 'Persons/Aurora_Aurora',
-  });
-
-Game.Scenes.A_Part01[106] =
-  new Scene({
-    text: `
-      С одной стороны, испытывая чувство безмерной радости от переезда в новый дом и воссоединения семьи, 
-      а с другой стороны - чувство тоски, ведь это все такое привычное и родное.
-      <p>Мы быстро собрали те немногие вещи, которые у нас были и отправились в свой новый дом. 
-      `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[102].begin();}],
-    background: 'Persons/Aurora_Aurora',
-  });
-
-
-
-Game.Scenes.A_Part01[102] =
-  new Scene({
-    text: `
-       Небольшой домик, находившийся рядом с маяком, стал нашей отдушиной. Наконец-то беззаботная семейная идиллия накрыла нас волной любви и счастья. 
-      <p>Да, мы были совершенно оторваны от других. Но наше уютное гнездышко и было всем этим гигантским миром. 
-      `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[103].begin(); Game.message('Сейчас вы сделаете свой первый выбор. Некоторые из них меняют сюжет незначительно, другие же ведут к серьезным переменам. Но помните, только Вам решать, какой вы видите свою главную героиню'); }],
-    background: 'Backgrounds/Aurora_Lighthouse',
-  });
-
-Game.Scenes.A_Part01[103] =
-  new Scene({
-    text: `
-      Волны, ветер, свобода, семья. Я обрела гармонию и спокойствие на сердце. 
-      <p>И не забывала о своем хобби. 
-      `,
-    buttontext: ['Любила рисование','Любила писательство','Любила музыку'],
-    buttonaction: [
-      () => { Game.Scenes.A_Part01[18].begin(); Game.Achievements.A_Artist.unlock(); Game.Stats.Drawing.add(1); },
-      () => { Game.Scenes.A_Part01[21].begin(); Game.Achievements.A_Writer.unlock(); Game.Stats.Writing.add(1);},
-      () => { Game.Scenes.A_Part01[24].begin(); Game.Achievements.A_Musician.unlock(); Game.Stats.Music.add(1); }
-    ],
-    background: 'Backgrounds/Aurora_Lighthouse',
-  });
-
-Game.Scenes.A_Part01[18] =
-  new Scene({
-    text: `
-      Я не училась в художественной школе и не имела ни малейшего представления о тонкостях подобного искусства. 
-      Однако еще с детства мама с папой видели, какую радость мне доставляет передавать простые формы на бумагу. 
-      <p>И хоть мы были небогатой семьей, но на альбом и несколько карандашей родители смогли найти деньги. 
-
-      `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[19].begin(); }],
-    background: 'Backgrounds/Aurora_Album',
-  });
-
-Game.Scenes.A_Part01[19] =
-  new Scene({
-    text: `
-      Рисование также помогало отвлекаться от тяжелых моментов в жизни. Легкое чирканье карандашом, блеклые наброски - мой мир, который я раскрашу в нужные цвета. 
-      `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[107].begin(); }],
-    background: 'Backgrounds/Aurora_Album',
-  });
-
-Game.Scenes.A_Part01[107] =
-  new Scene({
-    text: `
-    Жизнь на маяке стала для меня новым открытием и все заиграло более яркими красками. 
-    <p>Я часто садилась на лавочку, которая стояла рядом с маяком. Вид рассказывал о море и его тайнах. 
-      `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[20].begin(); }],
-    background: 'Backgrounds/Aurora_Album',
-  });
-
-Game.Scenes.A_Part01[20] =
-  new Scene({
-    text: `
-      Каждый раз море открывалось для меня с новой стороны. 
-      Легкое покачивание волн, ровный горизонт, мирно летящие птицы. Или же бушующие потоки, сильный ветер, что сносил все на своем пути. 
-      <p>Эти мгновения навсегда запечатлены в моем альбоме.  
-      `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[28].begin(); }],
-    background: 'Backgrounds/Aurora_Album',
-  });
-
-Game.Scenes.A_Part01[21] =
-  new Scene({
-    text: `
-      Одним из немногих предметов в школе, которым я по-настоящему увлекалась, была литература. 
-      Для меня всегда оставалось загадкой, как же люди могут так искусно передавать свои мысли и идеи, влиять на разум читателя, внушать ту или иную мораль.
-      <p>Как-то после уроков я набралась смелости и купила блокнот, который стал постепенно заполняться разного рода набросками для будущих историй. 
-      `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[22].begin(); }],
-    background: 'Backgrounds/Aurora_Writing',
-  });
-
-Game.Scenes.A_Part01[22] =
-  new Scene({
-    text: `
-      Как и в жизни, я не могла придумать конечную цель или хотя бы продумать структуру произведения. Но это не мешало мне изливать свою душу в такой форме. 
-      <p>Маяк стал для меня оплотом вдохновения. Я часто залезала на самый верх здания, где располагалась смотровая площадка. Садилась на стул и просто писала. 
-      `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[23].begin(); }],
-    background: 'Backgrounds/Aurora_Writing',
-  });
-
-Game.Scenes.A_Part01[23] =
-  new Scene({
-    text: `
-      Дракон, что мог обрушить свое зло на маленький никому не нужный городок или обычная бытовая жизнь смотрителя маяка. 
-      <p>Это было неважно. 
-      `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[28].begin(); }],
-    background: 'Backgrounds/Aurora_Writing',
-  });
-
-Game.Scenes.A_Part01[24] =
-  new Scene({
-    text: `
-      В школе я часто проводила время наедине с собой. Меня не привлекало общение с другими людьми, к тому же, они не были особенно расположены ко мне. 
-      <p>Но в один из дней мой одноклассник, с которым мы делили парту, пришел неожиданно в хорошем настроении. Я тактично поинтересовалась о причине этого. 
-      `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[25].begin(); }],
-    background: 'Backgrounds/Aurora_WM',
-  });
-
-Game.Scenes.A_Part01[25] =
-  new Scene({
-    text: `
-      - Наконец-то состоялся дебют “Kings & Queens”. Это просто бомба. Все только о них и говорят, а их гитарист и по совместительству вокалист - настоящий прорыв. 
-      Он вроде даже наш ровесник… Не верится. Почему я просиживаю за этой чертовой партой, когда в шестнадцать лет можно такие бабки рубить… 
-      `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[26].begin(); }],
-    background: 'Backgrounds/Aurora_WM',
-  });
-
-Game.Scenes.A_Part01[26] =
-  new Scene({
-    text: `
-      - А можно послушать? 
-    <p>- Конечно! Я и забыл, что у тебя нет денег, - он протянул мне плеер и наушники. 
-    <p>Я не обратила внимание на эту колкость. Люди почему-то норовят показать свое превосходство, но я к этому привыкла и отнеслась спокойно. 
-      `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[27].begin(); Game.Sounds.play('Music','KingQueens'); }],
-    background: 'Backgrounds/Aurora_WM',
-  });
-
-Game.Scenes.A_Part01[27] =
-  new Scene({
-    text: `
-      Надев наушники, меня тут же захватил звук гитары. 
-      Музыка, которую я слышала была чем-то новым для меня. Прекрасный проигрыш и не менее завораживающий голос вокалиста вызвали смешение различных эмоций. 
-      `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[110].begin(); }],
-    background: 'Backgrounds/Aurora_WM',
-  });
-
-
-Game.Scenes.A_Part01[110] =
-  new Scene({
-    text: `
-      Впоследствии, я поделилась своим открытием с родителями.  И несмотря на финансовое положение, на шестнадцатилетие мне подарили музыкальный плеер. 
-      `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[120].begin(); }],
-    background: 'Backgrounds/Aurora_WM',
-  });
-
-Game.Scenes.A_Part01[120] =
-  new Scene({
-    text: `
-      Я не переставая слушала разного рода музыку. Создавала плейлисты под свое настроение. Но “Kings & Queens” занимали в этом списке особенное место. 
-      <p>И даже сейчас, стоя перед бушующим морем, я все еще слушаю их песни. Надеясь, что когда-нибудь у меня хватит смелости взять в руки гитару и сочинить свое произведение.
-      `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[28].begin(); Game.Sounds.play('Music','Lighthouse') }],
-    background: 'Backgrounds/Aurora_WM',
-  });
-
-Game.Scenes.A_Part01[28] =
-  new Scene({
-    text: `
-      Прошло несколько месяцев после нашего переезда. Мы действительно полюбили это место. 
-      <p>Папа оставался прикован к маяку. Я и мама периодически ездили в город за покупками. Каждый вечер мы наслаждались обществом друг друга, будто бы наверстывая упущенное время. 
-      `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[60].begin(); }],
-    background: 'Backgrounds/Aurora_Lighthouse',
-  });
-
-Game.Scenes.A_Part01[60] =
-  new Scene({
-    text: `
-      Разговоры, игры. Совершенно неважно -  что. Ведь главное -  с кем. 
-      <p>Все мы ощущали перемены, происходившие с нами. К примеру, родители говорили мне, что я стала более: 
-      `,
-    buttontext: ['Романтичной','Прагматичной'],
-    buttonaction: [
-      () => { Game.Scenes.A_Part01[29].begin(); Game.Stats.Romantic.add(1); },
-      () => { Game.Scenes.A_Part01[31].begin(); Game.Stats.Pragmatic.add(1); }
-    ],
-    background: 'Backgrounds/Aurora_Lighthouse',
-  });
-
-Game.Scenes.A_Part01[29] =
-  new Scene({
-    text: `
-      - Аврора, - говорила мама, попивая горячий чай в один из вечеров. - Ты изменилась. Я все больше замечаю, какой ранимой и чуткой девушкой ты становишься. 
-      `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[108].begin(); }],
-    background: 'Backgrounds/Aurora_Near_Lighthouse',
-  });
-
-Game.Scenes.A_Part01[108] =
-  new Scene({
-    text: `
-      - Видимо, так на меня повлияло это место, - я пожала плечами и улыбнулась. 
-      <p>- Несомненно, - произнес отец, который что-то колдовал на кухне. - Ты все больше мечтаешь и мечтаешь. Твоим фантазиям мог бы позавидовать любой творец! 
-      `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[30].begin(); }],
-    background: 'Persons/Aurora_Dad',
-  });
-
-Game.Scenes.A_Part01[30] =
-  new Scene({
-    text: `
-      - Ну что ты, папа… Это всего лишь ребячество… 
-      <p>- Не говори так. Нужно больше верить в себя и свои силы. 
-      Уверен, тебя ждут великие открытия, - отец развернулся к нам с тарелками свежих фруктов. - А теперь, девочки мои, налетайте! 
-      `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[33].begin(); }],
-    background: 'Backgrounds/Aurora_Near_Lighthouse',
-  });
-
-Game.Scenes.A_Part01[31] =
-  new Scene({
-    text: `
-      - Аврора, - говорила мама, попивая горячий чай в один из вечеров. - Ты изменилась. Я все больше замечаю, как ты выросла и какой серьезной ты становишься. 
-      `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[109].begin(); }],
-    background: 'Backgrounds/Aurora_Near_Lighthouse',
-  });
-
-Game.Scenes.A_Part01[109] =
-  new Scene({
-    text: `
-      - Видимо, так на меня повлияло это место, - я пожала плечами и улыбнулась. 
-      <p>- Несомненно, - произнес отец, который что-то колдовал на кухне. - Несмотря на твои мечтания, я вижу, как ты стала мыслить более рационально и взвешенно подходить ко многим вопросам. 
-      `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[32].begin(); }],
-    background: 'Persons/Aurora_Dad',
-  });
-
-Game.Scenes.A_Part01[32] =
-  new Scene({
-    text: `
-      - Ну что ты, папа… Это мало о чем говорит…
-      <p>- Нужно больше верить в себя и свои силы. Уверен, тебя ждут великие открытия и твой подход тебе обязательно поможет, - отец развернулся к нам с тарелками свежих фруктов. - А теперь, девочки мои, налетайте! 
-`,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[33].begin(); }],
-    background: 'Persons/Aurora_Dad',
-  });
-
-Game.Scenes.A_Part01[33] =
-  new Scene({
-    text: `
-      Через месяц после переезда, к нашему дому подъехала неизвестная машина. 
-      Не то, чтобы это было чем-то удивительным. 
-      Маяк часто проверяли на исправность разного рода службы. 
-      Но сейчас машина не выглядела как полуразбитый грузовик, а из ее салона вышел хорошо одетый молодой парень. 
-      `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[34].begin(); }],
-    background: 'Backgrounds/Aurora_Lighthouse',
-  });
-
-Game.Scenes.A_Part01[34] =
-  new Scene({
-    text: `
-      Отец, который находился на смотровой площадке маяка, тут же окликнул его: 
-      <p>- Артур, я сейчас спущусь! 
-      <p>Мама была в доме, поэтому я смело вышла встречать незнакомца. Мы обменялись стандартными приветствиями. Я не смогла не отметить его спокойную наружность, привлекательные черты лица и радушную улыбку.
-      `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[35].begin(); }],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part01[35] =
-  new Scene({
-    text: `
-      - Твой отец часто рассказывал о тебе, очень приятно наконец-то познакомиться лично, - проговорил Артур, облокачиваясь на капот своей машины. - Так ты живешь здесь вместе со своей семьей? 
-      <p>- Да! Здесь очень красивое и уединенное место, помогает расслабиться. 
-      <p>- Согласен с тобой, -  задумчиво глядя в сторону произнес парень.
-`,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[36].begin(); }],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part01[36] =
-  new Scene({
-    text: `
-      Вскоре вернулся отец. Он обменялся с Артуром рукопожатием и спросил:
-      <p>- Ты за вещами дедушки приехал? Я сохранил все как было. Пойдем в дом. 
-      <p>- Благодарю. Родители так и не смогли найти время, вечно мотаются по своим командировкам. А я только сейчас смог выбраться сюда. 
-      <p>- Понимаю. У тебя ведь учеба. 
-`,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[37].begin(); }],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part01[37] =
-  new Scene({
-    text: `
-      Мы зашли внутрь дома. Мама организовала всем по чашке чая и выставила на стол печенье. Отец вынес несколько запечатанных коробок. 
-      <p>- Это все его вещи. Я упаковал одежду и его книги с записками. Все, что смог найти. 
-      <p>- Спасибо, - Артур грустным взглядом окинул коробки. - До сих пор не могу поверить, что его не стало. И что меня не было рядом с ним. 
-`,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[38].begin(); }],
-    background: 'Backgrounds/Aurora_Near_Lighthouse',
-  });
-
-Game.Scenes.A_Part01[38] =
-  new Scene({
-    text: `
-      - Жизнь - это цикл с чередой различных взлетов и падений. Он сейчас в лучшем мире. Нам важно сохранить память об этом человеке. Это меньшее, что мы можем сделать. 
-      <p>- Вы правы. 
-`,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[39].begin(); }],
-    background: 'Persons/Aurora_Dad',
-  });
-
-Game.Scenes.A_Part01[39] =
-  new Scene({
-    text: `
-      Разговор продолжился в более позитивном ключе. Я узнала, что Артур являлся внуком бывшего смотрителя. 
-      Он часто проводил время с дедушкой и был духовно связан с этим местом. Поэтому отец не раз подчеркивал, что парень желанный гость маяка. 
-      <p>В течение нескольких месяцев Артур по возможности приезжал к нам в гости. Он проводил много времени с отцом, разговаривая о дедушке, о простых жизненных вещах. 
-`,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[40].begin(); }],
-    background: 'Backgrounds/Aurora_Lighthouse',
-  });
-
-Game.Scenes.A_Part01[40] =
-  new Scene({
-    text: `
-      И со мной. Мы могли часами гулять и вести диалог на любые темы. Его компания была мне очень близка. Можно даже сказать, что мы стали друзьями. 
-      <p>Я чувствовала себя очень комфортно в его обществе. Его доброта и ласковое обращение вызывали в душе ранее неизвестные мне чувства. 
-`,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[41].begin(); Game.Stats.Arthur.add(0); }],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part01[41] =
-  new Scene({
-    text: `
-      Иногда почитывая романтические книги про всяких принцев, я невольно проводила аналогии с нашими взаимоотношениями. Была ли это любовь или я видела в нем фигуру брата?
-`,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[115].begin(); }],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part01[115] =
-  new Scene({
-    text: `
-      На все эти противоречия у меня не было ответа. Я просто наслаждалась нашим времяпрепровождением и плыла по течению. 
-      <p>Это были прекрасные месяцы светлых эмоций. Но все не могло быть так гладко. 
-`,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[42].begin(); }],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part01[42] =
-  new Scene({
-    text: `
-      Спустя чуть больше полугода нашей жизни на маяке, мама сильно заболела. Никакие лекарства и напутствия врачей не смогли помочь ей выбраться из этого состояния. 
-      <p>Она умерла в больнице. Не мучаясь, не жалуясь, что так мало прожила.
-`,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[43].begin(); }],
-    background: 'Backgrounds/Aurora_Near_Lighthouse',
-  });
-
-Game.Scenes.A_Part01[43] =
-  new Scene({
-    text: `
-      Мне всегда вспоминались ее слова: 
-      <p>- Аврора, ты наша звездочка. Подобно помогающему свету на маяке, ты наш путеводитель в жизни. 
-      <p>Как жаль, что моего “света” не стало в тот день. 
-      <p>Смогу ли я продолжать быть тем самым путеводным огнем для других?
-`,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[44].begin(); }],
-    background: 'Backgrounds/Aurora_Near_Lighthouse',
-    condition: function (){
-      if(Game.Stats.Romantic.get==1){
-        this.buttonaction[0] = () => { Game.Scenes.A_Part01[44].begin(); }
-      }
-      if(Game.Stats.Pragmatic.get==1){
-        this.buttonaction[0] = () => { Game.Scenes.A_Part01[46].begin(); }
-      }
-    }
-  });
-
-Game.Scenes.A_Part01[44] =
-  new Scene({
-    text: `
-      На похоронах слезы душили меня, словно удавки. Я задыхалась. Терялась. От меня оторвали кусок чего-то настолько дорогого, что это никак не выразить словами. 
-      <p>Что я должна испытывать? Мне больно, мне паршиво. Остановите это поскорее. Как вернуть время назад? 
-`,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[45].begin(); }],
-    background: '',
-  });
-
-Game.Scenes.A_Part01[45] =
-  new Scene({
-    text: `
-      Отец обнимал меня, смотря куда-то опустошенным взглядом. Он не плакал. Не кричал во все горло от терзающей боли. 
-      <p>Нет. 
-      <p>Возможно, он старался быть сильным ради меня, а может он просто не осознавал происходящее.  
-`,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[48].begin(); }],
-    background: '',
-  });
-
-Game.Scenes.A_Part01[46] =
-  new Scene({
-    text: `
-      На похоронах я стояла рядом с отцом с отчужденным лицом. Происходящее настолько не поддавалось чему-то логичному или закономерному, что я терялась в собственных эмоциях. 
-      <p>Что я должна испытывать? Мне больно, мне паршиво. Остановите это поскорее. Как вернуть время назад? 
-`,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[47].begin(); }],
-    background: '',
-  });
-
-Game.Scenes.A_Part01[47] =
-  new Scene({
-    text: `
-      Отец обнимал меня, смотря куда-то опустошенным взглядом. Он не плакал. Не кричал во все горло от терзающей боли. 
-      <p>Нет. 
-      <p>Возможно, он старался быть сильным ради меня, а может он просто не осознавал происходящее.  
-`,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[48].begin(); }],
-    background: '',
-  });
-
-Game.Scenes.A_Part01[48] =
-  new Scene({
-    text: `
-      Артур, узнав о происходящем, незамедлительно приехал. Он не отходил от меня ни на шаг. 
-      Его поддержка в тот момент была как глоток свежего воздуха. Я плакала на его плече, а он утешал меня, поглаживая по волосам. 
-`,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[49].begin(); }],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part01[49] =
-  new Scene({
-    text: `
-      Меня разрывало от несправедливости. Ян. Мама. Почему близкие люди покидают этот мир? Мы ведь так мало провели времени вместе.  
-      <p>Если бы не Артур, <s>я бы утопилась в бушующем море. </s>
-`,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[111].begin(); }],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part01[111] =
-  new Scene({
-    text: `
-      Они часто разговаривали о чем-то с отцом наедине. Я не вмешивалась, понимая, что всем иногда нужно выговориться на определенные темы. 
-`,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[50].begin(); }],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part01[50] =
-  new Scene({
-    text: `
-      За несколько месяцев наша жизнь сильно поменялась. Отец невольно отстранился, полностью ушел в работу. 
-      В его глазах пропал тот блеск жизни, та мотивация, которая помогала ему раньше. Он стал пить, но не переставал забывать о своей единственной дочери. 
-      <p>В один из вечеров он позвал меня на смотровую площадку. Тогда уже минул почти год с нашего переезда. 
-      <p>Тихая мирная ночь. Звезды. Шум морских волн. 
-`,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[51].begin(); }],
-    background: 'Backgrounds/Aurora_Lighthouse_Night',
-  });
-
-Game.Scenes.A_Part01[51] =
-  new Scene({
-    text: `
-      Мы сели рядом, сдвинув два стула. Немного посидев в молчании, папа проговорил: 
-      <p>- Тебе нужно уехать. Начать жить. 
-      <p>Эти слова обрушились на меня подобно огромному снежному кому. 
-      <p>- Но как же…? 
-`,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[52].begin(); }],
-    background: 'Backgrounds/Aurora_Lighthouse_Night',
-  });
-
-Game.Scenes.A_Part01[52] =
-  new Scene({
-    text: `
-      - Аврора, ты же не думала, что всю жизнь проведешь на этом разваливающемся маяке. Я не могу позволить, чтобы ты прожигала здесь свою жизнь вместе со мной.
-      <p>- Я…
-`,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[104].begin(); }],
-    background: 'Persons/Aurora_Dad',
-  });
-
-Game.Scenes.A_Part01[104] =
-  new Scene({
-    text: `
-      - Мы с Артуром много говорили об этом. Он готов помочь с переездом. Сбережения у нас есть. Этого будет достаточно для начала жизни в большом городе и поступления в университет. 
-      <p>Он все решил. И давно. И мне нечего было возразить. Это было логичным исходом, но чувствам не прикажешь. 
-`,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[53].begin(); }],
-    background: 'Persons/Aurora_Dad',
-  });
-
-Game.Scenes.A_Part01[53] =
-  new Scene({
-    text: `
-      - Папа, - глаза наполнились слезами. - Я не могу тебя бросить. 
-      <p>- Мы не прекратим общение. СМС или письма. Наша связь не прервется на этом.
-      <p>- Это слишком резко и я не знаю, что мне сказать…
-      `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[105].begin(); }],
-    background: 'Backgrounds/Aurora_Lighthouse_Night',
-  });
-
-Game.Scenes.A_Part01[105] =
-  new Scene({
-    text: `
-        - Вспомни свои мечты, Аврора, - папа сделал глоток хмельного напитка. - Свои стремления. Ты всегда была понимающим ребенком, который переживал все трудности и не жаловался. Но пришла пора начать жить для себя. Мама была такого же мнения. И я уверен, Ян, сказал бы то же самое.
-`,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[54].begin(); }],
-    background: 'Persons/Aurora_Dad',
-  });
-
-Game.Scenes.A_Part01[54] =
-  new Scene({
-    text: `
-      - Но я даже не представляю, куда и как мне двигаться дальше. Я не смогу одна. Без тебя. Без мамы. Без Яна… Я не справлюсь.
-      <p>- Ты будешь не одна. С этим поможет Артур. Вы же неплохо ладите. Он станет твоей опорой, пока ты не встанешь на ноги. Тем более, что изначально это было его идеей.
-      <p>На мгновение меня обрадовали слова отца о причастности Артура, но после, осознание ситуации накрыло меня. 
-`,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[55].begin(); }],
-    background: 'Persons/Aurora_Dad',
-  });
-
-Game.Scenes.A_Part01[55] =
-  new Scene({
-    text: `
-      Я согнулась, обхватив колени. Тяжело было признавать правоту отца. Мне хотелось уехать. Это было правдой. Горькой правдой. Но я слишком сильно пеклась о единственном родном человеке. Ведь одиночество не щадит никого. 
-      <p>- Но ты…
-`,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[56].begin(); }],
-    background: 'Backgrounds/Aurora_Lighthouse_Night',
-  });
-
-Game.Scenes.A_Part01[56] =
-  new Scene({
-    text: `
-      - Хватит, Аврора. Я справлюсь. Моя работа давно превратилась в неотъемлемую часть жизни. И я привык. А тебе пора думать о себе. Пожалуйста, - он коснулся моей руки, слегка поглаживая. 
-      <p>Я обняла его. Крепко-крепко. Это был один из последних наших душевных вечеров перед моим отъездом. 
-`,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part01[57].begin(); Game.Stats.Father.add(0); Game.Achievements.A_Part01Completed.unlock(); }],
-    background: 'Persons/Aurora_Dad',
-  });
-
-Game.Scenes.A_Part01[57] =
-  new Scene({
-    text: `
-      Все происходило стремительно, словно папа решил все сделать так, чтобы не было больнее отпускать меня. 
-      <p>Через неделю приехал Артур. Я стояла с собранным рюкзаком, взволнованно теребя волосы, и абсолютно не понимая, куда приведет моя новая дорога жизни. 
-`,
-    buttontext: [''],
-    buttonaction: [() => {
-      setTimeout(() => { Game.Scenes.A_Part02[0].begin(); }, 1000);
-      Game.LoadScreen('Aurora_Part02');
-      Game.Progress.save("Aurora_Part02");
-    }],
-    background: 'Backgrounds/Aurora_Lighthouse_Night',
-  });
-Game.Scenes.A_Part02 = [];
-
-Game.Scenes.A_Part02[0] =
-  new Scene({
-    text: `
-    Раннее солнце освещало тихую водную гладь, оставляя несколько играющих бликов на ее поверхности. В тот момент мне почему-то казалось, что я в последний раз вижу эту умиротворяющую картину. 
-    <p>Во мне смешались чувства. А как могло быть иначе, ведь меня будто вырывают из моего кокона и оставляют одну на потеху неизвестности.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[1].begin(); }],
-    background: 'Backgrounds/Aurora_Lighthouse',
-    condition: function (){ Game.Sounds.play('Music', 'Lighthouse') }
-  });
-
-Game.Scenes.A_Part02[1] =
-  new Scene({
-      text: `
-    Это были не самые приятные ощущения. Но я не могла от них избавиться. 
-        `,
-      buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Part02[2].begin();}],
-      background: 'Backgrounds/Aurora_Lighthouse',
-  });
-
-Game.Scenes.A_Part02[2] =
-  new Scene({
-      text: `
-    Однако я должна перебороть себя. Сейчас, сжимая лямку рюкзака, мне оставалось только решиться - отпустить давно державшее меня место и начать жить для себя. 
-    <p>Таково было мое сокровенное желание.
-        `,
-      buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Part02[3].begin();}],
-      background: 'Backgrounds/Aurora_Lighthouse',
-  });
-
-Game.Scenes.A_Part02[3] =
-  new Scene({
-      text: `
-    Я глубоко вздохнула и нашла взглядом папу. Он стоял рядом с Артуром и в очередной раз благодарил его за подаренную возможность. 
-    <p>Наконец, и я решила подойти. Я успела попрощаться с домом, теперь предстояло самое трудное.
-        `,
-      buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Part02[4].begin();}],
-      background: 'Backgrounds/Aurora_Lighthouse',
-  });
-
-Game.Scenes.A_Part02[4] =
-  new Scene({
-      text: `
-    - Папа, могли бы мы…? 
-    <p>- Да, дочка, - отец серьезно взглянул на Артура. - Береги ее. 
-        `,
-      buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Part02[5].begin();}],
-      background: 'Persons/Aurora_Dad',
-  });
-
-Game.Scenes.A_Part02[5] =
-  new Scene({
-      text: `
-    - Я сделаю все необходимое, даю слово, - они пожали друг другу руки. - Аврора, я заведу машину. Не думай о времени. 
-    <p>Я кивнула и мы отошли с отцом к одному из наших любимых мест.
-        `,
-      buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Part02[6].begin();}],
-      background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[6] =
-  new Scene({
-      text: `
-    Скамейка открывала вид на море. Морской бриз освежал, тихонько обдувая каждую частичку тела. 
-    <p>Мы сели. Молча. Иногда тишина может сказать больше, чем даже самое ласковое слово. 
-        `,
-      buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Part02[7].begin();}],
-      background: 'Backgrounds/Aurora_Bench',
-  });
-
-Game.Scenes.A_Part02[6] =
-  new Scene({
-    text: `
-    Держась за руки, мы слушали волны, завывание ветра и крики чаек. В этот момент я четко осознала для себя - никаких прощаний навсегда. Наша связь не может так просто разрушиться.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[7].begin();}],
-    background: 'Backgrounds/Aurora_Bench',
-  });
-
-Game.Scenes.A_Part02[7] =
-  new Scene({
-    text: `
-    - Аврора, - папа положил поверх моей руки свою. - Извини, если все происходит так резко. Я просто не мог по-другому. Ощущение, что если ты пробудешь здесь еще один день, то я никогда не смогу отпустить тебя. Чертов эгоист… чертов алкоголик…
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[8].begin();}],
-    background: 'Persons/Aurora_Dad',
-  });
-
-Game.Scenes.A_Part02[8] =
-  new Scene({
-    text: `
-    - Папа, - я обняла его, прижимаясь к плечу. - Мне все это тоже дается нелегко, но решение принято. Я хочу попробовать пожить. По-другому. Но знай, у меня и в мыслях не было бросать тебя… Мы с Артуром будем приезжать.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[9].begin();}],
-    background: 'Persons/Aurora_Dad',
-  });
-
-Game.Scenes.A_Part02[9] =
-  new Scene({
-    text: `
-    - Держись этого парня, милая. С ним ты не будешь знать печали или грусти. Он хороший человек и достоин быть рядом с тобой. 
-    <p>- Папа! - я раскраснелась, так как сказанные слова были больше похожи на его благословение, а не простое напутствие. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[10].begin();}],
-    background: 'Backgrounds/Aurora_Bench',
-  });
-
-Game.Scenes.A_Part02[10] =
-  new Scene({
-    text: `
-    - Тебе нужна опора, чтобы встать на ноги, - отец с грустью стал вглядываться в очертания морского горизонта. - Я не смог ей стать. Не смог сберечь дорогих мне людей. Но тебя я сберегу. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[11].begin();}],
-    background: 'Backgrounds/Aurora_Bench',
-  });
-
-Game.Scenes.A_Part02[11] =
-  new Scene({
-    text: `
-    Сердце закололо. Почему именно сейчас он так разоткровенничался? Мы мало разговаривали о постигших нас трагедиях, однако чувствовалась эта нужда. 
-    Выговориться. Не одинокому морю, которое не ответит, а близкому, что подставит плечо в трудный момент. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[12].begin();}],
-    background: 'Backgrounds/Aurora_Bench',
-  });
-
-Game.Scenes.A_Part02[12] =
-  new Scene({
-    text: `
-    Я очень долго думала над тем, что сказать, но нужные слова не приходили в голову. 
-    Мне оставалось сделать лишь последнее действие перед своим отъездом. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[13].begin();}],
-    background: 'Backgrounds/Aurora_Bench',
-    condition: function (){
-      if (Game.Stats.Drawing.get >=1){
-        this.buttonaction[0] = () =>{ Game.Scenes.A_Part02[13].begin();}
-      }
-
-      if (Game.Stats.Writing.get >=1){
-        this.buttonaction[0] = () =>{ Game.Scenes.A_Part02[29].begin();}
-      }
-
-      if (Game.Stats.Music.get >=1){
-        this.buttonaction[0] = () =>{ Game.Scenes.A_Part02[36].begin(); }
-      }
-    }
-  });
-
-Game.Scenes.A_Part02[13] =
-  new Scene({
-    text: `
-    Из своего рюкзака я достала немного потрепанный листок со своим рисунком. На нем были изображены мы с ним. Наш маяк и бескрайнее море.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[14].begin();}],
-    background: 'Backgrounds/Aurora_Lighthouse_Painting',
-  });
-
-Game.Scenes.A_Part02[14] =
-  new Scene({
-    text: `
-    В один из вечеров мне пришла идея оставить отцу что-нибудь на память. Что-то простое, но в то же время по-своему ценное. 
-    Мне нравилось передавать свои эмоции через краски, поэтому я просто нарисовала этот скромный пейзаж.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[15].begin();}],
-    background: 'Backgrounds/Aurora_Lighthouse_Painting',
-  });
-
-Game.Scenes.A_Part02[15] =
-  new Scene({
-    text: `
-    - Папа, - я протянула ему свой подарок. - Ты часто проводишь время наедине с собой и своими мыслями. 
-    Так пусть этот рисунок будет хранить в твоем сердце воспоминание о нас, обо мне.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[16].begin();}],
-    background: 'Backgrounds/Aurora_Lighthouse_Painting',
-  });
-
-Game.Scenes.A_Part02[16] =
-  new Scene({
-    text: `
-    Папа бережно взял листок и принялся рассматривать его. На его глазах застыли слезы. Он проговорил: 
-    <p>- Знаешь, я отчетливо помню, как мы собирались переезжать на этот маяк. Тогда я сильно переживал, потому что боялся получить отказ с вашей стороны. 
-    Но когда твоя мама услышала эти новости, ее лицо озарила такая счастливая улыбка… Я не видел ее такой с момента пропажи Яна.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[17].begin(); }],
-    background: 'Backgrounds/Aurora_Lighthouse_Painting',
-  });
-
-Game.Scenes.A_Part02[17] =
-  new Scene({
-    text: `
-    Папа сильно сжал кулаки, словно пытаясь заменить одну боль на другую. Как бы ему не было сейчас тяжело, он договорил то, что хотел:
-    <p>- Вы ведь не сомневались ни на секунду. 
-    <p>- Разумеется, - я аккуратно попыталась разжать его руки. - Нам хотелось жить вместе и не чувствовать больше разлуку с тобой. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[18].begin();}],
-    background: 'Backgrounds/Aurora_Lighthouse_Painting',
-  });
-
-Game.Scenes.A_Part02[18] =
-  new Scene({
-    text: `
-    - Я понимаю. Но, Аврора, скажи мне честно. Спустя год жизни здесь, ты не считаешь этот переезд ошибкой? 
-    <p>Мне никогда не нравились подобные вопросы. То, что произошло, оно уже свершилось. Возможно это происки судьбы или итог наших выборов. Но прошлого не вернуть. 
-    <p>Невольно я все равно начала задумываться над вопросом.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[19].begin();}],
-    background: 'Backgrounds/Aurora_Lighthouse_Painting',
-  });
-
-Game.Scenes.A_Part02[19] =
-  new Scene({
-    text: `
-    Переезд. Если бы мы не переехали, мамино здоровье бы не ухудшилось? Но были бы мы также счастливы вдали друг от друга? Стоили ли эти мгновения того, во что сейчас превратилась наша жизнь?
-    <p>- Аврора? 
-    <p>Я: 
-        `,
-    buttontext: ['Не жалею о переезде','Думаю, это неправильный выбор'],
-    buttonaction: [
-      () => { Game.Scenes.A_Part02[20].begin();},
-      () => { Game.Scenes.A_Part02[25].begin();}
-    ],
-    background: 'Backgrounds/Aurora_Lighthouse',
-  });
-
-Game.Scenes.A_Part02[20] =
-  new Scene({
-    text: `
-    - Как бы не было тяжело, все это по итогу привело нас к тому, что мы имеем. Я никогда не скажу, что это был неправильный выбор. Я счастлива. Это может отличаться от привычного счастья, но таков мой ответ.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[21].begin();}],
-    background: '',
-  });
-
-Game.Scenes.A_Part02[21] =
-  new Scene({
-    text: `
-    - Как бы не было тяжело, все это по итогу привело нас к тому, что мы имеем. Я никогда не скажу, что это был неправильный выбор. Я счастлива. Это может отличаться от привычного счастья, но таков мой ответ.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[22].begin();}],
-    background: '',
-  });
-
-Game.Scenes.A_Part02[22] =
-  new Scene({
-    text: `
-    Отец кивнул, сжимая подаренный мною подарок. На миг мне показалось, что я вижу облегчение на его лице. Словно, если бы он услышал нечто другое, его и без того нестабильное состояние - ухудшилось.
-        `,
-    buttontext: [''],
-    buttonaction: [() => {
-      Game.Scenes.A_Part02[23].begin();
-      Game.message('Отец благодарен за ваше благосклонное отношение. Его состояние улучшается');
-      Game.Stats.Father.add(1);
-    }],
-    background: '',
-  });
-
-Game.Scenes.A_Part02[23] =
-  new Scene({
-    text: `
-    - Спасибо, милая. Спасибо за честный ответ, - папа расслабился и откинул голову назад, продолжая мысль. - Мы часто делаем неправильные выборы, но ты права. То счастье, пусть даже мимолетное, что мы обрели здесь - оно стоит всего пережитого.
-        `,
-    buttontext: [''],
-    buttonaction: [() => {
-      Game.Scenes.A_Part02[24].begin();
-      Game.message('Вы принимаете жизнь такой, какая она есть. Благодаря вашему выбору дух Авроры крепчает')
-      Game.Stats.Aurora.add(1);}],
-    background: 'Persons/Aurora_Dad',
-  });
-
-Game.Scenes.A_Part02[24] =
-  new Scene({
-    text: `
-    - Аврора, - папа смотрел мне прямо в глаза. - Ты так выросла. Ты уже не тот зажатый ребенок. Нет. Я вижу перед собой уверенную девушку, которая так по-взрослому смотрит на мир и принимает с достоинством все невзгоды. Я горжусь тобой. 
-    <p>- Спасибо, папа. Все это только благодаря тому, что ты остаешься моим проводником и поддерживаешь.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[42].begin();}],
-    background: 'Persons/Aurora_Dad',
-  });
-
-Game.Scenes.A_Part02[25] =
-  new Scene({
-    text: `
-    - Я люблю наш новый дом всей душой. И несмотря на ту радость, что я испытала, мне всегда казалось -  весь этот переезд был ошибкой. И не потому что нам здесь не нравилось, а потому что…
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[26].begin();}],
-    background: 'Persons/Aurora_Dad',
-  });
-
-Game.Scenes.A_Part02[26] =
-  new Scene({
-    text: `
-    - Она была бы жива, - папа договорил за меня и продолжил. - Жива. Да. Как обычно, ждала меня с работы, вечно бы суетилась. Редко недовольная, но живая.
-    <p>- Папа, я…
-        `,
-    buttontext: [''],
-    buttonaction: [() => {
-      Game.Scenes.A_Part02[27].begin();
-      Game.message('Отец продолжает винить себя в смерти матери. Его состояние ухудшается');
-      Game.Stats.Father.add(-1);
-    }],
-    background: 'Persons/Aurora_Dad',
-  });
-
-Game.Scenes.A_Part02[27] =
-  new Scene({
-    text: `
-    - Не стоит, милая. Спасибо за честность. Я все понимаю. Я ведь сам такого же мнения. И не знаю, смогу ли перестать зацикливаться на прошлом. На своих ошибках. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => {
-      Game.Scenes.A_Part02[28].begin();
-      Game.message('Вы не можете смириться с реальностью, с которой сталкиваетесь. Вследствие вашего выбора Аврора начинает больше сомневаться в себе')
-      Game.Stats.Aurora.add(-1);
-    }],
-    background: 'Persons/Aurora_Dad',
-  });
-
-Game.Scenes.A_Part02[28] =
-  new Scene({
-    text: `
-    В тот момент я поделилась своими самыми потаенными мыслями. Я была уверена, что смирилась с утратой, но в глубине души я мечтала повернуть время вспять и не переезжать на маяк.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[42].begin();}],
-    background: 'Persons/Aurora_Dad',
-  });
-
-Game.Scenes.A_Part02[29] =
-  new Scene({
-    text: `
-    Из своего рюкзака я достала немного потрепанный листок со своим написанным стихом, которым я хотела поделиться с папой.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[30].begin();}],
-    background: 'Backgrounds/Aurora_Note',
-  });
-
-Game.Scenes.A_Part02[29] =
-  new Scene({
-    text: `
-    В один из вечеров мне пришла идея оставить отцу что-нибудь на память. 
-    Что-то простое, но в то же время по-своему ценное. Мне нравилось передавать свои эмоции через небольшие произведения, поэтому руки сами потянулись писать. Небольшое нескладное стихотворение, однако моего собственного сочинения.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[30].begin();}],
-    background: 'Backgrounds/Aurora_Note',
-  });
-
-Game.Scenes.A_Part02[30] =
-  new Scene({
-    text: `
-   То, во что я вкладывала душу и хотела, чтобы это хоть немного помогло отцу не терять надежду.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[31].begin();}],
-    background: 'Backgrounds/Aurora_Note',
-  });
-
-Game.Scenes.A_Part02[31] =
-  new Scene({
-    text: `
-   - Папа, - я протянула ему свой подарок. - Ты часто проводишь время наедине с собой и своими мыслями. Возможно однажды, читая эти строки, они навеют тебе о свете, и что ты не одинок.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[32].begin();}],
-    background: 'Backgrounds/Aurora_Note',
-  });
-
-Game.Scenes.A_Part02[32] =
-  new Scene({
-    text: `
-    Папа бережно взял листок и принялся рассматривать его. На его глазах застыли слезы. Он проговорил: 
-    <p>- Знаешь, я отчетливо помню, как мы собирались переезжать на этот маяк. Тогда я сильно переживал, потому что боялся получить отказ с вашей стороны. 
-    Но когда твоя мама услышала эти новости, ее лицо озарила такая счастливая улыбка… Я не видел ее такой с момента пропажи Яна.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[33].begin();}],
-    background: 'Backgrounds/Aurora_Note',
-  });
-
-Game.Scenes.A_Part02[33] =
-  new Scene({
-    text: `
-    Папа сильно сжал кулаки, словно пытаясь заменит одну боль на другую. Как бы ему не было сейчас тяжело, он договорил то, что хотел:
-    <p>- Вы ведь не сомневались ни на секунду. 
-    <p>- Разумеется, - я аккуратно попыталась разжать его руки. - Нам хотелось жить вместе и не чувствовать больше разлуку с тобой. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[35].begin();}],
-    background: 'Backgrounds/Aurora_Note',
-  });
-
-Game.Scenes.A_Part02[35] =
-  new Scene({
-    text: `
-    - Я понимаю. Но, Аврора, скажи мне честно. Спустя год жизни здесь, ты не считаешь этот переезд ошибкой? 
-    <p>Мне никогда не нравились подобные вопросы. То, что произошло, оно уже свершилось. Возможно это происки судьбы или итог наших выборов. Но прошлого не вернуть. 
-    <p>Невольно я все равно начала задумываться над вопросом.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[19].begin();}],
-    background: 'Backgrounds/Aurora_Note',
-  });
-
-Game.Scenes.A_Part02[36] =
-  new Scene({
-    text: `
-    Из своего рюкзака я достала музыкальный диск, которым я хотела поделиться с папой.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[37].begin();}],
-    background: 'Backgrounds/Aurora_Disc',
-  });
-
-Game.Scenes.A_Part02[37] =
-  new Scene({
-    text: `
-    В один из вечеров мне пришла идея оставить отцу что-нибудь на память. Что-то простое, но в то же время по-своему ценное. 
-    И так как я любила  музыку, мне пришла идея собрать коллекцию своих любимых мелодий на диск, чтобы папе было не так грустно проводить время на службе в маяке.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[38].begin();}],
-    background: 'Backgrounds/Aurora_Disc',
-  });
-
-Game.Scenes.A_Part02[38] =
-  new Scene({
-    text: `
-    - Папа, - я протянула ему свой подарок. - Ты часто проводишь время наедине с собой и своими мыслями. 
-    Возможно, слушая мой плейлист, ты вспомнишь, что не одинок. А я всегда рядом с тобой, даже когда так далеко.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[39].begin();}],
-    background: 'Backgrounds/Aurora_Disc',
-  });
-
-Game.Scenes.A_Part02[39] =
-  new Scene({
-    text: `
-    Папа бережно взял диск и принялся рассматривать его. На его глазах застыли слезы. Он проговорил: 
-    <p>- Знаешь, я отчетливо помню, как мы собирались переезжать на этот маяк. Тогда я сильно переживал, потому что боялся получить отказ с вашей стороны. 
-    Но когда твоя мама услышала эти новости, ее лицо озарила такая счастливая улыбка… Я не видел ее такой с момента пропажи Яна.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[40].begin();}],
-    background: 'Backgrounds/Aurora_Disc',
-  });
-
-Game.Scenes.A_Part02[40] =
-  new Scene({
-    text: `
-    Папа сильно сжал кулаки, словно пытаясь заменить одну боль на другую. Как бы ему не было сейчас тяжело, он договорил то, что хотел:
-    <p>- Вы ведь не сомневались ни на секунду. 
-    <p>- Разумеется, - я аккуратно попыталась разжать его руки. - Нам хотелось жить вместе и не чувствовать больше разлуку с тобой. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[41].begin();}],
-    background: 'Backgrounds/Aurora_Disc',
-  });
-
-Game.Scenes.A_Part02[41] =
-  new Scene({
-    text: `
-    - Я понимаю. Но, Аврора, скажи мне честно. Спустя год жизни здесь, ты не считаешь этот переезд ошибкой? 
-    <p>Мне никогда не нравились подобные вопросы. То, что произошло, оно уже свершилось. Возможно это происки судьбы или итог наших выборов. Но прошлого не вернуть. 
-    <p>Невольно я все равно начала задумываться над вопросом.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[19].begin();}],
-    background: 'Backgrounds/Aurora_Disc',
-  });
-
-Game.Scenes.A_Part02[42] =
-  new Scene({
-    text: `
-    - Дорогая, давай забудем все эти грустные мысли, - папа попытался разрядить обстановку своей добродушной улыбкой. - Спасибо тебе за подарок. Я буду беречь его и ждать твоего скорого приезда.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[43].begin();}],
-    background: 'Backgrounds/Aurora_Bench',
-  });
-
-Game.Scenes.A_Part02[43] =
-  new Scene({
-    text: `
-    С одной стороны, я была рада, что папа перевел тему на что-то более нейтральное. Все же мы прощались и я не могла быть рядом. 
-    <p>Но с другой стороны, я стала больше переживать за него. Сейчас он выглядел подавленно. И, видимо, только работа и мои визиты могли бы скрасить его одиночество.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[44].begin();}],
-    background: 'Backgrounds/Aurora_Bench',
-  });
-
-Game.Scenes.A_Part02[44] =
-  new Scene({
-    text: `
-    - Не забывай писать мне, - сказала я немного обеспокоенным тоном. - Телефон. Или если не будет вдруг связи - письма. Что угодно. 
-    <p>- Конечно. Все будет хорошо, дорогая. А теперь тебе пора. Некрасиво заставлять Артура так долго ждать.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[45].begin();}],
-    background: 'Backgrounds/Aurora_Bench',
-  });
-
-Game.Scenes.A_Part02[45] =
-  new Scene({
-    text: `
-    Мы еще раз обнялись. Крепко. Долго. 
-    <p>Затем, я взяла те немногие вещи, что у меня были и села в машину Артура.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[47].begin();}],
-    background: 'Backgrounds/Aurora_Bench',
-  });
-
-Game.Scenes.A_Part02[47] =
-  new Scene({
-    text: `
-    - Все в порядке? – спросил парень, пристегиваясь. 
-    <p>- Да, - я смахнула непослушные слезы. - Я думаю пора выезжать.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[48].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[48] =
-  new Scene({
-    text: `
-    Он кивнул. Не стал допытываться, ведь он понимал причину моих эмоций. 
-    <p>Машина неспешно двинулась с места, оставляя позади маяк и отца, машущего на прощание рукой.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[49].begin(); Game.Sounds.play('Music','Aurora_Daily_01')}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[49] =
-  new Scene({
-    text: `
-    У меня было время, чтобы успокоиться, рассматривая проносящиеся за окном пейзажи. В данный момент окружающая красота природы не привлекала меня.
-    <p> Дорога пролегала через город, где некогда я провела почти всю сознательную жизнь. И отчего-то мне не было грустно или плохо. Я ничего не ощущала.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[50].begin();}],
-    background: 'Backgrounds/Aurora_From_Car',
-  });
-
-Game.Scenes.A_Part02[50] =
-  new Scene({
-    text: `
-    Вот мы проезжаем улицу, где мы с Яном частенько прогуливались, а вот магазин, где брат подрабатывал в свободное от учебы время. 
-    <p>Проехав еще несколько кварталов, я увидела школу, которую ранее посещала. И как-то машинально озвучила свои мысли Артуру:
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[51].begin();}],
-    background: 'Backgrounds/Aurora_From_Car',
-  });
-
-Game.Scenes.A_Part02[51] =
-  new Scene({
-    text: `
-    - Школа, где мы учились с Яном. Кажется, что я не была здесь целую вечность… 
-    <p>Остановившись на светофоре, парень внимательно осмотрел учебное заведение и проговорил:
-    <p>- Не скучаешь по тем временам?
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[52].begin();}],
-    background: 'Backgrounds/Aurora_From_Car',
-  });
-
-Game.Scenes.A_Part02[52] =
-  new Scene({
-    text: `
-    - Воспоминаний много: хороших и плохих - это дало старт моей жизни, за что я буду всегда благодарна этому месту. Но что точно могу сказать - я не скучаю. 
-    <p>- Понимаю. Уверен в новом городе, ты сможешь построить только счастливые воспоминания.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[53].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[53] =
-  new Scene({
-    text: `
-    Оптимизм парня всегда придавал мне большую уверенность и помогал избавиться от грустных мыслей. 
-    <p>Артур был навеселе и полностью сосредоточился на дороге. Иногда он легонько постукивал в ритм играющей на фоне мелодии.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[54].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[54] =
-  new Scene({
-    text: `
-    Спустя где-то час поездки, я успела немного подремать и окончательно прийти в норму. Увидев, что я проснулась, Артур спросил: 
-    <p>- Все хорошо? Если необходимо, давай остановимся и отдохнем. Я бы не против выпить чего-нибудь горяченького.
-    <p>- Ничего, - я улыбнулась от проявления такой заботы. - Главное, чтобы ты не устал.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[60].begin();}],
-    background: 'Persons/Aurora_Arthur',
-    condition: function() {
-        Game.Stats.Song.set(1);
-      if(Game.Stats.Music.get>=1){
-        this.buttonaction[0] = () => {Game.Scenes.A_Part02[55].begin();}
-      }
-    }
-  });
-
-Game.Scenes.A_Part02[55] =
-  new Scene({
-    text: `
-    - Артур, ты не против, если я пощелкаю радио? 
-    <p>- Не нравится мелодия? - с задором произнес парень. 
-    <p>- Нравится, конечно. Просто интересно, что там еще есть. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => {
-      Game.Scenes.A_Part02[56].begin();
-      Game.message('Так как ваша Аврора любит музыку, вам доступен дополнительный выбор музыки на повседневную жизнь девушки в городе');
-    }],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[56] =
-  new Scene({
-    text: `
-    - Аврора, не спрашивай о таких мелочах. Просто выбери то, что тебе хочется послушать. 
-        `,
-    buttontext: ['Послушать Трек 1', 'Послушать Трек 2', 'Выбрать прослушиваемую'],
-    buttonaction: [
-      () => { Game.Sounds.play('Music','Aurora_Daily_01'); Game.Stats.Song.set(1);},
-      () => { Game.Sounds.play('Music','Aurora_Daily_02'); Game.Stats.Song.set(2);},
-      () => { Game.Scenes.A_Part02[59].begin(); },
-    ],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[59] =
-  new Scene({
-    text: `
-    Послушав несколько песен, мне все же пришлась по душе именно эта мелодия.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[60].begin(); Game.Achievements.A_Musicality.unlock();}],
-    background: 'Backgrounds/Aurora_Arthurs_Car',
-  });
-
-Game.Scenes.A_Part02[60] =
-  new Scene({
-    text: `
-    Несмотря на то, что мы с Артуром были довольно близки: я ему доверяла и чувствовала с его стороны похожие ощущения, мне в голову пришел один очевидный вопрос.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[61].begin();}],
-    background: 'Backgrounds/Aurora_Arthurs_Car',
-  });
-
-Game.Scenes.A_Part02[61] =
-  new Scene({
-    text: `
-    С чего вдруг он проявил такую любезность, помогая мне? Он такой по натуре или есть какие-то скрытые мотивы?
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[61].begin();}],
-    background: 'Backgrounds/Aurora_Arthurs_Car',
-    condition: function () {
-      if(Game.Stats.Romantic.get>=1){
-        this.buttonaction[0] = () => { Game.Scenes.A_Part02[62].begin();}
-      }
-
-      if(Game.Stats.Pragmatic.get>=1){
-        this.buttonaction[0] = () => { Game.Scenes.A_Part02[64].begin();}
-      }
-
-    }
-  });
-
-Game.Scenes.A_Part02[62] =
-  new Scene({
-    text: `
-    Конечно, я боялась. Меня пугала неизвестность и излишняя доброта. Мой старший брат Ян всегда учил меня, что нельзя так просто полагаться на людей. Нужно лучше узнавать их.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[63].begin();}],
-    background: 'Backgrounds/Aurora_Arthurs_Car',
-  });
-
-Game.Scenes.A_Part02[63] =
-  new Scene({
-    text: `
-    Но почему-то, к Артуру я не испытывала опаски. Мне хотелось полностью доверять ему, невзирая на мои предубеждения. Это было наивно. Но я так чувствовала. 
-    <p>Однако для своего же спокойствия, я решила спросить:
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[66].begin();}],
-    background: 'Backgrounds/Aurora_Arthurs_Car',
-  });
-
-Game.Scenes.A_Part02[64] =
-  new Scene({
-    text: `
-    Ничего не делается просто так в этом мире. Мой старший брат Ян всегда учил меня, что нельзя так просто полагаться на людей. Нужно лучше узнавать их. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[65].begin();}],
-    background: 'Backgrounds/Aurora_Arthurs_Car',
-  });
-
-Game.Scenes.A_Part02[65] =
-  new Scene({
-    text: `
-    И сейчас, когда я на пути к своей новой жизни, мне хочется знать истинную причину такого отношения и быть более уверенной в человеке, с которым я отправилась в это путешествие. 
-    <p>Для своего же спокойствия, я решила спросить:
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[66].begin();}],
-    background: 'Backgrounds/Aurora_Arthurs_Car',
-  });
-
-Game.Scenes.A_Part02[66] =
-  new Scene({
-    text: `
-    - Артур, скажи, почему ты согласился на всю эту авантюру? 
-    <p>- Аврора, - не отвлекаясь от дороги, проговорил парень. - Я понимаю, твои опасения. Но не переживай у меня нет скрытых мотивов, я делаю это просто, чтобы помочь тебе встать на ноги.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[67].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[67] =
-  new Scene({
-    text: `
-     - Но почему? - я  не собиралась сдаваться.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[68].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[68] =
-  new Scene({
-    text: `
-     - Просто потому что я вижу, какой ты хороший человек. Я вижу, как твой отец хотел для тебя другой жизни. Как ты хотела для себя чего-то нового. Помнишь наш разговор, когда мы пошли прогуляться по лесу?
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[69].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[69] =
-  new Scene({
-    text: `
-     Мы с Артуром много гуляли. Когда он приезжал, то часто рассказывал мне о своей жизни в городе, о своих увлечениях и учебе. Мне было только в радость, что парень открывается для меня с разных сторон. 
-    <p>Я:
-        `,
-    buttontext: ['Помню этот разговор 🔐', 'Не могла вспомнить'],
-    buttonaction: [
-      () => { Game.Scenes.A_Part02[70].begin(); Game.Sounds.play('Music','Romantic'); AndroidApp ('showAd');},
-      () => { Game.Scenes.A_Part02[93].begin();}
-    ],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[70] =
-  new Scene({
-    text: `
-     Мы с Артуром частенько гуляли по территории вокруг маяка. В один из солнечных дней мы решили пройтись по лесу, который был в пятнадцати минутах езды от нашего дома. У Артура была машина, но в этот день нам захотелось пройтись пешком.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[71].begin();}],
-    background: 'Backgrounds/Aurora_Forest',
-  });
-
-Game.Scenes.A_Part02[71] =
-  new Scene({
-    text: `
-     Тогда прошло около месяца с того времени, как мамы не стало. Легкий ветерок покачивал деревья, а лесная обстановка позволяла абстрагироваться от всех проблем. 
-     <p>Это было похоже на сказку, где вот-вот из-за деревьев выйдет добрый волшебник, взмахнет своим посохом и весь мир преобразится.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[72].begin();}],
-    background: 'Backgrounds/Aurora_Forest',
-  });
-
-Game.Scenes.A_Part02[72] =
-  new Scene({
-    text: `
-     Артур шел рядом со мной. Мы разговаривали на всякие отвлеченные темы. 
-     <p>- Повезло же нам с погодой, - отметил парень, любуясь красотами природы.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[73].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[73] =
-  new Scene({
-    text: `
-     - Ты прав, - его слова навели меня на одну идею. - А помнишь ту поляну, которую мы нашли в прошлый раз? Может быть снова пойдем туда и немного отдохнем?
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[74].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[74] =
-  new Scene({
-    text: `
-     - Хорошая идея! Если я правильно помню, то это где-то в той стороне, - Артур показал куда-то на восток. - Заодно перекусим.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[75].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[75] =
-  new Scene({
-    text: `
-     Мы прошли еще немного вглубь леса. Артур галантно помогал мне преодолевать препятствия, поддерживая за руку, отодвигая назойливые ветки деревьев. 
-     <p>Остаток пути прошел в спокойствии. Наконец, мы достигли места назначения.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[76].begin();}],
-    background: 'Backgrounds/Aurora_Forest',
-  });
-
-Game.Scenes.A_Part02[76] =
-  new Scene({
-    text: `
-     Фиолетовые цветы располагались на просторной поляне. Солнце почти село. Его лучи пытались пробраться сквозь стволы деревьев, одаривая нас своим теплом. 
-     <p>Я прилегла на траву и раскинула руки по сторонам. Так хорошо, так умиротворенно. Именно то, что хотелось чувствовать каждый день.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[77].begin();}],
-    background: 'Backgrounds/Aurora_Forest_Flowers',
-  });
-
-Game.Scenes.A_Part02[77] =
-  new Scene({
-    text: `
-    Артур аккуратно сел рядом. Почему-то он улыбался. Так искренне. Так живо. 
-    <p>- Артур, случилось что-то хорошее?
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[78].begin();}],
-    background: 'Backgrounds/Aurora_Forest_Flowers',
-  });
-
-Game.Scenes.A_Part02[78] =
-  new Scene({
-    text: `
-    - Конечно! Мы сейчас с тобой вдвоем. Далеко от всей суеты. Наедине с природой. И… - он достал из рюкзака по сэндвичу. - Как же обойтись без вкусняшек. 
-    <p>Он видел, что я не улыбалась так, как это было раньше. На секунду парень о чем-то задумался, а затем спросил: 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[79].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[79] =
-  new Scene({
-    text: `
-    - Аврора, как ты? 
-    <p>- Все хорошо, - я понимала, почему он задает такой вопрос и не врала. Сейчас я правда себя так ощущала. Но внешне это было трудно заметить.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[80].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[80] =
-  new Scene({
-    text: `
-    - Я рад… Скажи, ты бы хотела уехать в город и начать жить иначе?
-    <p>Вопрос застал меня врасплох. Я привстала, чтобы смотреть в глаза Артуру и сказала правду:
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[81].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[81] =
-  new Scene({
-    text: `
-    - Хотела бы. Но я не могу бросить отца. Мне трудно представить, как ему сейчас тяжело. 
-    <p>Улыбка Артура стала от чего-то еще шире. 
-    <p>- Мне нравится осознавать, что в мире остались люди, которые настолько ценят свою семью.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[82].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[82] =
-  new Scene({
-    text: `
-    - Пропажа брата, затем смерть… - я не смогла договорить предложение. - Папе как-никак сейчас нужна поддержка. А ведь он еще как-то умудряется работать. 
-    <p>Артур придвинулся ближе ко мне и взял меня за руку. В ответ я: 
-        `,
-    buttontext: ['Сжала его руку сильнее', 'Ничего не сделала'],
-    buttonaction: [
-      () => { Game.Scenes.A_Part02[83].begin();},
-      () => { Game.Scenes.A_Part02[87].begin();},
-    ],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[83] =
-  new Scene({
-    text: `
-    Я чувствовала в этом жесте поддержку. Он как никто понимал, что мне тоже было очень тяжело. 
-    <p>Другой рукой парень притянул меня и заключил в крепкие объятия. Я расслабилась, ощущая его дыхание на своей шее, его сердцебиение. Сейчас мы с ним были словно единое целое.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[84].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[84] =
-  new Scene({
-    text: `
-    - Артур, спасибо тебе. За все. 
-    <p>- Аврора, обещаю. Я помогу тебе, чем смогу. Я вижу, как тебе нелегко приходится и не допущу, чтобы ты продолжала так... 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[85].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[85] =
-  new Scene({
-    text: `
-    Он не договорил, но его высказывания все равно отозвались теплом на сердце. Я не могла тогда представить, что мог придумать Артур, но его слова и действия невольно заставляли верить в светлый исход.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[86].begin(); Game.message('Артур становится ближе к Авроре'); Game.Stats.Arthur.add(1)}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[86] =
-  new Scene({
-    text: `
-    Оставшиеся часы до темноты, я пролежала на плече Артура. Не плача, не испытывая грусти. Только наслаждалась его компанией и разговорами, что грели душу.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[91].begin(); Game.Sounds.play('Music','Aurora_Daily_0' + Game.Stats.Song.get)}],
-    background: 'Backgrounds/Aurora_Forest_Flowers',
-  });
-
-Game.Scenes.A_Part02[87] =
-  new Scene({
-    text: `
-    Разговор выбил меня из привычной колеи спокойствия, к которому я стремилась. Я верила Артуру, но сейчас мне было тяжело отвечать на подобные вопросы. 
-    <p>Парень, видя мою реакцию, отстранился и проговорил:
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[88].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[88] =
-  new Scene({
-    text: `
-    - Прости, я не должен был давить на тебя всеми этими расспросами… 
-    <p>- Ты ничего такого не сделал, просто я, видимо, до сих пор не могу смириться. 
-    <p>- Аврора, обещаю. Я помогу тебе, чем смогу. Я вижу, как тебе нелегко приходится и не допущу, чтобы ты продолжала так...
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[89].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[89] =
-  new Scene({
-    text: `
-    Он не договорил, но его высказывания все равно отозвались теплом на сердце. Я не могла тогда представить, что мог придумать Артур, но его слова и действия невольно заставляли верить в светлый исход.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[90].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[90] =
-  new Scene({
-    text: `
-    Оставшиеся часы до темноты, мы сидели рядом друг с другом и мирно вели беседу на различные темы, стараясь чуть дольше не возвращаться в реальность.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[91].begin(); Game.Sounds.play('Music','Aurora_Daily_0' + Game.Stats.Song.get)}],
-    background: 'Backgrounds/Aurora_Forest_Flowers',
-  });
-
-Game.Scenes.A_Part02[91] =
-  new Scene({
-    text: `
-    Я вынырнула из воспоминаний, снова возвращаясь в салон автомобиля Артура.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[92].begin(); Game.message('Артуру приятно, что вы помните его поддержку'); Game.Stats.Arthur.add(1);}],
-    background: 'Backgrounds/Aurora_Arthurs_Car',
-  });
-
-Game.Scenes.A_Part02[92] =
-  new Scene({
-    text: `
-    - Я рад, что ты запомнила тот день. Теперь ты понимаешь, что я тогда говорил правду. Видя твое стремление к другой жизни, я не мог не помочь.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[95].begin();}],
-    background: 'Backgrounds/Aurora_Arthurs_Car',
-  });
-
-Game.Scenes.A_Part02[93] =
-  new Scene({
-    text: `
-    - Извини, все как в тумане. Я помню лес, но не могу вспомнить конкретных деталей. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[94].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[94] =
-  new Scene({
-    text: `
-    Было видно, что Артур на миг расстроился, но сразу же взял себя в руки и рассказал:
-    <p>- Именно тогда я обещал тебе, что постараюсь помочь изменить твою жизнь. Ведь ты сама этого хотела. И, надеюсь, теперь ты убедилась, что я говорил правду и сдержал свое слово.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[95].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[95] =
-  new Scene({
-    text: `
-    - Спасибо, Артур. Я никогда не забуду эту помощь и обязательно буду делать все, чтобы отплатить тебе. 
-    <p>- Брось. Не забивай себе голову этим. Я от тебя ничего не требую. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[96].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[96] =
-  new Scene({
-    text: `
-    - Но я требую от себя. Я так не могу.  
-    <p>- Придет время и ты обязательно отплатишь, - сдался парень, наигранно громко вздохнув.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[97].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[97] =
-  new Scene({
-    text: `
-    Дальнейшие часы в пути прошли, по большей части молча. Я не хотела больше отвлекать Артура от дороги, к тому же меня продолжало сильно клонить в сон. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[98].begin(); Game.Sounds.play('Music','Lighthouse')}],
-    background: 'Backgrounds/Aurora_Arthurs_Car',
-  });
-
-Game.Scenes.A_Part02[98] =
-  new Scene({
-    text: `
-    Мне снился маяк. Но там не было отца или мамы.
-    <p>На смотровой площадке стояла одинокая фигура старика, который держал в руках маленький сверток. Без сомнения в нем был ребенок.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[99].begin();}],
-    background: 'Backgrounds/Aurora_Lighthouse_Night',
-  });
-
-Game.Scenes.A_Part02[99] =
-  new Scene({
-    text: `
-    Мужчина бережно придерживал малыша, укрывая его от ветра. У него дрожали руки, а по щекам лились слезы. 
-    <p>Его хриплый голос произнес:
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[100].begin();}],
-    background: 'Backgrounds/Aurora_Lighthouse_Night',
-  });
-
-Game.Scenes.A_Part02[100] =
-  new Scene({
-    text: `
-    - Беатрис… 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[101].begin();}],
-    background: 'Backgrounds/Aurora_Lighthouse_Night',
-  });
-
-Game.Scenes.A_Part02[101] =
-  new Scene({
-    text: `
-    В этом коротком сказанном слове было столько боли, столько отчаяния. Старик цеплялся за сверток как за самое драгоценное, что было в его жизни.
-    <p>Он смотрел на море, которое было спокойным в ту ночь. Его зоркий взгляд пытался отыскать что-то среди воды, однако даже свет маяка не мог помочь ему выбраться из тьмы. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[102].begin();}],
-    background: 'Backgrounds/Aurora_Lighthouse_Night',
-  });
-
-Game.Scenes.A_Part02[102] =
-  new Scene({
-    text: `
-    Неожиданно ребенок начал ворочаться, а затем громко плакать. Мужчина стал успокаивать его, но крики так и продолжали пронзать мирную тишину.  
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[103].begin(); Game.Sounds.play('Music','Aurora_Daily_0' + Game.Stats.Song.get)}],
-    background: 'Backgrounds/Aurora_Lighthouse_Night',
-  });
-
-Game.Scenes.A_Part02[103] =
-  new Scene({
-    text: `
-    Я проснулась от легкого прикосновения по плечу. Сонным разумом было сложно осознавать, где я сейчас нахожусь. Однако обеспокоенно лицо Артура вернуло меня в реальность.
-    - Аврора, все в порядке? Ты дрожала и плакала во сне.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[105].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[105] =
-  new Scene({
-    text: `
-    - Просто дурной сон, извини за беспокойство…
-    <p>- Дурочка, отучись извиняться за любую мелочь, - Артур заглушил машину. - Мы приехали.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[106].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[106] =
-  new Scene({
-    text: `
-    Артур припарковался перед высотным зданием. Большой город встретил присущей ему суматохой. Много людей, спешивших по своим делам, много машин, много разных звуков. 
-    <p>Выйдя из автомобиля, мы зашли в подъезд и поднялись в квартиру Артура. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[107].begin();}],
-    background: '',
-  });
-
-Game.Scenes.A_Part02[107] =
-  new Scene({
-    text: `
-    Меня встретило просторное и светлое помещение. В гостинной на столе стояла ваза со свежими белыми розами, а на кухне пахло выпечкой, будто бы здесь только что готовили.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[108].begin();}],
-    background: 'Backgrounds/Aurora_Livingkitchen',
-  });
-
-Game.Scenes.A_Part02[108] =
-  new Scene({
-    text: `
-    Вид квартиры многое мог рассказать о ее владельце. У меня сложилось впечатление, что Артур очень трепетно относится к своему имуществу и явно подготовился к моему приезду.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[109].begin();}],
-    background: 'Backgrounds/Aurora_Livingkitchen',
-  });
-
-Game.Scenes.A_Part02[109] =
-  new Scene({
-    text: `
-    - Давай немного отдохнем, а затем я тебе все покажу,  - сказал Артур, складывая наши вещи. - Не хочешь чай или кофе?
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[110].begin();}],
-    background: 'Backgrounds/Aurora_Livingkitchen',
-  });
-
-Game.Scenes.A_Part02[110] =
-  new Scene({
-    text: `
-    Такой простой вопрос почему-то поставил меня в тупик. Поэтому я ответила нейтрально:
-    <p>- Сделай что-нибудь на свой вкус. Спасибо!
-    <p>Парень улыбнулся и поставил чайник на плиту. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[111].begin();}],
-    background: 'Backgrounds/Aurora_Livingkitchen',
-  });
-
-Game.Scenes.A_Part02[111] =
-  new Scene({
-    text: `
-    - Нет ничего лучше зеленого чая после долгой дороги, - он поставил несколько чашек на стол. - Кстати, Аврора, уже написала папе, что мы благополучно добрались?
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[112].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[112] =
-  new Scene({
-    text: `
-    - Да! Обычно СМС всегда доходят, а вот послать в ответ сообщение бывает проблематично. 
-    <p>- Ничего. Я оставил ему адрес, он всегда сможет отправить письмо.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[113].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[113] =
-  new Scene({
-    text: `
-    Я кивнула. После этого мы немного посидели, болтая о нашем переезде и о том, как быстро все это произошло. 
-    <p>Я изъявила желание искать подработку, чтобы не зависеть от папиных средств. Когда же речь заходила о работе Артура, то парень старался перевести тему. Он не любил вдаваться в подробности рабочих дел дома.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[114].begin();}],
-    background: 'Backgrounds/Aurora_Livingkitchen',
-  });
-
-Game.Scenes.A_Part02[114] =
-  new Scene({
-    text: `
-    Спустя долгое время я чувствовала себя умиротворенно. Сидя в совершенно новой обстановке и общаясь с дорогим мне человеком. Нет больше тех грустных мыслей, которые появлялись, стоило мне вновь увидеть маяк и пустые комнаты...
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[115].begin();}],
-    background: 'Backgrounds/Aurora_Livingkitchen',
-  });
-
-Game.Scenes.A_Part02[115] =
-  new Scene({
-    text: `
-     Но я понимала, что здесь работы над собой предстоит в разы больше. 
-    <p>Мы с Артуром прошлись по его квартире. В ней было всего две комнаты. Они были небольшие, отделанные в довольно простом и минималистичном дизайне - ничего лишнего.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[116].begin();}],
-    background: 'Backgrounds/Aurora_Livingkitchen',
-  });
-
-Game.Scenes.A_Part02[116] =
-  new Scene({
-    text: `
-     Моя комната была небольшой, но очень уютной. Синеватые тона невольно отсылали к привычному мне морскому пейзажу, что не могло не радовать глаз. 
-    <p>Я присела на кровать, ощупывая мягкое одеяло. В комнате пахло цветами. Было свежо и красиво.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[118].begin();}],
-    background: 'Backgrounds/Aurora_Room',
-  });
-
-Game.Scenes.A_Part02[118] =
-  new Scene({
-    text: `
-     - Спасибо, Артур, очень милая комната. 
-    <p>- Я рад, что ты оценила, - парень облокотился о стену, внимательно следя за моей реакцией, будто бы боясь, что мне может что-то не понравиться.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[119].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[119] =
-  new Scene({
-    text: `
-     - Скажи, - я не хотела торопить события, но все-таки и сидеть без дела было не в моем стиле. - Какие наши дальнейшие планы? Мне надо подать документы в университет, найти работу…
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[120].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[120] =
-  new Scene({
-    text: `
-     - Твое рвение в бой - выше всяких похвал, - вздохнул Артур. - Не хотела бы отдохнуть для начала?
-    <p>- Я в порядке. Я хочу как можно быстрее влиться в новый ритм жизни.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[121].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[121] =
-  new Scene({
-    text: `
-     - Что ж, - парень на секунду задумался. - В теории, хоть завтра я могу отвезти тебя в университет, где ты познакомишься с обстановкой, может быть даже с кем-то из преподавателей. Все, что тебе надо будет сделать - это сдать несколько вступительных экзаменов. Об остальном я позаботился.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[122].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[122] =
-  new Scene({
-    text: `
-     Я была ошеломлена таким развитием событий и спросила:
-    <p>- Но как же? Я ведь даже не собирала никаких документов для этого.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[123].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[123] =
-  new Scene({
-    text: `
-     - Мы с твоим отцом обо всем позаботились. 
-    <p>- Разве можно подать дистанционно документы даже без согласия самого человека?
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[124].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[124] =
-  new Scene({
-    text: `
-     - Можно. Это же двадцать первый век, - улыбнулся Артур. -  У тебя хороший аттестат. А у меня - связи. Знакомый моего отца знает чуть ли ни всю верхушку университета. И, кстати, у тебя будут ответы на экзамен.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[125].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[125] =
-  new Scene({
-    text: `
-     - Но это же нечестно… 
-    <p>- Аврора, а мир и не будет всегда честным. Нужно научиться выживать всеми доступными способами.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[126].begin();}],
-    background: 'Persons/Aurora_Arthur',
-    condition: function (){
-      if(Game.Stats.Pragmatic.get>=1){
-        this.buttonaction[0] = () =>{Game.Scenes.A_Part02[127].begin();}
-      }
-      if(Game.Stats.Romantic.get>=1){
-        this.buttonaction[0] = () =>{Game.Scenes.A_Part02[126].begin();}
-      }
-    }
-  });
-
-Game.Scenes.A_Part02[126] =
-  new Scene({
-    text: `
-     - Однако я думала, что поступлю своими силами. Ведь на то они и знания, чтобы их применять. 
-    <p>- У тебя еще будет время и возможности проявить себя. Сейчас нужно отбросить свою мечтательность и бороться за то место, которое тебе предоставили. 
-    <p>Он был прав. Возможно, я мыслила немного наивно, но такова была моя натура.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[128].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[127] =
-  new Scene({
-    text: `
-     - Ты прав. Это отличная возможность. Даже не знаю, как тебя в очередной раз благодарить. 
-    <p>- Я рад, что ты восприняла это таким образом. Не волнуйся, у тебя еще будет шанс проявить себя. Сейчас попробуй зацепиться за это, дальше время покажет. 
-    <p>Он говорил верные мысли. Не каждому человеку дается такая возможность. Можно сказать, что мне очень повезло. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[128].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[128] =
-  new Scene({
-    text: `
-     - Думаю, когда момент наступит, я решу как поступлю с экзаменом. А сейчас мне нужно ознакомиться с вопросами. 
-    <p>- Дело твое, - парень пожал плечами и вышел из комнаты. 
-    <p>Через несколько минут он вернулся с несколькими распечатанными листами А4.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[129].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[129] =
-  new Scene({
-    text: `
-     - Здесь все вопросы и ответы. 
-    <p>- Отлично, - я бережно положила листы на кровать. - А направление?
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[130].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[130] =
-  new Scene({
-    text: `
-     - К сожалению или к счастью, удалось пристроить тебя на исторический курс. Других вариантов не было. Твой отец говорил, что тебе нравится история. Думаю, это не будет проблемой. К тому же, в дальнейшем, когда поступишь, ты сможешь перевестись при необходимости.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[131].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[131] =
-  new Scene({
-    text: `
-      - Это на самом деле отличные новости, нет смысла привередничать.
-      <p>- У тебя остается пара недель до вступительных экзаменов. Если ты не уверена в своих силах и хочешь дополнительно позаниматься, можешь пользоваться библиотекой университета. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[132].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[132] =
-  new Scene({
-    text: `
-       - Я бы начала готовиться уже с завтрашнего дня. 
-      <p>- Как скажешь. Я могу отвезти тебя утром, но я должен буду уехать по работе. Где-то в обед заберу, ничего? 
-      <p>- Идеально. Спасибо!
-      <p>- Тогда до завтра. Отдыхай.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[133].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part02[133] =
-  new Scene({
-    text: `
-       Когда Артур покинул комнату, я разложила свои вещи и принялась осматривать листы с вопросами, тщательно стараясь вникнуть и составить примерный список тем, которые у меня западают. 
-      <p>Я сильно вымоталась за этот насыщенный день, поэтому стоило голове коснуться подушки, как я тут же уснула.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[134].begin();}],
-    background: 'Backgrounds/Aurora_Room',
-  });
-
-Game.Scenes.A_Part02[134] =
-  new Scene({
-    text: `
-       Утром мы с Артуром позавтракали яичницей с кофе, а затем поехали по делам.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[135].begin();}],
-    background: 'Backgrounds/Aurora_Arthurs_Car',
-  });
-
-Game.Scenes.A_Part02[135] =
-  new Scene({
-    text: `
-       - Ты справишься там одна, без меня?
-      <p>- Я же не маленький ребенок, Артур. Все будет хорошо. Тем более, что может случиться?
-      <p>- Ты права. Просто беспокоюсь за тебя.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[136].begin(); Game.Stats.Trial_Pass.add(1);}],
-    background: 'Backgrounds/Aurora_Arthurs_Car',
-  });
-
-Game.Scenes.A_Part02[136] =
-  new Scene({
-    text: `
-       В этом был весь Артур. Волнующийся по пустякам, милый и заботливый. 
-      <p>- И чуть не забыл, - парень протянул мне карточку. - С ним ты можешь спокойно проходить в университет для любых целей. 
-      <p>- Спасибо! - я убрала пропуск в свой рюкзак, продолжая поездку.
-      <p>Мы доехали до учебного заведения довольно быстро. Попрощавшись с Артуром, я зашла в университет.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[137].begin();}],
-    background: 'Backgrounds/Aurora_Arthurs_Car',
-  });
-
-Game.Scenes.A_Part02[137] =
-  new Scene({
-    text: `
-       Холл представлял из себя большое пространство с широкой лестницей посередине. Первые секунды мною даже завладел страх потеряться в таком большом и неизведанном месте.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[138].begin();}],
-    background: 'Backgrounds/Aurora_Univer',
-  });
-
-Game.Scenes.A_Part02[138] =
-  new Scene({
-    text: `
-       Но я быстро взяла себя в руки, показала охраннику свой временный пропуск. Средних лет мужчина равнодушно осмотрел документ и указал в сторону, где находилась библиотека.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[139].begin();}],
-    background: 'Backgrounds/Aurora_Univer',
-  });
-
-Game.Scenes.A_Part02[139] =
-  new Scene({
-    text: `
-        Огромное помещение встретило меня запахом старинных книг и шепотом студентов. Массивные шкафы с торчащими корешками удивляли. Хотелось изучить каждую книгу, ближе познакомиться с мыслями автора.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[141].begin();}],
-    background: 'Backgrounds/Aurora_Library',
-    condition: function () {
-      if(Game.Stats.Writing.get>=1){
-        this.buttonaction[0] = () => { Game.Scenes.A_Part02[140].begin();}
-      }
-    }
-  });
-
-Game.Scenes.A_Part02[140] =
-  new Scene({
-    text: `
-    Моему счастью небыло предела. Я словно оказалась в месте, о котором так долго мечтала. 
-    <p>Окруженная книгами, я чувствовала себя живой и по-настоящему в своей тарелке. Когда-нибудь я обязательно хотела оказаться тем самым автором, чья книга могла бы находиться среди этих великолепных работ.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[141].begin();}],
-    background: 'Backgrounds/Aurora_Library',
-  });
-
-Game.Scenes.A_Part02[141] =
-  new Scene({
-    text: `
-    Милая библиотекарша отвела меня в небольшой закуток, где находились необходимые мне источники.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[142].begin();}],
-    background: 'Backgrounds/Aurora_Books',
-  });
-
-Game.Scenes.A_Part02[142] =
-  new Scene({
-    text: `
-    Я стала осматривать книжные полки в поисках исторических книг. Когда я потянулась за нужной мне, чья-то мужская рука соприкоснулось с моей. Я почувствовала легкую дрожь, пальцы незнакомца были необычайно холодными.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[143].begin();}],
-    background: 'Backgrounds/Aurora_Books',
-  });
-
-Game.Scenes.A_Part02[143] =
-  new Scene({
-    text: `
-    Я развернулась, чтобы увидеть наглеца, который все-таки утащил мою книгу. 
-    <p>- “Революция 1917 года: мифы и реальность”, - он прочитал название книги своим бархатистым низким голосом. - Вот чем нынче увлекаются молоденькие студентки?
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[144].begin();}],
-    background: 'Persons/Aurora_Kaleb',
-  });
-
-Game.Scenes.A_Part02[144] =
-  new Scene({
-    text: `
-    - Я просто хотела подготовиться к экзамену, верни, пожалуйста,- ответила я довольно строго. 
-    <p>Его глаза хитро прищурились. Он взял книгу и демонстративно повел ей у меня перед носом. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[145].begin();}],
-    background: 'Persons/Aurora_Kaleb',
-  });
-
-Game.Scenes.A_Part02[145] =
-  new Scene({
-    text: `
-    - А что мне за это будет? - его рука опустилась на полку, не давая мне вырваться из-под его хищного взора. 
-    <p>Он был настолько близко, что я чувствовала исходящий от него аромат: табачный дым вперемешку с одеколоном. Парень был очень настойчив, казалось, его забавляла эта ситуация.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part02[146].begin(); Game.Achievements.A_Part02Completed.unlock();}],
-    background: 'Persons/Aurora_Kaleb',
-  });
-
-Game.Scenes.A_Part02[146] =
-  new Scene({
-    text: `
-    Я хотела что-то возразить незнакомцу, но чей-то звонкий женский голос крикнул:
-    <p>- Калеб!
-    <p>Тогда я еще не осознавала, что это было только началом новых и увлекательных знакомств. 
-        `,
-    buttontext: [''],
-    buttonaction: [ () => {
-      setTimeout(() => { Game.Scenes.A_Part03[0].begin(); }, 1000);
-      Game.LoadScreen('Aurora_Part03');
-      Game.Progress.save("Aurora_Part03");
-    }],
-    background: 'Persons/Aurora_Kaleb',
-  });
-
-Game.Scenes.A_Part03 = [];
-
-Game.Scenes.A_Part03[0] =
-  new Scene({
-    text: `
-    Я отложила дневник, наблюдая, как алое солнце стремится уйти за горизонт, чтобы скорее уступить место долгожданной ночи. Небо переливалось самыми разнообразными красками, словно некий безумный художник выплеснул на полотно все самые яркие цвета, надеясь в этом хаосе почерпнуть вдохновение. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[1].begin(); }],
-    background: 'Backgrounds/Aurora_Lighthouse_Dawn',
-    condition: function (){
-      Game.Sounds.play('Music', 'Lighthouse');
-    }
-  });
-
-Game.Scenes.A_Part03[1] =
-  new Scene({
-    text: `
-    Я завороженно наблюдала за чудесами природы и была абсолютно уверена, что совсем скоро продолжу писать уже полюбившийся мне дневник. Но прежде, мне захотелось побыть наедине со своими мыслями и чашечкой ароматного чая. 
-    <p>Еще немного полюбовавшись на прекрасный пейзаж, я спустилась со смотровой площадки маяка и направилась к нашему домику. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[2].begin(); }],
-    background: 'Backgrounds/Aurora_Lighthouse_Dawn',
-  });
-
-Game.Scenes.A_Part03[2] =
-  new Scene({
-    text: `
-    Все оставалось по-прежнему. Тихая и мирная обстановка. Красивая и уютная комната. 
-    <p>Я села на диван вместе с напитком в руках и завернулась в плед, пытаясь еще раз обдумать написанные строки.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[3].begin(); }],
-    background: 'Backgrounds/Aurora_Near_Lighthouse_Dawn',
-  });
-
-Game.Scenes.A_Part03[3] =
-  new Scene({
-    text: `
-    - Артур, где же ты… Почему ты всегда был рядом, но теперь решил покинуть меня. 
-    <p>Отставив кружку, я обхватила себя руками, пытаясь унять дрожь и успокоиться. Но не в силах сдержаться - я дала волю слезам. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[4].begin(); }],
-    background: 'Backgrounds/Aurora_Near_Lighthouse_Dawn',
-  });
-
-Game.Scenes.A_Part03[4] =
-  new Scene({
-    text: `
-    - Почему все вышло именно так? Ты же моя опора. Мой… - тяжело было говорить из-за подступающих эмоций, которые буквально съедали меня изнутри. - Я никогда не забуду твою поддержку. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[5].begin(); }],
-    background: 'Backgrounds/Aurora_Near_Lighthouse_Dawn',
-  });
-
-Game.Scenes.A_Part03[5] =
-  new Scene({
-    text: `
-    Все мои чувства перемешались. Я с трудом могла мыслить, ведь столько событий обрушилось на меня. А еще о стольком предстояло написать и будто бы вновь пережить.
-    <p>Снова взяв в руки чай, я все-таки нашла в себе силы продолжить. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[6].begin(); }],
-    background: 'Backgrounds/Aurora_Near_Lighthouse_Dawn',
-  });
-
-Game.Scenes.A_Part03[6] =
-  new Scene({
-    text: `
-    - Моя первая встреча с Калебом. Каким же нахалом он был по началу, а какой чувственной натурой оказался по итогу.
-    <p>Я крепко сжала кружку, буквально обжигая свою ладонь. 
-    <p>“Сколько же всего с тобой связано. Ты причинил мне столько боли, и одновременно с этим - столько радости.”
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[7].begin(); }],
-    background: 'Backgrounds/Aurora_Near_Lighthouse_Dawn',
-  });
-
-Game.Scenes.A_Part03[7] =
-  new Scene({
-    text: `
-    Неожиданно для себя я наконец-то смогла улыбнуться. Ведь в тот день мне удалось познакомиться с человеком, который полностью поменял мою жизнь. 
-    <p>- Я ведь тогда встретила первый раз не только Калеба… И все-таки: как после такого не верить в судьбу?
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[8].begin(); }],
-    background: 'Backgrounds/Aurora_Near_Lighthouse_Dawn',
-  });
-
-Game.Scenes.A_Part03[8] =
-  new Scene({
-    text: `
-    “Я должна продолжить. Это необходимо. От этого зависит не только мое будущее. Соберись, Аврора. Скоро начнется одна из самых важных частей всей истории. Мне нужно сосредоточиться и зафиксировать все в точности.”
-    <p>Не в силах больше откладывать, я вернулась к дневнику.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[9].begin(); }],
-    background: 'Backgrounds/Aurora_Near_Lighthouse_Dawn',
-  });
-
-Game.Scenes.A_Part03[9] =
-  new Scene({
-    text: `
-    Калеб выглядел немного растерянным и озирался по сторонам. 
-    <p>- Только не она… - парень вдруг посмотрел на меня и схватил за плечи. - Спрячь меня!
-    <p>- Что? - я стала смотреть вместе с ним, не понимая откуда мог доноситься звук. - Зачем мне это делать?
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[10].begin(); }],
-    background: 'Persons/Aurora_Kaleb',
-    condition: function () {
-        Game.Sounds.play('Music',`Aurora_Daily_0${Game.Stats.Song.get}`);
-        Game.Stats.Kaleb.add(0);
-        Game.message('Вы вернулись в воспоминания')
-    }
-  });
-
-Game.Scenes.A_Part03[10] =
-  new Scene({
-      text: `
-    - Ну, я же очаровашка, - он спрятался за одним из книжных стеллажей, показывая мне знаком, чтобы я не издавала звуков.
-    <p>- Ты же мне книжку так и не вернул, - прошептала я. - И зачем мне выгораживать тебя?
-        `,
-      buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Part03[11].begin(); Game.Stats.Dalia.add(0) }],
-      background: 'Backgrounds/Aurora_Books',
-  });
-
-Game.Scenes.A_Part03[11] =
-  new Scene({
-      text: `
-    И вдруг я заметила молодую девушку, которая была подобно вихрю. Ее абсолютно не смущало, что мы находимся в библиотеке, где приветствуется тишина. Нет. Она бежала сломя голову через весь зал, даже вопреки возгласам рассерженной библиотекарши. 
-        `,
-      buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Part03[68].begin(); }],
-      background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[68] =
-  new Scene({
-      text: `
-    <s>Черты лица как у модели. Живая, бодрая. С растрепанными светлыми волосами.
-        `,
-      buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Part03[12].begin(); }],
-      background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[12] =
-  new Scene({
-    text: `
-    Она была очень красива, даже несмотря на легкую злость, которую она испытывала. Белая кофта. Рыжие волосы и серые глаза. Именно такой я запомнила ее в нашу первую встречу. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[13].begin(); }],
-    background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[13] =
-  new Scene({
-    text: `
-    - Девушка? Да-да, вы. Не видели тут наглого и немного симпатичного на вид парня? - стараясь выровнять дыхание произнесла незнакомка. 
-    <p>Я растерялась, так как не привыкла к такому вниманию. Должно быть эта девушка очень хотела отыскать Калеба, а я продолжала смотреть на нее не в силах что-либо произнести.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[14].begin(); }],
-    background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[14] =
-  new Scene({
-    text: `
-    После нескольких секунд она продолжила:
-    <p>- Брось, я же видела. Он точно был тут. Не волнуйся ты так, просто скажи, куда он вдруг испарился. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[15].begin(); }],
-    background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[15] =
-  new Scene({
-    text: `
-    - Я… нет, то есть… 
-    <p>- У вас все в порядке? Выглядите немного напуганной. Неужели этот засранец что-то сделал?! Калеб, а ну-ка выходи сейчас же! - девушка начала озираться по сторонам и вот-вот могла увидеть, где скрывается парень. 
-    <p>Все это кардинально отличалось от моего привычного ритма жизни, ведь я настолько вжилась в роль одиночки, что даже простой разговор с новыми людьми заставлял сильно нервничать.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[16].begin(); }],
-    background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[16] =
-  new Scene({
-    text: `
-     Но я старалась перебороть себя, так как мне действительно хотелось быть выше своих заморочек и наконец-то начать полноценно жить. 
-    <p>Что делать? 
-        `,
-    buttontext: ['Выдать Калеба','Подыграть Калебу '],
-    buttonaction: [
-      () => { Game.Scenes.A_Part03[17].begin(); Game.Stats.BetrayKaleb.add(1); Game.Timer.stop();},
-      () => { Game.Scenes.A_Part03[22].begin(); Game.Timer.stop(); Game.Achievements.A_PayBack.unlock();}
-    ],
-    background: 'Persons/Aurora_Dalia',
-    condition: function () {
-        Game.Timer.set(10, ()=>{Game.Scenes.A_Part03[17].begin(); Game.Timer.stop(); })
-    }
-  });
-
-Game.Scenes.A_Part03[17] =
-  new Scene({
-    text: `
-    Мне не было смысла его выгораживать. К тому же, он вел себя слишком вызывающе при нашей первой встрече. Пусть знает, что я не одна из этих простушек, которые так легко поддаются на его “чары”. 
-    <p>Я жестом показала, где скрывается Калеб. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[18].begin(); }],
-    background: 'Backgrounds/Aurora_Books',
-  });
-
-Game.Scenes.A_Part03[18] =
-  new Scene({
-    text: `
-    - Он серьезно думал, что я не найду его там, - девушка вздохнула. - Выходи давай. Уж не знаю, что ты задумал и зачем решил спрятаться, но ведешь себя по-детски.
-    <p>Вскоре Калеб вышел, поднимая руки вверх, будто бы сдаваясь полицейскому.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[19].begin(); }],
-    background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[19] =
-  new Scene({
-    text: `
-    - Да что ты ко мне прицепилась? Мы уже миллион раз обсуждали. Ты перегибаешь палку, Далия. Все хорошо. Мы просто беседовали с этой милой девушкой. 
-    <p>То, что он назвал меня милой, было лишь одним из его приемчиков, который все же немного смутил меня. Я вскользь посмотрела на Калеба, пытаясь угадать его эмоции. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[20].begin(); }],
-    background: 'Persons/Aurora_Kaleb',
-  });
-
-Game.Scenes.A_Part03[20] =
-  new Scene({
-    text: `
-    Он выглядел слегка опечаленным, словно его тревожило нечто очень важное, а может просто раздражала сложившаяся ситуация. 
-    <p>Калеб поймал мой взгляд, но долго не задержался, а затем произнес: 
-    <p>- Мы можем пойти уже?
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[21].begin(); }],
-    background: 'Persons/Aurora_Kaleb',
-  });
-
-Game.Scenes.A_Part03[21] =
-  new Scene({
-    text: `
-    Далия с сочувствием обернулась ко мне, видимо заметив, что мне немного не по себе, и сказала: 
-    <p>- Надеюсь, у тебя все в порядке. Чтобы не случилось, не раскисай. Позитив правит этим миром. 
-    <p>Они вдвоем ушли, оставляя меня в легкой растерянности стоять посреди библиотеки. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[27].begin(); }],
-    background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[22] =
-  new Scene({
-    text: `
-    Я решила подыграть ему. Он не выглядел, как плохой человек. А если попросил помощи, должна быть весомая причина такому поведению. 
-    <p>- Он вроде убежал из библиотеки, но я не уверена, - произнесла я дрожащим голосом. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[23].begin(); }],
-    background: 'Backgrounds/Aurora_Books',
-  });
-
-Game.Scenes.A_Part03[23] =
-  new Scene({
-    text: `
-    - Спасибо! Нельзя было оставлять его, так и знала, что убежит при любой удобной возможности. 
-    <p>- Но все в порядке…
-    <p>- Я надеюсь, - она улыбнулась мне. - Мне стоит догнать его, пока он не натворил бед. Увидимся. 
-    <p>Девушка резво побежала в указанном мною направлении. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[24].begin(); }],
-    background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[24] =
-  new Scene({
-    text: `
-    Из своего укрытия вышел Калеб, который удивленно смотрел на меня.
-    <p>- Вот уж не думал, что решишься соврать. Зачем ты это сделала?
-    <p>- Мне показалось - тебе это необходимо. Вот и все.
-    <p>- Хех, - он ухмыльнулся. - Допустим. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[25].begin(); }],
-    background: 'Persons/Aurora_Kaleb',
-  });
-
-Game.Scenes.A_Part03[25] =
-  new Scene({
-    text: `
-    Минуту другую он о чем-то размышлял, а затем произнес:
-    <p>- Услугу за услугу. Вижу, что на тебя можно положиться, поэтому буду должен. Если что понадобится - помогу. 
-    <p>- Не стоит. Я ничего такого не сделала и… 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[26].begin(); Game.message('Калебу понравилась ваша ложь. Он вернет должок'); Game.Stats.Kaleb.add(1); }],
-    background: 'Persons/Aurora_Kaleb',
-  });
-
-Game.Scenes.A_Part03[26] =
-  new Scene({
-    text: `
-    Он вдруг приставил указательный палец к моим губам, заставляя не заканчивать фразу. 
-    <p>- Будь увереннее и не отказывайся от помощи. 
-    <p>Мне нечего было возразить на это и я покорно кивнула. 
-    <p>- Пока-пока, - Калеб вышел из библиотеки, махая мне рукой напоследок. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[27].begin(); }],
-    background: 'Persons/Aurora_Kaleb',
-  });
-
-Game.Scenes.A_Part03[27] =
-  new Scene({
-    text: `
-    Оставшись наедине с собой, я выдохнула, так как осталась в комфортной и привычной для себя обстановке. Однако несмотря на произошедшую ситуацию, я ни сколько не пожалела, что пообщалась с такими странными, но в то же время - веселыми людьми. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[28].begin(); }],
-    background: 'Backgrounds/Aurora_Books',
-  });
-
-Game.Scenes.A_Part03[28] =
-  new Scene({
-    text: `
-    Убрав книги, которыми я пользовалась, чтобы повторить материал для предстоящего экзамена, я направилась в холл университета. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[29].begin(); }],
-    background: 'Backgrounds/Aurora_Books',
-  });
-
-Game.Scenes.A_Part03[29] =
-  new Scene({
-    text: `
-    Время, к которому Артур должен был приехать, приближалось. Я решила позвонить ему и спросить, где он. Зная Артура, он вполне мог приехать заранее. 
-    <p>Набрав нужный номер, в ответ я услышала лишь нудные гудки. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[30].begin(); }],
-    background: 'Backgrounds/Aurora_Univer',
-  });
-
-Game.Scenes.A_Part03[30] =
-  new Scene({
-    text: `
-    Успокоив себя тем, что он должно быть за рулем или ждет меня около учебного заведения, я поспешила выйти из университета. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[31].begin(); }],
-    background: 'Backgrounds/Aurora_Univer',
-  });
-
-Game.Scenes.A_Part03[31] =
-  new Scene({
-    text: `
-    На улице я наткнулась на Калеба и Далию, которые громко о чем-то спорили. 
-    <p>- Тебе так просто от меня не избавиться! - девушка ткнула Калеба в плечо. - Долго ты еще будешь убегать?
-    <p>- Надоела… 
-    <p>- Ах вот оно как, мистер невозмутимость.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[32].begin(); }],
-    background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[32] =
-  new Scene({
-    text: `
-    Я не хотела больше подслушивать чужие разговоры. К тому же, меня больше волновало то, что я нигде не видела Артура. 
-    <p>Несколько предпринятых попыток дозвониться, окончились все той же неудачей. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[33].begin(); }],
-    background: 'Backgrounds/Aurora_Uni_Outside',
-  });
-
-Game.Scenes.A_Part03[33] =
-  new Scene({
-    text: `
-    Волнение охватило меня, потому что я находилась одна в неизвестном городе, даже не помня дорогу домой. Не говоря уже о том, что в голове возникло несколько ужасных сценариев с Артуром в главной роли.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[34].begin(); }],
-    background: 'Backgrounds/Aurora_Uni_Outside',
-  });
-
-Game.Scenes.A_Part03[34] =
-  new Scene({
-    text: `
-    Нервно шагая из стороны в сторону, я пыталась найти решение проблемы.
-    <p>Но ничего такого не придумав, решила вернуться в университет в надежде, что рано или поздно Артур все-таки приедет за мной. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[35].begin(); }],
-    background: 'Backgrounds/Aurora_Uni_Outside',
-  });
-
-Game.Scenes.A_Part03[35] =
-  new Scene({
-    text: `
-    Я корила себя за беспечность. Ведь я даже не запомнила адрес дома в котором остановилась. Да, все действительно происходило быстро и стремительно, но полагаться полностью на Артура было недальновидно с моей стороны. 
-    <p>Он тоже человек, у которого могли возникнуть непредвиденные обстоятельства. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[36].begin(); }],
-    background: 'Backgrounds/Aurora_Uni_Outside',
-  });
-
-Game.Scenes.A_Part03[36] =
-  new Scene({
-    text: `
-    Неожиданно за моей спиной оказалась Далия, которая тихонечко тронула меня за плечо и произнесла:
-    <p>- Что случилось? 
-    <p>Тогда я действительно хотела сказать правду, видя искреннее беспокойство в ее глазах. Но все равно произнесла:
-    <p>- Ничего. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[37].begin(); }],
-    background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[37] =
-  new Scene({
-    text: `
-    <p>Нехотя к нам присоединился Калеб, который сказал:
-    <p>- Да видно же, что ты себе место найти не можешь. 
-    <p>- Просто, - под таким давлением я не могла больше молчать. – За мной должны были приехать. Но он не берет трубку… 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[38].begin(); }],
-    background: 'Persons/Aurora_Kaleb',
-  });
-
-Game.Scenes.A_Part03[38] =
-  new Scene({
-    text: `
-    - Так закажи такси. Все же просто, - парень развел руками. - Давай я закажу, если вдруг проблемы с деньгами. Сочтемся. 
-    <p>- Я не помню адрес, - от смущения хотелось провалиться сквозь землю. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[39].begin(); }],
-    background: 'Persons/Aurora_Kaleb',
-  });
-
-Game.Scenes.A_Part03[39] =
-  new Scene({
-    text: `
-    - Неожиданно, - Далия призадумалась. - И что ты теперь будешь делать? 
-    <p>- А что мне еще остается? Ждать, конечно. Наверняка он скоро приедет. 
-    <p>- А если не приедет?
-    <p>- Прости, что?
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[40].begin(); }],
-    background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[40] =
-  new Scene({
-    text: `
-    - Ну, вдруг что-то случилось и… 
-    <p>- Далия, - Калеб вмешался в наш разговор. - Хватит преувеличивать. 
-    <p>- Я просто пытаюсь сказать, что самым лучшим решением будет развеяться и пойти погулять. Вот и все. Снять стресс, а заодно лучше познакомиться с городом. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[41].begin(); }],
-    background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[41] =
-  new Scene({
-    text: `
-    Услышанное никак не могло уложиться в голове. Девушка, которую я вижу всего второй раз в жизни предлагает мне нечто подобное - безумство. Я элементарно растерялась, отводя взгляд в сторону. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[42].begin(); }],
-    background: 'Backgrounds/Aurora_Uni_Outside',
-  });
-
-Game.Scenes.A_Part03[42] =
-  new Scene({
-    text: `
-    - Ну, уж нет, - парень смотрел на Далию, будто бы понимая, что она замышляет. - Никуда я с тобой не поеду. И эта девушка, разумеется, откажется. 
-    <p>- Все верно. Я не могу никуда уехать. А вдруг он будет волноваться и искать меня?
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[43].begin(); }],
-    background: 'Persons/Aurora_Kaleb',
-  });
-
-Game.Scenes.A_Part03[43] =
-  new Scene({
-    text: `
-    - Тебя же он заставил поволноваться, - Далия вздохнула. - Послушай. Всего на час или два. Тут ходит автобус, который довезет нас прямо в центр города. Познакомимся. Мы покажем тебе местные достопримечательности. Будет весело.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[44].begin(); }],
-    background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[44] =
-  new Scene({
-    text: `
-     - Я даже не знаю…
-      <p>- Брось. Ну, побудешь с нами, пока его нет, уверена тебе понравится и заодно перестанешь так переживать. Он позвонит тебе, если приедет и не найдет здесь. Не волнуйся, с ним вряд ли что-то случилось. Просто заработался и забыл написать.
-      <p>- С нами? - удивленно произнес Калеб. - Не будет никаких “нас”. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[45].begin(); }],
-    background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[45] =
-  new Scene({
-    text: `
-     - Конечно, будет. Далия, Калеб и… - девушка посмотрела на меня. 
-    <p>- Аврора, - я смущенно улыбнулась. 
-    <p>- Вот! Отличная компания. Хватит вам наводить тоску.  
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[46].begin(); }],
-    background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[46] =
-  new Scene({
-    text: `
-     - Нет уж, без меня. 
-      <p>- Калеб, - Далия слегка нахмурилась. - Давай не будем. Ты обещал мне кое-что. Забыл?
-      <p>- Это другое. При чем тут дурацкая поездка в город? 
-      <p>- А это все связано. Давай не будем больше спорить. Ты знаешь, что я права. Ну, что, Аврора, едем? 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[47].begin(); }],
-    background: 'Persons/Aurora_Kaleb',
-  });
-
-Game.Scenes.A_Part03[47] =
-  new Scene({
-    text: `
-     Я понимала - это чистое безумие. Выбираться в совершенно неизвестный мне город с людьми, с которыми познакомилась совсем недавно. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[48].begin(); }],
-    background: 'Backgrounds/Aurora_Uni_Outside',
-  });
-
-Game.Scenes.A_Part03[48] =
-  new Scene({
-    text: `
-     Однако в чем-то Далия была права. Артур пропал, не сказав ничего. Он мог отправить хотя бы СМС. Но не сделал. Всего час ничего не изменит. В конце концов, Артур может позвонить, если все-таки объявится. 
-      <p>- Я согласна.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[49].begin(); }],
-    background: 'Backgrounds/Aurora_Uni_Outside',
-  });
-
-Game.Scenes.A_Part03[49] =
-  new Scene({
-    text: `
-     - Я не сомневалась в тебе, - она широко улыбнулась и несколько раз прыгнула на месте, радуясь. - Давайте поторопимся, а то опоздаем на автобус. 
-      <p>Калеб даже не стал спорить, а просто покорно принял ситуацию и последовал за нами с недовольным лицом. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[50].begin(); }],
-    background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[50] =
-  new Scene({
-    text: `
-     На остановке я и Далия сели на скамейку, а Калеб остался стоять рядом, высматривая транспорт. 
-    <p>Мне же стало интересно больше узнать о своей новой компании и я осмелилась спросить:
-    <p>- Скажи, Далия, а вы тоже будете поступать на первый курс этого университета? 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[51].begin(); }],
-    background: 'Backgrounds/Aurora_Busstop',
-  });
-
-Game.Scenes.A_Part03[51] =
-  new Scene({
-    text: `
-     - Все верно. Скажу тебе по секрету: уже не терпится начать учиться. 
-    <p>- Сдай экзамены для начала, - сказал Калеб. - А то на уме явно не учеба. 
-    <p>- Давай без твоих занудств, - она надула губы и отвернулась.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[52].begin(); }],
-    background: 'Backgrounds/Aurora_Busstop',
-  });
-
-Game.Scenes.A_Part03[52] =
-  new Scene({
-    text: `
-     - То есть, только тебе можно так себя вести? 
-    <p>- Это как это так? - она резко встала и ткнула Калеба прямо в грудь. - Ты, мне кажется, забыл, почему я этим занимаюсь. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[53].begin(); }],
-    background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[53] =
-  new Scene({
-    text: `
-     Слушая их препирательства, я невольно улыбалась, словно наблюдая за давними друзьями, которые вечно что-то не могут поделить. Это было одновременно мило и интересно, потому что я все больше узнавала их с совершенно разных сторон. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[54].begin(); }],
-    background: 'Backgrounds/Aurora_Busstop',
-  });
-
-Game.Scenes.A_Part03[54] =
-  new Scene({
-    text: `
-     Вот - Калеб, который весь из себя такой угрюмый, пытается построить себе образ серьезного человека, а на деле, кажется, что не так уж его тяготят подобные авантюры.  
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[55].begin(); }],
-    background: 'Persons/Aurora_Kaleb',
-  });
-
-Game.Scenes.A_Part03[55] =
-  new Scene({
-    text: `
-     А Далия. Несмотря на ее задор, видно, какая она ответственная и серьезная девушка. Я не представляла, почему она так печется о Калебе, но уверена, что должна быть причина.  
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[56].begin(); }],
-    background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[56] =
-  new Scene({
-    text: `
-     - Все, хватит, - Калеб махнул рукой. - Зачем все это выслушивать Авроре? Мы же вроде хотели придерживаться “позитива”. 
-    <p>- Да, - Далия посмотрела на меня. - Прости. Мы вечно как кошка с собакой. Наверное, со временем мы сможем сгладить углы…
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[57].begin(); }],
-    background: 'Backgrounds/Aurora_Busstop',
-  });
-
-Game.Scenes.A_Part03[57] =
-  new Scene({
-    text: `
-     - Чур, я - кошка, - парень улыбнулся, пытаясь разрядить обстановку. 
-      <p>- Все хорошо. Я в порядке, - раскрасневшись произнесла я. - Мне правда с вами хорошо. Я практически забыла, что оказалась в такой неловкой ситуации. А слушая вас, на душе становится гораздо теплее.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[58].begin(); }],
-    background: 'Persons/Aurora_Kaleb',
-  });
-
-Game.Scenes.A_Part03[58] =
-  new Scene({
-    text: `
-     - Ты милашка, ничего не могу с собой поделать, - Далия вдруг приблизилась ко мне и крепко обняла. -  Иногда мне трудно сдерживать свои эмоции. Особенно когда я вижу рядом с собой такого светлого и искреннего человека.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[59].begin(); }],
-    background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[59] =
-  new Scene({
-    text: `
-      Вскоре приехал автобус. Внутри было мало людей, поэтому нам удалось сесть рядом. 
-      <p>- Аврора, а чего мы только о нас да и о нас. Расскажи, откуда ты приехала? - спросила Далия. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[60].begin(); }],
-    background: 'Backgrounds/Aurora_Bus',
-  });
-
-Game.Scenes.A_Part03[60] =
-  new Scene({
-    text: `
-      - Я из небольшого городка в нескольких часах езды отсюда. Мы долгое время жили там, но потом нам с семьей пришлось переехать на маяк, который находился в уединение, на берегу моря.  
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[61].begin(); }],
-    background: 'Backgrounds/Aurora_Bus',
-  });
-
-Game.Scenes.A_Part03[61] =
-  new Scene({
-    text: `
-       Калеб оживился и внимательно посмотрел на меня, будто бы услышал очень занимательную информацию. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[62].begin(); }],
-    background: 'Persons/Aurora_Kaleb',
-  });
-
-Game.Scenes.A_Part03[62] =
-  new Scene({
-    text: `
-       - Маяк? 
-      <p>- Да. После смерти предыдущего смотрителя, моему отцу предложили занять его место. Мы не раздумывая согласились отправиться туда с ним. До этого он постоянно работал как проклятый, мы практически не виделись. Поэтому никак не могли позволить себе жить и дальше в разлуке. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[63].begin(); }],
-    background: 'Persons/Aurora_Kaleb',
-  });
-
-Game.Scenes.A_Part03[63] =
-  new Scene({
-    text: `
-       - Но почему ты все же решилась уехать? - с сочувствием спросила Далия. - Извини, если это личное…
-      <p>- Все в порядке, - мне была очень приятна проявленная чуткость. - Я была как меж двух огней. Признаться, до сих пор себя так ощущаю. Я хочу начать жить. Для себя. Но и не смею бросить своего отца. Да, он сам настаивал на переезде. Однако то одиночество… Я боюсь за него. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[64].begin(); }],
-    background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[64] =
-  new Scene({
-    text: `
-       - Не переживай, - Далия положила свою руку на мою. - Просто почаще навещай его, пиши. Уверена, ты все это и так знаешь. 
-      <p>- Все равно, спасибо.
-      <p>- Знаешь, а я никогда не была на маяке. Как было бы здорово однажды посмотреть…
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[65].begin(); }],
-    background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[65] =
-  new Scene({
-    text: `
-       - Скажи, Аврора, - Калеб вдруг перебил Далию, очень желая задать свой вопрос. - А что случилось с предыдущим смотрителем? 
-      <p>Его заинтересованность немного удивила меня. Казалось странным, что из всего рассказа, его волновал именно этот момент. Но все же я ответила правду:
-      <p>- Всех подробностей я не знаю. Артур, его внук, говорил, что он скончался от болезни.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[66].begin(); }],
-    background: 'Persons/Aurora_Kaleb',
-  });
-
-Game.Scenes.A_Part03[66] =
-  new Scene({
-    text: `
-       - Вот оно как…
-      <p>- Знаете что, - Далия повысила голос и начала говорить более задорным тоном. - Хватит грустить. Поговорим о чем-нибудь другом. Аврора, лучше расскажи о своем увлечении? Какое у тебя хобби? Что делаешь в свободное время?
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[67].begin(); }],
-    background: 'Persons/Aurora_Dalia',
-    condition: function () {
-      if (Game.Stats.Drawing.get>=1) this.buttonaction[0] = () => { Game.Scenes.A_Part03[67].begin();}
-      if (Game.Stats.Writing.get>=1) this.buttonaction[0] = () => { Game.Scenes.A_Part03[77].begin();}
-      if (Game.Stats.Music.get>=1) this.buttonaction[0] = () => { Game.Scenes.A_Part03[86].begin();}
-      }
-  });
-
-Game.Scenes.A_Part03[67] =
-  new Scene({
-    text: `
-       - В свободное время я рисую. В основном пейзажи. На маяке для меня открывалось много обзоров, которые вдохновляли, так и просились на бумагу. 
-        <p>- Так-так, - Далия потерла ладошки и придвинулась ко мне поближе. - Вот это совпадение. Я сама большой ценитель искусства. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[69].begin(); }],
-    background: 'Backgrounds/Aurora_Bus',
-  });
-
-Game.Scenes.A_Part03[69] =
-  new Scene({
-    text: `
-       - Ты тоже рисуешь?
-        <p>- Все верно! Больше всего мне нравится рисовать людей. Передавать их эмоции. Все до мелочей. Могу показать свою последнюю работу. Одну секунду, - она начала выискивать рисунок в своем рюкзаке. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[70].begin(); }],
-    background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[70] =
-  new Scene({
-    text: `
-       Вскоре Далия достала небольшую папку и раскрыла ее на нужном изображении. 
-      <p>- Это человек, с которым я мечтаю познакомиться… 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[71].begin(); }],
-    background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[71] =
-  new Scene({
-    text: `
-       Рисунок был выполнен аккуратными мазками. Чувствовалось, как автор вкладывает туда не только свой талант, но и душу. Прекрасный юноша улыбался, будто бы смотрел на любимую женщину. Может, это и хотела передать Далия? 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[72].begin(); }],
-    background: 'Backgrounds/Aurora_Solist_Picture',
-  });
-
-Game.Scenes.A_Part03[72] =
-  new Scene({
-    text: `
-        - Это потрясающе, - я не могла сдержать эмоции. - У тебя талант!  Кажется, это кто-то очень знакомый…
-        <p>- Спасибо, но ты преувеличиваешь, - Далия смущенно улыбнулась. - Ты что же, не знаешь этого человека? Или у меня не вышло передать его образ…
-        <p>- Нет-нет, я правда не могу никак вспомнить. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[74].begin(); }],
-    background: 'Backgrounds/Aurora_Solist_Picture',
-  });
-
-Game.Scenes.A_Part03[74] =
-  new Scene({
-    text: `
-        - Хм, - девушка с недоверием посмотрела на меня. - Это Леннарт. Солист знаменитой группы “Kings & Queens”. А я их самая большая фанатка. 
-        <p>- Точнее его, - уточнил Калеб. 
-        <p>- Не завидуй. Он прекрасен: фигура, улыбка, эти волшебные глаза... Нет, ну, как можно быть таким очаровательным. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[75].begin(); }],
-    background: 'Backgrounds/Aurora_Solist_Picture',
-  });
-
-Game.Scenes.A_Part03[75] =
-  new Scene({
-    text: `
-        - Далия, - Калеб придвинулся к нам, смотря на рисунок. - Когда я уже увижу свой портрет? 
-        <p>- А ты не заслужил, - она фыркнула, закрыла папку и убрала в рюкзак. 
-        <p>- Конечно… Поди целый альбом с моим изображением под кроватью прячешь.
-        <p>Далия замахнулась на него кулаком и мы дружно рассмеялись.
-        `,
-    buttontext: [''],
-    buttonaction: [() => {
-      Game.Scenes.A_Part03[76].begin();
-      Game.message('У вас с Далией схожий интерес. Вы узнаете друг друга лучше');
-      Game.Stats.Dalia.add(1);
-      Game.Achievements.A_Fan.unlock();
-    }],
-    background: 'Persons/Aurora_Kaleb',
-  });
-
-Game.Scenes.A_Part03[76] =
-  new Scene({
-    text: `
-        - Аврора, удивительно встретить человека, который еще и разделяет мои интересы. Считаю не зря твой спутник опоздал, сколько чудесного произошло из-за этой случайности. 
-        <p>- Спасибо, что поделилась. Это очень здорово, что наше хобби совпадает.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[90].begin(); }],
-    background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[77] =
-  new Scene({
-    text: `
-        - Мне нравится писать. Небольшие рассказы или стихи. Специального образования у меня нет, но мне помогает отвлечься от всяких плохих мыслей. 
-        <p>- Ого, интересное совпадение, - Далия показала пальцем на Калеба. - Ему тоже нравится нечто подобное. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[78].begin(); }],
-    background: 'Backgrounds/Aurora_Bus',
-  });
-
-Game.Scenes.A_Part03[78] =
-  new Scene({
-    text: `
-        Калеб бросил на меня взгляд и спросил:
-        <p>- А любимый писатель есть?
-        <p>- Не то чтобы… Я люблю и уважаю творчество во всех проявлениях. Поэтому не могу выделить кого-то конкретного. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[79].begin(); }],
-    background: 'Persons/Aurora_Kaleb',
-  });
-
-Game.Scenes.A_Part03[79] =
-  new Scene({
-    text: `
-        - Я, например, - говорила Далия. - Очень люблю стихи Эдгара Аллана По. Особенно все эти мистические мотивы… Как же он красиво обыгрывает все своим мастерским словом.  
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[80].begin(); }],
-    background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[80] =
-  new Scene({
-    text: `
-       - Не могу не согласиться, - улыбнулся парень.
-       <p>- Я не читала ни одного его стихотворения. 
-       <p>- Не может быть? - удивилась Далия. - Это срочно надо исправлять. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[81].begin(); }],
-    background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[81] =
-  new Scene({
-    text: `
-       - Поддерживаю, - кивнул Калеб. - А я вот из тех безумцев, которым нравится творчество писателя Франца Кафки. 
-      <p>- Никогда не могла тебя понять, - развела руками девушка. - Это редкостная нудятина. Пока герой Кафки домыслит, даже в стихах больше экшена произойдёт.  
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[82].begin(); }],
-    background: 'Persons/Aurora_Kaleb',
-  });
-
-Game.Scenes.A_Part03[82] =
-  new Scene({
-    text: `
-       - В этом твоя проблема. Ты постоянно куда-то торопишься. А читая его произведения, так и хочется смаковать каждый момент, рассуждая вместе с персонажем.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[84].begin(); }],
-    background: 'Persons/Aurora_Kaleb',
-  });
-
-Game.Scenes.A_Part03[84] =
-  new Scene({
-    text: `
-       Я была приятно удивлена, что Калеб оказался таким разносторонним человеком. Не каждому дано полюбить искусство, но он буквально оживал на глазах, когда говорил о своем кумире. Это не могло не восхитить. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[85].begin();
-      Game.message('У вас с Калебом схожий интерес. Вы узнаете друг друга лучше');
-      Game.Stats.Kaleb.add(1);
-      Game.Achievements.A_Fav_Writer.unlock();
-    }],
-    background: 'Persons/Aurora_Kaleb',
-  });
-
-Game.Scenes.A_Part03[85] =
-  new Scene({
-    text: `
-        - Да и, Аврора. Если я не забуду, то обязательно принесу томик стихов Эдгара По. Тебе точно понравится, - улыбался Калеб, смотря на меня. 
-        <p>- Спасибо тебе большое!
-        <p>- На самом деле не за что. Я рад, что у нас совпало хобби.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[90].begin(); }],
-    background: 'Persons/Aurora_Kaleb',
-  });
-
-Game.Scenes.A_Part03[86] =
-  new Scene({
-    text: `
-        - Очень люблю слушать музыку. В будущем надеюсь, что смогу научиться играть на каком-нибудь инструменте или даже написать что-то свое. 
-        <p>- У тебя обязательно все получится. Может, однажды сам Леннарт, солист популярнейшей группы “Kings & Queens”, будет обучать тебя этому мастерству. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[87].begin(); }],
-    background: 'Backgrounds/Aurora_Bus',
-  });
-
-Game.Scenes.A_Part03[87] =
-  new Scene({
-    text: `
-        - Далия, это невозможно, - отмахнулась я. - Это же какое обстоятельство должно произойти, чтобы мы просто встретились.
-        <p>- Да ладно тебе, Аврора, - произнес Калеб. - В конечном итоге, все мы люди. А у судьбы есть свои планы на твой счет. Не расстраивайся раньше времени. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[88].begin(); }],
-    background: 'Backgrounds/Aurora_Bus',
-  });
-
-Game.Scenes.A_Part03[88] =
-  new Scene({
-      text: `
-        - Правильно, Калеб у нас философ, - Далия шутливо толкнула его в плечо. - Все может произойти. А если еще стараться… Например, пойти на концерт, занять места в первом ряду и смотреть ему в глаза все время…
-        `,
-      buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Part03[89].begin(); }],
-      background: 'Backgrounds/Aurora_Bus',
-  });
-
-Game.Scenes.A_Part03[89] =
-  new Scene({
-      text: `
-         - Далия просто одержима Леннартом, - парень откинулся на сиденье. - Или как это правильно выразиться - фанатка номер один. 
-         <p>- Прекрати… Нравится он мне, да. Но не то, чтобы фанатка. Просто хочу выйти за него замуж, что такого. 
-         <p>Мы с Калебом переглянулись и разразились смехом. 
-        `,
-      buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Part03[90].begin(); }],
-      background: 'Backgrounds/Aurora_Bus',
-  });
-
-Game.Scenes.A_Part03[90] =
-  new Scene({
-      text: `
-        До окончания поездки, мы продолжали вести непринужденную беседу и узнавать друг друга. На удивление, я и правда расслабилась и начала понемногу привыкать к моим новым знакомым.
-        `,
-      buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Part03[91].begin(); Game.Sounds.play('Music','Aurora_City') }],
-      background: 'Backgrounds/Aurora_Bus',
-  });
-
-Game.Scenes.A_Part03[91] =
-  new Scene({
-      text: `
-        Автобус действительно довез нас прямо до центра города. 
-        <p>Я увидела фонтан и жестом позвала ребят к нему. Лучи теплого солнца кое-где пробивались сквозь величественные здания, бросая блики на воду. 
-        `,
-      buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Part03[92].begin(); }],
-      background: 'Backgrounds/Aurora_Fountain',
-  });
-
-Game.Scenes.A_Part03[92] =
-  new Scene({
-    text: `
-        Меня тут же захватила атмосфера крупного города с присущей ему суетой и величием.  
-        <p>Хотелось заблудиться здесь на несколько часов, но не было времени, да и мне не позволяли этого сделать. Далия и Калеб повели меня дальше по улице. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[93].begin(); }],
-    background: 'Backgrounds/Aurora_Fountain',
-  });
-
-Game.Scenes.A_Part03[93] =
-  new Scene({
-    text: `
-        Какое-то время мы просто гуляли по округе, рассматривая архитектуру, просто наслаждаясь обществом друг друга. Даже Калеб, казалось, полностью расслабился и перестал ворчать. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[94].begin(); }],
-    background: 'Backgrounds/Aurora_SW_Streets',
-  });
-
-Game.Scenes.A_Part03[94] =
-  new Scene({
-    text: `
-      Он даже вошел во вкус нашей спонтанной прогулки и делился своими знаниями во время наших обсуждений.
-      <p>Далия же безмерно улыбалась, постоянно воображая, что могло бы быть на месте постройки. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[95].begin(); }],
-    background: 'Backgrounds/Aurora_SW_Streets',
-  });
-
-Game.Scenes.A_Part03[95] =
-  new Scene({
-    text: `
-      - Ох, как же мне этого не хватало. Знаете, что? Стойте тут. Я добавлю нам сладости. 
-      <p>Мы с Калебом удивленно переглянулись, не понимая замысел Далии. 
-      <p>Но вскоре она вернулась с несколькими палочками сахарной ваты и победоносно вручила их нам. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[96].begin(); }],
-    background: 'Backgrounds/Aurora_SW_Streets',
-  });
-
-Game.Scenes.A_Part03[96] =
-  new Scene({
-    text: `
-      Когда с едой было покончено, Далия неожиданно указала куда-то пальцем и заявила: 
-      <p>- У меня есть еще одна идея. 
-      <p>- Ну, нет, - говорил Калеб. - Хороше же сидим, что тебе все неймется? 
-      <p>- Можно сделать еще интереснее, не говоря уже о пользе моего предложения. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[97].begin(); }],
-    background: 'Backgrounds/Aurora_SW_Streets',
-  });
-
-Game.Scenes.A_Part03[97] =
-  new Scene({
-    text: `
-      - Что ты имеешь в виду, Далия? - уточнила я. 
-      <p>- Видите, там проводят экскурсию. Давайте незаметно присоединимся к ней и послушаем немного. Точно ведь узнаем что-то новое. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[98].begin(); }],
-    background: 'Backgrounds/Aurora_SW_Streets',
-  });
-
-Game.Scenes.A_Part03[98] =
-  new Scene({
-    text: `
-      - Не буду говорить о том, какая эта дурацкая идея, поэтому просто промолчу. 
-      <p>- Наконец-то ты понял, что со мной бесполезно спорить. Аврора? - девушка смотрела на меня горящими глазами. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[99].begin(); }],
-    background: 'Backgrounds/Aurora_SW_Streets',
-  });
-
-Game.Scenes.A_Part03[99] =
-  new Scene({
-    text: `
-      Идея мне очень понравилась. Хоть и было немного страшно, что кто-то спросит у нас билеты, да и просто отчитает в конце концов. Однако перспектива узнать больше о городе - интриговала. И было что-то такое притягательное в Далии, с ней хотелось совершить какое-то безумство.  
-      <p>- Почему бы и нет… Только осторожно. Нам нельзя привлекать внимание. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[100].begin(); }],
-    background: 'Backgrounds/Aurora_SW_Streets',
-  });
-
-Game.Scenes.A_Part03[100] =
-  new Scene({
-    text: `
-      Когда группа двинулась далее, мы незаметно примкнули к потоку. Внутри все переворачивалось от осознания, что мы поступаем неправильно. Но в тоже время я почему-то отчетливо ощутила - с этими новыми знакомыми мне ничего не грозит. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[101].begin(); Game.Sounds.play('Music','Aurora_Church')}],
-    background: 'Backgrounds/Aurora_SW_Streets',
-  });
-
-Game.Scenes.A_Part03[101] =
-  new Scene({
-    text: `
-      Вскоре экскурсовод привел группу к собору, рядом с которым располагалось кладбище. Это старое здание стояло несколько веков, переживая раз за разом тяготы жестоких исторических событий. Но его шпиль все еще пронзает небеса, что, безусловно, восхищало.
-      <p>Однако вместе с этим в глубине души росло необъяснимое чувство тревоги. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[102].begin(); }],
-    background: 'Backgrounds/Aurora_Church',
-  });
-
-Game.Scenes.A_Part03[102] =
-  new Scene({
-    text: `
-      Это место было мрачным, но, по-своему, притягательным. 
-      <p>Неожиданно Калеб замер, внимательно осматривая здание. На его лице читалось неподдельное отвращение и совершенное нежелание идти дальше. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[103].begin(); }],
-    background: 'Backgrounds/Aurora_Church',
-  });
-
-Game.Scenes.A_Part03[103] =
-  new Scene({
-    text: `
-      - Я пойду прогуляюсь по округе. Встретимся у фонтана. 
-      <p>- Но что случилось? - обеспокоенно спросила я. - Если тебе не нравится, давайте лучше уйдем, чтобы всем было комфортно. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[123].begin(); }],
-    background: 'Backgrounds/Aurora_Church',
-  });
-
-Game.Scenes.A_Part03[123] =
-  new Scene({
-    text: `
-      - Нет-нет, просто нужно сделать пару звонков. Веселитесь. 
-      <p>Парень резко ушел, будто бы не желая слышать дальнейших уговоров. Далия ничего не произнесла, лишь с грустью смотрела ему вслед. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[104].begin(); }],
-    background: 'Backgrounds/Aurora_Church',
-  });
-
-Game.Scenes.A_Part03[104] =
-  new Scene({
-    text: `
-      Оставшись наедине с Далией, мы стали слушать рассказ экскурсовода: 
-      <p>- Собор построен в 1598 году известным итальянским архитектором Марко Берлускони. Здание пережило несколько реставраций после сокрушительных войн, но сумело дожить до нашего времени и сейчас полностью функционирует. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[105].begin(); }],
-    background: 'Backgrounds/Aurora_Church',
-  });
-
-Game.Scenes.A_Part03[105] =
-  new Scene({
-    text: `
-      - А это правда, что здесь некогда располагалась секта? - спросил подросток - участник экскурсии. 
-      <p>- Кхм, - экскурсовод поправил очки. - Нет, молодой человек - это миф. Вокруг собора действительно витают множество легенд, но по большей части они все недостоверны и не имеют фактов, указывающих на истину. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[106].begin(); }],
-    background: 'Backgrounds/Aurora_Church',
-  });
-
-Game.Scenes.A_Part03[106] =
-  new Scene({
-    text: `
-      - И даже убийство - вымысел?
-      <p>- Есть одна легенда, - группа заметно оживилась, внимая каждое слово. - Якобы архитектор, Марко Берлускони, был необычным человеком, а участником тайного общества. В то время началась гражданская война в Швеции - война против Сигизмунда, правящего короля. И Марко, по приказу власти, построил собор для покаяния неверных крестьян. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[107].begin(); }],
-    background: 'Backgrounds/Aurora_Church',
-  });
-
-Game.Scenes.A_Part03[107] =
-  new Scene({
-    text: `
-      - Однако что творилось внутри стен, - продолжал экскурсовод. - Никто не знает. Поговаривали, Марко действовал в интересах своей группы. Оттуда и пошла легенда о ритуальных убийствах и кровавой бане, происходивших в соборе. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[108].begin(); }],
-    background: 'Backgrounds/Aurora_Church',
-  });
-
-Game.Scenes.A_Part03[108] =
-  new Scene({
-    text: `
-      - Но документов или иных источников, подтверждающих этот факт - нет, - завершал свой рассказ мужчина. -  Поэтому в историческом обществе принято считать все это байками, которые были нужны, чтобы устрашить народ перед фигурой короля. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[109].begin(); }],
-    background: 'Backgrounds/Aurora_Church',
-  });
-
-Game.Scenes.A_Part03[109] =
-  new Scene({
-    text: `
-      Мое дыхание замирало во время этого рассказа. Даже сама мысль о том, что здесь могло происходить подобное - ужасала и выбивала из коллеи. 
-      <p>Только одно не выходило из головы - это желание поскорее покинуть собор и больше его никогда не видеть. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[110].begin();}],
-    background: 'Backgrounds/Aurora_Church',
-  });
-
-Game.Scenes.A_Part03[110] =
-  new Scene({
-    text: `
-      Далия слушала с равнодушным лицом, как будто бы ее совсем не интересовала подобная история. 
-      <p>Еще немного послушав экскурсию, девушка произнесла:
-      <p>- Давай вернемся к Калебу. Думаю, на сегодня хватит уроков истории и страшных легенд. 
-      <p>Я согласилась, так как сама порядком устала, и мы двинулись к фонтану. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[111].begin(); }],
-    background: 'Backgrounds/Aurora_Church',
-    condition: function () {
-      if (Game.Stats.Romantic.get>=1) this.buttonaction[0] = () => { Game.Scenes.A_Part03[111].begin(); }
-      if (Game.Stats.Pragmatic.get>=1) this.buttonaction[0] = () => { Game.Scenes.A_Part03[114].begin(); }
-    }
-  });
-
-Game.Scenes.A_Part03[111] =
-  new Scene({
-    text: `
-      - Что думаешь об этой истории?
-      <p>- На самом деле очень интересно. Все эти мифы и легенды по-своему вдохновляют. Уверена, что об этом вышел бы хороший сериал или фильм. И драма: возлюбленные по разные стороны баррикад…
-      <p>- А мне кажется - пустая трата времени. Люди вечно фантазируют без поводов. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[112].begin(); }],
-    background: 'Backgrounds/Aurora_Church',
-  });
-
-Game.Scenes.A_Part03[112] =
-  new Scene({
-    text: `
-      - Почему ты так считаешь?
-      <p>- Сама подумай: как можно скрыть массовое убийство? Согласна с точкой зрения экскурсовода - это все для устрашения народа. Раз идет восстание, нужны и соответствующие методы подавления. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[113].begin(); }],
-    background: 'Backgrounds/Aurora_Church',
-  });
-
-Game.Scenes.A_Part03[113] =
-  new Scene({
-    text: `
-      - Может и так. Но все-таки хотелось бы верить, что из этого может получиться нечто интересное. 
-      <p>- Согласна. Однако я за реализм. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[116].begin(); }],
-    background: 'Backgrounds/Aurora_Church',
-  });
-
-Game.Scenes.A_Part03[114] =
-  new Scene({
-    text: `
-      - Что думаешь об этой истории?
-      <p>- Не думаю, что это правда. Скорее всего, дело в короле и его интригах.  К тому же, если это не подкрепляется фактами, то и смысл верить.
-      <p>- Полностью с тобой согласна. И ведь придумают же… Я даже завидую такому таланту. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[115].begin(); }],
-    background: 'Backgrounds/Aurora_Church',
-  });
-
-Game.Scenes.A_Part03[115] =
-  new Scene({
-    text: `
-      - А зачем тебе такой навык?
-      <p>- Даже и не знаю, - девушка призадумалась. - Просто прикольно что-нибудь такое написать, а все вокруг будут тебе наивно верить. Кажется, что это действенный метод, к которому часто прибегали. 
-      <p>- Твоя правда. 
-
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[116].begin(); }],
-    background: 'Backgrounds/Aurora_Church',
-  });
-
-Game.Scenes.A_Part03[116] =
-  new Scene({
-    text: `
-      Когда мы вернулись, Калеб сидел на бортике фонтана, пребывая в глубоких раздумьях. Он даже не посмотрел в нашу сторону, когда мы подошли к нему, лишь сказал: 
-      <p>- Мне нужно уехать. 
-      <p>- Все в порядке? - спросила Далия обеспокоенно смотря на парня. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[117].begin(); }],
-    background: 'Backgrounds/Aurora_Fountain',
-  });
-
-Game.Scenes.A_Part03[117] =
-  new Scene({
-    text: `
-      - Нет, поэтому мне и нужно уехать. Чтобы все решить. Вызову такси. 
-      <p>- Будь осторожен. И пиши, - девушка хотела было сесть с рядом с Калебом, но у нее зазвонил телефон. - Простите, это папа. Я должна ответить.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[118].begin(); }],
-    background: 'Backgrounds/Aurora_Fountain',
-  });
-
-Game.Scenes.A_Part03[118] =
-  new Scene({
-    text: `
-      Оставшись с Калебом наедине, я немного занервничала, так как складывалось ощущение, что моя компания не доставляет ему особого удовольствия. Но на мое удивление, парень вдруг посмотрел на меня и произнес: 
-      <p>- Надеюсь, тебе понравилась прогулка. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[119].begin(); }],
-    background: 'Persons/Aurora_Kaleb',
-  });
-
-Game.Scenes.A_Part03[119] =
-  new Scene({
-    text: `
-      - Да, обычно я не поступаю так необдуманно. Но с вами я действительно почувствовала себя хорошо. 
-      <p>- Я рад, - он улыбнулся. - Уверена, мы еще ни раз сможем пообщаться. Такси приехало. Пора прощаться. 
-      <p>- А как же Далия?
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[120].begin(); }],
-    background: 'Persons/Aurora_Kaleb',
-  });
-
-Game.Scenes.A_Part03[120] =
-  new Scene({
-    text: `
-      - Она не расстроится, что не смогла со мной попрощаться. Мы видимся часто. Мне иногда кажется, что даже слишком. 
-      <p>Мы двинулись в сторону подъезжающей машины, пребывая в тишине. 
-      <p>- Что ж, - парень положил мне руку на плечо. 
-      <p>- До встречи, Аврора. 
-      <p>- И тебе всего хорошего, Калеб. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[121].begin(); }],
-    background: 'Persons/Aurora_Kaleb',
-  });
-
-Game.Scenes.A_Part03[121] =
-  new Scene({
-    text: `
-      Когда Калеб уехал, я несколько секунд смотрела вслед удаляющейся машине и размышляла: все ли с ним будет в порядке? На этот раз он действительно выглядел крайне озадаченным.
-      <p>Собираясь идти к Далии, я заметила на земле нечто, что привлекло мое внимание. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[122].begin(); Game.Stats.Mothers_Photo.add(1) }],
-    background: 'Backgrounds/Aurora_Fountain',
-  });
-
-Game.Scenes.A_Part03[122] =
-  new Scene({
-    text: `
-      Это была винтажная фотография с запечатленной на ней красивой девушкой.  Изображение было пожелтевшим от времени, а внизу красовалась надпись на французском: “Моя семья”. 
-      <p>Я не знала, кто эта незнакомка. В голову пришло предположение, что фотографию мог обронить Калеб. Поэтому я незамедлительно спрятала свою находку в рюкзак и поспешила к Далии. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[124].begin(); }],
-    background: 'Backgrounds/Aurora_Mother_Photo',
-  });
-
-Game.Scenes.A_Part03[124] =
-  new Scene({
-    text: `
-      Девушка выглядела совсем поникшей. Я подсела к ней на бортик фонтана и спросила:
-      <p>- Что случилось, Далия? Я могу чем-то помочь?
-      <p>- Аврора, ох, к сожалению, ты ничем не сможешь помочь. Но спасибо за попытку! 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[125].begin();}],
-    background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[125] =
-  new Scene({
-    text: `
-      - И все-таки ты такая грустная. 
-      <p>- Ладно… не знаю, зачем я тебе это рассказываю. Но все дело в моем отце. Он очень суровый человек и постоянно требует от меня невозможного. 
-      <p>- Например? 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[126].begin();}],
-    background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[126] =
-  new Scene({
-    text: `
-      - Прости, я не могу сейчас привести конкретный пример. И, признаться, без того паршиво. Просто знай, что он тиран и деспот. Я его не ненавижу, но и по-настоящему любить просто не получается. Тяжелая ситуация. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[127].begin();}],
-    background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[127] =
-  new Scene({
-    text: `
-      Вспомнив о своем отце, сердце невольно сжалось. Но мне удалось подавить эмоции и я с улыбкой произнесла:
-      <p>- Давай еще немного погуляем и вернёмся назад.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[128].begin();}],
-    background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[128] =
-  new Scene({
-    text: `
-      - Отличная мысль! 
-      <p>Мы ушли с площади, оставляя фонтан позади. 
-      <p>Тогда я поймала себя на мысли, что мне очень хочется вернуться сюда. Поделиться драгоценными воспоминаниями с отцом или, может быть, с Артуром. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[129].begin();}],
-    background: 'Backgrounds/Aurora_Fountain',
-  });
-
-Game.Scenes.A_Part03[129] =
-  new Scene({
-    text: `
-      Петляя по улочкам мы вышли к удивительному современному стеклянному зданию, на фасаде которого красовалась надпись: Rosen medical. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[130].begin();}],
-    background: 'Backgrounds/Aurora_Pharm',
-  });
-
-Game.Scenes.A_Part03[130] =
-  new Scene({
-    text: `
-      - Что это за здание? 
-      <p>- Это фармацевтическая компания. Одна из крупнейших в городе. У них даже название происходит от какой-то там древней шведской фамилии. 
-      <p>- Ого, очень красивое здание. 
-      <p>- Ты не поверишь, если я скажу, что мой отец его проектировал. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[131].begin();}],
-    background: 'Backgrounds/Aurora_Pharm',
-  });
-
-Game.Scenes.A_Part03[131] =
-  new Scene({
-    text: `
-      - Он настоящий гений! 
-      <p>- Все так говорят… А теперь пойдем поскорее. Не хочу больше тут находиться. 
-      <p>- Постой…
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[132].begin();}],
-    background: 'Backgrounds/Aurora_Pharm',
-  });
-
-Game.Scenes.A_Part03[132] =
-  new Scene({
-    text: `
-      Я не верила своим глазам, но из здания выходил Артур. Он выглядел нервным, постоянно оборачивался. От его добродушного и привычного располагающего вида не осталось и следа. Артур был полностью сосредоточен и шел вперед, пытаясь поскорее оставить здание далеко за спиной. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[133].begin();}],
-    background: 'Backgrounds/Aurora_Pharm',
-  });
-
-Game.Scenes.A_Part03[133] =
-  new Scene({
-    text: `
-      - Что такое? - уточнила Далия. 
-      <p>- Это Артур! Он должен был забрать меня сегодня. 
-      <p>- Артур? Внук прошлого смотрителя? Какое интересное совпадение. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[134].begin();}],
-    background: 'Backgrounds/Aurora_Pharm',
-  });
-
-Game.Scenes.A_Part03[134] =
-  new Scene({
-    text: `
-      Первое время, казалось, что Артур ничего не замечал вокруг. Но затем, будто бы неведомые силы заставили его посмотреть в мою сторону. Он сильно удивился, казалось, немного разозлился и стремительно направился в нашу сторону. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[135].begin();}],
-    background: 'Backgrounds/Aurora_Pharm',
-  });
-
-Game.Scenes.A_Part03[135] =
-  new Scene({
-    text: `
-      - Аврора? Что ты здесь делаешь? Ты же должна быть в университете. 
-      <p>- Должна, но ты не приехал. 
-      <p>- Как… - Артур посмотрел на время и с грустью взглянул на меня. - Прости, пожалуйста. Я должен был явиться по рабочим вопросам в этот офис. Сам не знаю, как так получилось, что я совершенно забыл о времени.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[136].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part03[136] =
-  new Scene({
-    text: `
-       - А что это за рабочие вопросы такие? - спросила Далия, испытывающе глядя на Артура. 
-       <p>- А ты кто такая? Извини, конечно, но это тебя не касается. 
-       <p>- Ты прав, но поступать так с близкими людьми как минимум - не красиво. Знаю я эти ваши «рабочие встречи». Врать он не умеет. Скрывает что-то!  Какие-нибудь девушки…
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[137].begin();}],
-    background: 'Persons/Aurora_Dalia',
-  });
-
-Game.Scenes.A_Part03[137] =
-  new Scene({
-    text: `
-       - Я не собираюсь выслушивать нотации от незнакомки, тем более без веского повода, - Артур прервал Далию и резко схватил меня за руку, потянув в сторону своего автомобиля. 
-       <p>- Но как же, - я растерянно смотрела вслед девушки. - Постой, я даже не попрощалась. 
-       <p>- Еще увидимся, Аврора, - крикнула мне Далия. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[138].begin();}],
-    background: 'Persons/Aurora_Arthur',
-  });
-
-Game.Scenes.A_Part03[138] =
-  new Scene({
-    text: `
-      Мы сели в машину Артура. Не было сил и желания вести разговор, поэтому мы молча поехали в сторону дома. 
-      <p>Я не представляла, почему он мог повести себя так бестактно. Да, я тоже была не права, что отправилась на прогулку, не стала его дожидаться.
-      <p>В конце концов, Далия оказалась права. Ему и правда было не до меня. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[139].begin();}],
-    background: 'Backgrounds/Aurora_Arthurs_Car',
-  });
-
-Game.Scenes.A_Part03[139] =
-  new Scene({
-    text: `
-      Даже дома разговор не завязывался. Мы не посмели смотреть друг на друга, а в горле застрял несуществующий ком. 
-      <p>Неожиданно Артур все-таки произнес:
-      <p>- Тебе пришло письмо. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[140].begin();}],
-    background: 'Backgrounds/Aurora_Livingkitchen',
-  });
-
-Game.Scenes.A_Part03[140] =
-  new Scene({
-    text: `
-      - Спасибо, - взяв в руки конверт, я поспешила в свою комнату. 
-      <p>Больше мне было невыносимо находиться в такой гнетущей атмосфере. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[141].begin();}],
-    background: 'Backgrounds/Aurora_Livingkitchen',
-  });
-
-Game.Scenes.A_Part03[141] =
-  new Scene({
-    text: `
-      Наконец-то оставшись сама с собой, я выдохнула, усаживаясь на кровати поудобнее. В голове прокручивался сегодняшний день и множество вопросов, на которые мне хотелось узнать ответы. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[142].begin();}],
-    background: 'Backgrounds/Aurora_Room',
-  });
-
-Game.Scenes.A_Part03[142] =
-  new Scene({
-    text: `
-      Прежде всего меня интересовало: почему Артур так странно вел себя? Неужели работа настолько важна, что ему было сложно даже послать СМС?
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[143].begin();}],
-    background: 'Backgrounds/Aurora_Room',
-  });
-
-Game.Scenes.A_Part03[143] =
-  new Scene({
-    text: `
-      А Калеб? Куда он так резко отправился? Что за отношения у Далии с отцом? 
-      <p>Даже легенда собора не отпускала меня, вызывая красочные образы в голове. Все ли там так очевидно? 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[144].begin();}],
-    background: 'Backgrounds/Aurora_Room',
-  });
-
-Game.Scenes.A_Part03[144] =
-  new Scene({
-    text: `
-      Но в одном я была уверена точно. Я ни разу не пожалела о своем решении участвовать в такой спонтанной поездке. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[145].begin();}],
-    background: 'Backgrounds/Aurora_Room',
-  });
-
-Game.Scenes.A_Part03[145] =
-  new Scene({
-    text: `
-      Еще больше меня волновало то, что сейчас в руках я сжимала письмо от отца. Конечно же я сразу узнала его аккуратный почерк. 
-      <p>Мне было страшно увидеть написанное, но все же я открыла конверт.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[146].begin();}],
-    background: 'Backgrounds/Aurora_Room',
-    condition: function () {
-      if (Game.Stats.Father.get>=1) this.buttonaction[0] = () => { Game.Scenes.A_Part03[146].begin(); Game.Sounds.play('Music','Lighthouse');}
-      if (Game.Stats.Father.get<=0) this.buttonaction[0] = () => { Game.Scenes.A_Part03[152].begin(); Game.Sounds.play('Music','Lighthouse');}
-    }
-  });
-
-Game.Scenes.A_Part03[146] =
-  new Scene({
-    text: `
-      Я не могла не обратить внимание на бумагу, на которой был написан текст. Она была мамина. Ей отчего-то очень нравилось коллекционировать необычную бумагу и иногда писать на ней особенные письма. 
-      <p>Оторвавшись от воспоминаний, я принялась читать.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[147].begin();}],
-    background: 'Backgrounds/Aurora_Message_Father_Good',
-  });
-
-Game.Scenes.A_Part03[147] =
-  new Scene({
-    text: `
-      <i>Дорогая Аврора, как ты? Я так и не смог отправить тебе СМС, да и не силен в этих современных технологиях. Поэтому использую старый добрый метод - письмо. 
-      <p><i>Расскажи о своих успехах. Обжилась на новом месте? Как у вас с Артуром дела? Что с учебой? Мне интересна любая деталь, связанная с тобой. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[148].begin();}],
-    background: 'Backgrounds/Aurora_Message_Father_Good',
-  });
-
-Game.Scenes.A_Part03[148] =
-  new Scene({
-    text: `
-      <i>Что же до меня, то у меня все хорошо. На работе все без изменений, полный штиль. Время от времени приезжают ремонтники. С одним из них даже удалось подружиться. Мои вечера отнюдь не такие одинокие, как ты могла подумать. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[149].begin();}],
-    background: 'Backgrounds/Aurora_Message_Father_Good',
-  });
-
-Game.Scenes.A_Part03[149] =
-  new Scene({
-    text: `
-      <i>Мы проводим время с пользой. Общаемся. Часто делимся опытом в рабочей сфере. Представляешь, я даже научился менять лампочку в прожекторе маяка. Не знаю пригодится ли мне это, но это был поучительный опыт.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[150].begin();}],
-    background: 'Backgrounds/Aurora_Message_Father_Good',
-  });
-
-Game.Scenes.A_Part03[150] =
-  new Scene({
-    text: `
-      <i>Я скучаю по тебе. Твой подарок греет мне душу и не дает грустить. 
-      <p><i>Ты тоже. Постарайся ради нас. 
-      <i><p>Люблю,
-      <i>Твой папа
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[151].begin();}],
-    background: 'Backgrounds/Aurora_Message_Father_Good',
-  });
-
-Game.Scenes.A_Part03[151] =
-  new Scene({
-    text: `
-      Отложив письмо в сторону, я улыбнулась, так как была искренне счастлива, что с папой все хорошо. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[157].begin();}],
-    background: 'Backgrounds/Aurora_Room',
-  });
-
-Game.Scenes.A_Part03[152] =
-  new Scene({
-    text: `
-      Я не могла не обратить внимание на бумагу, на которой был написан текст. Она была грязной в каких-то непонятных пятнах. 
-      <p>В душе сразу поселилось сомнение относительно состояния папы, и я скорее приступила к письму.
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[153].begin();}],
-    background: 'Backgrounds/Aurora_Message_Father_Bad',
-  });
-
-Game.Scenes.A_Part03[153] =
-  new Scene({
-    text: `
-      <i>Дорогая Аврора, как ты? Я так и не смог отправить тебе СМС, да и не силен в этих мобильных устройствах. Поэтому использую старый добрый метод - письмо. 
-      <i><p>Расскажи о своих успехах. Обжилась на новом месте? Как у вас с Артуром дела? Что с учебой? Мне интересна любая деталь связанная с тобой. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[154].begin();}],
-    background: 'Backgrounds/Aurora_Message_Father_Bad',
-  });
-
-Game.Scenes.A_Part03[154] =
-  new Scene({
-    text: `
-      <i>Что же до меня, то я сильно устаю в последнее время. Провожу свои вечера в одиночестве, иногда позволяю себе немного выпить. Это помогает заглушить столь нелегкое бремя. 
-      <i><p>Но я в порядке. Я обещал быть честным с тобой. Да. Период сейчас не самый простой, однако я справляюсь. Иначе и быть не может. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[155].begin();}],
-    background: 'Backgrounds/Aurora_Message_Father_Bad',
-  });
-
-Game.Scenes.A_Part03[155] =
-  new Scene({
-    text: `
-      <i>Я скучаю по тебе. Твой подарок греет мне душу и не дает окончательно загрустить.
-      <i><p>Люблю,
-      <i>Твой папа
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[156].begin();}],
-    background: 'Backgrounds/Aurora_Message_Father_Bad',
-  });
-
-Game.Scenes.A_Part03[156] =
-  new Scene({
-    text: `
-      Отложив письмо в сторону, я заплакала от того, что отцу сейчас приходится так несладко, а я думаю лишь о себе и о каких-то несущественных вопросах. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Part03[157].begin();}],
-    background: 'Backgrounds/Aurora_Room',
-  });
-
-Game.Scenes.A_Part03[157] =
-  new Scene({
-    text: `
-      Я дала себе слово, что в ближайшее время обязательно навещу его. 
-      <p>А пока, обнимая подушку, я так и уснула в обнимку с письмом, вспоминая теплые слова своего отца. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => {
-      Game.Scenes.Features[100].begin();
-      Game.Progress.save('Aurora_Part04');
-    }],
-    background: 'Backgrounds/Aurora_Room',
-    condition: function () {
-      Game.Achievements.A_Part03Completed.unlock();
-    }
-  });
-Game.Scenes.A_Prologue = [];
-
-Game.Scenes.A_Prologue[0] =
-  new Scene({
-    text: `Моя дорогая Далия. Как у тебя дела? Ты все еще вспоминаешь меня? 
-           А наши беззаботные деньки, наполненные смехом и в одночасье тяжелым грузом бремени, что резко обрушилось на нас?
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.A_Prologue[1].begin(); Game.message('В левом верхнем углу под иконкой рюкзака нажмите на стрелочку, чтобы посмотреть текст предыдущего слайда'); }],
-    background: 'Backgrounds/Aurora_Writing',
-    condition: () => { Game.Sounds.play('Music', 'Aurora') }
-  });
-
-Game.Scenes.A_Prologue[1] =
-  new Scene({
-      text: `
-            Знаешь, я все еще бережно храню подаренный тобой сборник стихов Эдгара Аллана По. 
-            Перечивая строки его произведений, каждый раз во мне откликаются те ощущения, что мы когда-то пережили.
-            <p>Я все больше начинаю понимать тебя: твои мысли, твою печаль и страхи. 
-
-        `,
-      buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Prologue[2].begin(); Game.message('Эдгар По - “Сон во сне”'); }],
-      background: 'Backgrounds/Aurora_Writing',
-  });
-
-Game.Scenes.A_Prologue[2] =
-  new Scene({
-      text: `
-            <i><p>Я стою на берегу,
-            <i><p>Бурю взором стерегу.
-            <i><p>И держу в руках своих
-            <i><p>Горсть песчинок золотых.
-        `,
-      buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Prologue[3].begin();  }],
-      background: 'Backgrounds/Aurora_Writing',
-  });
-
-Game.Scenes.A_Prologue[3] =
-  new Scene({
-      text: `
-            <i>Как их бег мне задержать,
-            <i><p>Как сильнее руки сжать?
-            <i><p>Сохранится ль хоть одна,
-            <i><p>Или все возьмёт волна?
-            <i><p>Или то, что зримо мне,
-            <i><p>Всё есть только сон во сне?
-        `,
-      buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Prologue[4].begin(); }],
-      background: 'Backgrounds/Aurora_Writing',
-  });
-
-Game.Scenes.A_Prologue[4] =
-  new Scene({
-      text: `
-            Мои мысли идут сплошным потоком. Я стольким хочу поделиться с тобой. Но торопиться некуда. 
-            <p></p>Сейчас, сидя на любимой скамейке, обдуваемая морскими ветрами, я переношу свою жизнь на бумагу. Свое прошлое, настоящее, те моменты, что мы прожили бок о бок. 
-        `,
-      buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Prologue[5].begin(); }],
-      background: 'Backgrounds/Aurora_Writing',
-  });
-
-Game.Scenes.A_Prologue[5] =
-  new Scene({
-      text: `
-            Цель очень проста - помнить. Помнить каждую деталь, каждую эмоцию и те выборы, которые привели нас к этому исходу. Я никогда не прощу себя, если хоть что-то упущу. 
-            <p>Милая Далия, я безмерно счастлива писать в этом дневнике. Местами может быть сумбурно, но я остаюсь верна себе. Как ты меня когда-то учила - быть собой и не стараться выстраивать образ человека, которым я не являюсь. 
-        `,
-      buttontext: [''],
-      buttonaction: [() => { Game.Scenes.A_Prologue[6].begin(); Game.Achievements.A_PrologueCompleted.unlock(); }],
-      background: 'Backgrounds/Aurora_Writing',
-  });
-
-Game.Scenes.A_Prologue[6] =
-  new Scene({
-      text: `
-            Ну, хватит лирики. Я думаю, ты запомнила меня как всегда улыбающейся девочкой, которая хотела покорить высокие горы. Ведь именно такой я стала благодаря тебе. Пусть так оно и будет. 
-            <p>Начну издалека. Бушующая подростковая жизнь, затем завораживающая юность. 
-            <p><s>И будущее?</s>
-            <p><i>Твоя Аврора начинает свой рассказ.
-            `,
-      buttontext: [''],
-      buttonaction: [() => {
-        setTimeout(() => { Game.Scenes.A_Part01[0].begin(); }, 1000);
-        Game.LoadScreen('Aurora_Part01');
-        Game.Progress.save("Aurora_Part01");
-
-      }],
-      background: 'Backgrounds/Aurora_Writing',
-  });
-Game.Achievements.PrologueCompleted = new Achievement ({
-    picture: 'Backgrounds/Abstraction',
-    title: 'Начало начал',
-    text: 'Пройти пролог',
-    story: 'Immortals',
-});
-
-Game.Achievements.Sleeper = new Achievement ({
-    picture: 'Backgrounds/Room',
-    title: 'Соня',
-    text: 'Проспать занятия',
-    story: 'Immortals',
-});
-
-Game.Achievements.MoneySpender = new Achievement ({
-    picture: 'Items/Money',
-    title: 'Я выбираю комфорт!',
-    text: 'Потратить самое большое количество денег на транспорт',
-    story: 'Immortals',
-});
-
-Game.Achievements.GoodGirl = new Achievement ({
-    picture: 'Items/Study',
-    title: 'Правильная девочка',
-    text: 'Не поддаваться искушению и не проспать пары',
-    story: 'Immortals',
-});
-
-Game.Achievements.AllKnowing = new Achievement ({
-    picture: 'Backgrounds/Lection',
-    title: 'Всезнайка',
-    text: 'Ответить правильно на вопрос Нэйтана на паре',
-    story: 'Immortals',
-});
-
-Game.Achievements.FirstPartCompleted = new Achievement ({
-    picture: 'Backgrounds/Uni',
-    title: 'Знакомство',
-    text: 'Пройти первую часть',
-    story: 'Immortals',
-});
-
-Game.Achievements.SmartGirl = new Achievement ({
-    picture: 'Items/Study',
-    title: 'Знания — сила!',
-    text: 'Использовать свои знания, чтобы задать дополнительный вопрос Тесле',
-    story: 'Immortals',
-});
-
-Game.Achievements.ShockTesla = new Achievement ({
-    picture: 'Persons/Nicola',
-    title: 'Шок',
-    text: 'Шокировать Теслу',
-    story: 'Immortals',
-});
-
-Game.Achievements.Crazy = new Achievement ({
-    picture: 'Backgrounds/Street',
-    title: 'Сумасшедшая',
-    text: 'Убежать от Теслы',
-    story: 'Immortals',
-});
-
-Game.Achievements.FirstMonster = new Achievement ({
-    picture: 'Persons/Monster',
-    title: 'Нечто',
-    text: 'Впервые увидеть монстра',
-    story: 'Immortals',
-});
-
-Game.Achievements.TrustCheryl = new Achievement ({
-    picture: 'Persons/Cheryl',
-    title: 'Хочу верить',
-    text: 'Рассказать Шерил правду',
-    story: 'Immortals',
-});
-
-Game.Achievements.SecondPartCompleted = new Achievement ({
-    picture: 'Backgrounds/NY',
-    title: 'Путешественница',
-    text: 'Пройти вторую часть',
-    story: 'Immortals',
-});
-
-Game.Achievements.Sushi = new Achievement ({
-    picture: 'Backgrounds/Kitchen',
-    title: 'Всё ради друзей',
-    text: 'Потратить самое большое количество денег на еду',
-    story: 'Immortals',
-});
-
-Game.Achievements.DanceQueen = new Achievement ({
-    picture: 'Backgrounds/Disco',
-    title: 'Кто тут самый пластичный?',
-    text: 'Победить Скарлетт в танцах',
-    story: 'Immortals',
-});
-
-Game.Achievements.FirstWeapon = new Achievement ({
-    picture: 'Items/Knife',
-    title: 'Носи его осторожно',
-    text: 'Получить нож',
-    story: 'Immortals',
-});
-
-Game.Achievements.AttackMonster = new Achievement ({
-    picture: 'Persons/Monster',
-    title: 'Ужасные последствия',
-    text: 'Вступить в открытое столкновение с монстром',
-    story: 'Immortals',
-});
-
-Game.Achievements.EvilBeauty = new Achievement ({
-    picture: 'Persons/Antagonist',
-    title: 'Красивое зло',
-    text: 'Познакомится с виновником “торжества”',
-    story: 'Immortals',
-});
-
-Game.Achievements.Storm = new Achievement ({
-    picture: 'Backgrounds/Chair',
-    title: 'Затишье перед бурей',
-    text: 'Пройти третью часть',
-    story: 'Immortals',
-});
-
-Game.Achievements.Golden_Cross = new Achievement ({
-    picture: 'Items/Golden_Cross',
-    title: 'Наследие',
-    text: 'Получить подарок от Николы',
-    story: 'Immortals',
-
-});
-
-Game.Achievements.Guessed = new Achievement ({
-    picture: 'Persons/Robert',
-    title: 'Я так и знала!',
-    text: 'Угадать, чем занимается Роберт',
-    story: 'Immortals',
-});
-
-Game.Achievements.KeepWeapon = new Achievement ({
-    picture: 'Items/Knife',
-    title: 'Лишним не будет',
-    text: 'Оставить при себе первое оружие',
-    story: 'Immortals',
-});
-
-Game.Achievements.LoveEvil = new Achievement ({
-    picture: 'Persons/Antagonist',
-    title: 'Змей искуситель',
-    text: 'Поддаться на соблазн злодея',
-    story: 'Immortals',
-});
-
-Game.Achievements.Ball = new Achievement ({
-    picture: 'Backgrounds/Ball',
-    title: 'Званый вечер',
-    text: 'Пройти четвёртую часть',
-    story: 'Immortals',
-});
-
-Game.Achievements.Oops = new Achievement ({
-    picture: 'Persons/Neitan',
-    title: 'Оговорочка по Фрейду',
-    text: 'Случайно произнести неправильное имя профессора',
-    story: 'Immortals',
-});
-
-Game.Achievements.Psy = new Achievement ({
-    picture: 'Backgrounds/Parents',
-    title: 'Семейный психолог',
-    text: 'Предотвратить ссору родителей',
-    story: 'Immortals',
-});
-
-Game.Achievements.LakeNeitan = new Achievement ({
-    picture: 'Persons/Neitan_New',
-    title: 'Я хочу большего!',
-    text: 'Сблизьтесь с Нэйтаном в поездке на озеро',
-    story: 'Immortals',
-});
-
-Game.Achievements.LakeLeon = new Achievement ({
-    picture: 'Persons/Leon_New',
-    title: 'Это было свидание?',
-    text: 'Сблизьтесь с Леоном в поездке на озеро',
-    story: 'Immortals',
-});
-
-Game.Achievements.LakeScarlett = new Achievement ({
-    picture: 'Persons/Scarlett_New',
-    title: 'Откровение',
-    text: 'Сблизьтесь со Скарлетт в поездке на озеро',
-    story: 'Immortals',
-});
-
-Game.Achievements.LakeCheryl = new Achievement ({
-    picture: 'Persons/Cheryl_New',
-    title: 'Её борьба',
-    text: 'Сблизьтесь с Шерил в поездке на озеро',
-    story: 'Immortals',
-});
-
-Game.Achievements.Guru = new Achievement ({
-    picture: 'Items/Corkscrew',
-    title: 'Гуру загадок',
-    text: 'Победите Скарлетт в загадках',
-    story: 'Immortals',
-});
-
-Game.Achievements.Fantasy = new Achievement ({
-    picture: 'Backgrounds/Rabbit_Dragon_Caterpillar_Cloud',
-    title: 'Фантазер',
-    text: 'Проявите изобретательность и победите Шерил в игре',
-    story: 'Immortals',
-});
-
-Game.Achievements.Lake = new Achievement ({
-    picture: 'Backgrounds/Lake',
-    title: 'Уикэнд',
-    text: 'Пройти пятую часть',
-    story: 'Immortals',
-});
-
-Game.Achievements.HiddenWorld = new Achievement ({
-    picture: 'Items/Key01',
-    title: '<accent>Спрятанный мир',
-    text: '<accent>Найти применение неизвестному ключу',
-    story: 'Immortals',
-});
-
-Game.Achievements.Dev = new Achievement ({
-    picture: 'Items/Lock',
-    title: '<accent>Разработчик',
-    text: '<accent>Что для этого нужно сделать?',
-    story: 'Immortals',
-});
-//Characters
+  ]
+}));//Characters
 
 Game.Stats.God = new Person({
     name: 'Проводник',
@@ -7639,12 +2380,17 @@ Game.Stats.MetAntagonist = new Choice({
 });
 
 Game.Stats.AntagonistWire = new Choice({
-    name: 'поддалась соблазну соблазну',
+    name: 'поддалась соблазну',
     story: 'Immortals',
 });
 
 Game.Stats.HelpTesla = new Choice({
     name: 'помогла Тесле',
+    story: 'Immortals',
+});
+
+Game.Stats.DanceWithRobert = new Choice({
+    name: 'танцевала с Робертом',
     story: 'Immortals',
 });
 
@@ -7665,6 +2411,17 @@ Game.Stats.GoStudy = new Choice({
 
 Game.Stats.GoToLakeWith = new Choice({
     name: 'пойти на озеро с',
+    story: 'Immortals',
+});
+
+Game.Stats.EagleLegend = new Choice({
+    name: 'поверить в миф',
+    story: 'Immortals',
+});
+
+Game.Stats.CurtisAppearance = new Choice({
+    attitude : 1,
+    name: 'внешний вид Куртиса',
     story: 'Immortals',
 });
 
@@ -7748,8 +2505,553 @@ Game.Stats.FruitsYogurt = new Item({
     title: 'Фрукты с йогуртом',
     text: 'Свежие фрукты с йогуртом',
     story: 'Immortals',
+});Game.Achievements.PrologueCompleted = new Achievement ({
+    picture: 'Backgrounds/Abstraction',
+    title: 'Начало начал',
+    text: 'Пройти пролог',
+    story: 'Immortals',
 });
-Game.Scenes.FirstChapter = [];
+
+Game.Achievements.Sleeper = new Achievement ({
+    picture: 'Backgrounds/Room',
+    title: 'Соня',
+    text: 'Проспать занятия',
+    story: 'Immortals',
+});
+
+Game.Achievements.MoneySpender = new Achievement ({
+    picture: 'Items/Money',
+    title: 'Я выбираю комфорт!',
+    text: 'Потратить самое большое количество денег на транспорт',
+    story: 'Immortals',
+});
+
+Game.Achievements.GoodGirl = new Achievement ({
+    picture: 'Items/Study',
+    title: 'Правильная девочка',
+    text: 'Не поддаваться искушению и не проспать пары',
+    story: 'Immortals',
+});
+
+Game.Achievements.AllKnowing = new Achievement ({
+    picture: 'Backgrounds/Lection',
+    title: 'Всезнайка',
+    text: 'Ответить правильно на вопрос Нэйтана на паре',
+    story: 'Immortals',
+});
+
+Game.Achievements.FirstPartCompleted = new Achievement ({
+    picture: 'Backgrounds/Uni',
+    title: 'Знакомство',
+    text: 'Пройти первую часть',
+    story: 'Immortals',
+});
+
+Game.Achievements.SmartGirl = new Achievement ({
+    picture: 'Items/Study',
+    title: 'Знания — сила!',
+    text: 'Использовать свои знания, чтобы задать дополнительный вопрос Тесле',
+    story: 'Immortals',
+});
+
+Game.Achievements.ShockTesla = new Achievement ({
+    picture: 'Persons/Nicola',
+    title: 'Шок',
+    text: 'Шокировать Теслу',
+    story: 'Immortals',
+});
+
+Game.Achievements.Crazy = new Achievement ({
+    picture: 'Backgrounds/Street',
+    title: 'Сумасшедшая',
+    text: 'Убежать от Теслы',
+    story: 'Immortals',
+});
+
+Game.Achievements.FirstMonster = new Achievement ({
+    picture: 'Persons/Monster',
+    title: 'Нечто',
+    text: 'Впервые увидеть монстра',
+    story: 'Immortals',
+});
+
+Game.Achievements.TrustCheryl = new Achievement ({
+    picture: 'Persons/Cheryl',
+    title: 'Хочу верить',
+    text: 'Рассказать Шерил правду',
+    story: 'Immortals',
+});
+
+Game.Achievements.SecondPartCompleted = new Achievement ({
+    picture: 'Backgrounds/NY',
+    title: 'Путешественница',
+    text: 'Пройти вторую часть',
+    story: 'Immortals',
+});
+
+Game.Achievements.Sushi = new Achievement ({
+    picture: 'Backgrounds/Kitchen',
+    title: 'Всё ради друзей',
+    text: 'Потратить самое большое количество денег на еду',
+    story: 'Immortals',
+});
+
+Game.Achievements.DanceQueen = new Achievement ({
+    picture: 'Backgrounds/Disco',
+    title: 'Кто тут самый пластичный?',
+    text: 'Победить Скарлетт в танцах',
+    story: 'Immortals',
+});
+
+Game.Achievements.FirstWeapon = new Achievement ({
+    picture: 'Items/Knife',
+    title: 'Носи его осторожно',
+    text: 'Получить нож',
+    story: 'Immortals',
+});
+
+Game.Achievements.AttackMonster = new Achievement ({
+    picture: 'Persons/Monster',
+    title: 'Ужасные последствия',
+    text: 'Вступить в открытое столкновение с монстром',
+    story: 'Immortals',
+});
+
+Game.Achievements.EvilBeauty = new Achievement ({
+    picture: 'Persons/Antagonist',
+    title: 'Красивое зло',
+    text: 'Познакомится с виновником “торжества”',
+    story: 'Immortals',
+});
+
+Game.Achievements.Storm = new Achievement ({
+    picture: 'Backgrounds/Chair',
+    title: 'Затишье перед бурей',
+    text: 'Пройти третью часть',
+    story: 'Immortals',
+});
+
+Game.Achievements.Golden_Cross = new Achievement ({
+    picture: 'Items/Golden_Cross',
+    title: 'Наследие',
+    text: 'Получить подарок от Николы',
+    story: 'Immortals',
+
+});
+
+Game.Achievements.Guessed = new Achievement ({
+    picture: 'Persons/Robert',
+    title: 'Я так и знала!',
+    text: 'Угадать, чем занимается Роберт',
+    story: 'Immortals',
+});
+
+Game.Achievements.KeepWeapon = new Achievement ({
+    picture: 'Items/Knife',
+    title: 'Лишним не будет',
+    text: 'Оставить при себе первое оружие',
+    story: 'Immortals',
+});
+
+Game.Achievements.LoveEvil = new Achievement ({
+    picture: 'Persons/Antagonist',
+    title: 'Змей искуситель',
+    text: 'Поддаться на соблазн злодея',
+    story: 'Immortals',
+});
+
+Game.Achievements.Ball = new Achievement ({
+    picture: 'Backgrounds/Ball',
+    title: 'Званый вечер',
+    text: 'Пройти четвёртую часть',
+    story: 'Immortals',
+});
+
+Game.Achievements.Oops = new Achievement ({
+    picture: 'Persons/Neitan',
+    title: 'Оговорочка по Фрейду',
+    text: 'Случайно произнести неправильное имя профессора',
+    story: 'Immortals',
+});
+
+Game.Achievements.Psy = new Achievement ({
+    picture: 'Backgrounds/Parents',
+    title: 'Семейный психолог',
+    text: 'Предотвратить ссору родителей',
+    story: 'Immortals',
+});
+
+Game.Achievements.LakeNeitan = new Achievement ({
+    picture: 'Persons/Neitan_New',
+    title: 'Я хочу большего!',
+    text: 'Сблизьтесь с Нэйтаном в поездке на озеро',
+    story: 'Immortals',
+});
+
+Game.Achievements.LakeLeon = new Achievement ({
+    picture: 'Persons/Leon_New',
+    title: 'Это было свидание?',
+    text: 'Сблизьтесь с Леоном в поездке на озеро',
+    story: 'Immortals',
+});
+
+Game.Achievements.LakeScarlett = new Achievement ({
+    picture: 'Persons/Scarlett_New',
+    title: 'Откровение',
+    text: 'Сблизьтесь со Скарлетт в поездке на озеро',
+    story: 'Immortals',
+});
+
+Game.Achievements.LakeCheryl = new Achievement ({
+    picture: 'Persons/Cheryl_New',
+    title: 'Её борьба',
+    text: 'Сблизьтесь с Шерил в поездке на озеро',
+    story: 'Immortals',
+});
+
+Game.Achievements.Guru = new Achievement ({
+    picture: 'Items/Corkscrew',
+    title: 'Гуру загадок',
+    text: 'Победите Скарлетт в загадках',
+    story: 'Immortals',
+});
+
+Game.Achievements.Fantasy = new Achievement ({
+    picture: 'Backgrounds/Rabbit_Dragon_Caterpillar_Cloud',
+    title: 'Фантазер',
+    text: 'Проявите изобретательность и победите Шерил в игре',
+    story: 'Immortals',
+});
+
+Game.Achievements.Lake = new Achievement ({
+    picture: 'Backgrounds/Lake',
+    title: 'Уикэнд',
+    text: 'Пройти пятую часть',
+    story: 'Immortals',
+});
+
+Game.Achievements.HiddenWorld = new Achievement ({
+    picture: 'Items/Key01',
+    title: '<accent>Спрятанный мир',
+    text: '<accent>Найти применение неизвестному ключу',
+    story: 'Immortals',
+});
+
+Game.Achievements.Dev = new Achievement ({
+    picture: 'Items/Lock',
+    title: '<accent>Разработчик',
+    text: '<accent>Что для этого нужно сделать?',
+    story: 'Immortals',
+});Game.Scenes.Prologue = [];
+
+Game.Scenes.Prologue[0] =
+    new Scene({
+        text: `- Здравствуй! Мы снова встретились. Ты наверное меня и не помнишь.
+            <p>В голосе незнакомца мелькнула усмешка. Он продолжил:
+            <p>- Я проводник и пришел к тебе, чтобы напомнить, что ты сделала с этим миром и почему являешься ключом. 
+            К спасению или уничтожению - решать только тебе. Полагаю, у тебя много вопросов. Задавай.
+        `,
+        buttontext: [''],
+        buttonaction: [() => { Game.Scenes.Prologue[1].begin(); Game.message('В левом верхнем углу под иконкой рюкзака нажмите на стрелочку, чтобы посмотреть текст предыдущего слайда.'); }],
+        background: 'Backgrounds/Abstraction',
+        condition: () => { Game.Sounds.play('Music', 'Prologue'); }
+
+    });
+
+Game.Scenes.Prologue[1] =
+    new Scene({
+        text: `Я медленно открыла глаза. Первое время мозг не мог воспринять место, в котором я очутилась. 
+            Странные свечения, пустота… Камни парили неестественно, не поддаваясь никаким законам физики.
+            <p>“Это не может быть реальностью!”
+            <p> Я ощущала себя бестелесным существом, которое барахтается в просторах вселенной. Абсолютно беззащитна, будто бы любое дуновение скинет меня с возвышенности, и моя жизнь оборвется.
+        `,
+        buttontext: [''],
+        buttonaction: [() => { Game.Scenes.Prologue[50].begin(); }],
+        background: 'Backgrounds/Abstraction',
+    });
+
+Game.Scenes.Prologue[50] =
+  new Scene({
+    text: `
+     Взгляд зацепился за таинственную фигуру, укутанную в черный плащ. Я посмотрела на него, надеясь увидеть в нем спасителя. Того, кто расскажет все секреты этого мира и поможет выбраться отсюда. Однако ответом мне было продолжительное молчание. Незнакомец терпеливо ждал, пока я придумаю вопросы. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.Prologue[2].begin(); }],
+    background: 'Persons/Stranger',
+  });
+
+Game.Scenes.Prologue[2] =
+    new Scene({
+        text: `
+            Я попыталась вспомнить хоть какие-то фрагменты из своего прошлого, но пришла в ужас от осознания полного забвения. В голову приходили только самые банальные вопросы.
+            <p>Я робко взглянула на него и спросила: 
+        `,
+        buttontext: [''],
+        buttonaction: [() => { Game.askName(() => {Game.Scenes.Prologue[15].begin() }) }],
+        background: 'Persons/Stranger',
+    });
+
+Game.Scenes.Prologue[15] =
+    new Scene({
+        text: `Из-под капюшона продолжала проглядывать ухмылка. Складывалось ощущение, что собеседника забавляет этот вопрос.
+            <p>- Тебя зовут $Имя Игрока$. И почему всем всегда так важно знать свое имя…
+            <p>Я задумалась. Во мне заиграло любопытство или простой страх, что я могу потерять свою личность?
+            <p>- Это же часть тебя… я…
+        `,
+        buttontext: [''],
+        buttonaction: [() => { Game.Scenes.Prologue[3].begin();}],
+        background: 'Persons/Stranger',
+
+    });
+
+Game.Scenes.Prologue[3] =
+    new Scene({
+        text: `
+            - Брось, - перебил проводник, - у меня нет имени. Но я вездесущ. Я всегда и везде. Необязательно носить эти придуманные клички, чтобы что-то из себя представлять. 
+            <p>Я решила не спорить. Стало ясно, что у него слишком большое самомнение; что-то доказывать - бесполезно. Беседа продолжилась.
+            `,
+        buttontext: [
+            'Сколько мне лет?',
+            'Где я родилась?',
+            'Я умерла?',
+            'Закончить диалог'
+        ],
+        buttonaction: [
+            () => { Game.Scenes.Prologue[4].deactivate(0); Game.Scenes.Prologue[5].deactivate(0); Game.Scenes.Prologue[6].deactivate(0); Game.Scenes.Prologue[16].begin(); },
+            () => { Game.Scenes.Prologue[4].deactivate(1); Game.Scenes.Prologue[5].deactivate(1); Game.Scenes.Prologue[6].deactivate(1); Game.Scenes.Prologue[17].begin(); },
+            () => { Game.Scenes.Prologue[4].deactivate(2); Game.Scenes.Prologue[5].deactivate(2); Game.Scenes.Prologue[6].deactivate(2); Game.Scenes.Prologue[18].begin(); },
+            () => { Game.Scenes.Prologue[19].begin(); },
+        ],
+        buttonactive: [true, true, true, false],
+        background: 'Persons/Stranger',
+        condition: function () {
+          Game.Scenes.Prologue[4].activate(0); Game.Scenes.Prologue[5].activate(0); Game.Scenes.Prologue[6].activate(0);
+          Game.Scenes.Prologue[4].activate(1); Game.Scenes.Prologue[5].activate(1); Game.Scenes.Prologue[6].activate(1);
+          Game.Scenes.Prologue[4].activate(2); Game.Scenes.Prologue[5].activate(2); Game.Scenes.Prologue[6].activate(2);
+            if (this.buttonactive[0] == false && this.buttonactive[1] == false && this.buttonactive[2] == false) {
+                this.buttonactive[3] = true;
+            }
+            else{
+              this.buttonactive[3] = false;
+            }
+        }
+    });
+
+Game.Scenes.Prologue[16] =
+    new Scene({
+        text: `Всего на секунду проводник задумался, но потом уверенно сказал:
+            <p>- 22.
+            <p>Я хотела вспомнить, чем занималась в жизни, но сознание не отзывалось. Как будто на него навесили черный заслон, и все что я могла – это слепо верить, хватать остатки былых ощущений.
+            <p>- Ты меня знаешь… Откуда?
+        `,
+        buttontext: [''],
+        buttonaction: [() => { Game.Scenes.Prologue[4].begin() }],
+        background: 'Persons/Stranger',
+    });
+
+Game.Scenes.Prologue[4] =
+    new Scene({
+        text: `
+            - Я знаю все. А ты привлекла меня, потому что оказалась немного интереснее других. Знаешь, я многое могу рассказать. Твою собаку звали Чарли. Любимый цвет – фиолетовый. Ты пытаешься бросить курить. Твоя мать изменяет отцу…
+            <p>- Прекрати! – я сорвалась на крик. – Это не я… Свою жизнь я не помню.
+            <p>- Это пока…
+        `,
+        buttontext: [
+            'Сколько мне лет?',
+            'Где я родилась?',
+            'Я умерла?',
+            'Закончить диалог'
+        ],
+        buttonaction: [
+            () => { Game.Scenes.Prologue[4].deactivate(0); Game.Scenes.Prologue[5].deactivate(0); Game.Scenes.Prologue[6].deactivate(0); Game.Scenes.Prologue[16].begin(); },
+            () => { Game.Scenes.Prologue[4].deactivate(1); Game.Scenes.Prologue[5].deactivate(1); Game.Scenes.Prologue[6].deactivate(1); Game.Scenes.Prologue[17].begin(); },
+            () => { Game.Scenes.Prologue[4].deactivate(2); Game.Scenes.Prologue[5].deactivate(2); Game.Scenes.Prologue[6].deactivate(2); Game.Scenes.Prologue[18].begin(); },
+            () => { Game.Scenes.Prologue[19].begin(); },
+        ],
+        buttonactive: [true, true, true, false],
+        background: 'Persons/Stranger',
+        condition: function () {
+            if (this.buttonactive[0] == false && this.buttonactive[1] == false && this.buttonactive[2] == false) {
+                this.buttonactive[3] = true;
+            }
+            else{
+              this.buttonactive[3] = false;
+            }
+        }
+    });
+
+Game.Scenes.Prologue[17] =
+    new Scene({
+        text: `Фигура в плаще развела руками и проговорила:
+            <p>- В обычном городе, в обычной квартире, в обычной семье. К чему это? Ты уже нафантазировала себе, что ты дочь серафима? Или, быть может, принцесса?
+            <p>Я ожидала большей конкретики, но видимо проводник решил, что делать на этом акцент бессмысленно.
+            <p>- Что это за место?
+        `,
+        buttontext: [''],
+        buttonaction: [() => { Game.Scenes.Prologue[5].begin(); Game.message("Серафим - высший ангельский чин, наиболее приближенный к Богу."); }],
+        background: 'Persons/Stranger',
+    });
+
+Game.Scenes.Prologue[5] =
+    new Scene({
+        text: `
+            - Место, где все началось, место, где, надеюсь, все и закончится.
+            <p>- Ты всегда будешь говорить загадками? – я обреченно вздохнула.
+            <p>- Нет, только когда это уместно.              
+        `,
+        buttontext: [
+            'Сколько мне лет?',
+            'Где я родилась?',
+            'Я умерла?',
+            'Закончить диалог'
+        ],
+        buttonaction: [
+            () => { Game.Scenes.Prologue[4].deactivate(0); Game.Scenes.Prologue[5].deactivate(0); Game.Scenes.Prologue[6].deactivate(0); Game.Scenes.Prologue[16].begin(); },
+            () => { Game.Scenes.Prologue[4].deactivate(1); Game.Scenes.Prologue[5].deactivate(1); Game.Scenes.Prologue[6].deactivate(1); Game.Scenes.Prologue[17].begin(); },
+            () => { Game.Scenes.Prologue[4].deactivate(2); Game.Scenes.Prologue[5].deactivate(2); Game.Scenes.Prologue[6].deactivate(2); Game.Scenes.Prologue[18].begin(); },
+            () => { Game.Scenes.Prologue[19].begin(); },
+        ],
+        buttonactive: [true, true, true, false],
+        background: 'Persons/Stranger',
+        condition: function () {
+            if (this.buttonactive[0] == false && this.buttonactive[1] == false && this.buttonactive[2] == false) {
+                this.buttonactive[3] = true;
+            }
+            else{
+              this.buttonactive[3] = false;
+            }
+        }
+    });
+
+Game.Scenes.Prologue[18] =
+    new Scene({
+        text: `
+            Проводник разразился смехом.
+            <p>- Бинго! Я всегда жду, когда этот вопрос зададут.
+            <p>- Но ты не ответил… А я и не знаю, что думать. Ты выглядишь как жнец, готовящийся отправить меня в преисподнюю.
+            <p>- Настолько ли я страшен?
+        `,
+        buttontext: [''],
+        buttonaction: [() => { Game.Scenes.Prologue[6].begin() }],
+        background: 'Persons/Stranger',
+    });
+
+Game.Scenes.Prologue[6] =
+    new Scene({
+        text: `
+            - Что мне ожидать от… - я помедлила, - от существа, которое скрывает свое лицо.
+            <p>- О! Так в этом дело. Поумерь любопытство и перестань выдумывать . Все намного проще…
+            <p>- Я…
+            <p>Проводник жестом показал, что стоит перейти на другую тему.              
+        `,
+        buttontext: [
+            'Сколько мне лет?',
+            'Где я родилась?',
+            'Я умерла?',
+            'Закончить диалог'
+        ],
+        buttonaction: [
+            () => { Game.Scenes.Prologue[4].deactivate(0); Game.Scenes.Prologue[5].deactivate(0); Game.Scenes.Prologue[6].deactivate(0); Game.Scenes.Prologue[16].begin(); },
+            () => { Game.Scenes.Prologue[4].deactivate(1); Game.Scenes.Prologue[5].deactivate(1); Game.Scenes.Prologue[6].deactivate(1); Game.Scenes.Prologue[17].begin(); },
+            () => { Game.Scenes.Prologue[4].deactivate(2); Game.Scenes.Prologue[5].deactivate(2); Game.Scenes.Prologue[6].deactivate(2); Game.Scenes.Prologue[18].begin(); },
+            () => { Game.Scenes.Prologue[19].begin(); },
+        ],
+        buttonactive: [true, true, true, false],
+        background: 'Persons/Stranger',
+        condition: function () {
+            if (this.buttonactive[0] == false && this.buttonactive[1] == false && this.buttonactive[2] == false) {
+                this.buttonactive[3] = true;
+            }
+            else{
+              this.buttonactive[3] = false;
+            }
+        }
+    });
+
+Game.Scenes.Prologue[19] =
+    new Scene({
+        text: `
+            - На этом мы закончим. Я понимаю, что тебя интересует многое. Но время не ждет. Готова ли ты вспомнить, что пережила?
+        `,
+        buttontext: [''],
+        buttonaction: [() => { Game.Scenes.Prologue[8].begin(); Game.message('Сейчас вы сделаете свой первый выбор. Некоторые из них меняют сюжет незначительно, другие же ведут к серьезным переменам. Но помните, только Вам решать, какой вы видите свою главную героиню.'); }],
+        background: 'Persons/Stranger',
+    });
+
+Game.Scenes.Prologue[8] =
+    new Scene({
+        text: `
+            Я кивнула, немного поежившись. Я вдруг смогла почувствовать… холод?  Или это были ощущения по воспоминаниям из моей жизни? Мой загадочный собеседник заметил это и сказал:
+            <p>- Ты не можешь здесь мерзнуть, расслабься.
+            <p>И я…            
+        `,
+        buttontext: [
+            'Послушалась его',
+            'Продолжала замерзать'
+        ],
+        buttonaction: [
+            () => { Game.message("Проводнику приятно, что вы послушались его"); Game.Scenes.Prologue[11].begin(); Game.Stats.God.add(1); },
+            () => { Game.message("Проводник другого и не ожидал…"); Game.Scenes.Prologue[9].begin(); Game.Stats.God.add(0); }
+        ],
+        background: 'Persons/Stranger',
+    });
+
+Game.Scenes.Prologue[9] =
+    new Scene({
+        text:
+            `Мои забытые ощущения брали вверх. Тело стало еще сильнее дрожать, пока я окончательно не околела. Становилось страшно, темно. 
+            <p>- Я не могу… Я не понимаю.
+            <p>Проводник, до этого стоявший на одном месте, подошел ко мне и положил ладонь мне на плечо.
+        `,
+        buttontext: [''],
+        buttonaction: [() => { Game.Scenes.Prologue[52].begin(); Game.Achievements.PrologueCompleted.unlock(); }],
+        background: 'Backgrounds/Abstraction',
+    });
+
+Game.Scenes.Prologue[52] =
+  new Scene({
+    text:
+      `
+      Постепенно я начала чувствовать, как температура возвращается в норму.
+      <p>- Люди такие люди, - он отошел от меня, оставив приятное чувство тепла от прикосновения.  – Давай перейдем к делу.      
+      <p>Проводник развел руками и перед ним возникла потрепанная временем дверь, которая периодически мерцала, словно вспышка. 
+      Свет отвлекал, я не могла заглянуть внутрь и разглядеть, куда ведет проход. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.Prologue[10].begin(); Game.Achievements.PrologueCompleted.unlock(); }],
+    background: 'Backgrounds/Door',
+  });
+
+Game.Scenes.Prologue[10] =
+    new Scene({
+        text: `
+            Однако, на миг, мне показалось, что за деревянными створками кипит настоящая жизнь: 
+            звонкий мужской голос со странным акцентом что-то говорит про выпечку, грохот от колес, что несутся по каменной кладке; одним словом - звуки большого города. 
+            <p>- Ты готова?
+            <p>Я неуверенно кивнула, следуя за таинственным гостем в неизвестность.            
+        `,
+        buttontext: [''],
+        buttonaction: [() => {
+            setTimeout(() => { Game.Scenes.FirstChapter[0].begin(); }, 1000);
+            Game.LoadScreen('FirstChapter');
+            Game.Progress.save("FirstChapter");
+
+        }],
+        background: 'Backgrounds/Door',
+    });
+
+Game.Scenes.Prologue[11] =
+    new Scene({
+        text: `
+            Я попыталась максимально абстрагироваться, внушая себе, что сейчас я бесформенное нечто, не способное переживать  прежние эмоции и ощущения.
+            <p>Проводник удовлетворительно кивнул и сказал:
+            <p>- Здесь нам ничего не может угрожать. Разве что, бренное существование… Одинокое… - с грустью в голосе сказал неизвестный. 
+            <p>– Забудь, давай перейдем к делу.            
+        `,
+        buttontext: [''],
+        buttonaction: [() => { Game.Scenes.Prologue[52].begin(); Game.Achievements.PrologueCompleted.unlock(); }],
+        background: 'Persons/Stranger',
+    });Game.Scenes.FirstChapter = [];
 
 Game.Scenes.FirstChapter[0] =
     new Scene({
@@ -8757,8 +4059,7 @@ Game.Scenes.FirstChapter[54] =
         condition: function () {
             if (Game.Stats.Study.get >= 5) Game.Stats.Study.set(4);
         }
-    });
-Game.Scenes.TL = [];
+    });Game.Scenes.TL = [];
 
 Game.Scenes.TL[1] =
     new Scene({
@@ -9679,8 +4980,7 @@ Game.Scenes.TL[160] =
         buttonaction: [() => { Game.Scenes.TC[0].begin(); Game.Achievements.FirstMonster.unlock(); }],
         background: 'Persons/Monster',
         condition: () => {}
-    });
-Game.Scenes.TC = [];
+    });Game.Scenes.TC = [];
 
 Game.Scenes.TC[0] =
     new Scene({
@@ -11143,8 +6443,7 @@ Game.Scenes.TC[101] =
               Game.Achievements.SecondPartCompleted.unlock();
             }
         }
-    });
-Game.Scenes.PP = [];
+    });Game.Scenes.PP = [];
 
 Game.Scenes.PP[1] =
     new Scene({
@@ -13598,8 +8897,7 @@ Game.Scenes.PN[134] =
           Game.Stats.Knife.add(-1);
           Game.Progress.save("FP");
         }],
-    });
-Game.Scenes.FC = [];
+    });Game.Scenes.FC = [];
 
 Game.Scenes.FC[0] = new Scene({
   text: `
@@ -14928,7 +10226,7 @@ Game.Scenes.FC[107] = new Scene({
   background: "Persons/Robert",
   buttontext: ['Согласилась', 'Отказалась'],
   buttonaction: [
-    () => { Game.Scenes.FC[108].begin();},
+    () => { Game.Scenes.FC[108].begin(); Game.Stats.DanceWithRobert.add(1);},
     () => { Game.Scenes.FC[119].begin();},
   ],
 });
@@ -15804,8 +11102,7 @@ Game.Scenes.FC[187] = new Scene({
     Game.LoadScreen('FifthPart');
     Game.Progress.save("FifthPart");
   }],
-});
-Game.Scenes.FifthPart = [];
+});Game.Scenes.FifthPart = [];
 
 Game.Scenes.FifthPart[0] = new Scene({
   text: `
@@ -21266,8 +16563,7 @@ Game.Scenes.FifthPart[509] = new Scene({
     Game.LoadScreen('SixPart');
     Game.Progress.save("SixPart");
   }],
-});
-Game.Scenes.SixPart = [];
+});Game.Scenes.SixPart = [];
 
 Game.Scenes.SixPart[0] = new Scene({
   text: `
@@ -21828,7 +17124,7 @@ Game.Scenes.SixPart[53] = new Scene({
   text: `
      - Обретя свой прежний вид, ему ничего не оставалось, кроме как принять судьбу и завершить дело до конца. Куски некогда цельного каменного диска, он разбросал по всему миру. 
             `,
-  background: "Backgrounds/Legend_Scene_07",
+  background: "Backgrounds/Legend_Scene_03",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[54].begin();  }],
 });
@@ -21837,7 +17133,7 @@ Game.Scenes.SixPart[54] = new Scene({
   text: `
      - Последняя его воля звучала так: «Не должна божественная сила одному принадлежать».
             `,
-  background: "Backgrounds/Legend_Scene_07",
+  background: "Backgrounds/Legend_Scene_03",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[55].begin();  }],
 });
@@ -21858,316 +17154,5106 @@ Game.Scenes.SixPart[56] = new Scene({
      <p>Даже не знаю, что и думать…
             `,
   background: "Backgrounds/Camp_Night",
-  buttontext: [''],
-  buttonaction: [() => { Game.Scenes.SixPart[57].begin();  }],
+  buttontext: [
+    'Легенда основана на чем-то правдивом',
+    'Красивый вымысел',
+    'Есть и есть. Какая разница?',
+
+  ],
+  buttonaction: [
+    () => { Game.Scenes.SixPart[57].begin(); Game.message('Вы верите мифам'); Game.Stats.EagleLegend.add(1);},
+    () => { Game.Scenes.SixPart[58].begin(); Game.message('Вас не привлекают древние легенды'); Game.Stats.EagleLegend.add(-1);},
+    () => { Game.Scenes.SixPart[59].begin(); Game.message('Вы равнодушны к услышанному'); Game.Stats.EagleLegend.add(0);},
+  ],
 });
-Game.Scenes.Prologue = [];
 
-Game.Scenes.Prologue[0] =
-    new Scene({
-        text: `- Здравствуй! Мы снова встретились. Ты наверное меня и не помнишь.
-            <p>В голосе незнакомца мелькнула усмешка. Он продолжил:
-            <p>- Я проводник и пришел к тебе, чтобы напомнить, что ты сделала с этим миром и почему являешься ключом. 
-            К спасению или уничтожению - решать только тебе. Полагаю, у тебя много вопросов. Задавай.
+Game.Scenes.SixPart[57] = new Scene({
+  text: `
+     Насколько я помню, индейцы очень бережно относились к мифологии и знаниям, которые они передавали. Просто так не могла появиться столь складная легенда. 
+            `,
+  background: "Backgrounds/Camp_Night",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[60].begin();  }],
+});
+
+Game.Scenes.SixPart[58] = new Scene({
+  text: `
+     Артефакты, птицы. Все это похоже на сказку и не более. В реальности не бывает магии или магических предметов. 
+     <p>“Зато есть перемещение во времени. Отличная логика.”
+            `,
+  background: "Backgrounds/Camp_Night",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[60].begin();  }],
+});
+
+Game.Scenes.SixPart[59] = new Scene({
+  text: `
+     Насколько я помню, индейцы очень бережно относились к мифологии и знаниям, которые они передавали. Просто так не могла появиться столь складная легенда. 
+            `,
+  background: "Backgrounds/Camp_Night",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[60].begin();  }],
+});
+
+Game.Scenes.SixPart[60] = new Scene({
+  text: `
+     - Спасибо, Куртис, это очень увлекательный рассказ, - говорил восторженно Тесла. - Как же они умеют складывать все в такие прелестные истории. 
+     <p>- О чем я и говорил, - Роберт недовольно хмыкнул. - Детская сказка, да еще и с печальным финалом. Жалко птичку. 
+            `,
+  background: "Persons/Nicola",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[61].begin();  }],
+});
+
+Game.Scenes.SixPart[61] = new Scene({
+  text: `
+     - Господа, благодарю за прекрасный вечер. Вынужден откланяться, так как усталость берет свое, - послышалось, как Куртис встал и размял затекшие колени. 
+     <p>- И то верно. Давайте готовиться ко сну. 
+     <p>Мужчины стали прибирать лагерь, сворачивая столь душевную посиделку. 
+            `,
+  background: "Backgrounds/Camp_Night",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[75].begin();  }],
+  condition: function () {
+    Game.Stats.Robert.get >= 3 ?
+      this.buttonaction[0] = () => { Game.Scenes.SixPart[62].begin()}
+      :
+      Game.Stats.Nicola.get >= 4 ?
+        this.buttonaction[0] = () => { Game.Scenes.SixPart[71].begin()}
+        :
+        this.buttonaction[0] = () => { Game.Scenes.SixPart[75].begin()}
+  }
+});
+
+Game.Scenes.SixPart[62] = new Scene({
+  text: `
+    Я услышала шаги, которые медленно приближались. Кто-то сел передо мной, нежно провел рукой по плечу и произнес:
+    <p>- Надеюсь, теперь ты в порядке и никакой кошмар тебя не потревожит, - это был уставший, но ласковый голос Роберта. - Спи спокойно, я рядом. 
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[63].begin();  }],
+});
+
+Game.Scenes.SixPart[63] = new Scene({
+  text: `
+    Мне было сложно представить, что могло произойти с того момента, когда мне в последний раз удалось увидеть Роберта. 
+    <p>“Они с Катариной стали ближе? Как она пережила возвращение в свое тело? А вернулась ли?”
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[64].begin();  }],
+});
+
+Game.Scenes.SixPart[64] = new Scene({
+  text: `
+    Я чувствовала от мужчины запах алкоголя. То ли он был причиной следующей сказанной фразы, то ли Роберта действительно волновало прошлое:
+    <p>- Что же с тобой случилось в то злополучное похищение, дорогая?
+    <p>Я слышала, как он подлил себе в емкость спиртное и вмиг осушил содержимое. 
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[65].begin();  }],
+});
+
+Game.Scenes.SixPart[65] = new Scene({
+  text: `
+    - Какой же я идиот, Катарина. Я так запутался. Не понимаю, как должен поступить, куда должен прийти по итогу. 
+    <p>Мне стало так тоскливо из-за состояния мужчины. Сложно представить, что он переживал все эти годы.
+    <p>“А учитывая, какая у него непростая судьба, я его понимаю. Каждому нужно иногда выговориться.”
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[69].begin();  }],
+  condition: function () {
+    Game.Stats.DanceWithRobert.get >= 1 ?
+      this.buttonaction[0] = () => { Game.Scenes.SixPart[66].begin()}
+      :
+      this.buttonaction[0] = () => { Game.Scenes.SixPart[69].begin()}
+  }
+});
+
+Game.Scenes.SixPart[66] = new Scene({
+  text: `
+    - Во время того самого приема, ты словно была другим человеком. Я, признаться, очень удивился, что сама Катарина не хотела отпускать меня. Вместо привычной тебе светской беседы, предпочла танец со мной…
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[67].begin();  }],
+});
+
+Game.Scenes.SixPart[67] = new Scene({
+  text: `
+    - А каким он был! Абсолютно новые ощущения для меня. Я почувствовал себя таким живым. Таким настоящим. Эти объятия, веселье и спокойствие рядом с тобой. Спасибо, Катарина. 
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[68].begin();  }],
+});
+
+Game.Scenes.SixPart[68] = new Scene({
+  text: `
+    Разумеется, он был уверен, что я крепко сплю, иначе бы не посмел открыть свои чувства. 
+    <p>“Утром я снова увижу ворчливого Роберта, который сосредоточен на своем деле.”
+    <p>Однако от этих мыслей не становилось грустно, ведь сегодня я стала на шаг ближе к нему. 
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[69].begin();  }],
+});
+
+Game.Scenes.SixPart[69] = new Scene({
+  text: `
+    Спустя все это время вместе, моя уверенность в том, какой на самом деле Роберт ранимый - только укреплялась.
+    <p>“Он слишком строг к себе. В какой-то степени виновата работа… Как же хочется просто его обнять и не отпускать.”
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[70].begin();  }],
+});
+
+Game.Scenes.SixPart[70] = new Scene({
+  text: `
+    Невольно я сопоставила Роберта с Гаем, парнем из Помпей. 
+    <p>Меня немного затрясло, что, видимо, не скрылось от глаз Роберта. Он заботливо накрыл меня одеялом и произнес:
+    <p>- Спокойной ночи. 
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[75].begin();  }],
+});
+
+Game.Scenes.SixPart[71] = new Scene({
+  text: `
+    Я услышала шаги, которые медленно приближались. Кто-то сел передо мной и произнес:
+    <p>- Катарина, зачем же ты отправилась с нами…
+            `,
+  background: "Persons/Nicola",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[72].begin();  }],
+});
+
+Game.Scenes.SixPart[72] = new Scene({
+  text: `
+    Я тут же узнала встревоженный голос Николы. Мужчина легким движением провел по моей ладони, продолжая повторять:
+    <p>- Какой же я слабый. Я не смог защитить тебя, не смог защитить своего брата. Да что я вообще могу? Только сидеть и мечтать об этих дурацких изобретениях…
+            `,
+  background: "Persons/Nicola",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[73].begin();  }],
+});
+
+Game.Scenes.SixPart[73] = new Scene({
+  text: `
+    Такое откровение отозвалось болью в сердце. Даже сквозь затуманенное сознание, я чувствовала тревогу Николы. Мне хотелось встать и поддержать его. Сказать ему, каким великим человеком он станет благодаря своим мечтам и упорному труду. 
+    <p>Но проклятое тело оставалось приковано к земле. 
+            `,
+  background: "Persons/Nicola",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[74].begin();  }],
+});
+
+Game.Scenes.SixPart[74] = new Scene({
+  text: `
+    - Спи спокойно, Катарина. Что бы ни случилось. 
+    <p>Мужчина накрыл меня одеялом, а затем поспешно удалился.
+            `,
+  background: "Persons/Nicola",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[75].begin();  }],
+});
+
+Game.Scenes.SixPart[75] = new Scene({
+  text: `
+    Оставшись наедине со своими мыслями, я наконец-то смогла выдохнуть и крепко заснуть. В тот благополучный вечер никакие сновидения не беспокоили меня. 
+            `,
+  background: "Backgrounds/Camp_Night",
+  buttontext: [''],
+  buttonaction: [() => {
+    Game.Scenes.SixPart[76].begin();
+    Game.Sounds.play('Music', 'WildWest02');
+    Game.Effects.Gray.Stop();
+  }],
+});
+
+Game.Scenes.SixPart[76] = new Scene({
+  text: `
+    Легкое солнышко пробивалось сквозь ветви деревьев, назойливо светя прямо в глаза. Машинально я протянула руку в сторону, пытаясь достать до занавесок, чтобы спастись от раннего пробуждения. 
+    <p>Но быстро осознала, что привычный комфорт моей квартиры остался в грядущем XXI веке. 
+            `,
+  background: "Backgrounds/Camp_Morning",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[77].begin();  }],
+});
+
+Game.Scenes.SixPart[77] = new Scene({
+  text: `
+    Я нехотя села, пытаясь проснуться. На удивление, я чувствовала себя превосходно, словно вчерашние недомогания были кошмарным сном. 
+    <p>Оглядевшись, я обратила внимание, во что была одета Катарина: длинная бежевая юбка, легкая белая рубашка с завязанным на шее платком, а также черные высокие сапоги.
+    <p>Рядом красовалась шляпа, подобно той, что носили ковбои в эпоху дикого запада. 
+    <p>“Совпадение? С другой стороны, вся эта эпоха длилась вплоть до 1920 года, пока медленными шагами менялся уклад жизни людей. Интересно.” 
+            `,
+  background: "Backgrounds/Camp_Morning",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[78].begin();  }],
+});
+
+Game.Scenes.SixPart[78] = new Scene({
+  text: `
+    Затем я перевела взгляд на сам лагерь, где мужчины прошлой ночью так интересно беседовали. 
+    <p>Несколько бревен, почти потухший костер, рядом с которым было разбросано несколько железных кружек. 
+    <p>Никого из моих спутников не было видно. Это дало мне передышку и время подумать над дальнейшими шагами. 
+            `,
+  background: "Backgrounds/Camp_Morning",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[79].begin();  }],
+});
+
+Game.Scenes.SixPart[79] = new Scene({
+  text: `
+    “Как бы это не было романтично, но я все еще не понимаю ради чего затеяно все это приключение. К тому же, второй раз трюк с потерей памяти не пройдет. Что же мне придумать, чтобы не вызывать подозрений?”
+            `,
+  background: "Backgrounds/Camp_Morning",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[80].begin();  }],
+});
+
+Game.Scenes.SixPart[80] = new Scene({
+  text: `
+     Не успев закончить рассуждения, я услышала звонкий и бойкий голос, который произнес:
+     <p>- Мисс, Джонсон, доброе утро! Надеюсь, вы хорошо спали?
+            `,
+  background: "Backgrounds/Camp_Morning",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[81].begin(); Game.message('Вы можете выбрать внешность Куртиса');  }],
+});
+
+Game.Scenes.SixPart[81] = new Scene({
+  text: `
+     Это был тот самый незнакомый мне мужчина по фамилии Куртис, рассказавший увлекательную легенду индейцев. 
+     <p>Он выглядел:
+            `,
+  background: "Backgrounds/Camp_Morning",
+  buttontext: [
+    'Романтично, по-простому',
+    'Элегантно, но не вычурно',
+    'Дерзко, по-ковбойски',
+  ],
+  buttonaction: [
+    () => { Game.Scenes.SixPart[82].begin();  },
+    () => { Game.Scenes.SixPart[83].begin();  },
+    () => { Game.Scenes.SixPart[84].begin();  },
+  ],
+});
+
+Game.Scenes.SixPart[82] = new Scene({
+  text: `
+     Он выглядел довольно просто, казалось даже романтично из-за его нежной улыбки.
+     <p>Небрежно уложенные волосы под черной шляпой, но при этом строгая жилетка. Обычный костюм и добрые глаза дополняли его образ джентльмена. 
+            `,
+  background: "Persons/Curtis_01",
+  buttontext: [
+    'Продолжить',
+    'Выбрать другого',
+  ],
+  buttonaction: [
+    () => { Game.Stats.CurtisAppearance.set(1); Game.Scenes.SixPart[85].begin();},
+    () => { Game.Scenes.SixPart[81].begin();},
+  ],
+});
+
+Game.Scenes.SixPart[83] = new Scene({
+  text: `
+     Он выглядел очень элегантно: черный пиджак, стильная жилетка с золотыми нитями, аккуратная шляпа. 
+     <p>Словно это был человек из высшего общества, но который не вел себя высокомерно, а, напротив, окутывал своим добродушием.
+            `,
+  background: "Persons/Curtis_02",
+  buttontext: [
+    'Продолжить',
+    'Выбрать другого',
+  ],
+  buttonaction: [
+    () => { Game.Stats.CurtisAppearance.set(2); Game.Scenes.SixPart[85].begin();},
+    () => { Game.Scenes.SixPart[81].begin();},
+  ],
+});
+
+Game.Scenes.SixPart[84] = new Scene({
+  text: `
+     Он выглядел как типичный житель дикого запада. Легкая рубашка и привлекательная шляпа. 
+     <p>Его взгляд был задорным, а верхние пуговицы рубашки расстегнуты, что только добавляло дерзости его образу.
+            `,
+  background: "Persons/Curtis_03",
+  buttontext: [
+    'Продолжить',
+    'Выбрать другого',
+  ],
+  buttonaction: [
+    () => { Game.Stats.CurtisAppearance.set(3); Game.Scenes.SixPart[85].begin();},
+    () => { Game.Scenes.SixPart[81].begin();},
+  ],
+});
+
+Game.Scenes.SixPart[85] = new Scene({
+  text: `
+     Мужчина озадаченно смотрел на меня, видимо ожидая моего ответа. Есть ли разница в том, что мне сказать?
+      <p>И я ответила: 
+            `,
+  background: 'Persons/Curtis_01',
+  buttontext: [
+    'Какая чудесная погода!',
+    'Кто вы?',
+    'Доброе утро!',
+  ],
+  buttonaction: [
+    () => { Game.Scenes.SixPart[85].begin();},
+    () => { Game.Scenes.SixPart[85].begin();},
+    () => { Game.Scenes.SixPart[85].begin();},
+  ],
+  condition: function () {
+    this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`)
+  }
+});Game.Stories.push(
+  new Story ({
+    name: 'Aurora',
+    pict: 'Covers/Aurora',
+    chapters: [ new Chapter ({
+      name: 'Глава 1',
+      pict: 'Backgrounds/Aurora_Lighthouse',
+      parts: [ new Part ({
+        name: 'Пролог',
+        pict: 'Backgrounds/Aurora_Writing',
+        code: 'Aurora_Prologue',
+        event: function (){
+
+          Game.Design.change('Aurora');
+
+          Stat.hideAll();
+
+          Game.Effects.DisableAll();
+
+          Game.LoadScreen('Aurora_Prologue');
+
+          Game.Scenes.A_Prologue[0].begin();
+        }
+      }),
+        new Part ({
+          name: 'Часть 1',
+          pict: 'Backgrounds/Aurora_House_Inside',
+          code: 'Aurora_Part01',
+          event: function (){
+
+            Game.Design.change('Aurora');
+
+            Game.Progress.load('Aurora_Part01');
+
+            Game.Effects.DisableAll();
+
+            Game.LoadScreen('Aurora_Part01');
+
+            Game.Scenes.A_Part01[0].begin();
+          }
+        }),
+        new Part ({
+          name: 'Часть 2',
+          pict: 'Backgrounds/Aurora_Univer',
+          code: 'Aurora_Part02',
+          event: function (){
+
+            Game.Design.change('Aurora');
+
+            Game.Progress.load('Aurora_Part02');
+
+            Game.Effects.DisableAll();
+
+            Game.LoadScreen('Aurora_Part02');
+
+            Game.Scenes.A_Part02[0].begin();
+
+          }
+        }),
+        new Part ({
+          name: 'Часть 3',
+          pict: 'Backgrounds/Aurora_SW_Streets',
+          code: 'Aurora_Part03',
+          event: function (){
+
+            Game.Design.change('Aurora');
+
+            Game.Progress.load('Aurora_Part03');
+
+            Game.Effects.DisableAll();
+
+            Game.LoadScreen('Aurora_Part03');
+
+            Game.Scenes.A_Part03[0].begin();
+
+          }
+        }),
+      ],
+    })],
+  })
+);//Characters
+
+Game.Stats.Aurora = new Person({
+    name: 'Аврора',
+    picture: 'Persons/Aurora_Aurora',
+    title: 'В моей жизни происходит много значимых перемен.',
+    text: 'Интересно, какие еще сюрпризы преподнесет судьба?',
+    story: 'Aurora',
+    isUnlocked: function () {
+        return Game.Achievements.A_Part01Completed.unlocked >= 1;
+    },
+    trophies: new Trophies(
+      {
+          name : 'Border',
+          title : 'Легендарная рамка',
+          picture : 'Items/Cup',
+          text : 'Награда за максимальный уровень фаворита',
+          isUnlocked: function () {
+              return Game.Favourites.getLevel('Aurora') >= 5;
+          }
+    },
+      ),
+});
+
+Game.Stats.Father = new Person({
+    name: 'Папа',
+    picture: 'Persons/Aurora_Dad',
+    title: 'Мой единственный родной человек.',
+    text: 'Ему пришлось нелегко: работа, потеря дорогих людей. Его состояние нестабильно - я должна сделать все, чтобы помочь ему.',
+    story: 'Aurora',
+});
+
+Game.Stats.Yan = new Person({
+    name: 'Ян',
+    picture: 'Persons/Aurora_Yan',
+    title: 'Самый близкий друг для меня. Мой старший брат.',
+    text: 'Его загадочное исчезновение до сих пор отзывается болью у меня в сердце. Но я не собираюсь терять надежду.',
+    story: 'Aurora',
+});
+
+Game.Stats.Arthur = new Person({
+    name: 'Артур',
+    picture: 'Persons/Aurora_Arthur',
+    title: 'Внук бывшего смотрителя маяка. Добрый и понимающий парень.',
+    text: 'Именно он был рядом в самые трудные моменты моей жизни. Я не понимаю, какие чувства испытываю к нему, но время все расставит на свои места.',
+    story: 'Aurora',
+});
+
+Game.Stats.Kaleb = new Person({
+    name: 'Калеб',
+    picture: 'Persons/Aurora_Kaleb',
+    title: 'Наглый и самовлюбленный студент, с которым я столкнулась в библиотеке.',
+    text: 'Его происхождение окутано тайной, что мне предстоит выяснить. Кем же он окажется по итогу: надежным соратником в моем путешествии или злейшим врагом?',
+    story: 'Aurora',
+});
+
+Game.Stats.Dalia = new Person({
+    name: 'Далия',
+    picture: 'Persons/Aurora_Dalia',
+    title: 'Заводная девушка, которая с первой нашей встречи внесла хаос в мою жизнь.',
+    text: 'Открытая и располагающая к себе особа, которая, кажется, берет от жизни все. В свое время, именно она побудила меня начать вести дневник.',
+    story: 'Aurora',
+});
+
+//Conditions
+
+Game.Stats.Drawing = new Choice({
+    name: 'заниматься рисованием',
+    story: 'Aurora',
+});
+
+Game.Stats.Writing = new Choice({
+    name: 'заниматься писательством',
+    story: 'Aurora',
+});
+
+Game.Stats.Music = new Choice({
+    name: 'быть меломаном',
+    story: 'Aurora',
+});
+
+Game.Stats.Pragmatic = new Choice({
+    name: 'быть прагматичной',
+    story: 'Aurora',
+});
+
+Game.Stats.Romantic = new Choice({
+    name: 'быть романтичной',
+    story: 'Aurora',
+});
+
+Game.Stats.Song = new Choice({
+    name: 'выбрала песню',
+    story: 'Aurora',
+});
+
+Game.Stats.BetrayKaleb = new Choice({
+    name: 'предала Калеба',
+    story: 'Aurora',
+});
+
+//Items
+
+Game.Stats.Trial_Pass = new Item({
+    name: 'Пропуск',
+    picture: 'Items/Aurora_Trial_Pass',
+    title: 'Временный пропуск Авроры',
+    text: 'Его вручил мне Артур, чтобы я могла пройти в университет в любое время',
+    story: 'Aurora',
+});
+
+Game.Stats.Mothers_Photo = new Item({
+    name: 'Фото',
+    picture: 'Items/Aurora_Mother',
+    title: 'Фотография женщины с подписью',
+    text: 'Возможно, эта фотография принадлежит Калебу. Снизу виднеется надпись на французском: “Моя семья”',
+    story: 'Aurora',
+});Game.Achievements.A_PrologueCompleted = new Achievement ({
+  picture: 'Backgrounds/Aurora_Writing',
+  title: 'Дневник',
+  text: 'Аврора начинает свой рассказ',
+  story: 'Aurora',
+});
+
+Game.Achievements.A_Artist = new Achievement ({
+  picture: 'Backgrounds/Aurora_Album',
+  title: 'Художник',
+  text: 'Выберете в качестве основного хобби рисование',
+  story: 'Aurora',
+});
+
+Game.Achievements.A_Writer = new Achievement ({
+  picture: 'Backgrounds/Aurora_Writing',
+  title: 'Писатель',
+  text: 'Выберете в качестве основного хобби писательство',
+  story: 'Aurora',
+});
+
+Game.Achievements.A_Musician = new Achievement ({
+  picture: 'Backgrounds/Aurora_WM',
+  title: 'Музыкант',
+  text: 'Выберете в качестве основного хобби музыку',
+  story: 'Aurora',
+});
+
+Game.Achievements.A_Part01Completed = new Achievement ({
+  picture: 'Backgrounds/Aurora_Lighthouse_Night',
+  title: 'Новая жизнь',
+  text: 'Отправьтесь с Авророй в неизвестное будущее',
+  story: 'Aurora',
+});
+
+Game.Achievements.A_Musicality = new Achievement ({
+  picture: 'Backgrounds/Aurora_Disc',
+  title: 'Меломан',
+  text: 'Выберите музыку по вкусу',
+  story: 'Aurora',
+});
+
+Game.Achievements.A_Part02Completed = new Achievement ({
+  picture: 'Backgrounds/Aurora_Univer',
+  title: 'Студенческие будни',
+  text: 'Завершите вторую часть интересной встречей',
+  story: 'Aurora',
+});
+
+Game.Achievements.A_Fan = new Achievement ({
+  picture: 'Backgrounds/Aurora_Solist_Picture',
+  title: 'Фанатка',
+  text: 'Познакомьтесь с любимчиком Далии',
+  story: 'Aurora',
+});
+
+Game.Achievements.A_Fav_Writer = new Achievement ({
+  picture: 'Backgrounds/Aurora_Writing',
+  title: 'Любимый писатель',
+  text: 'Узнайте интерес Калеба',
+  story: 'Aurora',
+});
+
+Game.Achievements.A_PayBack = new Achievement ({
+  picture: 'Persons/Aurora_Kaleb',
+  title: 'Должник',
+  text: 'Помогите Калебу избежать встречи с Далией',
+  story: 'Aurora',
+});
+
+Game.Achievements.A_Part03Completed = new Achievement ({
+  picture: 'Backgrounds/Aurora_Room',
+  title: 'Знакомство',
+  text: 'Завершите третью часть, отдыхая после насыщенного дня',
+  story: 'Aurora',
+});Game.Scenes.A_Prologue = [];
+
+Game.Scenes.A_Prologue[0] =
+  new Scene({
+    text: `Моя дорогая Далия. Как у тебя дела? Ты все еще вспоминаешь меня? 
+           А наши беззаботные деньки, наполненные смехом и в одночасье тяжелым грузом бремени, что резко обрушилось на нас?
         `,
-        buttontext: [''],
-        buttonaction: [() => { Game.Scenes.Prologue[1].begin(); Game.message('В левом верхнем углу под иконкой рюкзака нажмите на стрелочку, чтобы посмотреть текст предыдущего слайда.'); }],
-        background: 'Backgrounds/Abstraction',
-        condition: () => { Game.Sounds.play('Music', 'Prologue'); }
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Prologue[1].begin(); Game.message('В левом верхнем углу под иконкой рюкзака нажмите на стрелочку, чтобы посмотреть текст предыдущего слайда'); }],
+    background: 'Backgrounds/Aurora_Writing',
+    condition: () => { Game.Sounds.play('Music', 'Aurora') }
+  });
 
-    });
+Game.Scenes.A_Prologue[1] =
+  new Scene({
+      text: `
+            Знаешь, я все еще бережно храню подаренный тобой сборник стихов Эдгара Аллана По. 
+            Перечивая строки его произведений, каждый раз во мне откликаются те ощущения, что мы когда-то пережили.
+            <p>Я все больше начинаю понимать тебя: твои мысли, твою печаль и страхи. 
 
-Game.Scenes.Prologue[1] =
-    new Scene({
-        text: `Я медленно открыла глаза. Первое время мозг не мог воспринять место, в котором я очутилась. 
-            Странные свечения, пустота… Камни парили неестественно, не поддаваясь никаким законам физики.
-            <p>“Это не может быть реальностью!”
-            <p> Я ощущала себя бестелесным существом, которое барахтается в просторах вселенной. Абсолютно беззащитна, будто бы любое дуновение скинет меня с возвышенности, и моя жизнь оборвется.
         `,
-        buttontext: [''],
-        buttonaction: [() => { Game.Scenes.Prologue[50].begin(); }],
-        background: 'Backgrounds/Abstraction',
-    });
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Prologue[2].begin(); Game.message('Эдгар По - “Сон во сне”'); }],
+      background: 'Backgrounds/Aurora_Writing',
+  });
 
-Game.Scenes.Prologue[50] =
+Game.Scenes.A_Prologue[2] =
+  new Scene({
+      text: `
+            <i><p>Я стою на берегу,
+            <i><p>Бурю взором стерегу.
+            <i><p>И держу в руках своих
+            <i><p>Горсть песчинок золотых.
+        `,
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Prologue[3].begin();  }],
+      background: 'Backgrounds/Aurora_Writing',
+  });
+
+Game.Scenes.A_Prologue[3] =
+  new Scene({
+      text: `
+            <i>Как их бег мне задержать,
+            <i><p>Как сильнее руки сжать?
+            <i><p>Сохранится ль хоть одна,
+            <i><p>Или все возьмёт волна?
+            <i><p>Или то, что зримо мне,
+            <i><p>Всё есть только сон во сне?
+        `,
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Prologue[4].begin(); }],
+      background: 'Backgrounds/Aurora_Writing',
+  });
+
+Game.Scenes.A_Prologue[4] =
+  new Scene({
+      text: `
+            Мои мысли идут сплошным потоком. Я стольким хочу поделиться с тобой. Но торопиться некуда. 
+            <p></p>Сейчас, сидя на любимой скамейке, обдуваемая морскими ветрами, я переношу свою жизнь на бумагу. Свое прошлое, настоящее, те моменты, что мы прожили бок о бок. 
+        `,
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Prologue[5].begin(); }],
+      background: 'Backgrounds/Aurora_Writing',
+  });
+
+Game.Scenes.A_Prologue[5] =
+  new Scene({
+      text: `
+            Цель очень проста - помнить. Помнить каждую деталь, каждую эмоцию и те выборы, которые привели нас к этому исходу. Я никогда не прощу себя, если хоть что-то упущу. 
+            <p>Милая Далия, я безмерно счастлива писать в этом дневнике. Местами может быть сумбурно, но я остаюсь верна себе. Как ты меня когда-то учила - быть собой и не стараться выстраивать образ человека, которым я не являюсь. 
+        `,
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Prologue[6].begin(); Game.Achievements.A_PrologueCompleted.unlock(); }],
+      background: 'Backgrounds/Aurora_Writing',
+  });
+
+Game.Scenes.A_Prologue[6] =
+  new Scene({
+      text: `
+            Ну, хватит лирики. Я думаю, ты запомнила меня как всегда улыбающейся девочкой, которая хотела покорить высокие горы. Ведь именно такой я стала благодаря тебе. Пусть так оно и будет. 
+            <p>Начну издалека. Бушующая подростковая жизнь, затем завораживающая юность. 
+            <p><s>И будущее?</s>
+            <p><i>Твоя Аврора начинает свой рассказ.
+            `,
+      buttontext: [''],
+      buttonaction: [() => {
+        setTimeout(() => { Game.Scenes.A_Part01[0].begin(); }, 1000);
+        Game.LoadScreen('Aurora_Part01');
+        Game.Progress.save("Aurora_Part01");
+
+      }],
+      background: 'Backgrounds/Aurora_Writing',
+  });Game.Scenes.A_Part01 = [];
+
+Game.Scenes.A_Part01[0] =
   new Scene({
     text: `
-     Взгляд зацепился за таинственную фигуру, укутанную в черный плащ. Я посмотрела на него, надеясь увидеть в нем спасителя. Того, кто расскажет все секреты этого мира и поможет выбраться отсюда. Однако ответом мне было продолжительное молчание. Незнакомец терпеливо ждал, пока я придумаю вопросы. 
+    Я родилась в полной и любящей семье на окраине небольшого шведского городка. 
+    Нас было четверо: заботливые родители, я и старший брат, всегда спешивший на помощь. 
+    Для меня это было счастливым временем, которое не ускользало даже под гнетом тяжелых испытаний судьбы.
         `,
     buttontext: [''],
-    buttonaction: [() => { Game.Scenes.Prologue[2].begin(); }],
-    background: 'Persons/Stranger',
+    buttonaction: [() => { Game.Scenes.A_Part01[1].begin(); Game.Stats.Aurora.add(0); Game.message('В верхнем левом углу находится инвентарь, там вы можете посмотреть полезную информацию') }],
+    background: 'Backgrounds/Aurora_House_Inside',
+    condition: () => { Game.Sounds.play('Music', 'Lighthouse') }
   });
 
-Game.Scenes.Prologue[2] =
+Game.Scenes.A_Part01[1] =
+  new Scene({
+      text: `
+      Своего детства я практически не помню. 
+      Но мой подростковый период проходил далеко не в сказочных реалиях. 
+        `,
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Part01[100].begin(); }],
+      background: 'Backgrounds/Aurora_House_Inside',
+  });
+
+Game.Scenes.A_Part01[100] =
+  new Scene({
+    text: `
+      Чтобы прокормить семью, отец пробовался на разные работы: был поваром, строителем и даже грузчиком. Но в маленьких городках жизнь будто бы заколдована на обреченность. 
+      <p>Стабильность медленно ускользала, а на смену приходили голод и прочие недуги. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[2].begin(); }],
+    background: 'Persons/Aurora_Dad',
+  });
+
+Game.Scenes.A_Part01[2] =
+  new Scene({
+      text: `
+      Однако все изменилось, когда папин хороший знакомый предложил ему работу. 
+      Она была несложная. Необходимо было помогать пожилому человеку, работающему смотрителем маяка. В дополнение к этому, за нее обещали хорошо платить.
+        `,
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Part01[3].begin(); }],
+      background: 'Persons/Aurora_Dad',
+  });
+
+Game.Scenes.A_Part01[3] =
+  new Scene({
+      text: `
+      Мало кто хотел связывать свою жизнь со служением морю, если так можно выразиться. Быть вдали от всех цивилизованных благ, где единственными друзьями будут тишина и природа. 
+      <p>Но отцу было все равно. Наше благополучие стояло на первом месте. 
+        `,
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Part01[4].begin(); }],
+      background: 'Persons/Aurora_Dad',
+  });
+
+Game.Scenes.A_Part01[4] =
+  new Scene({
+      text: `
+      В начале он работал в качестве помощника. Милый дедушка оказался не только хорошим учителем, но и прекрасным собеседником. Он обучил папу всем тонкостям работы и пророчил ему свое место. 
+      <p>Мы могли не видеть отца месяцами. Тоска по родному теплу росла с каждым днем. Но мы не сдавались.
+        `,
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Part01[5].begin(); }],
+      background: 'Persons/Aurora_Dad',
+  });
+
+Game.Scenes.A_Part01[5] =
+  new Scene({
+      text: `
+     Мама была для меня примером стойкости и воли к жизни. Даже несмотря на свое слабое здоровье, она старалась быть сильной. Подрабатывала и успевала ухаривать за домом.
+        `,
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Part01[6].begin(); }],
+      background: 'Backgrounds/Aurora_House_Inside',
+  });
+
+Game.Scenes.A_Part01[6] =
+  new Scene({
+      text: `
+     Старший брат, по имени Ян, всегда вдохновлял меня и не давал падать духом. В свои шестнадцать лет он не знал проблем с учебой, успевал работать в небольшой продуктовой лавке на полставки и оставаться крепким мужским плечом для меня и мамы. 
+        `,
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Part01[7].begin(); }],
+      background: 'Persons/Aurora_Yan',
+  });
+
+Game.Scenes.A_Part01[7] =
+  new Scene({
+      text: `
+      Ян был моим самым близким другом. Я всегда делилась с ним сокровенными тайнами или безумными идеями. А он, в свою очередь, поддерживал и наставлял, как подобает старшему брату.  
+      <p>Мы могли часами разговаривать и понимать друг друга практически без слов, а его любящие объятия укрывали меня от грустных мыслей.
+          `,
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Part01[8].begin(); }],
+      background: 'Persons/Aurora_Yan',
+  });
+
+Game.Scenes.A_Part01[8] =
+  new Scene({
+      text: `
+     Он часто говорил мне: 
+     <p>- Вот увидишь, Аврора. Я построю нам мост в светлое будущее. 
+     <p>Но все изменилось, когда в один из дней он не пришел домой. 
+          `,
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Part01[9].begin(); Game.Stats.Yan.add(0); }],
+      background: 'Persons/Aurora_Yan',
+  });
+
+Game.Scenes.A_Part01[9] =
+  new Scene({
+      text: `
+     Это было не в его духе. Ян всегда сообщал нам о своих передвижениях или внезапных задержках. 
+     Но именно в тот проклятый весенний день, когда брату было семнадцать лет - он будто бы испарился из нашего города. 
+          `,
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Part01[101].begin(); }],
+      background: 'Backgrounds/Aurora_Missing',
+  });
+
+Game.Scenes.A_Part01[101] =
+  new Scene({
+    text: `
+      Отец был на работе, поэтому я и мама самостоятельно организовали поиски с помощью неравнодушных соседей. 
+      Мы обращались в полицию, развешивали плакаты с его изображением. Все жители нашего маленького городка были подключены к поискам Яна, но его след так и не смогли найти… 
+          `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[10].begin(); }],
+    background: 'Backgrounds/Aurora_Missing',
+  });
+
+Game.Scenes.A_Part01[10] =
+  new Scene({
+      text: `
+     Полиция выдвинула банальные теории. Якобы брат просто сбежал из дома, захотел новой жизни и отправился покорять столицу. 
+     И как бы мы не отрицали версию полиции, как бы не старались найти его, поиск не сдвигался с мертвой точки. 
+      <p>Никто не собирался сдаваться. Но чем больше времени проходило, тем быстрее угасала наша надежда. 
+          `,
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Part01[11].begin(); }],
+      background: 'Backgrounds/Aurora_Missing',
+  });
+
+Game.Scenes.A_Part01[11] =
+  new Scene({
+    text: `
+     В условиях нестабильности мы прожили долгие годы. Нашу жизнь омрачила тоска по Яну и, казалось, ничто не могло этого изменить. 
+    <p>Однако когда мне исполнилось восемнадцать лет, будто бы по волшебству последовали первые положительные перемены. 
+          `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[12].begin(); }],
+    background: 'Backgrounds/Aurora_House_Inside',
+  });
+
+Game.Scenes.A_Part01[12] =
+  new Scene({
+    text: `
+     В один дождливый день на пороге объявился отец. Полностью промокший он вошел в дом. То ли слезы текли по его щекам, то ли капли дождя. Скорее всего все вперемешку. 
+    <p>Спустя несколько долгих секунд он произнес всего одну фразу:
+    <p>- Смотритель умер. 
+          `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[13].begin(); }],
+    background: 'Persons/Aurora_Dad',
+  });
+
+Game.Scenes.A_Part01[13] =
+  new Scene({
+    text: `
+     Дальнейшее решение перевернуло наш мир. Единственное, что мог сделать папа, чтобы мы жили в благополучии - это занять место смотрителя. Но это также означало, что мы совсем потеряем связь с друг другом. 
+          `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[14].begin(); }],
+    background: 'Backgrounds/Aurora_House_Inside',
+  });
+
+Game.Scenes.A_Part01[14] =
+  new Scene({
+    text: `
+      <p>Я хорошо помню тот день. Мама кинулась в объятия отца, плача ему в плечо. Она произнесла лишь одно:
+      <p>- Поехали. 
+      <p>У меня не было причин отказываться. В школе я не завела друзей, единственный по-настоящему близкий человек пропал, дальнейших планов на жизнь у меня не было.
+      <p>Но любящая семья, бережно относящаяся ко мне - вот, за что хотелось цепляться. 
+      `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[15].begin(); }],
+    background: 'Backgrounds/Aurora_House_Inside',
+  });
+
+Game.Scenes.A_Part01[15] =
+  new Scene({
+    text: `
+      Я отправилась в ванную, чтобы умыться и привести себя в порядок. 
+      Расчесала свои светлые, немного непослушные локоны. 
+      Умылась и накрасила губы моим любимым розовым бальзамом - мамин подарок. 
+      Она всегда говорила, что мне очень идет этот цвет, да и выглядела я не такой бледной, как обычно. 
+      `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[16].begin(); }],
+    background: 'Persons/Aurora_Aurora',
+  });
+
+Game.Scenes.A_Part01[16] =
+  new Scene({
+    text: `
+      В отражении зеркала мне показалась немного растерянного вида девушка, которая не представляла свою дальнейшую жизнь. 
+      Но которая четко осознавала - сейчас происходит абсолютно непредсказуемый поворот в ее судьбе. 
+      И возможно именно благодаря этим переменам - все наладится. 
+      `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[17].begin(); }],
+    background: 'Persons/Aurora_Aurora',
+  });
+
+Game.Scenes.A_Part01[17] =
+  new Scene({
+    text: `
+      Выйдя из ванны, я начала медленно обходить наш домик, с которым связано столько воспоминаний. 
+      Слегка касаясь вещей, я начала представлять картинки из моей жизни. 
+      `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[106].begin();}],
+    background: 'Persons/Aurora_Aurora',
+  });
+
+Game.Scenes.A_Part01[106] =
+  new Scene({
+    text: `
+      С одной стороны, испытывая чувство безмерной радости от переезда в новый дом и воссоединения семьи, 
+      а с другой стороны - чувство тоски, ведь это все такое привычное и родное.
+      <p>Мы быстро собрали те немногие вещи, которые у нас были и отправились в свой новый дом. 
+      `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[102].begin();}],
+    background: 'Persons/Aurora_Aurora',
+  });
+
+
+
+Game.Scenes.A_Part01[102] =
+  new Scene({
+    text: `
+       Небольшой домик, находившийся рядом с маяком, стал нашей отдушиной. Наконец-то беззаботная семейная идиллия накрыла нас волной любви и счастья. 
+      <p>Да, мы были совершенно оторваны от других. Но наше уютное гнездышко и было всем этим гигантским миром. 
+      `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[103].begin(); Game.message('Сейчас вы сделаете свой первый выбор. Некоторые из них меняют сюжет незначительно, другие же ведут к серьезным переменам. Но помните, только Вам решать, какой вы видите свою главную героиню'); }],
+    background: 'Backgrounds/Aurora_Lighthouse',
+  });
+
+Game.Scenes.A_Part01[103] =
+  new Scene({
+    text: `
+      Волны, ветер, свобода, семья. Я обрела гармонию и спокойствие на сердце. 
+      <p>И не забывала о своем хобби. 
+      `,
+    buttontext: ['Любила рисование','Любила писательство','Любила музыку'],
+    buttonaction: [
+      () => { Game.Scenes.A_Part01[18].begin(); Game.Achievements.A_Artist.unlock(); Game.Stats.Drawing.add(1); },
+      () => { Game.Scenes.A_Part01[21].begin(); Game.Achievements.A_Writer.unlock(); Game.Stats.Writing.add(1);},
+      () => { Game.Scenes.A_Part01[24].begin(); Game.Achievements.A_Musician.unlock(); Game.Stats.Music.add(1); }
+    ],
+    background: 'Backgrounds/Aurora_Lighthouse',
+  });
+
+Game.Scenes.A_Part01[18] =
+  new Scene({
+    text: `
+      Я не училась в художественной школе и не имела ни малейшего представления о тонкостях подобного искусства. 
+      Однако еще с детства мама с папой видели, какую радость мне доставляет передавать простые формы на бумагу. 
+      <p>И хоть мы были небогатой семьей, но на альбом и несколько карандашей родители смогли найти деньги. 
+
+      `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[19].begin(); }],
+    background: 'Backgrounds/Aurora_Album',
+  });
+
+Game.Scenes.A_Part01[19] =
+  new Scene({
+    text: `
+      Рисование также помогало отвлекаться от тяжелых моментов в жизни. Легкое чирканье карандашом, блеклые наброски - мой мир, который я раскрашу в нужные цвета. 
+      `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[107].begin(); }],
+    background: 'Backgrounds/Aurora_Album',
+  });
+
+Game.Scenes.A_Part01[107] =
+  new Scene({
+    text: `
+    Жизнь на маяке стала для меня новым открытием и все заиграло более яркими красками. 
+    <p>Я часто садилась на лавочку, которая стояла рядом с маяком. Вид рассказывал о море и его тайнах. 
+      `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[20].begin(); }],
+    background: 'Backgrounds/Aurora_Album',
+  });
+
+Game.Scenes.A_Part01[20] =
+  new Scene({
+    text: `
+      Каждый раз море открывалось для меня с новой стороны. 
+      Легкое покачивание волн, ровный горизонт, мирно летящие птицы. Или же бушующие потоки, сильный ветер, что сносил все на своем пути. 
+      <p>Эти мгновения навсегда запечатлены в моем альбоме.  
+      `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[28].begin(); }],
+    background: 'Backgrounds/Aurora_Album',
+  });
+
+Game.Scenes.A_Part01[21] =
+  new Scene({
+    text: `
+      Одним из немногих предметов в школе, которым я по-настоящему увлекалась, была литература. 
+      Для меня всегда оставалось загадкой, как же люди могут так искусно передавать свои мысли и идеи, влиять на разум читателя, внушать ту или иную мораль.
+      <p>Как-то после уроков я набралась смелости и купила блокнот, который стал постепенно заполняться разного рода набросками для будущих историй. 
+      `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[22].begin(); }],
+    background: 'Backgrounds/Aurora_Writing',
+  });
+
+Game.Scenes.A_Part01[22] =
+  new Scene({
+    text: `
+      Как и в жизни, я не могла придумать конечную цель или хотя бы продумать структуру произведения. Но это не мешало мне изливать свою душу в такой форме. 
+      <p>Маяк стал для меня оплотом вдохновения. Я часто залезала на самый верх здания, где располагалась смотровая площадка. Садилась на стул и просто писала. 
+      `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[23].begin(); }],
+    background: 'Backgrounds/Aurora_Writing',
+  });
+
+Game.Scenes.A_Part01[23] =
+  new Scene({
+    text: `
+      Дракон, что мог обрушить свое зло на маленький никому не нужный городок или обычная бытовая жизнь смотрителя маяка. 
+      <p>Это было неважно. 
+      `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[28].begin(); }],
+    background: 'Backgrounds/Aurora_Writing',
+  });
+
+Game.Scenes.A_Part01[24] =
+  new Scene({
+    text: `
+      В школе я часто проводила время наедине с собой. Меня не привлекало общение с другими людьми, к тому же, они не были особенно расположены ко мне. 
+      <p>Но в один из дней мой одноклассник, с которым мы делили парту, пришел неожиданно в хорошем настроении. Я тактично поинтересовалась о причине этого. 
+      `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[25].begin(); }],
+    background: 'Backgrounds/Aurora_WM',
+  });
+
+Game.Scenes.A_Part01[25] =
+  new Scene({
+    text: `
+      - Наконец-то состоялся дебют “Kings & Queens”. Это просто бомба. Все только о них и говорят, а их гитарист и по совместительству вокалист - настоящий прорыв. 
+      Он вроде даже наш ровесник… Не верится. Почему я просиживаю за этой чертовой партой, когда в шестнадцать лет можно такие бабки рубить… 
+      `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[26].begin(); }],
+    background: 'Backgrounds/Aurora_WM',
+  });
+
+Game.Scenes.A_Part01[26] =
+  new Scene({
+    text: `
+      - А можно послушать? 
+    <p>- Конечно! Я и забыл, что у тебя нет денег, - он протянул мне плеер и наушники. 
+    <p>Я не обратила внимание на эту колкость. Люди почему-то норовят показать свое превосходство, но я к этому привыкла и отнеслась спокойно. 
+      `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[27].begin(); Game.Sounds.play('Music','KingQueens'); }],
+    background: 'Backgrounds/Aurora_WM',
+  });
+
+Game.Scenes.A_Part01[27] =
+  new Scene({
+    text: `
+      Надев наушники, меня тут же захватил звук гитары. 
+      Музыка, которую я слышала была чем-то новым для меня. Прекрасный проигрыш и не менее завораживающий голос вокалиста вызвали смешение различных эмоций. 
+      `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[110].begin(); }],
+    background: 'Backgrounds/Aurora_WM',
+  });
+
+
+Game.Scenes.A_Part01[110] =
+  new Scene({
+    text: `
+      Впоследствии, я поделилась своим открытием с родителями.  И несмотря на финансовое положение, на шестнадцатилетие мне подарили музыкальный плеер. 
+      `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[120].begin(); }],
+    background: 'Backgrounds/Aurora_WM',
+  });
+
+Game.Scenes.A_Part01[120] =
+  new Scene({
+    text: `
+      Я не переставая слушала разного рода музыку. Создавала плейлисты под свое настроение. Но “Kings & Queens” занимали в этом списке особенное место. 
+      <p>И даже сейчас, стоя перед бушующим морем, я все еще слушаю их песни. Надеясь, что когда-нибудь у меня хватит смелости взять в руки гитару и сочинить свое произведение.
+      `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[28].begin(); Game.Sounds.play('Music','Lighthouse') }],
+    background: 'Backgrounds/Aurora_WM',
+  });
+
+Game.Scenes.A_Part01[28] =
+  new Scene({
+    text: `
+      Прошло несколько месяцев после нашего переезда. Мы действительно полюбили это место. 
+      <p>Папа оставался прикован к маяку. Я и мама периодически ездили в город за покупками. Каждый вечер мы наслаждались обществом друг друга, будто бы наверстывая упущенное время. 
+      `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[60].begin(); }],
+    background: 'Backgrounds/Aurora_Lighthouse',
+  });
+
+Game.Scenes.A_Part01[60] =
+  new Scene({
+    text: `
+      Разговоры, игры. Совершенно неважно -  что. Ведь главное -  с кем. 
+      <p>Все мы ощущали перемены, происходившие с нами. К примеру, родители говорили мне, что я стала более: 
+      `,
+    buttontext: ['Романтичной','Прагматичной'],
+    buttonaction: [
+      () => { Game.Scenes.A_Part01[29].begin(); Game.Stats.Romantic.add(1); },
+      () => { Game.Scenes.A_Part01[31].begin(); Game.Stats.Pragmatic.add(1); }
+    ],
+    background: 'Backgrounds/Aurora_Lighthouse',
+  });
+
+Game.Scenes.A_Part01[29] =
+  new Scene({
+    text: `
+      - Аврора, - говорила мама, попивая горячий чай в один из вечеров. - Ты изменилась. Я все больше замечаю, какой ранимой и чуткой девушкой ты становишься. 
+      `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[108].begin(); }],
+    background: 'Backgrounds/Aurora_Near_Lighthouse',
+  });
+
+Game.Scenes.A_Part01[108] =
+  new Scene({
+    text: `
+      - Видимо, так на меня повлияло это место, - я пожала плечами и улыбнулась. 
+      <p>- Несомненно, - произнес отец, который что-то колдовал на кухне. - Ты все больше мечтаешь и мечтаешь. Твоим фантазиям мог бы позавидовать любой творец! 
+      `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[30].begin(); }],
+    background: 'Persons/Aurora_Dad',
+  });
+
+Game.Scenes.A_Part01[30] =
+  new Scene({
+    text: `
+      - Ну что ты, папа… Это всего лишь ребячество… 
+      <p>- Не говори так. Нужно больше верить в себя и свои силы. 
+      Уверен, тебя ждут великие открытия, - отец развернулся к нам с тарелками свежих фруктов. - А теперь, девочки мои, налетайте! 
+      `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[33].begin(); }],
+    background: 'Backgrounds/Aurora_Near_Lighthouse',
+  });
+
+Game.Scenes.A_Part01[31] =
+  new Scene({
+    text: `
+      - Аврора, - говорила мама, попивая горячий чай в один из вечеров. - Ты изменилась. Я все больше замечаю, как ты выросла и какой серьезной ты становишься. 
+      `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[109].begin(); }],
+    background: 'Backgrounds/Aurora_Near_Lighthouse',
+  });
+
+Game.Scenes.A_Part01[109] =
+  new Scene({
+    text: `
+      - Видимо, так на меня повлияло это место, - я пожала плечами и улыбнулась. 
+      <p>- Несомненно, - произнес отец, который что-то колдовал на кухне. - Несмотря на твои мечтания, я вижу, как ты стала мыслить более рационально и взвешенно подходить ко многим вопросам. 
+      `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[32].begin(); }],
+    background: 'Persons/Aurora_Dad',
+  });
+
+Game.Scenes.A_Part01[32] =
+  new Scene({
+    text: `
+      - Ну что ты, папа… Это мало о чем говорит…
+      <p>- Нужно больше верить в себя и свои силы. Уверен, тебя ждут великие открытия и твой подход тебе обязательно поможет, - отец развернулся к нам с тарелками свежих фруктов. - А теперь, девочки мои, налетайте! 
+`,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[33].begin(); }],
+    background: 'Persons/Aurora_Dad',
+  });
+
+Game.Scenes.A_Part01[33] =
+  new Scene({
+    text: `
+      Через месяц после переезда, к нашему дому подъехала неизвестная машина. 
+      Не то, чтобы это было чем-то удивительным. 
+      Маяк часто проверяли на исправность разного рода службы. 
+      Но сейчас машина не выглядела как полуразбитый грузовик, а из ее салона вышел хорошо одетый молодой парень. 
+      `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[34].begin(); }],
+    background: 'Backgrounds/Aurora_Lighthouse',
+  });
+
+Game.Scenes.A_Part01[34] =
+  new Scene({
+    text: `
+      Отец, который находился на смотровой площадке маяка, тут же окликнул его: 
+      <p>- Артур, я сейчас спущусь! 
+      <p>Мама была в доме, поэтому я смело вышла встречать незнакомца. Мы обменялись стандартными приветствиями. Я не смогла не отметить его спокойную наружность, привлекательные черты лица и радушную улыбку.
+      `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[35].begin(); }],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part01[35] =
+  new Scene({
+    text: `
+      - Твой отец часто рассказывал о тебе, очень приятно наконец-то познакомиться лично, - проговорил Артур, облокачиваясь на капот своей машины. - Так ты живешь здесь вместе со своей семьей? 
+      <p>- Да! Здесь очень красивое и уединенное место, помогает расслабиться. 
+      <p>- Согласен с тобой, -  задумчиво глядя в сторону произнес парень.
+`,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[36].begin(); }],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part01[36] =
+  new Scene({
+    text: `
+      Вскоре вернулся отец. Он обменялся с Артуром рукопожатием и спросил:
+      <p>- Ты за вещами дедушки приехал? Я сохранил все как было. Пойдем в дом. 
+      <p>- Благодарю. Родители так и не смогли найти время, вечно мотаются по своим командировкам. А я только сейчас смог выбраться сюда. 
+      <p>- Понимаю. У тебя ведь учеба. 
+`,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[37].begin(); }],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part01[37] =
+  new Scene({
+    text: `
+      Мы зашли внутрь дома. Мама организовала всем по чашке чая и выставила на стол печенье. Отец вынес несколько запечатанных коробок. 
+      <p>- Это все его вещи. Я упаковал одежду и его книги с записками. Все, что смог найти. 
+      <p>- Спасибо, - Артур грустным взглядом окинул коробки. - До сих пор не могу поверить, что его не стало. И что меня не было рядом с ним. 
+`,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[38].begin(); }],
+    background: 'Backgrounds/Aurora_Near_Lighthouse',
+  });
+
+Game.Scenes.A_Part01[38] =
+  new Scene({
+    text: `
+      - Жизнь - это цикл с чередой различных взлетов и падений. Он сейчас в лучшем мире. Нам важно сохранить память об этом человеке. Это меньшее, что мы можем сделать. 
+      <p>- Вы правы. 
+`,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[39].begin(); }],
+    background: 'Persons/Aurora_Dad',
+  });
+
+Game.Scenes.A_Part01[39] =
+  new Scene({
+    text: `
+      Разговор продолжился в более позитивном ключе. Я узнала, что Артур являлся внуком бывшего смотрителя. 
+      Он часто проводил время с дедушкой и был духовно связан с этим местом. Поэтому отец не раз подчеркивал, что парень желанный гость маяка. 
+      <p>В течение нескольких месяцев Артур по возможности приезжал к нам в гости. Он проводил много времени с отцом, разговаривая о дедушке, о простых жизненных вещах. 
+`,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[40].begin(); }],
+    background: 'Backgrounds/Aurora_Lighthouse',
+  });
+
+Game.Scenes.A_Part01[40] =
+  new Scene({
+    text: `
+      И со мной. Мы могли часами гулять и вести диалог на любые темы. Его компания была мне очень близка. Можно даже сказать, что мы стали друзьями. 
+      <p>Я чувствовала себя очень комфортно в его обществе. Его доброта и ласковое обращение вызывали в душе ранее неизвестные мне чувства. 
+`,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[41].begin(); Game.Stats.Arthur.add(0); }],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part01[41] =
+  new Scene({
+    text: `
+      Иногда почитывая романтические книги про всяких принцев, я невольно проводила аналогии с нашими взаимоотношениями. Была ли это любовь или я видела в нем фигуру брата?
+`,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[115].begin(); }],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part01[115] =
+  new Scene({
+    text: `
+      На все эти противоречия у меня не было ответа. Я просто наслаждалась нашим времяпрепровождением и плыла по течению. 
+      <p>Это были прекрасные месяцы светлых эмоций. Но все не могло быть так гладко. 
+`,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[42].begin(); }],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part01[42] =
+  new Scene({
+    text: `
+      Спустя чуть больше полугода нашей жизни на маяке, мама сильно заболела. Никакие лекарства и напутствия врачей не смогли помочь ей выбраться из этого состояния. 
+      <p>Она умерла в больнице. Не мучаясь, не жалуясь, что так мало прожила.
+`,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[43].begin(); }],
+    background: 'Backgrounds/Aurora_Near_Lighthouse',
+  });
+
+Game.Scenes.A_Part01[43] =
+  new Scene({
+    text: `
+      Мне всегда вспоминались ее слова: 
+      <p>- Аврора, ты наша звездочка. Подобно помогающему свету на маяке, ты наш путеводитель в жизни. 
+      <p>Как жаль, что моего “света” не стало в тот день. 
+      <p>Смогу ли я продолжать быть тем самым путеводным огнем для других?
+`,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[44].begin(); }],
+    background: 'Backgrounds/Aurora_Near_Lighthouse',
+    condition: function (){
+      if(Game.Stats.Romantic.get==1){
+        this.buttonaction[0] = () => { Game.Scenes.A_Part01[44].begin(); }
+      }
+      if(Game.Stats.Pragmatic.get==1){
+        this.buttonaction[0] = () => { Game.Scenes.A_Part01[46].begin(); }
+      }
+    }
+  });
+
+Game.Scenes.A_Part01[44] =
+  new Scene({
+    text: `
+      На похоронах слезы душили меня, словно удавки. Я задыхалась. Терялась. От меня оторвали кусок чего-то настолько дорогого, что это никак не выразить словами. 
+      <p>Что я должна испытывать? Мне больно, мне паршиво. Остановите это поскорее. Как вернуть время назад? 
+`,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[45].begin(); }],
+    background: '',
+  });
+
+Game.Scenes.A_Part01[45] =
+  new Scene({
+    text: `
+      Отец обнимал меня, смотря куда-то опустошенным взглядом. Он не плакал. Не кричал во все горло от терзающей боли. 
+      <p>Нет. 
+      <p>Возможно, он старался быть сильным ради меня, а может он просто не осознавал происходящее.  
+`,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[48].begin(); }],
+    background: '',
+  });
+
+Game.Scenes.A_Part01[46] =
+  new Scene({
+    text: `
+      На похоронах я стояла рядом с отцом с отчужденным лицом. Происходящее настолько не поддавалось чему-то логичному или закономерному, что я терялась в собственных эмоциях. 
+      <p>Что я должна испытывать? Мне больно, мне паршиво. Остановите это поскорее. Как вернуть время назад? 
+`,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[47].begin(); }],
+    background: '',
+  });
+
+Game.Scenes.A_Part01[47] =
+  new Scene({
+    text: `
+      Отец обнимал меня, смотря куда-то опустошенным взглядом. Он не плакал. Не кричал во все горло от терзающей боли. 
+      <p>Нет. 
+      <p>Возможно, он старался быть сильным ради меня, а может он просто не осознавал происходящее.  
+`,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[48].begin(); }],
+    background: '',
+  });
+
+Game.Scenes.A_Part01[48] =
+  new Scene({
+    text: `
+      Артур, узнав о происходящем, незамедлительно приехал. Он не отходил от меня ни на шаг. 
+      Его поддержка в тот момент была как глоток свежего воздуха. Я плакала на его плече, а он утешал меня, поглаживая по волосам. 
+`,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[49].begin(); }],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part01[49] =
+  new Scene({
+    text: `
+      Меня разрывало от несправедливости. Ян. Мама. Почему близкие люди покидают этот мир? Мы ведь так мало провели времени вместе.  
+      <p>Если бы не Артур, <s>я бы утопилась в бушующем море. </s>
+`,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[111].begin(); }],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part01[111] =
+  new Scene({
+    text: `
+      Они часто разговаривали о чем-то с отцом наедине. Я не вмешивалась, понимая, что всем иногда нужно выговориться на определенные темы. 
+`,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[50].begin(); }],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part01[50] =
+  new Scene({
+    text: `
+      За несколько месяцев наша жизнь сильно поменялась. Отец невольно отстранился, полностью ушел в работу. 
+      В его глазах пропал тот блеск жизни, та мотивация, которая помогала ему раньше. Он стал пить, но не переставал забывать о своей единственной дочери. 
+      <p>В один из вечеров он позвал меня на смотровую площадку. Тогда уже минул почти год с нашего переезда. 
+      <p>Тихая мирная ночь. Звезды. Шум морских волн. 
+`,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[51].begin(); }],
+    background: 'Backgrounds/Aurora_Lighthouse_Night',
+  });
+
+Game.Scenes.A_Part01[51] =
+  new Scene({
+    text: `
+      Мы сели рядом, сдвинув два стула. Немного посидев в молчании, папа проговорил: 
+      <p>- Тебе нужно уехать. Начать жить. 
+      <p>Эти слова обрушились на меня подобно огромному снежному кому. 
+      <p>- Но как же…? 
+`,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[52].begin(); }],
+    background: 'Backgrounds/Aurora_Lighthouse_Night',
+  });
+
+Game.Scenes.A_Part01[52] =
+  new Scene({
+    text: `
+      - Аврора, ты же не думала, что всю жизнь проведешь на этом разваливающемся маяке. Я не могу позволить, чтобы ты прожигала здесь свою жизнь вместе со мной.
+      <p>- Я…
+`,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[104].begin(); }],
+    background: 'Persons/Aurora_Dad',
+  });
+
+Game.Scenes.A_Part01[104] =
+  new Scene({
+    text: `
+      - Мы с Артуром много говорили об этом. Он готов помочь с переездом. Сбережения у нас есть. Этого будет достаточно для начала жизни в большом городе и поступления в университет. 
+      <p>Он все решил. И давно. И мне нечего было возразить. Это было логичным исходом, но чувствам не прикажешь. 
+`,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[53].begin(); }],
+    background: 'Persons/Aurora_Dad',
+  });
+
+Game.Scenes.A_Part01[53] =
+  new Scene({
+    text: `
+      - Папа, - глаза наполнились слезами. - Я не могу тебя бросить. 
+      <p>- Мы не прекратим общение. СМС или письма. Наша связь не прервется на этом.
+      <p>- Это слишком резко и я не знаю, что мне сказать…
+      `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[105].begin(); }],
+    background: 'Backgrounds/Aurora_Lighthouse_Night',
+  });
+
+Game.Scenes.A_Part01[105] =
+  new Scene({
+    text: `
+        - Вспомни свои мечты, Аврора, - папа сделал глоток хмельного напитка. - Свои стремления. Ты всегда была понимающим ребенком, который переживал все трудности и не жаловался. Но пришла пора начать жить для себя. Мама была такого же мнения. И я уверен, Ян, сказал бы то же самое.
+`,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[54].begin(); }],
+    background: 'Persons/Aurora_Dad',
+  });
+
+Game.Scenes.A_Part01[54] =
+  new Scene({
+    text: `
+      - Но я даже не представляю, куда и как мне двигаться дальше. Я не смогу одна. Без тебя. Без мамы. Без Яна… Я не справлюсь.
+      <p>- Ты будешь не одна. С этим поможет Артур. Вы же неплохо ладите. Он станет твоей опорой, пока ты не встанешь на ноги. Тем более, что изначально это было его идеей.
+      <p>На мгновение меня обрадовали слова отца о причастности Артура, но после, осознание ситуации накрыло меня. 
+`,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[55].begin(); }],
+    background: 'Persons/Aurora_Dad',
+  });
+
+Game.Scenes.A_Part01[55] =
+  new Scene({
+    text: `
+      Я согнулась, обхватив колени. Тяжело было признавать правоту отца. Мне хотелось уехать. Это было правдой. Горькой правдой. Но я слишком сильно пеклась о единственном родном человеке. Ведь одиночество не щадит никого. 
+      <p>- Но ты…
+`,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[56].begin(); }],
+    background: 'Backgrounds/Aurora_Lighthouse_Night',
+  });
+
+Game.Scenes.A_Part01[56] =
+  new Scene({
+    text: `
+      - Хватит, Аврора. Я справлюсь. Моя работа давно превратилась в неотъемлемую часть жизни. И я привык. А тебе пора думать о себе. Пожалуйста, - он коснулся моей руки, слегка поглаживая. 
+      <p>Я обняла его. Крепко-крепко. Это был один из последних наших душевных вечеров перед моим отъездом. 
+`,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part01[57].begin(); Game.Stats.Father.add(0); Game.Achievements.A_Part01Completed.unlock(); }],
+    background: 'Persons/Aurora_Dad',
+  });
+
+Game.Scenes.A_Part01[57] =
+  new Scene({
+    text: `
+      Все происходило стремительно, словно папа решил все сделать так, чтобы не было больнее отпускать меня. 
+      <p>Через неделю приехал Артур. Я стояла с собранным рюкзаком, взволнованно теребя волосы, и абсолютно не понимая, куда приведет моя новая дорога жизни. 
+`,
+    buttontext: [''],
+    buttonaction: [() => {
+      setTimeout(() => { Game.Scenes.A_Part02[0].begin(); }, 1000);
+      Game.LoadScreen('Aurora_Part02');
+      Game.Progress.save("Aurora_Part02");
+    }],
+    background: 'Backgrounds/Aurora_Lighthouse_Night',
+  });
+Game.Scenes.A_Part02 = [];
+
+Game.Scenes.A_Part02[0] =
+  new Scene({
+    text: `
+    Раннее солнце освещало тихую водную гладь, оставляя несколько играющих бликов на ее поверхности. В тот момент мне почему-то казалось, что я в последний раз вижу эту умиротворяющую картину. 
+    <p>Во мне смешались чувства. А как могло быть иначе, ведь меня будто вырывают из моего кокона и оставляют одну на потеху неизвестности.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[1].begin(); }],
+    background: 'Backgrounds/Aurora_Lighthouse',
+    condition: function (){ Game.Sounds.play('Music', 'Lighthouse') }
+  });
+
+Game.Scenes.A_Part02[1] =
+  new Scene({
+      text: `
+    Это были не самые приятные ощущения. Но я не могла от них избавиться. 
+        `,
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Part02[2].begin();}],
+      background: 'Backgrounds/Aurora_Lighthouse',
+  });
+
+Game.Scenes.A_Part02[2] =
+  new Scene({
+      text: `
+    Однако я должна перебороть себя. Сейчас, сжимая лямку рюкзака, мне оставалось только решиться - отпустить давно державшее меня место и начать жить для себя. 
+    <p>Таково было мое сокровенное желание.
+        `,
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Part02[3].begin();}],
+      background: 'Backgrounds/Aurora_Lighthouse',
+  });
+
+Game.Scenes.A_Part02[3] =
+  new Scene({
+      text: `
+    Я глубоко вздохнула и нашла взглядом папу. Он стоял рядом с Артуром и в очередной раз благодарил его за подаренную возможность. 
+    <p>Наконец, и я решила подойти. Я успела попрощаться с домом, теперь предстояло самое трудное.
+        `,
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Part02[4].begin();}],
+      background: 'Backgrounds/Aurora_Lighthouse',
+  });
+
+Game.Scenes.A_Part02[4] =
+  new Scene({
+      text: `
+    - Папа, могли бы мы…? 
+    <p>- Да, дочка, - отец серьезно взглянул на Артура. - Береги ее. 
+        `,
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Part02[5].begin();}],
+      background: 'Persons/Aurora_Dad',
+  });
+
+Game.Scenes.A_Part02[5] =
+  new Scene({
+      text: `
+    - Я сделаю все необходимое, даю слово, - они пожали друг другу руки. - Аврора, я заведу машину. Не думай о времени. 
+    <p>Я кивнула и мы отошли с отцом к одному из наших любимых мест.
+        `,
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Part02[6].begin();}],
+      background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[6] =
+  new Scene({
+      text: `
+    Скамейка открывала вид на море. Морской бриз освежал, тихонько обдувая каждую частичку тела. 
+    <p>Мы сели. Молча. Иногда тишина может сказать больше, чем даже самое ласковое слово. 
+        `,
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Part02[7].begin();}],
+      background: 'Backgrounds/Aurora_Bench',
+  });
+
+Game.Scenes.A_Part02[6] =
+  new Scene({
+    text: `
+    Держась за руки, мы слушали волны, завывание ветра и крики чаек. В этот момент я четко осознала для себя - никаких прощаний навсегда. Наша связь не может так просто разрушиться.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[7].begin();}],
+    background: 'Backgrounds/Aurora_Bench',
+  });
+
+Game.Scenes.A_Part02[7] =
+  new Scene({
+    text: `
+    - Аврора, - папа положил поверх моей руки свою. - Извини, если все происходит так резко. Я просто не мог по-другому. Ощущение, что если ты пробудешь здесь еще один день, то я никогда не смогу отпустить тебя. Чертов эгоист… чертов алкоголик…
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[8].begin();}],
+    background: 'Persons/Aurora_Dad',
+  });
+
+Game.Scenes.A_Part02[8] =
+  new Scene({
+    text: `
+    - Папа, - я обняла его, прижимаясь к плечу. - Мне все это тоже дается нелегко, но решение принято. Я хочу попробовать пожить. По-другому. Но знай, у меня и в мыслях не было бросать тебя… Мы с Артуром будем приезжать.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[9].begin();}],
+    background: 'Persons/Aurora_Dad',
+  });
+
+Game.Scenes.A_Part02[9] =
+  new Scene({
+    text: `
+    - Держись этого парня, милая. С ним ты не будешь знать печали или грусти. Он хороший человек и достоин быть рядом с тобой. 
+    <p>- Папа! - я раскраснелась, так как сказанные слова были больше похожи на его благословение, а не простое напутствие. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[10].begin();}],
+    background: 'Backgrounds/Aurora_Bench',
+  });
+
+Game.Scenes.A_Part02[10] =
+  new Scene({
+    text: `
+    - Тебе нужна опора, чтобы встать на ноги, - отец с грустью стал вглядываться в очертания морского горизонта. - Я не смог ей стать. Не смог сберечь дорогих мне людей. Но тебя я сберегу. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[11].begin();}],
+    background: 'Backgrounds/Aurora_Bench',
+  });
+
+Game.Scenes.A_Part02[11] =
+  new Scene({
+    text: `
+    Сердце закололо. Почему именно сейчас он так разоткровенничался? Мы мало разговаривали о постигших нас трагедиях, однако чувствовалась эта нужда. 
+    Выговориться. Не одинокому морю, которое не ответит, а близкому, что подставит плечо в трудный момент. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[12].begin();}],
+    background: 'Backgrounds/Aurora_Bench',
+  });
+
+Game.Scenes.A_Part02[12] =
+  new Scene({
+    text: `
+    Я очень долго думала над тем, что сказать, но нужные слова не приходили в голову. 
+    Мне оставалось сделать лишь последнее действие перед своим отъездом. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[13].begin();}],
+    background: 'Backgrounds/Aurora_Bench',
+    condition: function (){
+      if (Game.Stats.Drawing.get >=1){
+        this.buttonaction[0] = () =>{ Game.Scenes.A_Part02[13].begin();}
+      }
+
+      if (Game.Stats.Writing.get >=1){
+        this.buttonaction[0] = () =>{ Game.Scenes.A_Part02[29].begin();}
+      }
+
+      if (Game.Stats.Music.get >=1){
+        this.buttonaction[0] = () =>{ Game.Scenes.A_Part02[36].begin(); }
+      }
+    }
+  });
+
+Game.Scenes.A_Part02[13] =
+  new Scene({
+    text: `
+    Из своего рюкзака я достала немного потрепанный листок со своим рисунком. На нем были изображены мы с ним. Наш маяк и бескрайнее море.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[14].begin();}],
+    background: 'Backgrounds/Aurora_Lighthouse_Painting',
+  });
+
+Game.Scenes.A_Part02[14] =
+  new Scene({
+    text: `
+    В один из вечеров мне пришла идея оставить отцу что-нибудь на память. Что-то простое, но в то же время по-своему ценное. 
+    Мне нравилось передавать свои эмоции через краски, поэтому я просто нарисовала этот скромный пейзаж.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[15].begin();}],
+    background: 'Backgrounds/Aurora_Lighthouse_Painting',
+  });
+
+Game.Scenes.A_Part02[15] =
+  new Scene({
+    text: `
+    - Папа, - я протянула ему свой подарок. - Ты часто проводишь время наедине с собой и своими мыслями. 
+    Так пусть этот рисунок будет хранить в твоем сердце воспоминание о нас, обо мне.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[16].begin();}],
+    background: 'Backgrounds/Aurora_Lighthouse_Painting',
+  });
+
+Game.Scenes.A_Part02[16] =
+  new Scene({
+    text: `
+    Папа бережно взял листок и принялся рассматривать его. На его глазах застыли слезы. Он проговорил: 
+    <p>- Знаешь, я отчетливо помню, как мы собирались переезжать на этот маяк. Тогда я сильно переживал, потому что боялся получить отказ с вашей стороны. 
+    Но когда твоя мама услышала эти новости, ее лицо озарила такая счастливая улыбка… Я не видел ее такой с момента пропажи Яна.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[17].begin(); }],
+    background: 'Backgrounds/Aurora_Lighthouse_Painting',
+  });
+
+Game.Scenes.A_Part02[17] =
+  new Scene({
+    text: `
+    Папа сильно сжал кулаки, словно пытаясь заменить одну боль на другую. Как бы ему не было сейчас тяжело, он договорил то, что хотел:
+    <p>- Вы ведь не сомневались ни на секунду. 
+    <p>- Разумеется, - я аккуратно попыталась разжать его руки. - Нам хотелось жить вместе и не чувствовать больше разлуку с тобой. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[18].begin();}],
+    background: 'Backgrounds/Aurora_Lighthouse_Painting',
+  });
+
+Game.Scenes.A_Part02[18] =
+  new Scene({
+    text: `
+    - Я понимаю. Но, Аврора, скажи мне честно. Спустя год жизни здесь, ты не считаешь этот переезд ошибкой? 
+    <p>Мне никогда не нравились подобные вопросы. То, что произошло, оно уже свершилось. Возможно это происки судьбы или итог наших выборов. Но прошлого не вернуть. 
+    <p>Невольно я все равно начала задумываться над вопросом.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[19].begin();}],
+    background: 'Backgrounds/Aurora_Lighthouse_Painting',
+  });
+
+Game.Scenes.A_Part02[19] =
+  new Scene({
+    text: `
+    Переезд. Если бы мы не переехали, мамино здоровье бы не ухудшилось? Но были бы мы также счастливы вдали друг от друга? Стоили ли эти мгновения того, во что сейчас превратилась наша жизнь?
+    <p>- Аврора? 
+    <p>Я: 
+        `,
+    buttontext: ['Не жалею о переезде','Думаю, это неправильный выбор'],
+    buttonaction: [
+      () => { Game.Scenes.A_Part02[20].begin();},
+      () => { Game.Scenes.A_Part02[25].begin();}
+    ],
+    background: 'Backgrounds/Aurora_Lighthouse',
+  });
+
+Game.Scenes.A_Part02[20] =
+  new Scene({
+    text: `
+    - Как бы не было тяжело, все это по итогу привело нас к тому, что мы имеем. Я никогда не скажу, что это был неправильный выбор. Я счастлива. Это может отличаться от привычного счастья, но таков мой ответ.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[21].begin();}],
+    background: '',
+  });
+
+Game.Scenes.A_Part02[21] =
+  new Scene({
+    text: `
+    - Как бы не было тяжело, все это по итогу привело нас к тому, что мы имеем. Я никогда не скажу, что это был неправильный выбор. Я счастлива. Это может отличаться от привычного счастья, но таков мой ответ.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[22].begin();}],
+    background: '',
+  });
+
+Game.Scenes.A_Part02[22] =
+  new Scene({
+    text: `
+    Отец кивнул, сжимая подаренный мною подарок. На миг мне показалось, что я вижу облегчение на его лице. Словно, если бы он услышал нечто другое, его и без того нестабильное состояние - ухудшилось.
+        `,
+    buttontext: [''],
+    buttonaction: [() => {
+      Game.Scenes.A_Part02[23].begin();
+      Game.message('Отец благодарен за ваше благосклонное отношение. Его состояние улучшается');
+      Game.Stats.Father.add(1);
+    }],
+    background: '',
+  });
+
+Game.Scenes.A_Part02[23] =
+  new Scene({
+    text: `
+    - Спасибо, милая. Спасибо за честный ответ, - папа расслабился и откинул голову назад, продолжая мысль. - Мы часто делаем неправильные выборы, но ты права. То счастье, пусть даже мимолетное, что мы обрели здесь - оно стоит всего пережитого.
+        `,
+    buttontext: [''],
+    buttonaction: [() => {
+      Game.Scenes.A_Part02[24].begin();
+      Game.message('Вы принимаете жизнь такой, какая она есть. Благодаря вашему выбору дух Авроры крепчает')
+      Game.Stats.Aurora.add(1);}],
+    background: 'Persons/Aurora_Dad',
+  });
+
+Game.Scenes.A_Part02[24] =
+  new Scene({
+    text: `
+    - Аврора, - папа смотрел мне прямо в глаза. - Ты так выросла. Ты уже не тот зажатый ребенок. Нет. Я вижу перед собой уверенную девушку, которая так по-взрослому смотрит на мир и принимает с достоинством все невзгоды. Я горжусь тобой. 
+    <p>- Спасибо, папа. Все это только благодаря тому, что ты остаешься моим проводником и поддерживаешь.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[42].begin();}],
+    background: 'Persons/Aurora_Dad',
+  });
+
+Game.Scenes.A_Part02[25] =
+  new Scene({
+    text: `
+    - Я люблю наш новый дом всей душой. И несмотря на ту радость, что я испытала, мне всегда казалось -  весь этот переезд был ошибкой. И не потому что нам здесь не нравилось, а потому что…
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[26].begin();}],
+    background: 'Persons/Aurora_Dad',
+  });
+
+Game.Scenes.A_Part02[26] =
+  new Scene({
+    text: `
+    - Она была бы жива, - папа договорил за меня и продолжил. - Жива. Да. Как обычно, ждала меня с работы, вечно бы суетилась. Редко недовольная, но живая.
+    <p>- Папа, я…
+        `,
+    buttontext: [''],
+    buttonaction: [() => {
+      Game.Scenes.A_Part02[27].begin();
+      Game.message('Отец продолжает винить себя в смерти матери. Его состояние ухудшается');
+      Game.Stats.Father.add(-1);
+    }],
+    background: 'Persons/Aurora_Dad',
+  });
+
+Game.Scenes.A_Part02[27] =
+  new Scene({
+    text: `
+    - Не стоит, милая. Спасибо за честность. Я все понимаю. Я ведь сам такого же мнения. И не знаю, смогу ли перестать зацикливаться на прошлом. На своих ошибках. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => {
+      Game.Scenes.A_Part02[28].begin();
+      Game.message('Вы не можете смириться с реальностью, с которой сталкиваетесь. Вследствие вашего выбора Аврора начинает больше сомневаться в себе')
+      Game.Stats.Aurora.add(-1);
+    }],
+    background: 'Persons/Aurora_Dad',
+  });
+
+Game.Scenes.A_Part02[28] =
+  new Scene({
+    text: `
+    В тот момент я поделилась своими самыми потаенными мыслями. Я была уверена, что смирилась с утратой, но в глубине души я мечтала повернуть время вспять и не переезжать на маяк.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[42].begin();}],
+    background: 'Persons/Aurora_Dad',
+  });
+
+Game.Scenes.A_Part02[29] =
+  new Scene({
+    text: `
+    Из своего рюкзака я достала немного потрепанный листок со своим написанным стихом, которым я хотела поделиться с папой.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[30].begin();}],
+    background: 'Backgrounds/Aurora_Note',
+  });
+
+Game.Scenes.A_Part02[29] =
+  new Scene({
+    text: `
+    В один из вечеров мне пришла идея оставить отцу что-нибудь на память. 
+    Что-то простое, но в то же время по-своему ценное. Мне нравилось передавать свои эмоции через небольшие произведения, поэтому руки сами потянулись писать. Небольшое нескладное стихотворение, однако моего собственного сочинения.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[30].begin();}],
+    background: 'Backgrounds/Aurora_Note',
+  });
+
+Game.Scenes.A_Part02[30] =
+  new Scene({
+    text: `
+   То, во что я вкладывала душу и хотела, чтобы это хоть немного помогло отцу не терять надежду.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[31].begin();}],
+    background: 'Backgrounds/Aurora_Note',
+  });
+
+Game.Scenes.A_Part02[31] =
+  new Scene({
+    text: `
+   - Папа, - я протянула ему свой подарок. - Ты часто проводишь время наедине с собой и своими мыслями. Возможно однажды, читая эти строки, они навеют тебе о свете, и что ты не одинок.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[32].begin();}],
+    background: 'Backgrounds/Aurora_Note',
+  });
+
+Game.Scenes.A_Part02[32] =
+  new Scene({
+    text: `
+    Папа бережно взял листок и принялся рассматривать его. На его глазах застыли слезы. Он проговорил: 
+    <p>- Знаешь, я отчетливо помню, как мы собирались переезжать на этот маяк. Тогда я сильно переживал, потому что боялся получить отказ с вашей стороны. 
+    Но когда твоя мама услышала эти новости, ее лицо озарила такая счастливая улыбка… Я не видел ее такой с момента пропажи Яна.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[33].begin();}],
+    background: 'Backgrounds/Aurora_Note',
+  });
+
+Game.Scenes.A_Part02[33] =
+  new Scene({
+    text: `
+    Папа сильно сжал кулаки, словно пытаясь заменит одну боль на другую. Как бы ему не было сейчас тяжело, он договорил то, что хотел:
+    <p>- Вы ведь не сомневались ни на секунду. 
+    <p>- Разумеется, - я аккуратно попыталась разжать его руки. - Нам хотелось жить вместе и не чувствовать больше разлуку с тобой. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[35].begin();}],
+    background: 'Backgrounds/Aurora_Note',
+  });
+
+Game.Scenes.A_Part02[35] =
+  new Scene({
+    text: `
+    - Я понимаю. Но, Аврора, скажи мне честно. Спустя год жизни здесь, ты не считаешь этот переезд ошибкой? 
+    <p>Мне никогда не нравились подобные вопросы. То, что произошло, оно уже свершилось. Возможно это происки судьбы или итог наших выборов. Но прошлого не вернуть. 
+    <p>Невольно я все равно начала задумываться над вопросом.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[19].begin();}],
+    background: 'Backgrounds/Aurora_Note',
+  });
+
+Game.Scenes.A_Part02[36] =
+  new Scene({
+    text: `
+    Из своего рюкзака я достала музыкальный диск, которым я хотела поделиться с папой.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[37].begin();}],
+    background: 'Backgrounds/Aurora_Disc',
+  });
+
+Game.Scenes.A_Part02[37] =
+  new Scene({
+    text: `
+    В один из вечеров мне пришла идея оставить отцу что-нибудь на память. Что-то простое, но в то же время по-своему ценное. 
+    И так как я любила  музыку, мне пришла идея собрать коллекцию своих любимых мелодий на диск, чтобы папе было не так грустно проводить время на службе в маяке.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[38].begin();}],
+    background: 'Backgrounds/Aurora_Disc',
+  });
+
+Game.Scenes.A_Part02[38] =
+  new Scene({
+    text: `
+    - Папа, - я протянула ему свой подарок. - Ты часто проводишь время наедине с собой и своими мыслями. 
+    Возможно, слушая мой плейлист, ты вспомнишь, что не одинок. А я всегда рядом с тобой, даже когда так далеко.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[39].begin();}],
+    background: 'Backgrounds/Aurora_Disc',
+  });
+
+Game.Scenes.A_Part02[39] =
+  new Scene({
+    text: `
+    Папа бережно взял диск и принялся рассматривать его. На его глазах застыли слезы. Он проговорил: 
+    <p>- Знаешь, я отчетливо помню, как мы собирались переезжать на этот маяк. Тогда я сильно переживал, потому что боялся получить отказ с вашей стороны. 
+    Но когда твоя мама услышала эти новости, ее лицо озарила такая счастливая улыбка… Я не видел ее такой с момента пропажи Яна.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[40].begin();}],
+    background: 'Backgrounds/Aurora_Disc',
+  });
+
+Game.Scenes.A_Part02[40] =
+  new Scene({
+    text: `
+    Папа сильно сжал кулаки, словно пытаясь заменить одну боль на другую. Как бы ему не было сейчас тяжело, он договорил то, что хотел:
+    <p>- Вы ведь не сомневались ни на секунду. 
+    <p>- Разумеется, - я аккуратно попыталась разжать его руки. - Нам хотелось жить вместе и не чувствовать больше разлуку с тобой. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[41].begin();}],
+    background: 'Backgrounds/Aurora_Disc',
+  });
+
+Game.Scenes.A_Part02[41] =
+  new Scene({
+    text: `
+    - Я понимаю. Но, Аврора, скажи мне честно. Спустя год жизни здесь, ты не считаешь этот переезд ошибкой? 
+    <p>Мне никогда не нравились подобные вопросы. То, что произошло, оно уже свершилось. Возможно это происки судьбы или итог наших выборов. Но прошлого не вернуть. 
+    <p>Невольно я все равно начала задумываться над вопросом.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[19].begin();}],
+    background: 'Backgrounds/Aurora_Disc',
+  });
+
+Game.Scenes.A_Part02[42] =
+  new Scene({
+    text: `
+    - Дорогая, давай забудем все эти грустные мысли, - папа попытался разрядить обстановку своей добродушной улыбкой. - Спасибо тебе за подарок. Я буду беречь его и ждать твоего скорого приезда.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[43].begin();}],
+    background: 'Backgrounds/Aurora_Bench',
+  });
+
+Game.Scenes.A_Part02[43] =
+  new Scene({
+    text: `
+    С одной стороны, я была рада, что папа перевел тему на что-то более нейтральное. Все же мы прощались и я не могла быть рядом. 
+    <p>Но с другой стороны, я стала больше переживать за него. Сейчас он выглядел подавленно. И, видимо, только работа и мои визиты могли бы скрасить его одиночество.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[44].begin();}],
+    background: 'Backgrounds/Aurora_Bench',
+  });
+
+Game.Scenes.A_Part02[44] =
+  new Scene({
+    text: `
+    - Не забывай писать мне, - сказала я немного обеспокоенным тоном. - Телефон. Или если не будет вдруг связи - письма. Что угодно. 
+    <p>- Конечно. Все будет хорошо, дорогая. А теперь тебе пора. Некрасиво заставлять Артура так долго ждать.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[45].begin();}],
+    background: 'Backgrounds/Aurora_Bench',
+  });
+
+Game.Scenes.A_Part02[45] =
+  new Scene({
+    text: `
+    Мы еще раз обнялись. Крепко. Долго. 
+    <p>Затем, я взяла те немногие вещи, что у меня были и села в машину Артура.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[47].begin();}],
+    background: 'Backgrounds/Aurora_Bench',
+  });
+
+Game.Scenes.A_Part02[47] =
+  new Scene({
+    text: `
+    - Все в порядке? – спросил парень, пристегиваясь. 
+    <p>- Да, - я смахнула непослушные слезы. - Я думаю пора выезжать.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[48].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[48] =
+  new Scene({
+    text: `
+    Он кивнул. Не стал допытываться, ведь он понимал причину моих эмоций. 
+    <p>Машина неспешно двинулась с места, оставляя позади маяк и отца, машущего на прощание рукой.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[49].begin(); Game.Sounds.play('Music','Aurora_Daily_01')}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[49] =
+  new Scene({
+    text: `
+    У меня было время, чтобы успокоиться, рассматривая проносящиеся за окном пейзажи. В данный момент окружающая красота природы не привлекала меня.
+    <p> Дорога пролегала через город, где некогда я провела почти всю сознательную жизнь. И отчего-то мне не было грустно или плохо. Я ничего не ощущала.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[50].begin();}],
+    background: 'Backgrounds/Aurora_From_Car',
+  });
+
+Game.Scenes.A_Part02[50] =
+  new Scene({
+    text: `
+    Вот мы проезжаем улицу, где мы с Яном частенько прогуливались, а вот магазин, где брат подрабатывал в свободное от учебы время. 
+    <p>Проехав еще несколько кварталов, я увидела школу, которую ранее посещала. И как-то машинально озвучила свои мысли Артуру:
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[51].begin();}],
+    background: 'Backgrounds/Aurora_From_Car',
+  });
+
+Game.Scenes.A_Part02[51] =
+  new Scene({
+    text: `
+    - Школа, где мы учились с Яном. Кажется, что я не была здесь целую вечность… 
+    <p>Остановившись на светофоре, парень внимательно осмотрел учебное заведение и проговорил:
+    <p>- Не скучаешь по тем временам?
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[52].begin();}],
+    background: 'Backgrounds/Aurora_From_Car',
+  });
+
+Game.Scenes.A_Part02[52] =
+  new Scene({
+    text: `
+    - Воспоминаний много: хороших и плохих - это дало старт моей жизни, за что я буду всегда благодарна этому месту. Но что точно могу сказать - я не скучаю. 
+    <p>- Понимаю. Уверен в новом городе, ты сможешь построить только счастливые воспоминания.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[53].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[53] =
+  new Scene({
+    text: `
+    Оптимизм парня всегда придавал мне большую уверенность и помогал избавиться от грустных мыслей. 
+    <p>Артур был навеселе и полностью сосредоточился на дороге. Иногда он легонько постукивал в ритм играющей на фоне мелодии.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[54].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[54] =
+  new Scene({
+    text: `
+    Спустя где-то час поездки, я успела немного подремать и окончательно прийти в норму. Увидев, что я проснулась, Артур спросил: 
+    <p>- Все хорошо? Если необходимо, давай остановимся и отдохнем. Я бы не против выпить чего-нибудь горяченького.
+    <p>- Ничего, - я улыбнулась от проявления такой заботы. - Главное, чтобы ты не устал.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[60].begin();}],
+    background: 'Persons/Aurora_Arthur',
+    condition: function() {
+        Game.Stats.Song.set(1);
+      if(Game.Stats.Music.get>=1){
+        this.buttonaction[0] = () => {Game.Scenes.A_Part02[55].begin();}
+      }
+    }
+  });
+
+Game.Scenes.A_Part02[55] =
+  new Scene({
+    text: `
+    - Артур, ты не против, если я пощелкаю радио? 
+    <p>- Не нравится мелодия? - с задором произнес парень. 
+    <p>- Нравится, конечно. Просто интересно, что там еще есть. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => {
+      Game.Scenes.A_Part02[56].begin();
+      Game.message('Так как ваша Аврора любит музыку, вам доступен дополнительный выбор музыки на повседневную жизнь девушки в городе');
+    }],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[56] =
+  new Scene({
+    text: `
+    - Аврора, не спрашивай о таких мелочах. Просто выбери то, что тебе хочется послушать. 
+        `,
+    buttontext: ['Послушать Трек 1', 'Послушать Трек 2', 'Выбрать прослушиваемую'],
+    buttonaction: [
+      () => { Game.Sounds.play('Music','Aurora_Daily_01'); Game.Stats.Song.set(1);},
+      () => { Game.Sounds.play('Music','Aurora_Daily_02'); Game.Stats.Song.set(2);},
+      () => { Game.Scenes.A_Part02[59].begin(); },
+    ],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[59] =
+  new Scene({
+    text: `
+    Послушав несколько песен, мне все же пришлась по душе именно эта мелодия.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[60].begin(); Game.Achievements.A_Musicality.unlock();}],
+    background: 'Backgrounds/Aurora_Arthurs_Car',
+  });
+
+Game.Scenes.A_Part02[60] =
+  new Scene({
+    text: `
+    Несмотря на то, что мы с Артуром были довольно близки: я ему доверяла и чувствовала с его стороны похожие ощущения, мне в голову пришел один очевидный вопрос.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[61].begin();}],
+    background: 'Backgrounds/Aurora_Arthurs_Car',
+  });
+
+Game.Scenes.A_Part02[61] =
+  new Scene({
+    text: `
+    С чего вдруг он проявил такую любезность, помогая мне? Он такой по натуре или есть какие-то скрытые мотивы?
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[61].begin();}],
+    background: 'Backgrounds/Aurora_Arthurs_Car',
+    condition: function () {
+      if(Game.Stats.Romantic.get>=1){
+        this.buttonaction[0] = () => { Game.Scenes.A_Part02[62].begin();}
+      }
+
+      if(Game.Stats.Pragmatic.get>=1){
+        this.buttonaction[0] = () => { Game.Scenes.A_Part02[64].begin();}
+      }
+
+    }
+  });
+
+Game.Scenes.A_Part02[62] =
+  new Scene({
+    text: `
+    Конечно, я боялась. Меня пугала неизвестность и излишняя доброта. Мой старший брат Ян всегда учил меня, что нельзя так просто полагаться на людей. Нужно лучше узнавать их.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[63].begin();}],
+    background: 'Backgrounds/Aurora_Arthurs_Car',
+  });
+
+Game.Scenes.A_Part02[63] =
+  new Scene({
+    text: `
+    Но почему-то, к Артуру я не испытывала опаски. Мне хотелось полностью доверять ему, невзирая на мои предубеждения. Это было наивно. Но я так чувствовала. 
+    <p>Однако для своего же спокойствия, я решила спросить:
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[66].begin();}],
+    background: 'Backgrounds/Aurora_Arthurs_Car',
+  });
+
+Game.Scenes.A_Part02[64] =
+  new Scene({
+    text: `
+    Ничего не делается просто так в этом мире. Мой старший брат Ян всегда учил меня, что нельзя так просто полагаться на людей. Нужно лучше узнавать их. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[65].begin();}],
+    background: 'Backgrounds/Aurora_Arthurs_Car',
+  });
+
+Game.Scenes.A_Part02[65] =
+  new Scene({
+    text: `
+    И сейчас, когда я на пути к своей новой жизни, мне хочется знать истинную причину такого отношения и быть более уверенной в человеке, с которым я отправилась в это путешествие. 
+    <p>Для своего же спокойствия, я решила спросить:
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[66].begin();}],
+    background: 'Backgrounds/Aurora_Arthurs_Car',
+  });
+
+Game.Scenes.A_Part02[66] =
+  new Scene({
+    text: `
+    - Артур, скажи, почему ты согласился на всю эту авантюру? 
+    <p>- Аврора, - не отвлекаясь от дороги, проговорил парень. - Я понимаю, твои опасения. Но не переживай у меня нет скрытых мотивов, я делаю это просто, чтобы помочь тебе встать на ноги.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[67].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[67] =
+  new Scene({
+    text: `
+     - Но почему? - я  не собиралась сдаваться.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[68].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[68] =
+  new Scene({
+    text: `
+     - Просто потому что я вижу, какой ты хороший человек. Я вижу, как твой отец хотел для тебя другой жизни. Как ты хотела для себя чего-то нового. Помнишь наш разговор, когда мы пошли прогуляться по лесу?
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[69].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[69] =
+  new Scene({
+    text: `
+     Мы с Артуром много гуляли. Когда он приезжал, то часто рассказывал мне о своей жизни в городе, о своих увлечениях и учебе. Мне было только в радость, что парень открывается для меня с разных сторон. 
+    <p>Я:
+        `,
+    buttontext: ['Помню этот разговор 🔐', 'Не могла вспомнить'],
+    buttonaction: [
+      () => { Game.Scenes.A_Part02[70].begin(); Game.Sounds.play('Music','Romantic'); AndroidApp ('showAd');},
+      () => { Game.Scenes.A_Part02[93].begin();}
+    ],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[70] =
+  new Scene({
+    text: `
+     Мы с Артуром частенько гуляли по территории вокруг маяка. В один из солнечных дней мы решили пройтись по лесу, который был в пятнадцати минутах езды от нашего дома. У Артура была машина, но в этот день нам захотелось пройтись пешком.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[71].begin();}],
+    background: 'Backgrounds/Aurora_Forest',
+  });
+
+Game.Scenes.A_Part02[71] =
+  new Scene({
+    text: `
+     Тогда прошло около месяца с того времени, как мамы не стало. Легкий ветерок покачивал деревья, а лесная обстановка позволяла абстрагироваться от всех проблем. 
+     <p>Это было похоже на сказку, где вот-вот из-за деревьев выйдет добрый волшебник, взмахнет своим посохом и весь мир преобразится.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[72].begin();}],
+    background: 'Backgrounds/Aurora_Forest',
+  });
+
+Game.Scenes.A_Part02[72] =
+  new Scene({
+    text: `
+     Артур шел рядом со мной. Мы разговаривали на всякие отвлеченные темы. 
+     <p>- Повезло же нам с погодой, - отметил парень, любуясь красотами природы.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[73].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[73] =
+  new Scene({
+    text: `
+     - Ты прав, - его слова навели меня на одну идею. - А помнишь ту поляну, которую мы нашли в прошлый раз? Может быть снова пойдем туда и немного отдохнем?
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[74].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[74] =
+  new Scene({
+    text: `
+     - Хорошая идея! Если я правильно помню, то это где-то в той стороне, - Артур показал куда-то на восток. - Заодно перекусим.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[75].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[75] =
+  new Scene({
+    text: `
+     Мы прошли еще немного вглубь леса. Артур галантно помогал мне преодолевать препятствия, поддерживая за руку, отодвигая назойливые ветки деревьев. 
+     <p>Остаток пути прошел в спокойствии. Наконец, мы достигли места назначения.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[76].begin();}],
+    background: 'Backgrounds/Aurora_Forest',
+  });
+
+Game.Scenes.A_Part02[76] =
+  new Scene({
+    text: `
+     Фиолетовые цветы располагались на просторной поляне. Солнце почти село. Его лучи пытались пробраться сквозь стволы деревьев, одаривая нас своим теплом. 
+     <p>Я прилегла на траву и раскинула руки по сторонам. Так хорошо, так умиротворенно. Именно то, что хотелось чувствовать каждый день.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[77].begin();}],
+    background: 'Backgrounds/Aurora_Forest_Flowers',
+  });
+
+Game.Scenes.A_Part02[77] =
+  new Scene({
+    text: `
+    Артур аккуратно сел рядом. Почему-то он улыбался. Так искренне. Так живо. 
+    <p>- Артур, случилось что-то хорошее?
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[78].begin();}],
+    background: 'Backgrounds/Aurora_Forest_Flowers',
+  });
+
+Game.Scenes.A_Part02[78] =
+  new Scene({
+    text: `
+    - Конечно! Мы сейчас с тобой вдвоем. Далеко от всей суеты. Наедине с природой. И… - он достал из рюкзака по сэндвичу. - Как же обойтись без вкусняшек. 
+    <p>Он видел, что я не улыбалась так, как это было раньше. На секунду парень о чем-то задумался, а затем спросил: 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[79].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[79] =
+  new Scene({
+    text: `
+    - Аврора, как ты? 
+    <p>- Все хорошо, - я понимала, почему он задает такой вопрос и не врала. Сейчас я правда себя так ощущала. Но внешне это было трудно заметить.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[80].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[80] =
+  new Scene({
+    text: `
+    - Я рад… Скажи, ты бы хотела уехать в город и начать жить иначе?
+    <p>Вопрос застал меня врасплох. Я привстала, чтобы смотреть в глаза Артуру и сказала правду:
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[81].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[81] =
+  new Scene({
+    text: `
+    - Хотела бы. Но я не могу бросить отца. Мне трудно представить, как ему сейчас тяжело. 
+    <p>Улыбка Артура стала от чего-то еще шире. 
+    <p>- Мне нравится осознавать, что в мире остались люди, которые настолько ценят свою семью.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[82].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[82] =
+  new Scene({
+    text: `
+    - Пропажа брата, затем смерть… - я не смогла договорить предложение. - Папе как-никак сейчас нужна поддержка. А ведь он еще как-то умудряется работать. 
+    <p>Артур придвинулся ближе ко мне и взял меня за руку. В ответ я: 
+        `,
+    buttontext: ['Сжала его руку сильнее', 'Ничего не сделала'],
+    buttonaction: [
+      () => { Game.Scenes.A_Part02[83].begin();},
+      () => { Game.Scenes.A_Part02[87].begin();},
+    ],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[83] =
+  new Scene({
+    text: `
+    Я чувствовала в этом жесте поддержку. Он как никто понимал, что мне тоже было очень тяжело. 
+    <p>Другой рукой парень притянул меня и заключил в крепкие объятия. Я расслабилась, ощущая его дыхание на своей шее, его сердцебиение. Сейчас мы с ним были словно единое целое.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[84].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[84] =
+  new Scene({
+    text: `
+    - Артур, спасибо тебе. За все. 
+    <p>- Аврора, обещаю. Я помогу тебе, чем смогу. Я вижу, как тебе нелегко приходится и не допущу, чтобы ты продолжала так... 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[85].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[85] =
+  new Scene({
+    text: `
+    Он не договорил, но его высказывания все равно отозвались теплом на сердце. Я не могла тогда представить, что мог придумать Артур, но его слова и действия невольно заставляли верить в светлый исход.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[86].begin(); Game.message('Артур становится ближе к Авроре'); Game.Stats.Arthur.add(1)}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[86] =
+  new Scene({
+    text: `
+    Оставшиеся часы до темноты, я пролежала на плече Артура. Не плача, не испытывая грусти. Только наслаждалась его компанией и разговорами, что грели душу.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[91].begin(); Game.Sounds.play('Music','Aurora_Daily_0' + Game.Stats.Song.get)}],
+    background: 'Backgrounds/Aurora_Forest_Flowers',
+  });
+
+Game.Scenes.A_Part02[87] =
+  new Scene({
+    text: `
+    Разговор выбил меня из привычной колеи спокойствия, к которому я стремилась. Я верила Артуру, но сейчас мне было тяжело отвечать на подобные вопросы. 
+    <p>Парень, видя мою реакцию, отстранился и проговорил:
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[88].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[88] =
+  new Scene({
+    text: `
+    - Прости, я не должен был давить на тебя всеми этими расспросами… 
+    <p>- Ты ничего такого не сделал, просто я, видимо, до сих пор не могу смириться. 
+    <p>- Аврора, обещаю. Я помогу тебе, чем смогу. Я вижу, как тебе нелегко приходится и не допущу, чтобы ты продолжала так...
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[89].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[89] =
+  new Scene({
+    text: `
+    Он не договорил, но его высказывания все равно отозвались теплом на сердце. Я не могла тогда представить, что мог придумать Артур, но его слова и действия невольно заставляли верить в светлый исход.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[90].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[90] =
+  new Scene({
+    text: `
+    Оставшиеся часы до темноты, мы сидели рядом друг с другом и мирно вели беседу на различные темы, стараясь чуть дольше не возвращаться в реальность.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[91].begin(); Game.Sounds.play('Music','Aurora_Daily_0' + Game.Stats.Song.get)}],
+    background: 'Backgrounds/Aurora_Forest_Flowers',
+  });
+
+Game.Scenes.A_Part02[91] =
+  new Scene({
+    text: `
+    Я вынырнула из воспоминаний, снова возвращаясь в салон автомобиля Артура.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[92].begin(); Game.message('Артуру приятно, что вы помните его поддержку'); Game.Stats.Arthur.add(1);}],
+    background: 'Backgrounds/Aurora_Arthurs_Car',
+  });
+
+Game.Scenes.A_Part02[92] =
+  new Scene({
+    text: `
+    - Я рад, что ты запомнила тот день. Теперь ты понимаешь, что я тогда говорил правду. Видя твое стремление к другой жизни, я не мог не помочь.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[95].begin();}],
+    background: 'Backgrounds/Aurora_Arthurs_Car',
+  });
+
+Game.Scenes.A_Part02[93] =
+  new Scene({
+    text: `
+    - Извини, все как в тумане. Я помню лес, но не могу вспомнить конкретных деталей. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[94].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[94] =
+  new Scene({
+    text: `
+    Было видно, что Артур на миг расстроился, но сразу же взял себя в руки и рассказал:
+    <p>- Именно тогда я обещал тебе, что постараюсь помочь изменить твою жизнь. Ведь ты сама этого хотела. И, надеюсь, теперь ты убедилась, что я говорил правду и сдержал свое слово.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[95].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[95] =
+  new Scene({
+    text: `
+    - Спасибо, Артур. Я никогда не забуду эту помощь и обязательно буду делать все, чтобы отплатить тебе. 
+    <p>- Брось. Не забивай себе голову этим. Я от тебя ничего не требую. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[96].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[96] =
+  new Scene({
+    text: `
+    - Но я требую от себя. Я так не могу.  
+    <p>- Придет время и ты обязательно отплатишь, - сдался парень, наигранно громко вздохнув.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[97].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[97] =
+  new Scene({
+    text: `
+    Дальнейшие часы в пути прошли, по большей части молча. Я не хотела больше отвлекать Артура от дороги, к тому же меня продолжало сильно клонить в сон. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[98].begin(); Game.Sounds.play('Music','Lighthouse')}],
+    background: 'Backgrounds/Aurora_Arthurs_Car',
+  });
+
+Game.Scenes.A_Part02[98] =
+  new Scene({
+    text: `
+    Мне снился маяк. Но там не было отца или мамы.
+    <p>На смотровой площадке стояла одинокая фигура старика, который держал в руках маленький сверток. Без сомнения в нем был ребенок.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[99].begin();}],
+    background: 'Backgrounds/Aurora_Lighthouse_Night',
+  });
+
+Game.Scenes.A_Part02[99] =
+  new Scene({
+    text: `
+    Мужчина бережно придерживал малыша, укрывая его от ветра. У него дрожали руки, а по щекам лились слезы. 
+    <p>Его хриплый голос произнес:
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[100].begin();}],
+    background: 'Backgrounds/Aurora_Lighthouse_Night',
+  });
+
+Game.Scenes.A_Part02[100] =
+  new Scene({
+    text: `
+    - Беатрис… 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[101].begin();}],
+    background: 'Backgrounds/Aurora_Lighthouse_Night',
+  });
+
+Game.Scenes.A_Part02[101] =
+  new Scene({
+    text: `
+    В этом коротком сказанном слове было столько боли, столько отчаяния. Старик цеплялся за сверток как за самое драгоценное, что было в его жизни.
+    <p>Он смотрел на море, которое было спокойным в ту ночь. Его зоркий взгляд пытался отыскать что-то среди воды, однако даже свет маяка не мог помочь ему выбраться из тьмы. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[102].begin();}],
+    background: 'Backgrounds/Aurora_Lighthouse_Night',
+  });
+
+Game.Scenes.A_Part02[102] =
+  new Scene({
+    text: `
+    Неожиданно ребенок начал ворочаться, а затем громко плакать. Мужчина стал успокаивать его, но крики так и продолжали пронзать мирную тишину.  
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[103].begin(); Game.Sounds.play('Music','Aurora_Daily_0' + Game.Stats.Song.get)}],
+    background: 'Backgrounds/Aurora_Lighthouse_Night',
+  });
+
+Game.Scenes.A_Part02[103] =
+  new Scene({
+    text: `
+    Я проснулась от легкого прикосновения по плечу. Сонным разумом было сложно осознавать, где я сейчас нахожусь. Однако обеспокоенно лицо Артура вернуло меня в реальность.
+    - Аврора, все в порядке? Ты дрожала и плакала во сне.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[105].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[105] =
+  new Scene({
+    text: `
+    - Просто дурной сон, извини за беспокойство…
+    <p>- Дурочка, отучись извиняться за любую мелочь, - Артур заглушил машину. - Мы приехали.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[106].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[106] =
+  new Scene({
+    text: `
+    Артур припарковался перед высотным зданием. Большой город встретил присущей ему суматохой. Много людей, спешивших по своим делам, много машин, много разных звуков. 
+    <p>Выйдя из автомобиля, мы зашли в подъезд и поднялись в квартиру Артура. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[107].begin();}],
+    background: '',
+  });
+
+Game.Scenes.A_Part02[107] =
+  new Scene({
+    text: `
+    Меня встретило просторное и светлое помещение. В гостинной на столе стояла ваза со свежими белыми розами, а на кухне пахло выпечкой, будто бы здесь только что готовили.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[108].begin();}],
+    background: 'Backgrounds/Aurora_Livingkitchen',
+  });
+
+Game.Scenes.A_Part02[108] =
+  new Scene({
+    text: `
+    Вид квартиры многое мог рассказать о ее владельце. У меня сложилось впечатление, что Артур очень трепетно относится к своему имуществу и явно подготовился к моему приезду.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[109].begin();}],
+    background: 'Backgrounds/Aurora_Livingkitchen',
+  });
+
+Game.Scenes.A_Part02[109] =
+  new Scene({
+    text: `
+    - Давай немного отдохнем, а затем я тебе все покажу,  - сказал Артур, складывая наши вещи. - Не хочешь чай или кофе?
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[110].begin();}],
+    background: 'Backgrounds/Aurora_Livingkitchen',
+  });
+
+Game.Scenes.A_Part02[110] =
+  new Scene({
+    text: `
+    Такой простой вопрос почему-то поставил меня в тупик. Поэтому я ответила нейтрально:
+    <p>- Сделай что-нибудь на свой вкус. Спасибо!
+    <p>Парень улыбнулся и поставил чайник на плиту. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[111].begin();}],
+    background: 'Backgrounds/Aurora_Livingkitchen',
+  });
+
+Game.Scenes.A_Part02[111] =
+  new Scene({
+    text: `
+    - Нет ничего лучше зеленого чая после долгой дороги, - он поставил несколько чашек на стол. - Кстати, Аврора, уже написала папе, что мы благополучно добрались?
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[112].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[112] =
+  new Scene({
+    text: `
+    - Да! Обычно СМС всегда доходят, а вот послать в ответ сообщение бывает проблематично. 
+    <p>- Ничего. Я оставил ему адрес, он всегда сможет отправить письмо.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[113].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[113] =
+  new Scene({
+    text: `
+    Я кивнула. После этого мы немного посидели, болтая о нашем переезде и о том, как быстро все это произошло. 
+    <p>Я изъявила желание искать подработку, чтобы не зависеть от папиных средств. Когда же речь заходила о работе Артура, то парень старался перевести тему. Он не любил вдаваться в подробности рабочих дел дома.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[114].begin();}],
+    background: 'Backgrounds/Aurora_Livingkitchen',
+  });
+
+Game.Scenes.A_Part02[114] =
+  new Scene({
+    text: `
+    Спустя долгое время я чувствовала себя умиротворенно. Сидя в совершенно новой обстановке и общаясь с дорогим мне человеком. Нет больше тех грустных мыслей, которые появлялись, стоило мне вновь увидеть маяк и пустые комнаты...
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[115].begin();}],
+    background: 'Backgrounds/Aurora_Livingkitchen',
+  });
+
+Game.Scenes.A_Part02[115] =
+  new Scene({
+    text: `
+     Но я понимала, что здесь работы над собой предстоит в разы больше. 
+    <p>Мы с Артуром прошлись по его квартире. В ней было всего две комнаты. Они были небольшие, отделанные в довольно простом и минималистичном дизайне - ничего лишнего.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[116].begin();}],
+    background: 'Backgrounds/Aurora_Livingkitchen',
+  });
+
+Game.Scenes.A_Part02[116] =
+  new Scene({
+    text: `
+     Моя комната была небольшой, но очень уютной. Синеватые тона невольно отсылали к привычному мне морскому пейзажу, что не могло не радовать глаз. 
+    <p>Я присела на кровать, ощупывая мягкое одеяло. В комнате пахло цветами. Было свежо и красиво.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[118].begin();}],
+    background: 'Backgrounds/Aurora_Room',
+  });
+
+Game.Scenes.A_Part02[118] =
+  new Scene({
+    text: `
+     - Спасибо, Артур, очень милая комната. 
+    <p>- Я рад, что ты оценила, - парень облокотился о стену, внимательно следя за моей реакцией, будто бы боясь, что мне может что-то не понравиться.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[119].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[119] =
+  new Scene({
+    text: `
+     - Скажи, - я не хотела торопить события, но все-таки и сидеть без дела было не в моем стиле. - Какие наши дальнейшие планы? Мне надо подать документы в университет, найти работу…
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[120].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[120] =
+  new Scene({
+    text: `
+     - Твое рвение в бой - выше всяких похвал, - вздохнул Артур. - Не хотела бы отдохнуть для начала?
+    <p>- Я в порядке. Я хочу как можно быстрее влиться в новый ритм жизни.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[121].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[121] =
+  new Scene({
+    text: `
+     - Что ж, - парень на секунду задумался. - В теории, хоть завтра я могу отвезти тебя в университет, где ты познакомишься с обстановкой, может быть даже с кем-то из преподавателей. Все, что тебе надо будет сделать - это сдать несколько вступительных экзаменов. Об остальном я позаботился.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[122].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[122] =
+  new Scene({
+    text: `
+     Я была ошеломлена таким развитием событий и спросила:
+    <p>- Но как же? Я ведь даже не собирала никаких документов для этого.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[123].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[123] =
+  new Scene({
+    text: `
+     - Мы с твоим отцом обо всем позаботились. 
+    <p>- Разве можно подать дистанционно документы даже без согласия самого человека?
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[124].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[124] =
+  new Scene({
+    text: `
+     - Можно. Это же двадцать первый век, - улыбнулся Артур. -  У тебя хороший аттестат. А у меня - связи. Знакомый моего отца знает чуть ли ни всю верхушку университета. И, кстати, у тебя будут ответы на экзамен.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[125].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[125] =
+  new Scene({
+    text: `
+     - Но это же нечестно… 
+    <p>- Аврора, а мир и не будет всегда честным. Нужно научиться выживать всеми доступными способами.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[126].begin();}],
+    background: 'Persons/Aurora_Arthur',
+    condition: function (){
+      if(Game.Stats.Pragmatic.get>=1){
+        this.buttonaction[0] = () =>{Game.Scenes.A_Part02[127].begin();}
+      }
+      if(Game.Stats.Romantic.get>=1){
+        this.buttonaction[0] = () =>{Game.Scenes.A_Part02[126].begin();}
+      }
+    }
+  });
+
+Game.Scenes.A_Part02[126] =
+  new Scene({
+    text: `
+     - Однако я думала, что поступлю своими силами. Ведь на то они и знания, чтобы их применять. 
+    <p>- У тебя еще будет время и возможности проявить себя. Сейчас нужно отбросить свою мечтательность и бороться за то место, которое тебе предоставили. 
+    <p>Он был прав. Возможно, я мыслила немного наивно, но такова была моя натура.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[128].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[127] =
+  new Scene({
+    text: `
+     - Ты прав. Это отличная возможность. Даже не знаю, как тебя в очередной раз благодарить. 
+    <p>- Я рад, что ты восприняла это таким образом. Не волнуйся, у тебя еще будет шанс проявить себя. Сейчас попробуй зацепиться за это, дальше время покажет. 
+    <p>Он говорил верные мысли. Не каждому человеку дается такая возможность. Можно сказать, что мне очень повезло. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[128].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[128] =
+  new Scene({
+    text: `
+     - Думаю, когда момент наступит, я решу как поступлю с экзаменом. А сейчас мне нужно ознакомиться с вопросами. 
+    <p>- Дело твое, - парень пожал плечами и вышел из комнаты. 
+    <p>Через несколько минут он вернулся с несколькими распечатанными листами А4.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[129].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[129] =
+  new Scene({
+    text: `
+     - Здесь все вопросы и ответы. 
+    <p>- Отлично, - я бережно положила листы на кровать. - А направление?
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[130].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[130] =
+  new Scene({
+    text: `
+     - К сожалению или к счастью, удалось пристроить тебя на исторический курс. Других вариантов не было. Твой отец говорил, что тебе нравится история. Думаю, это не будет проблемой. К тому же, в дальнейшем, когда поступишь, ты сможешь перевестись при необходимости.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[131].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[131] =
+  new Scene({
+    text: `
+      - Это на самом деле отличные новости, нет смысла привередничать.
+      <p>- У тебя остается пара недель до вступительных экзаменов. Если ты не уверена в своих силах и хочешь дополнительно позаниматься, можешь пользоваться библиотекой университета. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[132].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[132] =
+  new Scene({
+    text: `
+       - Я бы начала готовиться уже с завтрашнего дня. 
+      <p>- Как скажешь. Я могу отвезти тебя утром, но я должен буду уехать по работе. Где-то в обед заберу, ничего? 
+      <p>- Идеально. Спасибо!
+      <p>- Тогда до завтра. Отдыхай.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[133].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part02[133] =
+  new Scene({
+    text: `
+       Когда Артур покинул комнату, я разложила свои вещи и принялась осматривать листы с вопросами, тщательно стараясь вникнуть и составить примерный список тем, которые у меня западают. 
+      <p>Я сильно вымоталась за этот насыщенный день, поэтому стоило голове коснуться подушки, как я тут же уснула.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[134].begin();}],
+    background: 'Backgrounds/Aurora_Room',
+  });
+
+Game.Scenes.A_Part02[134] =
+  new Scene({
+    text: `
+       Утром мы с Артуром позавтракали яичницей с кофе, а затем поехали по делам.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[135].begin();}],
+    background: 'Backgrounds/Aurora_Arthurs_Car',
+  });
+
+Game.Scenes.A_Part02[135] =
+  new Scene({
+    text: `
+       - Ты справишься там одна, без меня?
+      <p>- Я же не маленький ребенок, Артур. Все будет хорошо. Тем более, что может случиться?
+      <p>- Ты права. Просто беспокоюсь за тебя.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[136].begin(); Game.Stats.Trial_Pass.add(1);}],
+    background: 'Backgrounds/Aurora_Arthurs_Car',
+  });
+
+Game.Scenes.A_Part02[136] =
+  new Scene({
+    text: `
+       В этом был весь Артур. Волнующийся по пустякам, милый и заботливый. 
+      <p>- И чуть не забыл, - парень протянул мне карточку. - С ним ты можешь спокойно проходить в университет для любых целей. 
+      <p>- Спасибо! - я убрала пропуск в свой рюкзак, продолжая поездку.
+      <p>Мы доехали до учебного заведения довольно быстро. Попрощавшись с Артуром, я зашла в университет.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[137].begin();}],
+    background: 'Backgrounds/Aurora_Arthurs_Car',
+  });
+
+Game.Scenes.A_Part02[137] =
+  new Scene({
+    text: `
+       Холл представлял из себя большое пространство с широкой лестницей посередине. Первые секунды мною даже завладел страх потеряться в таком большом и неизведанном месте.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[138].begin();}],
+    background: 'Backgrounds/Aurora_Univer',
+  });
+
+Game.Scenes.A_Part02[138] =
+  new Scene({
+    text: `
+       Но я быстро взяла себя в руки, показала охраннику свой временный пропуск. Средних лет мужчина равнодушно осмотрел документ и указал в сторону, где находилась библиотека.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[139].begin();}],
+    background: 'Backgrounds/Aurora_Univer',
+  });
+
+Game.Scenes.A_Part02[139] =
+  new Scene({
+    text: `
+        Огромное помещение встретило меня запахом старинных книг и шепотом студентов. Массивные шкафы с торчащими корешками удивляли. Хотелось изучить каждую книгу, ближе познакомиться с мыслями автора.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[141].begin();}],
+    background: 'Backgrounds/Aurora_Library',
+    condition: function () {
+      if(Game.Stats.Writing.get>=1){
+        this.buttonaction[0] = () => { Game.Scenes.A_Part02[140].begin();}
+      }
+    }
+  });
+
+Game.Scenes.A_Part02[140] =
+  new Scene({
+    text: `
+    Моему счастью небыло предела. Я словно оказалась в месте, о котором так долго мечтала. 
+    <p>Окруженная книгами, я чувствовала себя живой и по-настоящему в своей тарелке. Когда-нибудь я обязательно хотела оказаться тем самым автором, чья книга могла бы находиться среди этих великолепных работ.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[141].begin();}],
+    background: 'Backgrounds/Aurora_Library',
+  });
+
+Game.Scenes.A_Part02[141] =
+  new Scene({
+    text: `
+    Милая библиотекарша отвела меня в небольшой закуток, где находились необходимые мне источники.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[142].begin();}],
+    background: 'Backgrounds/Aurora_Books',
+  });
+
+Game.Scenes.A_Part02[142] =
+  new Scene({
+    text: `
+    Я стала осматривать книжные полки в поисках исторических книг. Когда я потянулась за нужной мне, чья-то мужская рука соприкоснулось с моей. Я почувствовала легкую дрожь, пальцы незнакомца были необычайно холодными.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[143].begin();}],
+    background: 'Backgrounds/Aurora_Books',
+  });
+
+Game.Scenes.A_Part02[143] =
+  new Scene({
+    text: `
+    Я развернулась, чтобы увидеть наглеца, который все-таки утащил мою книгу. 
+    <p>- “Революция 1917 года: мифы и реальность”, - он прочитал название книги своим бархатистым низким голосом. - Вот чем нынче увлекаются молоденькие студентки?
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[144].begin();}],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part02[144] =
+  new Scene({
+    text: `
+    - Я просто хотела подготовиться к экзамену, верни, пожалуйста,- ответила я довольно строго. 
+    <p>Его глаза хитро прищурились. Он взял книгу и демонстративно повел ей у меня перед носом. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[145].begin();}],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part02[145] =
+  new Scene({
+    text: `
+    - А что мне за это будет? - его рука опустилась на полку, не давая мне вырваться из-под его хищного взора. 
+    <p>Он был настолько близко, что я чувствовала исходящий от него аромат: табачный дым вперемешку с одеколоном. Парень был очень настойчив, казалось, его забавляла эта ситуация.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part02[146].begin(); Game.Achievements.A_Part02Completed.unlock();}],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part02[146] =
+  new Scene({
+    text: `
+    Я хотела что-то возразить незнакомцу, но чей-то звонкий женский голос крикнул:
+    <p>- Калеб!
+    <p>Тогда я еще не осознавала, что это было только началом новых и увлекательных знакомств. 
+        `,
+    buttontext: [''],
+    buttonaction: [ () => {
+      setTimeout(() => { Game.Scenes.A_Part03[0].begin(); }, 1000);
+      Game.LoadScreen('Aurora_Part03');
+      Game.Progress.save("Aurora_Part03");
+    }],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part03 = [];
+
+Game.Scenes.A_Part03[0] =
+  new Scene({
+    text: `
+    Я отложила дневник, наблюдая, как алое солнце стремится уйти за горизонт, чтобы скорее уступить место долгожданной ночи. Небо переливалось самыми разнообразными красками, словно некий безумный художник выплеснул на полотно все самые яркие цвета, надеясь в этом хаосе почерпнуть вдохновение. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[1].begin(); }],
+    background: 'Backgrounds/Aurora_Lighthouse_Dawn',
+    condition: function (){
+      Game.Sounds.play('Music', 'Lighthouse');
+    }
+  });
+
+Game.Scenes.A_Part03[1] =
+  new Scene({
+    text: `
+    Я завороженно наблюдала за чудесами природы и была абсолютно уверена, что совсем скоро продолжу писать уже полюбившийся мне дневник. Но прежде, мне захотелось побыть наедине со своими мыслями и чашечкой ароматного чая. 
+    <p>Еще немного полюбовавшись на прекрасный пейзаж, я спустилась со смотровой площадки маяка и направилась к нашему домику. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[2].begin(); }],
+    background: 'Backgrounds/Aurora_Lighthouse_Dawn',
+  });
+
+Game.Scenes.A_Part03[2] =
+  new Scene({
+    text: `
+    Все оставалось по-прежнему. Тихая и мирная обстановка. Красивая и уютная комната. 
+    <p>Я села на диван вместе с напитком в руках и завернулась в плед, пытаясь еще раз обдумать написанные строки.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[3].begin(); }],
+    background: 'Backgrounds/Aurora_Near_Lighthouse_Dawn',
+  });
+
+Game.Scenes.A_Part03[3] =
+  new Scene({
+    text: `
+    - Артур, где же ты… Почему ты всегда был рядом, но теперь решил покинуть меня. 
+    <p>Отставив кружку, я обхватила себя руками, пытаясь унять дрожь и успокоиться. Но не в силах сдержаться - я дала волю слезам. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[4].begin(); }],
+    background: 'Backgrounds/Aurora_Near_Lighthouse_Dawn',
+  });
+
+Game.Scenes.A_Part03[4] =
+  new Scene({
+    text: `
+    - Почему все вышло именно так? Ты же моя опора. Мой… - тяжело было говорить из-за подступающих эмоций, которые буквально съедали меня изнутри. - Я никогда не забуду твою поддержку. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[5].begin(); }],
+    background: 'Backgrounds/Aurora_Near_Lighthouse_Dawn',
+  });
+
+Game.Scenes.A_Part03[5] =
+  new Scene({
+    text: `
+    Все мои чувства перемешались. Я с трудом могла мыслить, ведь столько событий обрушилось на меня. А еще о стольком предстояло написать и будто бы вновь пережить.
+    <p>Снова взяв в руки чай, я все-таки нашла в себе силы продолжить. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[6].begin(); }],
+    background: 'Backgrounds/Aurora_Near_Lighthouse_Dawn',
+  });
+
+Game.Scenes.A_Part03[6] =
+  new Scene({
+    text: `
+    - Моя первая встреча с Калебом. Каким же нахалом он был по началу, а какой чувственной натурой оказался по итогу.
+    <p>Я крепко сжала кружку, буквально обжигая свою ладонь. 
+    <p>“Сколько же всего с тобой связано. Ты причинил мне столько боли, и одновременно с этим - столько радости.”
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[7].begin(); }],
+    background: 'Backgrounds/Aurora_Near_Lighthouse_Dawn',
+  });
+
+Game.Scenes.A_Part03[7] =
+  new Scene({
+    text: `
+    Неожиданно для себя я наконец-то смогла улыбнуться. Ведь в тот день мне удалось познакомиться с человеком, который полностью поменял мою жизнь. 
+    <p>- Я ведь тогда встретила первый раз не только Калеба… И все-таки: как после такого не верить в судьбу?
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[8].begin(); }],
+    background: 'Backgrounds/Aurora_Near_Lighthouse_Dawn',
+  });
+
+Game.Scenes.A_Part03[8] =
+  new Scene({
+    text: `
+    “Я должна продолжить. Это необходимо. От этого зависит не только мое будущее. Соберись, Аврора. Скоро начнется одна из самых важных частей всей истории. Мне нужно сосредоточиться и зафиксировать все в точности.”
+    <p>Не в силах больше откладывать, я вернулась к дневнику.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[9].begin(); }],
+    background: 'Backgrounds/Aurora_Near_Lighthouse_Dawn',
+  });
+
+Game.Scenes.A_Part03[9] =
+  new Scene({
+    text: `
+    Калеб выглядел немного растерянным и озирался по сторонам. 
+    <p>- Только не она… - парень вдруг посмотрел на меня и схватил за плечи. - Спрячь меня!
+    <p>- Что? - я стала смотреть вместе с ним, не понимая откуда мог доноситься звук. - Зачем мне это делать?
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[10].begin(); }],
+    background: 'Persons/Aurora_Kaleb',
+    condition: function () {
+        Game.Sounds.play('Music',`Aurora_Daily_0${Game.Stats.Song.get}`);
+        Game.Stats.Kaleb.add(0);
+        Game.message('Вы вернулись в воспоминания')
+    }
+  });
+
+Game.Scenes.A_Part03[10] =
+  new Scene({
+      text: `
+    - Ну, я же очаровашка, - он спрятался за одним из книжных стеллажей, показывая мне знаком, чтобы я не издавала звуков.
+    <p>- Ты же мне книжку так и не вернул, - прошептала я. - И зачем мне выгораживать тебя?
+        `,
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Part03[11].begin(); Game.Stats.Dalia.add(0) }],
+      background: 'Backgrounds/Aurora_Books',
+  });
+
+Game.Scenes.A_Part03[11] =
+  new Scene({
+      text: `
+    И вдруг я заметила молодую девушку, которая была подобно вихрю. Ее абсолютно не смущало, что мы находимся в библиотеке, где приветствуется тишина. Нет. Она бежала сломя голову через весь зал, даже вопреки возгласам рассерженной библиотекарши. 
+        `,
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Part03[68].begin(); }],
+      background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[68] =
+  new Scene({
+      text: `
+    <s>Черты лица как у модели. Живая, бодрая. С растрепанными светлыми волосами.
+        `,
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Part03[12].begin(); }],
+      background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[12] =
+  new Scene({
+    text: `
+    Она была очень красива, даже несмотря на легкую злость, которую она испытывала. Белая кофта. Рыжие волосы и серые глаза. Именно такой я запомнила ее в нашу первую встречу. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[13].begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[13] =
+  new Scene({
+    text: `
+    - Девушка? Да-да, вы. Не видели тут наглого и немного симпатичного на вид парня? - стараясь выровнять дыхание произнесла незнакомка. 
+    <p>Я растерялась, так как не привыкла к такому вниманию. Должно быть эта девушка очень хотела отыскать Калеба, а я продолжала смотреть на нее не в силах что-либо произнести.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[14].begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[14] =
+  new Scene({
+    text: `
+    После нескольких секунд она продолжила:
+    <p>- Брось, я же видела. Он точно был тут. Не волнуйся ты так, просто скажи, куда он вдруг испарился. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[15].begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[15] =
+  new Scene({
+    text: `
+    - Я… нет, то есть… 
+    <p>- У вас все в порядке? Выглядите немного напуганной. Неужели этот засранец что-то сделал?! Калеб, а ну-ка выходи сейчас же! - девушка начала озираться по сторонам и вот-вот могла увидеть, где скрывается парень. 
+    <p>Все это кардинально отличалось от моего привычного ритма жизни, ведь я настолько вжилась в роль одиночки, что даже простой разговор с новыми людьми заставлял сильно нервничать.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[16].begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[16] =
+  new Scene({
+    text: `
+     Но я старалась перебороть себя, так как мне действительно хотелось быть выше своих заморочек и наконец-то начать полноценно жить. 
+    <p>Что делать? 
+        `,
+    buttontext: ['Выдать Калеба','Подыграть Калебу '],
+    buttonaction: [
+      () => { Game.Scenes.A_Part03[17].begin(); Game.Stats.BetrayKaleb.add(1); Game.Timer.stop();},
+      () => { Game.Scenes.A_Part03[22].begin(); Game.Timer.stop(); Game.Achievements.A_PayBack.unlock();}
+    ],
+    background: 'Persons/Aurora_Dalia',
+    condition: function () {
+        Game.Timer.set(10, ()=>{Game.Scenes.A_Part03[17].begin(); Game.Timer.stop(); })
+    }
+  });
+
+Game.Scenes.A_Part03[17] =
+  new Scene({
+    text: `
+    Мне не было смысла его выгораживать. К тому же, он вел себя слишком вызывающе при нашей первой встрече. Пусть знает, что я не одна из этих простушек, которые так легко поддаются на его “чары”. 
+    <p>Я жестом показала, где скрывается Калеб. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[18].begin(); }],
+    background: 'Backgrounds/Aurora_Books',
+  });
+
+Game.Scenes.A_Part03[18] =
+  new Scene({
+    text: `
+    - Он серьезно думал, что я не найду его там, - девушка вздохнула. - Выходи давай. Уж не знаю, что ты задумал и зачем решил спрятаться, но ведешь себя по-детски.
+    <p>Вскоре Калеб вышел, поднимая руки вверх, будто бы сдаваясь полицейскому.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[19].begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[19] =
+  new Scene({
+    text: `
+    - Да что ты ко мне прицепилась? Мы уже миллион раз обсуждали. Ты перегибаешь палку, Далия. Все хорошо. Мы просто беседовали с этой милой девушкой. 
+    <p>То, что он назвал меня милой, было лишь одним из его приемчиков, который все же немного смутил меня. Я вскользь посмотрела на Калеба, пытаясь угадать его эмоции. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[20].begin(); }],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part03[20] =
+  new Scene({
+    text: `
+    Он выглядел слегка опечаленным, словно его тревожило нечто очень важное, а может просто раздражала сложившаяся ситуация. 
+    <p>Калеб поймал мой взгляд, но долго не задержался, а затем произнес: 
+    <p>- Мы можем пойти уже?
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[21].begin(); }],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part03[21] =
+  new Scene({
+    text: `
+    Далия с сочувствием обернулась ко мне, видимо заметив, что мне немного не по себе, и сказала: 
+    <p>- Надеюсь, у тебя все в порядке. Чтобы не случилось, не раскисай. Позитив правит этим миром. 
+    <p>Они вдвоем ушли, оставляя меня в легкой растерянности стоять посреди библиотеки. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[27].begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[22] =
+  new Scene({
+    text: `
+    Я решила подыграть ему. Он не выглядел, как плохой человек. А если попросил помощи, должна быть весомая причина такому поведению. 
+    <p>- Он вроде убежал из библиотеки, но я не уверена, - произнесла я дрожащим голосом. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[23].begin(); }],
+    background: 'Backgrounds/Aurora_Books',
+  });
+
+Game.Scenes.A_Part03[23] =
+  new Scene({
+    text: `
+    - Спасибо! Нельзя было оставлять его, так и знала, что убежит при любой удобной возможности. 
+    <p>- Но все в порядке…
+    <p>- Я надеюсь, - она улыбнулась мне. - Мне стоит догнать его, пока он не натворил бед. Увидимся. 
+    <p>Девушка резво побежала в указанном мною направлении. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[24].begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[24] =
+  new Scene({
+    text: `
+    Из своего укрытия вышел Калеб, который удивленно смотрел на меня.
+    <p>- Вот уж не думал, что решишься соврать. Зачем ты это сделала?
+    <p>- Мне показалось - тебе это необходимо. Вот и все.
+    <p>- Хех, - он ухмыльнулся. - Допустим. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[25].begin(); }],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part03[25] =
+  new Scene({
+    text: `
+    Минуту другую он о чем-то размышлял, а затем произнес:
+    <p>- Услугу за услугу. Вижу, что на тебя можно положиться, поэтому буду должен. Если что понадобится - помогу. 
+    <p>- Не стоит. Я ничего такого не сделала и… 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[26].begin(); Game.message('Калебу понравилась ваша ложь. Он вернет должок'); Game.Stats.Kaleb.add(1); }],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part03[26] =
+  new Scene({
+    text: `
+    Он вдруг приставил указательный палец к моим губам, заставляя не заканчивать фразу. 
+    <p>- Будь увереннее и не отказывайся от помощи. 
+    <p>Мне нечего было возразить на это и я покорно кивнула. 
+    <p>- Пока-пока, - Калеб вышел из библиотеки, махая мне рукой напоследок. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[27].begin(); }],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part03[27] =
+  new Scene({
+    text: `
+    Оставшись наедине с собой, я выдохнула, так как осталась в комфортной и привычной для себя обстановке. Однако несмотря на произошедшую ситуацию, я ни сколько не пожалела, что пообщалась с такими странными, но в то же время - веселыми людьми. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[28].begin(); }],
+    background: 'Backgrounds/Aurora_Books',
+  });
+
+Game.Scenes.A_Part03[28] =
+  new Scene({
+    text: `
+    Убрав книги, которыми я пользовалась, чтобы повторить материал для предстоящего экзамена, я направилась в холл университета. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[29].begin(); }],
+    background: 'Backgrounds/Aurora_Books',
+  });
+
+Game.Scenes.A_Part03[29] =
+  new Scene({
+    text: `
+    Время, к которому Артур должен был приехать, приближалось. Я решила позвонить ему и спросить, где он. Зная Артура, он вполне мог приехать заранее. 
+    <p>Набрав нужный номер, в ответ я услышала лишь нудные гудки. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[30].begin(); }],
+    background: 'Backgrounds/Aurora_Univer',
+  });
+
+Game.Scenes.A_Part03[30] =
+  new Scene({
+    text: `
+    Успокоив себя тем, что он должно быть за рулем или ждет меня около учебного заведения, я поспешила выйти из университета. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[31].begin(); }],
+    background: 'Backgrounds/Aurora_Univer',
+  });
+
+Game.Scenes.A_Part03[31] =
+  new Scene({
+    text: `
+    На улице я наткнулась на Калеба и Далию, которые громко о чем-то спорили. 
+    <p>- Тебе так просто от меня не избавиться! - девушка ткнула Калеба в плечо. - Долго ты еще будешь убегать?
+    <p>- Надоела… 
+    <p>- Ах вот оно как, мистер невозмутимость.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[32].begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[32] =
+  new Scene({
+    text: `
+    Я не хотела больше подслушивать чужие разговоры. К тому же, меня больше волновало то, что я нигде не видела Артура. 
+    <p>Несколько предпринятых попыток дозвониться, окончились все той же неудачей. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[33].begin(); }],
+    background: 'Backgrounds/Aurora_Uni_Outside',
+  });
+
+Game.Scenes.A_Part03[33] =
+  new Scene({
+    text: `
+    Волнение охватило меня, потому что я находилась одна в неизвестном городе, даже не помня дорогу домой. Не говоря уже о том, что в голове возникло несколько ужасных сценариев с Артуром в главной роли.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[34].begin(); }],
+    background: 'Backgrounds/Aurora_Uni_Outside',
+  });
+
+Game.Scenes.A_Part03[34] =
+  new Scene({
+    text: `
+    Нервно шагая из стороны в сторону, я пыталась найти решение проблемы.
+    <p>Но ничего такого не придумав, решила вернуться в университет в надежде, что рано или поздно Артур все-таки приедет за мной. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[35].begin(); }],
+    background: 'Backgrounds/Aurora_Uni_Outside',
+  });
+
+Game.Scenes.A_Part03[35] =
+  new Scene({
+    text: `
+    Я корила себя за беспечность. Ведь я даже не запомнила адрес дома в котором остановилась. Да, все действительно происходило быстро и стремительно, но полагаться полностью на Артура было недальновидно с моей стороны. 
+    <p>Он тоже человек, у которого могли возникнуть непредвиденные обстоятельства. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[36].begin(); }],
+    background: 'Backgrounds/Aurora_Uni_Outside',
+  });
+
+Game.Scenes.A_Part03[36] =
+  new Scene({
+    text: `
+    Неожиданно за моей спиной оказалась Далия, которая тихонечко тронула меня за плечо и произнесла:
+    <p>- Что случилось? 
+    <p>Тогда я действительно хотела сказать правду, видя искреннее беспокойство в ее глазах. Но все равно произнесла:
+    <p>- Ничего. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[37].begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[37] =
+  new Scene({
+    text: `
+    <p>Нехотя к нам присоединился Калеб, который сказал:
+    <p>- Да видно же, что ты себе место найти не можешь. 
+    <p>- Просто, - под таким давлением я не могла больше молчать. – За мной должны были приехать. Но он не берет трубку… 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[38].begin(); }],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part03[38] =
+  new Scene({
+    text: `
+    - Так закажи такси. Все же просто, - парень развел руками. - Давай я закажу, если вдруг проблемы с деньгами. Сочтемся. 
+    <p>- Я не помню адрес, - от смущения хотелось провалиться сквозь землю. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[39].begin(); }],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part03[39] =
+  new Scene({
+    text: `
+    - Неожиданно, - Далия призадумалась. - И что ты теперь будешь делать? 
+    <p>- А что мне еще остается? Ждать, конечно. Наверняка он скоро приедет. 
+    <p>- А если не приедет?
+    <p>- Прости, что?
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[40].begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[40] =
+  new Scene({
+    text: `
+    - Ну, вдруг что-то случилось и… 
+    <p>- Далия, - Калеб вмешался в наш разговор. - Хватит преувеличивать. 
+    <p>- Я просто пытаюсь сказать, что самым лучшим решением будет развеяться и пойти погулять. Вот и все. Снять стресс, а заодно лучше познакомиться с городом. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[41].begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[41] =
+  new Scene({
+    text: `
+    Услышанное никак не могло уложиться в голове. Девушка, которую я вижу всего второй раз в жизни предлагает мне нечто подобное - безумство. Я элементарно растерялась, отводя взгляд в сторону. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[42].begin(); }],
+    background: 'Backgrounds/Aurora_Uni_Outside',
+  });
+
+Game.Scenes.A_Part03[42] =
+  new Scene({
+    text: `
+    - Ну, уж нет, - парень смотрел на Далию, будто бы понимая, что она замышляет. - Никуда я с тобой не поеду. И эта девушка, разумеется, откажется. 
+    <p>- Все верно. Я не могу никуда уехать. А вдруг он будет волноваться и искать меня?
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[43].begin(); }],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part03[43] =
+  new Scene({
+    text: `
+    - Тебя же он заставил поволноваться, - Далия вздохнула. - Послушай. Всего на час или два. Тут ходит автобус, который довезет нас прямо в центр города. Познакомимся. Мы покажем тебе местные достопримечательности. Будет весело.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[44].begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[44] =
+  new Scene({
+    text: `
+     - Я даже не знаю…
+      <p>- Брось. Ну, побудешь с нами, пока его нет, уверена тебе понравится и заодно перестанешь так переживать. Он позвонит тебе, если приедет и не найдет здесь. Не волнуйся, с ним вряд ли что-то случилось. Просто заработался и забыл написать.
+      <p>- С нами? - удивленно произнес Калеб. - Не будет никаких “нас”. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[45].begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[45] =
+  new Scene({
+    text: `
+     - Конечно, будет. Далия, Калеб и… - девушка посмотрела на меня. 
+    <p>- Аврора, - я смущенно улыбнулась. 
+    <p>- Вот! Отличная компания. Хватит вам наводить тоску.  
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[46].begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[46] =
+  new Scene({
+    text: `
+     - Нет уж, без меня. 
+      <p>- Калеб, - Далия слегка нахмурилась. - Давай не будем. Ты обещал мне кое-что. Забыл?
+      <p>- Это другое. При чем тут дурацкая поездка в город? 
+      <p>- А это все связано. Давай не будем больше спорить. Ты знаешь, что я права. Ну, что, Аврора, едем? 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[47].begin(); }],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part03[47] =
+  new Scene({
+    text: `
+     Я понимала - это чистое безумие. Выбираться в совершенно неизвестный мне город с людьми, с которыми познакомилась совсем недавно. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[48].begin(); }],
+    background: 'Backgrounds/Aurora_Uni_Outside',
+  });
+
+Game.Scenes.A_Part03[48] =
+  new Scene({
+    text: `
+     Однако в чем-то Далия была права. Артур пропал, не сказав ничего. Он мог отправить хотя бы СМС. Но не сделал. Всего час ничего не изменит. В конце концов, Артур может позвонить, если все-таки объявится. 
+      <p>- Я согласна.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[49].begin(); }],
+    background: 'Backgrounds/Aurora_Uni_Outside',
+  });
+
+Game.Scenes.A_Part03[49] =
+  new Scene({
+    text: `
+     - Я не сомневалась в тебе, - она широко улыбнулась и несколько раз прыгнула на месте, радуясь. - Давайте поторопимся, а то опоздаем на автобус. 
+      <p>Калеб даже не стал спорить, а просто покорно принял ситуацию и последовал за нами с недовольным лицом. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[50].begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[50] =
+  new Scene({
+    text: `
+     На остановке я и Далия сели на скамейку, а Калеб остался стоять рядом, высматривая транспорт. 
+    <p>Мне же стало интересно больше узнать о своей новой компании и я осмелилась спросить:
+    <p>- Скажи, Далия, а вы тоже будете поступать на первый курс этого университета? 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[51].begin(); }],
+    background: 'Backgrounds/Aurora_Busstop',
+  });
+
+Game.Scenes.A_Part03[51] =
+  new Scene({
+    text: `
+     - Все верно. Скажу тебе по секрету: уже не терпится начать учиться. 
+    <p>- Сдай экзамены для начала, - сказал Калеб. - А то на уме явно не учеба. 
+    <p>- Давай без твоих занудств, - она надула губы и отвернулась.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[52].begin(); }],
+    background: 'Backgrounds/Aurora_Busstop',
+  });
+
+Game.Scenes.A_Part03[52] =
+  new Scene({
+    text: `
+     - То есть, только тебе можно так себя вести? 
+    <p>- Это как это так? - она резко встала и ткнула Калеба прямо в грудь. - Ты, мне кажется, забыл, почему я этим занимаюсь. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[53].begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[53] =
+  new Scene({
+    text: `
+     Слушая их препирательства, я невольно улыбалась, словно наблюдая за давними друзьями, которые вечно что-то не могут поделить. Это было одновременно мило и интересно, потому что я все больше узнавала их с совершенно разных сторон. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[54].begin(); }],
+    background: 'Backgrounds/Aurora_Busstop',
+  });
+
+Game.Scenes.A_Part03[54] =
+  new Scene({
+    text: `
+     Вот - Калеб, который весь из себя такой угрюмый, пытается построить себе образ серьезного человека, а на деле, кажется, что не так уж его тяготят подобные авантюры.  
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[55].begin(); }],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part03[55] =
+  new Scene({
+    text: `
+     А Далия. Несмотря на ее задор, видно, какая она ответственная и серьезная девушка. Я не представляла, почему она так печется о Калебе, но уверена, что должна быть причина.  
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[56].begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[56] =
+  new Scene({
+    text: `
+     - Все, хватит, - Калеб махнул рукой. - Зачем все это выслушивать Авроре? Мы же вроде хотели придерживаться “позитива”. 
+    <p>- Да, - Далия посмотрела на меня. - Прости. Мы вечно как кошка с собакой. Наверное, со временем мы сможем сгладить углы…
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[57].begin(); }],
+    background: 'Backgrounds/Aurora_Busstop',
+  });
+
+Game.Scenes.A_Part03[57] =
+  new Scene({
+    text: `
+     - Чур, я - кошка, - парень улыбнулся, пытаясь разрядить обстановку. 
+      <p>- Все хорошо. Я в порядке, - раскрасневшись произнесла я. - Мне правда с вами хорошо. Я практически забыла, что оказалась в такой неловкой ситуации. А слушая вас, на душе становится гораздо теплее.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[58].begin(); }],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part03[58] =
+  new Scene({
+    text: `
+     - Ты милашка, ничего не могу с собой поделать, - Далия вдруг приблизилась ко мне и крепко обняла. -  Иногда мне трудно сдерживать свои эмоции. Особенно когда я вижу рядом с собой такого светлого и искреннего человека.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[59].begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[59] =
+  new Scene({
+    text: `
+      Вскоре приехал автобус. Внутри было мало людей, поэтому нам удалось сесть рядом. 
+      <p>- Аврора, а чего мы только о нас да и о нас. Расскажи, откуда ты приехала? - спросила Далия. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[60].begin(); }],
+    background: 'Backgrounds/Aurora_Bus',
+  });
+
+Game.Scenes.A_Part03[60] =
+  new Scene({
+    text: `
+      - Я из небольшого городка в нескольких часах езды отсюда. Мы долгое время жили там, но потом нам с семьей пришлось переехать на маяк, который находился в уединение, на берегу моря.  
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[61].begin(); }],
+    background: 'Backgrounds/Aurora_Bus',
+  });
+
+Game.Scenes.A_Part03[61] =
+  new Scene({
+    text: `
+       Калеб оживился и внимательно посмотрел на меня, будто бы услышал очень занимательную информацию. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[62].begin(); }],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part03[62] =
+  new Scene({
+    text: `
+       - Маяк? 
+      <p>- Да. После смерти предыдущего смотрителя, моему отцу предложили занять его место. Мы не раздумывая согласились отправиться туда с ним. До этого он постоянно работал как проклятый, мы практически не виделись. Поэтому никак не могли позволить себе жить и дальше в разлуке. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[63].begin(); }],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part03[63] =
+  new Scene({
+    text: `
+       - Но почему ты все же решилась уехать? - с сочувствием спросила Далия. - Извини, если это личное…
+      <p>- Все в порядке, - мне была очень приятна проявленная чуткость. - Я была как меж двух огней. Признаться, до сих пор себя так ощущаю. Я хочу начать жить. Для себя. Но и не смею бросить своего отца. Да, он сам настаивал на переезде. Однако то одиночество… Я боюсь за него. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[64].begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[64] =
+  new Scene({
+    text: `
+       - Не переживай, - Далия положила свою руку на мою. - Просто почаще навещай его, пиши. Уверена, ты все это и так знаешь. 
+      <p>- Все равно, спасибо.
+      <p>- Знаешь, а я никогда не была на маяке. Как было бы здорово однажды посмотреть…
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[65].begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[65] =
+  new Scene({
+    text: `
+       - Скажи, Аврора, - Калеб вдруг перебил Далию, очень желая задать свой вопрос. - А что случилось с предыдущим смотрителем? 
+      <p>Его заинтересованность немного удивила меня. Казалось странным, что из всего рассказа, его волновал именно этот момент. Но все же я ответила правду:
+      <p>- Всех подробностей я не знаю. Артур, его внук, говорил, что он скончался от болезни.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[66].begin(); }],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part03[66] =
+  new Scene({
+    text: `
+       - Вот оно как…
+      <p>- Знаете что, - Далия повысила голос и начала говорить более задорным тоном. - Хватит грустить. Поговорим о чем-нибудь другом. Аврора, лучше расскажи о своем увлечении? Какое у тебя хобби? Что делаешь в свободное время?
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[67].begin(); }],
+    background: 'Persons/Aurora_Dalia',
+    condition: function () {
+      if (Game.Stats.Drawing.get>=1) this.buttonaction[0] = () => { Game.Scenes.A_Part03[67].begin();}
+      if (Game.Stats.Writing.get>=1) this.buttonaction[0] = () => { Game.Scenes.A_Part03[77].begin();}
+      if (Game.Stats.Music.get>=1) this.buttonaction[0] = () => { Game.Scenes.A_Part03[86].begin();}
+      }
+  });
+
+Game.Scenes.A_Part03[67] =
+  new Scene({
+    text: `
+       - В свободное время я рисую. В основном пейзажи. На маяке для меня открывалось много обзоров, которые вдохновляли, так и просились на бумагу. 
+        <p>- Так-так, - Далия потерла ладошки и придвинулась ко мне поближе. - Вот это совпадение. Я сама большой ценитель искусства. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[69].begin(); }],
+    background: 'Backgrounds/Aurora_Bus',
+  });
+
+Game.Scenes.A_Part03[69] =
+  new Scene({
+    text: `
+       - Ты тоже рисуешь?
+        <p>- Все верно! Больше всего мне нравится рисовать людей. Передавать их эмоции. Все до мелочей. Могу показать свою последнюю работу. Одну секунду, - она начала выискивать рисунок в своем рюкзаке. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[70].begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[70] =
+  new Scene({
+    text: `
+       Вскоре Далия достала небольшую папку и раскрыла ее на нужном изображении. 
+      <p>- Это человек, с которым я мечтаю познакомиться… 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[71].begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[71] =
+  new Scene({
+    text: `
+       Рисунок был выполнен аккуратными мазками. Чувствовалось, как автор вкладывает туда не только свой талант, но и душу. Прекрасный юноша улыбался, будто бы смотрел на любимую женщину. Может, это и хотела передать Далия? 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[72].begin(); }],
+    background: 'Backgrounds/Aurora_Solist_Picture',
+  });
+
+Game.Scenes.A_Part03[72] =
+  new Scene({
+    text: `
+        - Это потрясающе, - я не могла сдержать эмоции. - У тебя талант!  Кажется, это кто-то очень знакомый…
+        <p>- Спасибо, но ты преувеличиваешь, - Далия смущенно улыбнулась. - Ты что же, не знаешь этого человека? Или у меня не вышло передать его образ…
+        <p>- Нет-нет, я правда не могу никак вспомнить. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[74].begin(); }],
+    background: 'Backgrounds/Aurora_Solist_Picture',
+  });
+
+Game.Scenes.A_Part03[74] =
+  new Scene({
+    text: `
+        - Хм, - девушка с недоверием посмотрела на меня. - Это Леннарт. Солист знаменитой группы “Kings & Queens”. А я их самая большая фанатка. 
+        <p>- Точнее его, - уточнил Калеб. 
+        <p>- Не завидуй. Он прекрасен: фигура, улыбка, эти волшебные глаза... Нет, ну, как можно быть таким очаровательным. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[75].begin(); }],
+    background: 'Backgrounds/Aurora_Solist_Picture',
+  });
+
+Game.Scenes.A_Part03[75] =
+  new Scene({
+    text: `
+        - Далия, - Калеб придвинулся к нам, смотря на рисунок. - Когда я уже увижу свой портрет? 
+        <p>- А ты не заслужил, - она фыркнула, закрыла папку и убрала в рюкзак. 
+        <p>- Конечно… Поди целый альбом с моим изображением под кроватью прячешь.
+        <p>Далия замахнулась на него кулаком и мы дружно рассмеялись.
+        `,
+    buttontext: [''],
+    buttonaction: [() => {
+      Game.Scenes.A_Part03[76].begin();
+      Game.message('У вас с Далией схожий интерес. Вы узнаете друг друга лучше');
+      Game.Stats.Dalia.add(1);
+      Game.Achievements.A_Fan.unlock();
+    }],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part03[76] =
+  new Scene({
+    text: `
+        - Аврора, удивительно встретить человека, который еще и разделяет мои интересы. Считаю не зря твой спутник опоздал, сколько чудесного произошло из-за этой случайности. 
+        <p>- Спасибо, что поделилась. Это очень здорово, что наше хобби совпадает.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[90].begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[77] =
+  new Scene({
+    text: `
+        - Мне нравится писать. Небольшие рассказы или стихи. Специального образования у меня нет, но мне помогает отвлечься от всяких плохих мыслей. 
+        <p>- Ого, интересное совпадение, - Далия показала пальцем на Калеба. - Ему тоже нравится нечто подобное. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[78].begin(); }],
+    background: 'Backgrounds/Aurora_Bus',
+  });
+
+Game.Scenes.A_Part03[78] =
+  new Scene({
+    text: `
+        Калеб бросил на меня взгляд и спросил:
+        <p>- А любимый писатель есть?
+        <p>- Не то чтобы… Я люблю и уважаю творчество во всех проявлениях. Поэтому не могу выделить кого-то конкретного. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[79].begin(); }],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part03[79] =
+  new Scene({
+    text: `
+        - Я, например, - говорила Далия. - Очень люблю стихи Эдгара Аллана По. Особенно все эти мистические мотивы… Как же он красиво обыгрывает все своим мастерским словом.  
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[80].begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[80] =
+  new Scene({
+    text: `
+       - Не могу не согласиться, - улыбнулся парень.
+       <p>- Я не читала ни одного его стихотворения. 
+       <p>- Не может быть? - удивилась Далия. - Это срочно надо исправлять. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[81].begin(); }],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[81] =
+  new Scene({
+    text: `
+       - Поддерживаю, - кивнул Калеб. - А я вот из тех безумцев, которым нравится творчество писателя Франца Кафки. 
+      <p>- Никогда не могла тебя понять, - развела руками девушка. - Это редкостная нудятина. Пока герой Кафки домыслит, даже в стихах больше экшена произойдёт.  
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[82].begin(); }],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part03[82] =
+  new Scene({
+    text: `
+       - В этом твоя проблема. Ты постоянно куда-то торопишься. А читая его произведения, так и хочется смаковать каждый момент, рассуждая вместе с персонажем.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[84].begin(); }],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part03[84] =
+  new Scene({
+    text: `
+       Я была приятно удивлена, что Калеб оказался таким разносторонним человеком. Не каждому дано полюбить искусство, но он буквально оживал на глазах, когда говорил о своем кумире. Это не могло не восхитить. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[85].begin();
+      Game.message('У вас с Калебом схожий интерес. Вы узнаете друг друга лучше');
+      Game.Stats.Kaleb.add(1);
+      Game.Achievements.A_Fav_Writer.unlock();
+    }],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part03[85] =
+  new Scene({
+    text: `
+        - Да и, Аврора. Если я не забуду, то обязательно принесу томик стихов Эдгара По. Тебе точно понравится, - улыбался Калеб, смотря на меня. 
+        <p>- Спасибо тебе большое!
+        <p>- На самом деле не за что. Я рад, что у нас совпало хобби.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[90].begin(); }],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part03[86] =
+  new Scene({
+    text: `
+        - Очень люблю слушать музыку. В будущем надеюсь, что смогу научиться играть на каком-нибудь инструменте или даже написать что-то свое. 
+        <p>- У тебя обязательно все получится. Может, однажды сам Леннарт, солист популярнейшей группы “Kings & Queens”, будет обучать тебя этому мастерству. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[87].begin(); }],
+    background: 'Backgrounds/Aurora_Bus',
+  });
+
+Game.Scenes.A_Part03[87] =
+  new Scene({
+    text: `
+        - Далия, это невозможно, - отмахнулась я. - Это же какое обстоятельство должно произойти, чтобы мы просто встретились.
+        <p>- Да ладно тебе, Аврора, - произнес Калеб. - В конечном итоге, все мы люди. А у судьбы есть свои планы на твой счет. Не расстраивайся раньше времени. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[88].begin(); }],
+    background: 'Backgrounds/Aurora_Bus',
+  });
+
+Game.Scenes.A_Part03[88] =
+  new Scene({
+      text: `
+        - Правильно, Калеб у нас философ, - Далия шутливо толкнула его в плечо. - Все может произойти. А если еще стараться… Например, пойти на концерт, занять места в первом ряду и смотреть ему в глаза все время…
+        `,
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Part03[89].begin(); }],
+      background: 'Backgrounds/Aurora_Bus',
+  });
+
+Game.Scenes.A_Part03[89] =
+  new Scene({
+      text: `
+         - Далия просто одержима Леннартом, - парень откинулся на сиденье. - Или как это правильно выразиться - фанатка номер один. 
+         <p>- Прекрати… Нравится он мне, да. Но не то, чтобы фанатка. Просто хочу выйти за него замуж, что такого. 
+         <p>Мы с Калебом переглянулись и разразились смехом. 
+        `,
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Part03[90].begin(); }],
+      background: 'Backgrounds/Aurora_Bus',
+  });
+
+Game.Scenes.A_Part03[90] =
+  new Scene({
+      text: `
+        До окончания поездки, мы продолжали вести непринужденную беседу и узнавать друг друга. На удивление, я и правда расслабилась и начала понемногу привыкать к моим новым знакомым.
+        `,
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Part03[91].begin(); Game.Sounds.play('Music','Aurora_City') }],
+      background: 'Backgrounds/Aurora_Bus',
+  });
+
+Game.Scenes.A_Part03[91] =
+  new Scene({
+      text: `
+        Автобус действительно довез нас прямо до центра города. 
+        <p>Я увидела фонтан и жестом позвала ребят к нему. Лучи теплого солнца кое-где пробивались сквозь величественные здания, бросая блики на воду. 
+        `,
+      buttontext: [''],
+      buttonaction: [() => { Game.Scenes.A_Part03[92].begin(); }],
+      background: 'Backgrounds/Aurora_Fountain',
+  });
+
+Game.Scenes.A_Part03[92] =
+  new Scene({
+    text: `
+        Меня тут же захватила атмосфера крупного города с присущей ему суетой и величием.  
+        <p>Хотелось заблудиться здесь на несколько часов, но не было времени, да и мне не позволяли этого сделать. Далия и Калеб повели меня дальше по улице. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[93].begin(); }],
+    background: 'Backgrounds/Aurora_Fountain',
+  });
+
+Game.Scenes.A_Part03[93] =
+  new Scene({
+    text: `
+        Какое-то время мы просто гуляли по округе, рассматривая архитектуру, просто наслаждаясь обществом друг друга. Даже Калеб, казалось, полностью расслабился и перестал ворчать. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[94].begin(); }],
+    background: 'Backgrounds/Aurora_SW_Streets',
+  });
+
+Game.Scenes.A_Part03[94] =
+  new Scene({
+    text: `
+      Он даже вошел во вкус нашей спонтанной прогулки и делился своими знаниями во время наших обсуждений.
+      <p>Далия же безмерно улыбалась, постоянно воображая, что могло бы быть на месте постройки. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[95].begin(); }],
+    background: 'Backgrounds/Aurora_SW_Streets',
+  });
+
+Game.Scenes.A_Part03[95] =
+  new Scene({
+    text: `
+      - Ох, как же мне этого не хватало. Знаете, что? Стойте тут. Я добавлю нам сладости. 
+      <p>Мы с Калебом удивленно переглянулись, не понимая замысел Далии. 
+      <p>Но вскоре она вернулась с несколькими палочками сахарной ваты и победоносно вручила их нам. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[96].begin(); }],
+    background: 'Backgrounds/Aurora_SW_Streets',
+  });
+
+Game.Scenes.A_Part03[96] =
+  new Scene({
+    text: `
+      Когда с едой было покончено, Далия неожиданно указала куда-то пальцем и заявила: 
+      <p>- У меня есть еще одна идея. 
+      <p>- Ну, нет, - говорил Калеб. - Хороше же сидим, что тебе все неймется? 
+      <p>- Можно сделать еще интереснее, не говоря уже о пользе моего предложения. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[97].begin(); }],
+    background: 'Backgrounds/Aurora_SW_Streets',
+  });
+
+Game.Scenes.A_Part03[97] =
+  new Scene({
+    text: `
+      - Что ты имеешь в виду, Далия? - уточнила я. 
+      <p>- Видите, там проводят экскурсию. Давайте незаметно присоединимся к ней и послушаем немного. Точно ведь узнаем что-то новое. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[98].begin(); }],
+    background: 'Backgrounds/Aurora_SW_Streets',
+  });
+
+Game.Scenes.A_Part03[98] =
+  new Scene({
+    text: `
+      - Не буду говорить о том, какая эта дурацкая идея, поэтому просто промолчу. 
+      <p>- Наконец-то ты понял, что со мной бесполезно спорить. Аврора? - девушка смотрела на меня горящими глазами. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[99].begin(); }],
+    background: 'Backgrounds/Aurora_SW_Streets',
+  });
+
+Game.Scenes.A_Part03[99] =
+  new Scene({
+    text: `
+      Идея мне очень понравилась. Хоть и было немного страшно, что кто-то спросит у нас билеты, да и просто отчитает в конце концов. Однако перспектива узнать больше о городе - интриговала. И было что-то такое притягательное в Далии, с ней хотелось совершить какое-то безумство.  
+      <p>- Почему бы и нет… Только осторожно. Нам нельзя привлекать внимание. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[100].begin(); }],
+    background: 'Backgrounds/Aurora_SW_Streets',
+  });
+
+Game.Scenes.A_Part03[100] =
+  new Scene({
+    text: `
+      Когда группа двинулась далее, мы незаметно примкнули к потоку. Внутри все переворачивалось от осознания, что мы поступаем неправильно. Но в тоже время я почему-то отчетливо ощутила - с этими новыми знакомыми мне ничего не грозит. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[101].begin(); Game.Sounds.play('Music','Aurora_Church')}],
+    background: 'Backgrounds/Aurora_SW_Streets',
+  });
+
+Game.Scenes.A_Part03[101] =
+  new Scene({
+    text: `
+      Вскоре экскурсовод привел группу к собору, рядом с которым располагалось кладбище. Это старое здание стояло несколько веков, переживая раз за разом тяготы жестоких исторических событий. Но его шпиль все еще пронзает небеса, что, безусловно, восхищало.
+      <p>Однако вместе с этим в глубине души росло необъяснимое чувство тревоги. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[102].begin(); }],
+    background: 'Backgrounds/Aurora_Church',
+  });
+
+Game.Scenes.A_Part03[102] =
+  new Scene({
+    text: `
+      Это место было мрачным, но, по-своему, притягательным. 
+      <p>Неожиданно Калеб замер, внимательно осматривая здание. На его лице читалось неподдельное отвращение и совершенное нежелание идти дальше. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[103].begin(); }],
+    background: 'Backgrounds/Aurora_Church',
+  });
+
+Game.Scenes.A_Part03[103] =
+  new Scene({
+    text: `
+      - Я пойду прогуляюсь по округе. Встретимся у фонтана. 
+      <p>- Но что случилось? - обеспокоенно спросила я. - Если тебе не нравится, давайте лучше уйдем, чтобы всем было комфортно. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[123].begin(); }],
+    background: 'Backgrounds/Aurora_Church',
+  });
+
+Game.Scenes.A_Part03[123] =
+  new Scene({
+    text: `
+      - Нет-нет, просто нужно сделать пару звонков. Веселитесь. 
+      <p>Парень резко ушел, будто бы не желая слышать дальнейших уговоров. Далия ничего не произнесла, лишь с грустью смотрела ему вслед. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[104].begin(); }],
+    background: 'Backgrounds/Aurora_Church',
+  });
+
+Game.Scenes.A_Part03[104] =
+  new Scene({
+    text: `
+      Оставшись наедине с Далией, мы стали слушать рассказ экскурсовода: 
+      <p>- Собор построен в 1598 году известным итальянским архитектором Марко Берлускони. Здание пережило несколько реставраций после сокрушительных войн, но сумело дожить до нашего времени и сейчас полностью функционирует. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[105].begin(); }],
+    background: 'Backgrounds/Aurora_Church',
+  });
+
+Game.Scenes.A_Part03[105] =
+  new Scene({
+    text: `
+      - А это правда, что здесь некогда располагалась секта? - спросил подросток - участник экскурсии. 
+      <p>- Кхм, - экскурсовод поправил очки. - Нет, молодой человек - это миф. Вокруг собора действительно витают множество легенд, но по большей части они все недостоверны и не имеют фактов, указывающих на истину. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[106].begin(); }],
+    background: 'Backgrounds/Aurora_Church',
+  });
+
+Game.Scenes.A_Part03[106] =
+  new Scene({
+    text: `
+      - И даже убийство - вымысел?
+      <p>- Есть одна легенда, - группа заметно оживилась, внимая каждое слово. - Якобы архитектор, Марко Берлускони, был необычным человеком, а участником тайного общества. В то время началась гражданская война в Швеции - война против Сигизмунда, правящего короля. И Марко, по приказу власти, построил собор для покаяния неверных крестьян. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[107].begin(); }],
+    background: 'Backgrounds/Aurora_Church',
+  });
+
+Game.Scenes.A_Part03[107] =
+  new Scene({
+    text: `
+      - Однако что творилось внутри стен, - продолжал экскурсовод. - Никто не знает. Поговаривали, Марко действовал в интересах своей группы. Оттуда и пошла легенда о ритуальных убийствах и кровавой бане, происходивших в соборе. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[108].begin(); }],
+    background: 'Backgrounds/Aurora_Church',
+  });
+
+Game.Scenes.A_Part03[108] =
+  new Scene({
+    text: `
+      - Но документов или иных источников, подтверждающих этот факт - нет, - завершал свой рассказ мужчина. -  Поэтому в историческом обществе принято считать все это байками, которые были нужны, чтобы устрашить народ перед фигурой короля. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[109].begin(); }],
+    background: 'Backgrounds/Aurora_Church',
+  });
+
+Game.Scenes.A_Part03[109] =
+  new Scene({
+    text: `
+      Мое дыхание замирало во время этого рассказа. Даже сама мысль о том, что здесь могло происходить подобное - ужасала и выбивала из коллеи. 
+      <p>Только одно не выходило из головы - это желание поскорее покинуть собор и больше его никогда не видеть. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[110].begin();}],
+    background: 'Backgrounds/Aurora_Church',
+  });
+
+Game.Scenes.A_Part03[110] =
+  new Scene({
+    text: `
+      Далия слушала с равнодушным лицом, как будто бы ее совсем не интересовала подобная история. 
+      <p>Еще немного послушав экскурсию, девушка произнесла:
+      <p>- Давай вернемся к Калебу. Думаю, на сегодня хватит уроков истории и страшных легенд. 
+      <p>Я согласилась, так как сама порядком устала, и мы двинулись к фонтану. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[111].begin(); }],
+    background: 'Backgrounds/Aurora_Church',
+    condition: function () {
+      if (Game.Stats.Romantic.get>=1) this.buttonaction[0] = () => { Game.Scenes.A_Part03[111].begin(); }
+      if (Game.Stats.Pragmatic.get>=1) this.buttonaction[0] = () => { Game.Scenes.A_Part03[114].begin(); }
+    }
+  });
+
+Game.Scenes.A_Part03[111] =
+  new Scene({
+    text: `
+      - Что думаешь об этой истории?
+      <p>- На самом деле очень интересно. Все эти мифы и легенды по-своему вдохновляют. Уверена, что об этом вышел бы хороший сериал или фильм. И драма: возлюбленные по разные стороны баррикад…
+      <p>- А мне кажется - пустая трата времени. Люди вечно фантазируют без поводов. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[112].begin(); }],
+    background: 'Backgrounds/Aurora_Church',
+  });
+
+Game.Scenes.A_Part03[112] =
+  new Scene({
+    text: `
+      - Почему ты так считаешь?
+      <p>- Сама подумай: как можно скрыть массовое убийство? Согласна с точкой зрения экскурсовода - это все для устрашения народа. Раз идет восстание, нужны и соответствующие методы подавления. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[113].begin(); }],
+    background: 'Backgrounds/Aurora_Church',
+  });
+
+Game.Scenes.A_Part03[113] =
+  new Scene({
+    text: `
+      - Может и так. Но все-таки хотелось бы верить, что из этого может получиться нечто интересное. 
+      <p>- Согласна. Однако я за реализм. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[116].begin(); }],
+    background: 'Backgrounds/Aurora_Church',
+  });
+
+Game.Scenes.A_Part03[114] =
+  new Scene({
+    text: `
+      - Что думаешь об этой истории?
+      <p>- Не думаю, что это правда. Скорее всего, дело в короле и его интригах.  К тому же, если это не подкрепляется фактами, то и смысл верить.
+      <p>- Полностью с тобой согласна. И ведь придумают же… Я даже завидую такому таланту. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[115].begin(); }],
+    background: 'Backgrounds/Aurora_Church',
+  });
+
+Game.Scenes.A_Part03[115] =
+  new Scene({
+    text: `
+      - А зачем тебе такой навык?
+      <p>- Даже и не знаю, - девушка призадумалась. - Просто прикольно что-нибудь такое написать, а все вокруг будут тебе наивно верить. Кажется, что это действенный метод, к которому часто прибегали. 
+      <p>- Твоя правда. 
+
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[116].begin(); }],
+    background: 'Backgrounds/Aurora_Church',
+  });
+
+Game.Scenes.A_Part03[116] =
+  new Scene({
+    text: `
+      Когда мы вернулись, Калеб сидел на бортике фонтана, пребывая в глубоких раздумьях. Он даже не посмотрел в нашу сторону, когда мы подошли к нему, лишь сказал: 
+      <p>- Мне нужно уехать. 
+      <p>- Все в порядке? - спросила Далия обеспокоенно смотря на парня. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[117].begin(); }],
+    background: 'Backgrounds/Aurora_Fountain',
+  });
+
+Game.Scenes.A_Part03[117] =
+  new Scene({
+    text: `
+      - Нет, поэтому мне и нужно уехать. Чтобы все решить. Вызову такси. 
+      <p>- Будь осторожен. И пиши, - девушка хотела было сесть с рядом с Калебом, но у нее зазвонил телефон. - Простите, это папа. Я должна ответить.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[118].begin(); }],
+    background: 'Backgrounds/Aurora_Fountain',
+  });
+
+Game.Scenes.A_Part03[118] =
+  new Scene({
+    text: `
+      Оставшись с Калебом наедине, я немного занервничала, так как складывалось ощущение, что моя компания не доставляет ему особого удовольствия. Но на мое удивление, парень вдруг посмотрел на меня и произнес: 
+      <p>- Надеюсь, тебе понравилась прогулка. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[119].begin(); }],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part03[119] =
+  new Scene({
+    text: `
+      - Да, обычно я не поступаю так необдуманно. Но с вами я действительно почувствовала себя хорошо. 
+      <p>- Я рад, - он улыбнулся. - Уверена, мы еще ни раз сможем пообщаться. Такси приехало. Пора прощаться. 
+      <p>- А как же Далия?
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[120].begin(); }],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part03[120] =
+  new Scene({
+    text: `
+      - Она не расстроится, что не смогла со мной попрощаться. Мы видимся часто. Мне иногда кажется, что даже слишком. 
+      <p>Мы двинулись в сторону подъезжающей машины, пребывая в тишине. 
+      <p>- Что ж, - парень положил мне руку на плечо. 
+      <p>- До встречи, Аврора. 
+      <p>- И тебе всего хорошего, Калеб. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[121].begin(); }],
+    background: 'Persons/Aurora_Kaleb',
+  });
+
+Game.Scenes.A_Part03[121] =
+  new Scene({
+    text: `
+      Когда Калеб уехал, я несколько секунд смотрела вслед удаляющейся машине и размышляла: все ли с ним будет в порядке? На этот раз он действительно выглядел крайне озадаченным.
+      <p>Собираясь идти к Далии, я заметила на земле нечто, что привлекло мое внимание. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[122].begin(); Game.Stats.Mothers_Photo.add(1) }],
+    background: 'Backgrounds/Aurora_Fountain',
+  });
+
+Game.Scenes.A_Part03[122] =
+  new Scene({
+    text: `
+      Это была винтажная фотография с запечатленной на ней красивой девушкой.  Изображение было пожелтевшим от времени, а внизу красовалась надпись на французском: “Моя семья”. 
+      <p>Я не знала, кто эта незнакомка. В голову пришло предположение, что фотографию мог обронить Калеб. Поэтому я незамедлительно спрятала свою находку в рюкзак и поспешила к Далии. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[124].begin(); }],
+    background: 'Backgrounds/Aurora_Mother_Photo',
+  });
+
+Game.Scenes.A_Part03[124] =
+  new Scene({
+    text: `
+      Девушка выглядела совсем поникшей. Я подсела к ней на бортик фонтана и спросила:
+      <p>- Что случилось, Далия? Я могу чем-то помочь?
+      <p>- Аврора, ох, к сожалению, ты ничем не сможешь помочь. Но спасибо за попытку! 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[125].begin();}],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[125] =
+  new Scene({
+    text: `
+      - И все-таки ты такая грустная. 
+      <p>- Ладно… не знаю, зачем я тебе это рассказываю. Но все дело в моем отце. Он очень суровый человек и постоянно требует от меня невозможного. 
+      <p>- Например? 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[126].begin();}],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[126] =
+  new Scene({
+    text: `
+      - Прости, я не могу сейчас привести конкретный пример. И, признаться, без того паршиво. Просто знай, что он тиран и деспот. Я его не ненавижу, но и по-настоящему любить просто не получается. Тяжелая ситуация. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[127].begin();}],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[127] =
+  new Scene({
+    text: `
+      Вспомнив о своем отце, сердце невольно сжалось. Но мне удалось подавить эмоции и я с улыбкой произнесла:
+      <p>- Давай еще немного погуляем и вернёмся назад.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[128].begin();}],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[128] =
+  new Scene({
+    text: `
+      - Отличная мысль! 
+      <p>Мы ушли с площади, оставляя фонтан позади. 
+      <p>Тогда я поймала себя на мысли, что мне очень хочется вернуться сюда. Поделиться драгоценными воспоминаниями с отцом или, может быть, с Артуром. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[129].begin();}],
+    background: 'Backgrounds/Aurora_Fountain',
+  });
+
+Game.Scenes.A_Part03[129] =
+  new Scene({
+    text: `
+      Петляя по улочкам мы вышли к удивительному современному стеклянному зданию, на фасаде которого красовалась надпись: Rosen medical. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[130].begin();}],
+    background: 'Backgrounds/Aurora_Pharm',
+  });
+
+Game.Scenes.A_Part03[130] =
+  new Scene({
+    text: `
+      - Что это за здание? 
+      <p>- Это фармацевтическая компания. Одна из крупнейших в городе. У них даже название происходит от какой-то там древней шведской фамилии. 
+      <p>- Ого, очень красивое здание. 
+      <p>- Ты не поверишь, если я скажу, что мой отец его проектировал. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[131].begin();}],
+    background: 'Backgrounds/Aurora_Pharm',
+  });
+
+Game.Scenes.A_Part03[131] =
+  new Scene({
+    text: `
+      - Он настоящий гений! 
+      <p>- Все так говорят… А теперь пойдем поскорее. Не хочу больше тут находиться. 
+      <p>- Постой…
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[132].begin();}],
+    background: 'Backgrounds/Aurora_Pharm',
+  });
+
+Game.Scenes.A_Part03[132] =
+  new Scene({
+    text: `
+      Я не верила своим глазам, но из здания выходил Артур. Он выглядел нервным, постоянно оборачивался. От его добродушного и привычного располагающего вида не осталось и следа. Артур был полностью сосредоточен и шел вперед, пытаясь поскорее оставить здание далеко за спиной. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[133].begin();}],
+    background: 'Backgrounds/Aurora_Pharm',
+  });
+
+Game.Scenes.A_Part03[133] =
+  new Scene({
+    text: `
+      - Что такое? - уточнила Далия. 
+      <p>- Это Артур! Он должен был забрать меня сегодня. 
+      <p>- Артур? Внук прошлого смотрителя? Какое интересное совпадение. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[134].begin();}],
+    background: 'Backgrounds/Aurora_Pharm',
+  });
+
+Game.Scenes.A_Part03[134] =
+  new Scene({
+    text: `
+      Первое время, казалось, что Артур ничего не замечал вокруг. Но затем, будто бы неведомые силы заставили его посмотреть в мою сторону. Он сильно удивился, казалось, немного разозлился и стремительно направился в нашу сторону. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[135].begin();}],
+    background: 'Backgrounds/Aurora_Pharm',
+  });
+
+Game.Scenes.A_Part03[135] =
+  new Scene({
+    text: `
+      - Аврора? Что ты здесь делаешь? Ты же должна быть в университете. 
+      <p>- Должна, но ты не приехал. 
+      <p>- Как… - Артур посмотрел на время и с грустью взглянул на меня. - Прости, пожалуйста. Я должен был явиться по рабочим вопросам в этот офис. Сам не знаю, как так получилось, что я совершенно забыл о времени.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[136].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part03[136] =
+  new Scene({
+    text: `
+       - А что это за рабочие вопросы такие? - спросила Далия, испытывающе глядя на Артура. 
+       <p>- А ты кто такая? Извини, конечно, но это тебя не касается. 
+       <p>- Ты прав, но поступать так с близкими людьми как минимум - не красиво. Знаю я эти ваши «рабочие встречи». Врать он не умеет. Скрывает что-то!  Какие-нибудь девушки…
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[137].begin();}],
+    background: 'Persons/Aurora_Dalia',
+  });
+
+Game.Scenes.A_Part03[137] =
+  new Scene({
+    text: `
+       - Я не собираюсь выслушивать нотации от незнакомки, тем более без веского повода, - Артур прервал Далию и резко схватил меня за руку, потянув в сторону своего автомобиля. 
+       <p>- Но как же, - я растерянно смотрела вслед девушки. - Постой, я даже не попрощалась. 
+       <p>- Еще увидимся, Аврора, - крикнула мне Далия. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[138].begin();}],
+    background: 'Persons/Aurora_Arthur',
+  });
+
+Game.Scenes.A_Part03[138] =
+  new Scene({
+    text: `
+      Мы сели в машину Артура. Не было сил и желания вести разговор, поэтому мы молча поехали в сторону дома. 
+      <p>Я не представляла, почему он мог повести себя так бестактно. Да, я тоже была не права, что отправилась на прогулку, не стала его дожидаться.
+      <p>В конце концов, Далия оказалась права. Ему и правда было не до меня. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[139].begin();}],
+    background: 'Backgrounds/Aurora_Arthurs_Car',
+  });
+
+Game.Scenes.A_Part03[139] =
+  new Scene({
+    text: `
+      Даже дома разговор не завязывался. Мы не посмели смотреть друг на друга, а в горле застрял несуществующий ком. 
+      <p>Неожиданно Артур все-таки произнес:
+      <p>- Тебе пришло письмо. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[140].begin();}],
+    background: 'Backgrounds/Aurora_Livingkitchen',
+  });
+
+Game.Scenes.A_Part03[140] =
+  new Scene({
+    text: `
+      - Спасибо, - взяв в руки конверт, я поспешила в свою комнату. 
+      <p>Больше мне было невыносимо находиться в такой гнетущей атмосфере. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[141].begin();}],
+    background: 'Backgrounds/Aurora_Livingkitchen',
+  });
+
+Game.Scenes.A_Part03[141] =
+  new Scene({
+    text: `
+      Наконец-то оставшись сама с собой, я выдохнула, усаживаясь на кровати поудобнее. В голове прокручивался сегодняшний день и множество вопросов, на которые мне хотелось узнать ответы. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[142].begin();}],
+    background: 'Backgrounds/Aurora_Room',
+  });
+
+Game.Scenes.A_Part03[142] =
+  new Scene({
+    text: `
+      Прежде всего меня интересовало: почему Артур так странно вел себя? Неужели работа настолько важна, что ему было сложно даже послать СМС?
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[143].begin();}],
+    background: 'Backgrounds/Aurora_Room',
+  });
+
+Game.Scenes.A_Part03[143] =
+  new Scene({
+    text: `
+      А Калеб? Куда он так резко отправился? Что за отношения у Далии с отцом? 
+      <p>Даже легенда собора не отпускала меня, вызывая красочные образы в голове. Все ли там так очевидно? 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[144].begin();}],
+    background: 'Backgrounds/Aurora_Room',
+  });
+
+Game.Scenes.A_Part03[144] =
+  new Scene({
+    text: `
+      Но в одном я была уверена точно. Я ни разу не пожалела о своем решении участвовать в такой спонтанной поездке. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[145].begin();}],
+    background: 'Backgrounds/Aurora_Room',
+  });
+
+Game.Scenes.A_Part03[145] =
+  new Scene({
+    text: `
+      Еще больше меня волновало то, что сейчас в руках я сжимала письмо от отца. Конечно же я сразу узнала его аккуратный почерк. 
+      <p>Мне было страшно увидеть написанное, но все же я открыла конверт.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[146].begin();}],
+    background: 'Backgrounds/Aurora_Room',
+    condition: function () {
+      if (Game.Stats.Father.get>=1) this.buttonaction[0] = () => { Game.Scenes.A_Part03[146].begin(); Game.Sounds.play('Music','Lighthouse');}
+      if (Game.Stats.Father.get<=0) this.buttonaction[0] = () => { Game.Scenes.A_Part03[152].begin(); Game.Sounds.play('Music','Lighthouse');}
+    }
+  });
+
+Game.Scenes.A_Part03[146] =
+  new Scene({
+    text: `
+      Я не могла не обратить внимание на бумагу, на которой был написан текст. Она была мамина. Ей отчего-то очень нравилось коллекционировать необычную бумагу и иногда писать на ней особенные письма. 
+      <p>Оторвавшись от воспоминаний, я принялась читать.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[147].begin();}],
+    background: 'Backgrounds/Aurora_Message_Father_Good',
+  });
+
+Game.Scenes.A_Part03[147] =
+  new Scene({
+    text: `
+      <i>Дорогая Аврора, как ты? Я так и не смог отправить тебе СМС, да и не силен в этих современных технологиях. Поэтому использую старый добрый метод - письмо. 
+      <p><i>Расскажи о своих успехах. Обжилась на новом месте? Как у вас с Артуром дела? Что с учебой? Мне интересна любая деталь, связанная с тобой. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[148].begin();}],
+    background: 'Backgrounds/Aurora_Message_Father_Good',
+  });
+
+Game.Scenes.A_Part03[148] =
+  new Scene({
+    text: `
+      <i>Что же до меня, то у меня все хорошо. На работе все без изменений, полный штиль. Время от времени приезжают ремонтники. С одним из них даже удалось подружиться. Мои вечера отнюдь не такие одинокие, как ты могла подумать. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[149].begin();}],
+    background: 'Backgrounds/Aurora_Message_Father_Good',
+  });
+
+Game.Scenes.A_Part03[149] =
+  new Scene({
+    text: `
+      <i>Мы проводим время с пользой. Общаемся. Часто делимся опытом в рабочей сфере. Представляешь, я даже научился менять лампочку в прожекторе маяка. Не знаю пригодится ли мне это, но это был поучительный опыт.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[150].begin();}],
+    background: 'Backgrounds/Aurora_Message_Father_Good',
+  });
+
+Game.Scenes.A_Part03[150] =
+  new Scene({
+    text: `
+      <i>Я скучаю по тебе. Твой подарок греет мне душу и не дает грустить. 
+      <p><i>Ты тоже. Постарайся ради нас. 
+      <i><p>Люблю,
+      <i>Твой папа
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[151].begin();}],
+    background: 'Backgrounds/Aurora_Message_Father_Good',
+  });
+
+Game.Scenes.A_Part03[151] =
+  new Scene({
+    text: `
+      Отложив письмо в сторону, я улыбнулась, так как была искренне счастлива, что с папой все хорошо. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[157].begin();}],
+    background: 'Backgrounds/Aurora_Room',
+  });
+
+Game.Scenes.A_Part03[152] =
+  new Scene({
+    text: `
+      Я не могла не обратить внимание на бумагу, на которой был написан текст. Она была грязной в каких-то непонятных пятнах. 
+      <p>В душе сразу поселилось сомнение относительно состояния папы, и я скорее приступила к письму.
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[153].begin();}],
+    background: 'Backgrounds/Aurora_Message_Father_Bad',
+  });
+
+Game.Scenes.A_Part03[153] =
+  new Scene({
+    text: `
+      <i>Дорогая Аврора, как ты? Я так и не смог отправить тебе СМС, да и не силен в этих мобильных устройствах. Поэтому использую старый добрый метод - письмо. 
+      <i><p>Расскажи о своих успехах. Обжилась на новом месте? Как у вас с Артуром дела? Что с учебой? Мне интересна любая деталь связанная с тобой. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[154].begin();}],
+    background: 'Backgrounds/Aurora_Message_Father_Bad',
+  });
+
+Game.Scenes.A_Part03[154] =
+  new Scene({
+    text: `
+      <i>Что же до меня, то я сильно устаю в последнее время. Провожу свои вечера в одиночестве, иногда позволяю себе немного выпить. Это помогает заглушить столь нелегкое бремя. 
+      <i><p>Но я в порядке. Я обещал быть честным с тобой. Да. Период сейчас не самый простой, однако я справляюсь. Иначе и быть не может. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[155].begin();}],
+    background: 'Backgrounds/Aurora_Message_Father_Bad',
+  });
+
+Game.Scenes.A_Part03[155] =
+  new Scene({
+    text: `
+      <i>Я скучаю по тебе. Твой подарок греет мне душу и не дает окончательно загрустить.
+      <i><p>Люблю,
+      <i>Твой папа
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[156].begin();}],
+    background: 'Backgrounds/Aurora_Message_Father_Bad',
+  });
+
+Game.Scenes.A_Part03[156] =
+  new Scene({
+    text: `
+      Отложив письмо в сторону, я заплакала от того, что отцу сейчас приходится так несладко, а я думаю лишь о себе и о каких-то несущественных вопросах. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => { Game.Scenes.A_Part03[157].begin();}],
+    background: 'Backgrounds/Aurora_Room',
+  });
+
+Game.Scenes.A_Part03[157] =
+  new Scene({
+    text: `
+      Я дала себе слово, что в ближайшее время обязательно навещу его. 
+      <p>А пока, обнимая подушку, я так и уснула в обнимку с письмом, вспоминая теплые слова своего отца. 
+        `,
+    buttontext: [''],
+    buttonaction: [() => {
+      Game.Scenes.Features[100].begin();
+      Game.Progress.save('Aurora_Part04');
+    }],
+    background: 'Backgrounds/Aurora_Room',
+    condition: function () {
+      Game.Achievements.A_Part03Completed.unlock();
+    }
+  });Game.Scenes.Features = [];
+
+Game.Scenes.Features[0] =
     new Scene({
         text: `
-            Я попыталась вспомнить хоть какие-то фрагменты из своего прошлого, но пришла в ужас от осознания полного забвения. В голову приходили только самые банальные вопросы.
-            <p>Я робко взглянула на него и спросила: 
-        `,
-        buttontext: [''],
-        buttonaction: [() => { Game.askName(() => {Game.Scenes.Prologue[15].begin() }) }],
-        background: 'Persons/Stranger',
-    });
-
-Game.Scenes.Prologue[15] =
-    new Scene({
-        text: `Из-под капюшона продолжала проглядывать ухмылка. Складывалось ощущение, что собеседника забавляет этот вопрос.
-            <p>- Тебя зовут $Имя Игрока$. И почему всем всегда так важно знать свое имя…
-            <p>Я задумалась. Во мне заиграло любопытство или простой страх, что я могу потерять свою личность?
-            <p>- Это же часть тебя… я…
-        `,
-        buttontext: [''],
-        buttonaction: [() => { Game.Scenes.Prologue[3].begin();}],
-        background: 'Persons/Stranger',
-
-    });
-
-Game.Scenes.Prologue[3] =
-    new Scene({
-        text: `
-            - Брось, - перебил проводник, - у меня нет имени. Но я вездесущ. Я всегда и везде. Необязательно носить эти придуманные клички, чтобы что-то из себя представлять. 
-            <p>Я решила не спорить. Стало ясно, что у него слишком большое самомнение; что-то доказывать - бесполезно. Беседа продолжилась.
+            Привет! Это меню доступа к ранним возможностям и тестирования функций, что тебе показать?
             `,
         buttontext: [
-            'Сколько мне лет?',
-            'Где я родилась?',
-            'Я умерла?',
-            'Закончить диалог'
+            'Перейти на часть',
+            'Ничего',
+
         ],
+        background: 'Persons/RTemiy',
         buttonaction: [
-            () => { Game.Scenes.Prologue[4].deactivate(0); Game.Scenes.Prologue[5].deactivate(0); Game.Scenes.Prologue[6].deactivate(0); Game.Scenes.Prologue[16].begin(); },
-            () => { Game.Scenes.Prologue[4].deactivate(1); Game.Scenes.Prologue[5].deactivate(1); Game.Scenes.Prologue[6].deactivate(1); Game.Scenes.Prologue[17].begin(); },
-            () => { Game.Scenes.Prologue[4].deactivate(2); Game.Scenes.Prologue[5].deactivate(2); Game.Scenes.Prologue[6].deactivate(2); Game.Scenes.Prologue[18].begin(); },
-            () => { Game.Scenes.Prologue[19].begin(); },
+            () => { Game.Scenes.Features[5].begin(); },
+            () => { Game.Interface.closeopen('MainField', 'MenuField') },
         ],
-        buttonactive: [true, true, true, false],
-        background: 'Persons/Stranger',
-        condition: function () {
-          Game.Scenes.Prologue[4].activate(0); Game.Scenes.Prologue[5].activate(0); Game.Scenes.Prologue[6].activate(0);
-          Game.Scenes.Prologue[4].activate(1); Game.Scenes.Prologue[5].activate(1); Game.Scenes.Prologue[6].activate(1);
-          Game.Scenes.Prologue[4].activate(2); Game.Scenes.Prologue[5].activate(2); Game.Scenes.Prologue[6].activate(2);
-            if (this.buttonactive[0] == false && this.buttonactive[1] == false && this.buttonactive[2] == false) {
-                this.buttonactive[3] = true;
-            }
-            else{
-              this.buttonactive[3] = false;
-            }
-        }
     });
 
-Game.Scenes.Prologue[16] =
-    new Scene({
-        text: `Всего на секунду проводник задумался, но потом уверенно сказал:
-            <p>- 22.
-            <p>Я хотела вспомнить, чем занималась в жизни, но сознание не отзывалось. Как будто на него навесили черный заслон, и все что я могла – это слепо верить, хватать остатки былых ощущений.
-            <p>- Ты меня знаешь… Откуда?
-        `,
-        buttontext: [''],
-        buttonaction: [() => { Game.Scenes.Prologue[4].begin() }],
-        background: 'Persons/Stranger',
-    });
-
-Game.Scenes.Prologue[4] =
+Game.Scenes.Features[4] =
     new Scene({
         text: `
-            - Я знаю все. А ты привлекла меня, потому что оказалась немного интереснее других. Знаешь, я многое могу рассказать. Твою собаку звали Чарли. Любимый цвет – фиолетовый. Ты пытаешься бросить курить. Твоя мать изменяет отцу…
-            <p>- Прекрати! – я сорвалась на крик. – Это не я… Свою жизнь я не помню.
-            <p>- Это пока…
-        `,
+            Привет! Это история "Бессмертные: последняя надежда" Куда тебя переместить?
+            `,
         buttontext: [
-            'Сколько мне лет?',
-            'Где я родилась?',
-            'Я умерла?',
-            'Закончить диалог'
+            'Часть 1',
+            'Часть 2',
+            'Часть 3',
+            'Часть 4',
         ],
+        background: 'Persons/Masha',
         buttonaction: [
-            () => { Game.Scenes.Prologue[4].deactivate(0); Game.Scenes.Prologue[5].deactivate(0); Game.Scenes.Prologue[6].deactivate(0); Game.Scenes.Prologue[16].begin(); },
-            () => { Game.Scenes.Prologue[4].deactivate(1); Game.Scenes.Prologue[5].deactivate(1); Game.Scenes.Prologue[6].deactivate(1); Game.Scenes.Prologue[17].begin(); },
-            () => { Game.Scenes.Prologue[4].deactivate(2); Game.Scenes.Prologue[5].deactivate(2); Game.Scenes.Prologue[6].deactivate(2); Game.Scenes.Prologue[18].begin(); },
-            () => { Game.Scenes.Prologue[19].begin(); },
+            () => { Game.Scenes.FirstChapter[101].begin(); },
+            () => { Game.Scenes.TL[1].begin(); },
+            () => { Game.Scenes.PP[1].begin(); },
+            () => { Game.Scenes.PP[1].begin(); },
         ],
-        buttonactive: [true, true, true, false],
-        background: 'Persons/Stranger',
-        condition: function () {
-            if (this.buttonactive[0] == false && this.buttonactive[1] == false && this.buttonactive[2] == false) {
-                this.buttonactive[3] = true;
-            }
-            else{
-              this.buttonactive[3] = false;
-            }
-        }
     });
 
-Game.Scenes.Prologue[17] =
-    new Scene({
-        text: `Фигура в плаще развела руками и проговорила:
-            <p>- В обычном городе, в обычной квартире, в обычной семье. К чему это? Ты уже нафантазировала себе, что ты дочь серафима? Или, быть может, принцесса?
-            <p>Я ожидала большей конкретики, но видимо проводник решил, что делать на этом акцент бессмысленно.
-            <p>- Что это за место?
-        `,
-        buttontext: [''],
-        buttonaction: [() => { Game.Scenes.Prologue[5].begin(); Game.message("Серафим - высший ангельский чин, наиболее приближенный к Богу."); }],
-        background: 'Persons/Stranger',
-    });
-
-Game.Scenes.Prologue[5] =
-    new Scene({
-        text: `
-            - Место, где все началось, место, где, надеюсь, все и закончится.
-            <p>- Ты всегда будешь говорить загадками? – я обреченно вздохнула.
-            <p>- Нет, только когда это уместно.              
-        `,
-        buttontext: [
-            'Сколько мне лет?',
-            'Где я родилась?',
-            'Я умерла?',
-            'Закончить диалог'
-        ],
-        buttonaction: [
-            () => { Game.Scenes.Prologue[4].deactivate(0); Game.Scenes.Prologue[5].deactivate(0); Game.Scenes.Prologue[6].deactivate(0); Game.Scenes.Prologue[16].begin(); },
-            () => { Game.Scenes.Prologue[4].deactivate(1); Game.Scenes.Prologue[5].deactivate(1); Game.Scenes.Prologue[6].deactivate(1); Game.Scenes.Prologue[17].begin(); },
-            () => { Game.Scenes.Prologue[4].deactivate(2); Game.Scenes.Prologue[5].deactivate(2); Game.Scenes.Prologue[6].deactivate(2); Game.Scenes.Prologue[18].begin(); },
-            () => { Game.Scenes.Prologue[19].begin(); },
-        ],
-        buttonactive: [true, true, true, false],
-        background: 'Persons/Stranger',
-        condition: function () {
-            if (this.buttonactive[0] == false && this.buttonactive[1] == false && this.buttonactive[2] == false) {
-                this.buttonactive[3] = true;
-            }
-            else{
-              this.buttonactive[3] = false;
-            }
-        }
-    });
-
-Game.Scenes.Prologue[18] =
-    new Scene({
-        text: `
-            Проводник разразился смехом.
-            <p>- Бинго! Я всегда жду, когда этот вопрос зададут.
-            <p>- Но ты не ответил… А я и не знаю, что думать. Ты выглядишь как жнец, готовящийся отправить меня в преисподнюю.
-            <p>- Настолько ли я страшен?
-        `,
-        buttontext: [''],
-        buttonaction: [() => { Game.Scenes.Prologue[6].begin() }],
-        background: 'Persons/Stranger',
-    });
-
-Game.Scenes.Prologue[6] =
-    new Scene({
-        text: `
-            - Что мне ожидать от… - я помедлила, - от существа, которое скрывает свое лицо.
-            <p>- О! Так в этом дело. Поумерь любопытство и перестань выдумывать . Все намного проще…
-            <p>- Я…
-            <p>Проводник жестом показал, что стоит перейти на другую тему.              
-        `,
-        buttontext: [
-            'Сколько мне лет?',
-            'Где я родилась?',
-            'Я умерла?',
-            'Закончить диалог'
-        ],
-        buttonaction: [
-            () => { Game.Scenes.Prologue[4].deactivate(0); Game.Scenes.Prologue[5].deactivate(0); Game.Scenes.Prologue[6].deactivate(0); Game.Scenes.Prologue[16].begin(); },
-            () => { Game.Scenes.Prologue[4].deactivate(1); Game.Scenes.Prologue[5].deactivate(1); Game.Scenes.Prologue[6].deactivate(1); Game.Scenes.Prologue[17].begin(); },
-            () => { Game.Scenes.Prologue[4].deactivate(2); Game.Scenes.Prologue[5].deactivate(2); Game.Scenes.Prologue[6].deactivate(2); Game.Scenes.Prologue[18].begin(); },
-            () => { Game.Scenes.Prologue[19].begin(); },
-        ],
-        buttonactive: [true, true, true, false],
-        background: 'Persons/Stranger',
-        condition: function () {
-            if (this.buttonactive[0] == false && this.buttonactive[1] == false && this.buttonactive[2] == false) {
-                this.buttonactive[3] = true;
-            }
-            else{
-              this.buttonactive[3] = false;
-            }
-        }
-    });
-
-Game.Scenes.Prologue[19] =
-    new Scene({
-        text: `
-            - На этом мы закончим. Я понимаю, что тебя интересует многое. Но время не ждет. Готова ли ты вспомнить, что пережила?
-        `,
-        buttontext: [''],
-        buttonaction: [() => { Game.Scenes.Prologue[8].begin(); Game.message('Сейчас вы сделаете свой первый выбор. Некоторые из них меняют сюжет незначительно, другие же ведут к серьезным переменам. Но помните, только Вам решать, какой вы видите свою главную героиню.'); }],
-        background: 'Persons/Stranger',
-    });
-
-Game.Scenes.Prologue[8] =
-    new Scene({
-        text: `
-            Я кивнула, немного поежившись. Я вдруг смогла почувствовать… холод?  Или это были ощущения по воспоминаниям из моей жизни? Мой загадочный собеседник заметил это и сказал:
-            <p>- Ты не можешь здесь мерзнуть, расслабься.
-            <p>И я…            
-        `,
-        buttontext: [
-            'Послушалась его',
-            'Продолжала замерзать'
-        ],
-        buttonaction: [
-            () => { Game.message("Проводнику приятно, что вы послушались его"); Game.Scenes.Prologue[11].begin(); Game.Stats.God.add(1); },
-            () => { Game.message("Проводник другого и не ожидал…"); Game.Scenes.Prologue[9].begin(); Game.Stats.God.add(0); }
-        ],
-        background: 'Persons/Stranger',
-    });
-
-Game.Scenes.Prologue[9] =
-    new Scene({
-        text:
-            `Мои забытые ощущения брали вверх. Тело стало еще сильнее дрожать, пока я окончательно не околела. Становилось страшно, темно. 
-            <p>- Я не могу… Я не понимаю.
-            <p>Проводник, до этого стоявший на одном месте, подошел ко мне и положил ладонь мне на плечо.
-        `,
-        buttontext: [''],
-        buttonaction: [() => { Game.Scenes.Prologue[52].begin(); Game.Achievements.PrologueCompleted.unlock(); }],
-        background: 'Backgrounds/Abstraction',
-    });
-
-Game.Scenes.Prologue[52] =
+Game.Scenes.Features[6] =
   new Scene({
-    text:
-      `
-      Постепенно я начала чувствовать, как температура возвращается в норму.
-      <p>- Люди такие люди, - он отошел от меня, оставив приятное чувство тепла от прикосновения.  – Давай перейдем к делу.      
-      <p>Проводник развел руками и перед ним возникла потрепанная временем дверь, которая периодически мерцала, словно вспышка. 
-      Свет отвлекал, я не могла заглянуть внутрь и разглядеть, куда ведет проход. 
-        `,
-    buttontext: [''],
-    buttonaction: [() => { Game.Scenes.Prologue[10].begin(); Game.Achievements.PrologueCompleted.unlock(); }],
-    background: 'Backgrounds/Door',
+    text: `
+            Привет! Это история "Аврора" Куда тебя переместить?
+            `,
+    buttontext: [
+            'Часть 1',
+    ],
+    background: 'Persons/Masha',
+    buttonaction: [
+      () => { },
+    ],
   });
 
-Game.Scenes.Prologue[10] =
+Game.Scenes.Features[100] =
     new Scene({
         text: `
-            Однако, на миг, мне показалось, что за деревянными створками кипит настоящая жизнь: 
-            звонкий мужской голос со странным акцентом что-то говорит про выпечку, грохот от колес, что несутся по каменной кладке; одним словом - звуки большого города. 
-            <p>- Ты готова?
-            <p>Я неуверенно кивнула, следуя за таинственным гостем в неизвестность.            
-        `,
-        buttontext: [''],
+            <p>
+            <p>
+            <p>Продолжение следует! 
+
+            <p>Дата выхода следующего обновления: 20 мая
+
+            <p>Очень ждём вас в нашем телеграмм канале - <a href="https://t.me/chronicles_game" target="_blank">Перейти</a>
+
+            <p>Там вы сможете пообщаться с нами, узнать на каком этапе находится разработка игры. 
+            И не стесняйтесь сообщать об ошибках, ведь только С ВАШЕЙ ПОМОЩЬЮ мы сможем стать лучше!
+
+            <p>Будем очень рады вашей оценке! Пожалуйста, оставляйте отзывы на странице нашего приложения в Google Play - <a href="https://play.google.com/store/apps/details?id=com.mva.chronicles" target="_blank">Перейти</a>
+            `,
+        background: "",
+      buttonactive: [true, false],
+        buttontext: ['Вернуться в меню'],
         buttonaction: [() => {
-            setTimeout(() => { Game.Scenes.FirstChapter[0].begin(); }, 1000);
-            Game.LoadScreen('FirstChapter');
-            Game.Progress.save("FirstChapter");
-
+          Game.Interface.closeopen('MainField','MenuField');
+          Game.Sounds.pauseAll();
         }],
-        background: 'Backgrounds/Door',
     });
 
-Game.Scenes.Prologue[11] =
-    new Scene({
-        text: `
-            Я попыталась максимально абстрагироваться, внушая себе, что сейчас я бесформенное нечто, не способное переживать  прежние эмоции и ощущения.
-            <p>Проводник удовлетворительно кивнул и сказал:
-            <p>- Здесь нам ничего не может угрожать. Разве что, бренное существование… Одинокое… - с грустью в голосе сказал неизвестный. 
-            <p>– Забудь, давай перейдем к делу.            
-        `,
-        buttontext: [''],
-        buttonaction: [() => { Game.Scenes.Prologue[52].begin(); Game.Achievements.PrologueCompleted.unlock(); }],
-        background: 'Persons/Stranger',
-    });
+Game.Scenes.Features[5] =
+  new Scene({
+    text: `
+            Привет! Выбери историю
+            `,
+    buttontext: [
+      'Бессмертные: Последняя надежда',
+      'Аврора',
+    ],
+    background: 'Persons/Masha',
+    buttonaction: [
+      () => { Game.Scenes.Features[4].begin(); },
+      () => { Game.Scenes.Features[6].begin() },
+    ],
+  });
+
+/* ЗАГОТОВКА
+Name[0] =
+        new Scene({
+            text: `
+
+            `,
+            buttontext: [
+                '',
+                '',
+                '',
+                '',
+                ''
+                ],
+            buttonaction: [
+                ()=>{},
+                ()=>{},
+                ()=>{},
+                ()=>{},
+                ()=>{}
+            ],
+            buttonactive: [, , , ,],
+            background : '',
+            condition : function (){
+
+            },
+        });
+*/
