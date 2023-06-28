@@ -17527,10 +17527,232 @@ Game.Scenes.SixPart[85] = new Scene({
     'Доброе утро!',
   ],
   buttonaction: [
-    () => { Game.Scenes.SixPart[87].begin();},
-    () => { Game.Scenes.SixPart[87].begin();},
-    () => { Game.Scenes.SixPart[87].begin();},
+    () => { Game.Scenes.SixPart[87].begin()},
+    () => { Game.Scenes.SixPart[88].begin()},
+    () => { Game.Scenes.SixPart[89].begin()},
   ],
+  condition: function () {
+    this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`);
+  }
+});
+
+Game.Scenes.SixPart[87] = new Scene({
+  text: `
+    Я нервно начала теребить подол юбки, чувствуя, как задергался глаз в ожидании реакции мужчины.
+    <p>Куртис же рассмеялся и проговорил: 
+    <p>- Вы что же, не расположены к беседе, мисс? Может, вам не здоровится? Но, признаться, вы попали в точку. Солнце в это раннее утро прекрасно как никогда! Но нужно начинать собираться, чтобы избежать жары. 
+    <p>“Ох, что я несу…”
+            `,
+  background: "Persons/Curtis_02",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[90].begin();  }],
+  condition: function () {
+    this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`);
+  }
+});
+
+Game.Scenes.SixPart[88] = new Scene({
+  text: `
+    Куртис рассмеялся и проговорил: 
+    <p>- Еще вчера был инженером, который неплохо показал себя в роли рассказчика. Жаль, вы не услышали. Уверен, вы бы оценили или даже, быть может, решились поставить спектакль…
+    <p>“Слышала-слышала… Ох, что я несу.”
+            `,
+  background: "Persons/Curtis_03",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[90].begin();  }],
+  condition: function () {
+    this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`);
+  }
+});
+
+Game.Scenes.SixPart[89] = new Scene({
+  text: `
+    Куртис удовлетворительно кивнул и сказал: 
+    <p>- Надеюсь, наша ночная посиделка никак не мешала вам видеть сны. 
+    <p>- Нисколько! 
+            `,
+  background: "Persons/Curtis_01",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[90].begin();  }],
+  condition: function () {
+    this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`);
+  }
+});
+
+Game.Scenes.SixPart[90] = new Scene({
+  text: `
+    “Вроде справилась… Он не похож на подозрительного человека, который бы сильно заострял внимание на чем-то странном. Достаточно приятный и веселый мужчина. Нужно расслабиться и не накручивать себя.”
+            `,
+  background: "Persons/Curtis_01",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[91].begin();  }],
+  condition: function () {
+    this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`);
+  }
+});
+
+Game.Scenes.SixPart[91] = new Scene({
+  text: `
+    - Кстати, - Куртис собирал разбросанную посуду. - Если вы ищете Роберта, то он пошел к реке, чтобы привести себя в порядок и набрать воды в дорогу. Я думаю, скоро вернется. 
+    <p>Мужчина бережно складывал кружки в рюкзак. Держа последнюю чашку в руках, он спросил:
+    <p>- Мисс, вы случаем не голодны? У нас осталось немного свинины с вечера, а до ближайшего приличного места в городе скакать несколько часов. 
+            `,
+  background: "Backgrounds/Camp_Morning",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[92].begin();  }],
+});
+
+Game.Scenes.SixPart[92] = new Scene({
+  text: `
+    “Ох, еда - сейчас это последнее, о чем я буду думать. Какой еще город? Скакать? Так, $Имя Игрока$, надо собраться. Задам абстрактные вопросы и хотя бы примерно пойму положение дел.”
+            `,
+  background: "Backgrounds/Camp_Morning",
+  buttontext: [
+    'А где же лошади?',
+    'Нас кто-то встретит на месте?',
+    'А что мы будем делать после поездки?',
+    'Закончить диалог'
+  ],
+  buttonaction: [
+    () => { Game.Scenes.SixPart[95].deactivate(0); Game.Scenes.SixPart[98].deactivate(0); Game.Scenes.SixPart[100].deactivate(0); Game.Scenes.SixPart[93].begin();},
+    () => { Game.Scenes.SixPart[95].deactivate(1); Game.Scenes.SixPart[98].deactivate(1); Game.Scenes.SixPart[100].deactivate(1); Game.Scenes.SixPart[96].begin();},
+    () => { Game.Scenes.SixPart[95].deactivate(2); Game.Scenes.SixPart[98].deactivate(2); Game.Scenes.SixPart[100].deactivate(2); Game.Scenes.SixPart[99].begin();},
+    () => { Game.Scenes.SixPart[101].begin();}
+  ],
+  buttonactive: [true,true,true,false],
+  condition: function () {
+    this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`);
+    Game.Scenes.SixPart[98].activate(0); Game.Scenes.SixPart[100].activate(0);
+    Game.Scenes.SixPart[95].activate(1); Game.Scenes.SixPart[100].activate(1);
+    Game.Scenes.SixPart[95].activate(2); Game.Scenes.SixPart[98].activate(2);
+    this.buttonactive[0] === false && this.buttonactive[1] === false && this.buttonactive[2] === false ?
+      this.buttonactive[3] = true : this.buttonactive[3] = false;
+  }
+});
+
+Game.Scenes.SixPart[93] = new Scene({
+  text: `
+    - Никола кормит их перед дорогой. Беспокоюсь немного, что не успеем доскакать до того, как солнце будет в зените. 
+    <p>- У нас же есть головные уборы. Должно помочь. 
+    <p>- Вы правы, мисс Катарина. Однако поверьте, открытое пространство без большого количество зелени - очень изнуряет. 
+            `,
+  background: "Backgrounds/Camp_Morning",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[94].begin();  }],
+  condition: function () {
+    this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`);
+  }
+});
+
+Game.Scenes.SixPart[94] = new Scene({
+  text: `
+    - У вас имелся опыт в подобных экспедициях? 
+    <p>- Да. Я рассказывал Роберту и Николе о том, что раньше частенько увлекался подобными авантюрами. Хоть сейчас и кажется, словно мы гоняемся за сказкой, но итог может быть непредсказуем.
+            `,
+  background: "Backgrounds/Camp_Morning",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[95].begin();  }],
+  condition: function () {
+    this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`);
+  }
+});
+
+Game.Scenes.SixPart[95] = new Scene({
+  text: `
+    “Они что-то ищут. Учитывая вчерашнюю заинтересованность Теслы относительно легенды индейцев, нужно мыслить в этом направлении.”
+            `,
+  background: "Backgrounds/Camp_Morning",
+  buttontext: Game.Scenes.SixPart[92].buttontext,
+  buttonaction: Game.Scenes.SixPart[92].buttonaction,
+  buttonactive: [false,true,true,false],
+  condition: function () {
+    this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`);
+    this.buttonactive[0] === false && this.buttonactive[1] === false && this.buttonactive[2] === false ?
+      this.buttonactive[3] = true : this.buttonactive[3] = false;
+  }
+});
+
+Game.Scenes.SixPart[96] = new Scene({
+  text: `
+    - Разумеется. Роберт же вроде упоминал о своих знакомых, которые любезно согласились разместить нас в гостинице. 
+    <p>- Простите. Должно быть путешествие утомило меня. 
+    <p>- Не страшно. Признаюсь честно, я поражен вашей решимостью отправиться с нами в этот несчастный Колорадо-Спрингс. 
+            `,
+  background: "Backgrounds/Camp_Morning",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[97].begin();  }],
+  condition: function () {
+    this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`);
+  }
+});
+
+Game.Scenes.SixPart[97] = new Scene({
+  text: `
+    - Несчастный…? 
+    <p>- Это мои личные предубеждения. Каждый раз, когда я вынужден отправиться туда, происходит чертовщина. Собственно, как и сейчас. Непонятно только с чем это связано… 
+            `,
+  background: "Backgrounds/Camp_Morning",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[98].begin();  }],
+  condition: function () {
+    this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`);
+  }
+});
+
+Game.Scenes.SixPart[98] = new Scene({
+  text: `
+    “Колорадо-Спрингс. По крайне мере теперь я знаю, куда мы направляемся. Интересно, в городе действительно творится необъяснимое?” 
+            `,
+  background: "Backgrounds/Camp_Morning",
+  buttontext: Game.Scenes.SixPart[92].buttontext,
+  buttonaction: Game.Scenes.SixPart[92].buttonaction,
+  buttonactive: [true,false,true,false],
+  condition: function (){
+    this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`);
+    this.buttonactive[0] === false && this.buttonactive[1] === false && this.buttonactive[2] === false ?
+      this.buttonactive[3] = true : this.buttonactive[3] = false;
+  }
+
+});
+
+Game.Scenes.SixPart[99] = new Scene({
+  text: `
+    - Я бы не заглядывал настолько вперед, - Куртис пожал плечами. - В конце концов мы не знаем, что предстоит пережить в этом путешествие. 
+    <p>- Вы чего-то боитесь?
+    <p>- Не сказал бы. Я не склонен трястись от страха из-за баек, однако и отрицать их не вижу смысла. В каждой сказке есть доля правды, не так ли?
+
+            `,
+  background: "Backgrounds/Camp_Morning",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[100].begin();  }],
+  condition: function () {
+    this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`);
+  }
+});
+
+Game.Scenes.SixPart[100] = new Scene({
+  text: `
+    “Любопытно. Несмотря на его уверенность, он явно чем-то встревожен. В какую же авантюру они ввязались?”
+            `,
+  background: "Backgrounds/Camp_Morning",
+  buttontext: Game.Scenes.SixPart[92].buttontext,
+  buttonaction: Game.Scenes.SixPart[92].buttonaction,
+  buttonactive: [true,true,false,false],
+  condition: function () {
+    this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`);
+    this.buttonactive[0] === false && this.buttonactive[1] === false && this.buttonactive[2] === false ?
+      this.buttonactive[3] = true : this.buttonactive[3] = false;
+  }
+});
+
+Game.Scenes.SixPart[101] = new Scene({
+  text: `
+    - Что ж, благодарю вас за прекрасную беседу, вынужден откланяться, так как необходимо помочь с остальными приготовлениями к отъезду. 
+    <p>- Спасибо вам, вы очень любезны!
+            `,
+  background: "Backgrounds/Camp_Morning",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[102].begin();  }],
   condition: function () {
     this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`);
   }
