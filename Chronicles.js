@@ -2133,7 +2133,7 @@ function handleVisibilityChange() {
       new Part({
         name: 'Часть 6',
         code: 'SixPart',
-        pict: 'Backgrounds/House_Immortals',
+        pict: 'Backgrounds/Camp_Morning',
         event: function () {
 
           Game.Design.change('Immortals');
@@ -16585,10 +16585,9 @@ Game.Scenes.SixPart[0] = new Scene({
             `,
   background: "Persons/Robert_Pompeii",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.SixPart[1].begin();}],
+  buttonaction: [() => { Game.Scenes.SixPart[1].begin(); Game.message('<i>Помпеи 79 г. н.э.');}],
   condition: () => {
     Game.Sounds.play('Music','Pompeii');
-    Game.message('<i>Помпеи 79 г. н.э.');
   }
 });
 
@@ -17229,7 +17228,7 @@ Game.Scenes.SixPart[61] = new Scene({
     Game.Stats.Robert.get >= 3 ?
       this.buttonaction[0] = () => { Game.Scenes.SixPart[62].begin()}
       :
-      Game.Stats.Nicola.get >= 4 ?
+      Game.Stats.Nicola.get >= 5 ?
         this.buttonaction[0] = () => { Game.Scenes.SixPart[71].begin()}
         :
         this.buttonaction[0] = () => { Game.Scenes.SixPart[75].begin()}
@@ -17241,7 +17240,7 @@ Game.Scenes.SixPart[62] = new Scene({
     Я услышала шаги, которые медленно приближались. Кто-то сел передо мной, нежно провел рукой по плечу и произнес:
     <p>- Надеюсь, теперь ты в порядке и никакой кошмар тебя не потревожит, - это был уставший, но ласковый голос Роберта. - Спи спокойно, я рядом. 
             `,
-  background: "Persons/Robert_Colorado",
+  background: "Backgrounds/Camp_Night",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[63].begin();  }],
 });
@@ -17251,7 +17250,7 @@ Game.Scenes.SixPart[63] = new Scene({
     Мне было сложно представить, что могло произойти с того момента, когда мне в последний раз удалось увидеть Роберта. 
     <p>“Они с Катариной стали ближе? Как она пережила возвращение в свое тело? А вернулась ли?”
             `,
-  background: "Persons/Robert_Colorado",
+  background: "Backgrounds/Camp_Night",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[64].begin();  }],
 });
@@ -17262,7 +17261,7 @@ Game.Scenes.SixPart[64] = new Scene({
     <p>- Что же с тобой случилось в то злополучное похищение, дорогая?
     <p>Я слышала, как он подлил себе в емкость спиртное и вмиг осушил содержимое. 
             `,
-  background: "Persons/Robert_Colorado",
+  background: "Backgrounds/Camp_Night",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[65].begin();  }],
 });
@@ -17273,7 +17272,7 @@ Game.Scenes.SixPart[65] = new Scene({
     <p>Мне стало так тоскливо из-за состояния мужчины. Сложно представить, что он переживал все эти годы.
     <p>“А учитывая, какая у него непростая судьба, я его понимаю. Каждому нужно иногда выговориться.”
             `,
-  background: "Persons/Robert_Colorado",
+  background: "Backgrounds/Camp_Night",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[69].begin();  }],
   condition: function () {
@@ -17288,7 +17287,7 @@ Game.Scenes.SixPart[66] = new Scene({
   text: `
     - Во время того самого приема, ты словно была другим человеком. Я, признаться, очень удивился, что сама Катарина не хотела отпускать меня. Вместо привычной тебе светской беседы, предпочла танец со мной…
             `,
-  background: "Persons/Robert_Colorado",
+  background: "Backgrounds/Camp_Night",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[67].begin();  }],
 });
@@ -17297,7 +17296,7 @@ Game.Scenes.SixPart[67] = new Scene({
   text: `
     - А каким он был! Абсолютно новые ощущения для меня. Я почувствовал себя таким живым. Таким настоящим. Эти объятия, веселье и спокойствие рядом с тобой. Спасибо, Катарина. 
             `,
-  background: "Persons/Robert_Colorado",
+  background: "Backgrounds/Camp_Night",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[68].begin();  }],
 });
@@ -17308,7 +17307,7 @@ Game.Scenes.SixPart[68] = new Scene({
     <p>“Утром я снова увижу ворчливого Роберта, который сосредоточен на своем деле.”
     <p>Однако от этих мыслей не становилось грустно, ведь сегодня я стала на шаг ближе к нему. 
             `,
-  background: "Persons/Robert_Colorado",
+  background: "Backgrounds/Camp_Night",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[69].begin();  }],
 });
@@ -17318,7 +17317,7 @@ Game.Scenes.SixPart[69] = new Scene({
     Спустя все это время вместе, моя уверенность в том, какой на самом деле Роберт ранимый - только укреплялась.
     <p>“Он слишком строг к себе. В какой-то степени виновата работа… Как же хочется просто его обнять и не отпускать.”
             `,
-  background: "Persons/Robert_Colorado",
+  background: "Backgrounds/Camp_Night",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[70].begin();  }],
 });
@@ -17329,7 +17328,7 @@ Game.Scenes.SixPart[70] = new Scene({
     <p>Меня немного затрясло, что, видимо, не скрылось от глаз Роберта. Он заботливо накрыл меня одеялом и произнес:
     <p>- Спокойной ночи. 
             `,
-  background: "Persons/Robert_Colorado",
+  background: "Backgrounds/Camp_Night",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[75].begin();  }],
 });
@@ -17339,7 +17338,7 @@ Game.Scenes.SixPart[71] = new Scene({
     Я услышала шаги, которые медленно приближались. Кто-то сел передо мной и произнес:
     <p>- Катарина, зачем же ты отправилась с нами…
             `,
-  background: "Persons/Nicola",
+  background: "Backgrounds/Camp_Night",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[72].begin();  }],
 });
@@ -17349,7 +17348,7 @@ Game.Scenes.SixPart[72] = new Scene({
     Я тут же узнала встревоженный голос Николы. Мужчина легким движением провел по моей ладони, продолжая повторять:
     <p>- Какой же я слабый. Я не смог защитить тебя, не смог защитить своего брата. Да что я вообще могу? Только сидеть и мечтать об этих дурацких изобретениях…
             `,
-  background: "Persons/Nicola",
+  background: "Backgrounds/Camp_Night",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[73].begin();  }],
 });
@@ -17359,7 +17358,7 @@ Game.Scenes.SixPart[73] = new Scene({
     Такое откровение отозвалось болью в сердце. Даже сквозь затуманенное сознание, я чувствовала тревогу Николы. Мне хотелось встать и поддержать его. Сказать ему, каким великим человеком он станет благодаря своим мечтам и упорному труду. 
     <p>Но проклятое тело оставалось приковано к земле. 
             `,
-  background: "Persons/Nicola",
+  background: "Backgrounds/Camp_Night",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[74].begin();  }],
 });
@@ -17369,7 +17368,7 @@ Game.Scenes.SixPart[74] = new Scene({
     - Спи спокойно, Катарина. Что бы ни случилось. 
     <p>Мужчина накрыл меня одеялом, а затем поспешно удалился.
             `,
-  background: "Persons/Nicola",
+  background: "Backgrounds/Camp_Night",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[75].begin();  }],
 });
@@ -17756,6 +17755,361 @@ Game.Scenes.SixPart[101] = new Scene({
   condition: function () {
     this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`);
   }
+});
+
+Game.Scenes.SixPart[102] = new Scene({
+  text: `
+    “И мне не стоит рассиживаться. Может, им нужна помощь?”
+    <p>Но так и не найдя себе занятие, я начала ходить вокруг лагеря и размышлять об услышанном. 
+            `,
+  background: "Backgrounds/Camp_Morning",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[103].begin();  }],
+});
+
+Game.Scenes.SixPart[103] = new Scene({
+  text: `
+    Неожиданно чья-то рука опустилась мне на плечо, а затем бодрый мужской голос произнес:
+    <p>- Проснулась? Кошмары не мучали? 
+            `,
+  background: "Backgrounds/Camp_Morning",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[104].begin();  }],
+});
+
+Game.Scenes.SixPart[104] = new Scene({
+  text: `
+    Это был Роберт, который выглядел под стать обстоятельствам. Скромная черная жилетка поверх легкой рубашки, вьющиеся русые волосы, слегка не доходящие до плеч и простая шляпа, без которой трудно обойтись, учитывая местный климат. 
+    <p>“А он хорош. Даже не знаю, какой Роберт мне больше нравится. Даже его шрам, в этом образе, он как аксессуар и бесспорно дополняет его.” 
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[105].begin();  }],
+});
+
+Game.Scenes.SixPart[105] = new Scene({
+  text: `
+    - Все хорошо. Доброе утро! - робко произнесла я, оценивающе разглядывая его. Это явно не осталось без внимания мужчины.
+    <p>Он тоже задержал взгляд на мне и несмотря на некую искру в этот момент, он кивнул, продолжая говорить: 
+    <p>- Никола подготовил лошадей. Скоро нужно будет уходить. 
+    <p>- Да… 
+    <p>- Какая-то ты сегодня не разговорчивая. Точно все в порядке? 
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[106].begin();  }],
+});
+
+Game.Scenes.SixPart[106] = new Scene({
+  text: `
+    - Да, - я чувствовала будто бы нахожусь на допросе. Под серьезным взглядом Роберта становилось все неуютнее. 
+    <p>- Что мы делали вчера?
+    <p>- Прости, что? 
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[107].begin();  }],
+});
+
+Game.Scenes.SixPart[107] = new Scene({
+  text: `
+    - Что мы делали вчера? - он испытывающе смотрел на меня, словно проверяя на что-то. 
+    <p>“Какого черта?! Роберт в чем-то подозревает Катарину или он догадывается о второй личности? Мне никак не увильнуть. Придется отвечать максимально расплывчато или, может быть, сказать правду?”
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [
+    'Ехали, пили, ели',
+    'Слушали легенду индейцев',
+  ],
+  buttonaction: [
+    () => { Game.Scenes.SixPart[108].begin();  },
+    () => { Game.Scenes.SixPart[111].begin();  },
+  ],
+});
+
+Game.Scenes.SixPart[108] = new Scene({
+  text: `
+    Роберт недовольно скрестил руки на груди и произнес:
+    <p>- А конкретнее? 
+    <p>- Да что ты ко мне прицепился? - я не выдержала и немного повысила голос. 
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[109].begin();  }],
+});
+
+Game.Scenes.SixPart[109] = new Scene({
+  text: `
+    - Хочу услышать правду. И все. 
+    <p>- Это она и есть. Я плохо помню. 
+    <p>- Ты не можешь ответить, что происходило вчера?
+    <p>- А обязана? - его поведение вывело меня из равновесия. 
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[110].begin(); Game.message('Роберта расстроила ваша ложь'); Game.Stats.Robert.add(-1);}],
+});
+
+Game.Scenes.SixPart[110] = new Scene({
+  text: `
+    Мужчина вздохнул и отвел взгляд. Его что-то встревожило, но он не решался сказать об этом прямо. 
+    <p>- Я пойду готовиться, - холодно сказанная фраза и резкий уход Роберта говорили лишь о том, что его совершенно не удовлетворил мой ответ. 
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[117].begin();  }],
+});
+
+Game.Scenes.SixPart[111] = new Scene({
+  text: `
+    - Так ты не спала? - Роберт ошарашенно смотрел на меня, совершенно забыв о своем стремлении устроить допрос. 
+    <p>- Нет, я… Я хотела сказать. Но плохо себя чувствовала. 
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[112].begin();  }],
+});
+
+Game.Scenes.SixPart[112] = new Scene({
+  text: `
+    Мужчина провел рукой по волосам и серьезно посмотрел на меня, говоря следующее:
+    <p>- Ты обещала мне, что если будешь себя плохо чувствовать, то непременно скажешь. Или ты забыла про свои обмороки? 
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[113].begin();  }],
+});
+
+Game.Scenes.SixPart[113] = new Scene({
+  text: `
+    “Обмороки? Последнее мое воспоминание из Ньй-Йорка XIX века - это окончание приема и мое падение. Однако Роберт упоминает этот недуг во множественном числе. Видимо не только мне тяжело переносить эти перемещения.”
+    <p>- Извини. Я так увлеклась историей… К тому же, потом очень захотелось спать.
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[116].begin()}],
+  condition: function () {
+    Game.Stats.Robert.get >=3 ?
+      this.buttonaction[0] = () =>{ Game.Scenes.SixPart[114].begin()}
+      :
+      this.buttonaction[0] = () =>{ Game.Scenes.SixPart[116].begin()}
+  }
+});
+
+Game.Scenes.SixPart[114] = new Scene({
+  text: `
+    Роберт смущенно отвернулся, но все-таки нашел в себе силы спросить:
+    <p>- А ты слышала…, знала, что я подходил? 
+    <p>- Да, - я улыбнулась, наблюдая за таким милым поведением мужчины. 
+    <p>“Вроде бы весь из себя серьезный охотник, а смущается, как мальчишка.”
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[115].begin();  }],
+});
+
+Game.Scenes.SixPart[115] = new Scene({
+  text: `
+    - Что ж, я всего лишь накрыл тебя пледом и проверил твое состояние.
+    <p>- Знаю. И очень ценю это.
+    <p>Я осмелилась взять Роберта за руку и легонько сжать, давая понять, что одобряю его действия. 
+    <p>По началу, мне казалось - охотник не был рад этому. Затем я почувствовала легкое поглаживание шершавыми пальцами.
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[116].begin();  }],
+});
+
+Game.Scenes.SixPart[116] = new Scene({
+  text: `
+    - Мне пора, Катарина. Нужно помочь Куртису все собрать и выдвигаться. Спасибо за честность. 
+    <p>Я заметила облегчение на лице Роберта. Мне и самой стало немного лучше, ведь я отвела от себя ненужные подозрения, если они, конечно, были. 
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[117].begin();  }],
+  condition: function () {
+    Game.message('Роберту приятна близость с вами');
+    Game.Stats.Robert.add(1);
+  }
+});
+
+Game.Scenes.SixPart[117] = new Scene({
+  text: `
+    Когда Куртис и Роберт скрылись собирать оставшиеся вещи, я решила пойти на звук лошадей. 
+    <p>“Должно быть там находится Никола. Стоит пойти к нему. Может, ему нужно помочь. Или будет возможность узнать у него полезную информацию.” 
+            `,
+  background: "Backgrounds/Camp_Morning",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[118].begin();  }],
+});
+
+Game.Scenes.SixPart[118] = new Scene({
+  text: `
+    Тесла находился в окружении трех гордых скакунов и кормил их яблоками. Животные радостно принимали угощения, пока ученый тянулся в карман за новыми порциями. 
+    <p>Увидев что я подхожу, он поприветствовал меня и тихо произнес:
+    <p>- Интересные все-таки существа…
+    <p>Я не стала обращать внимание на это странное высказывание, а решила полюбопытствовать:
+    <p>- Тебе они нравятся?
+            `,
+  background: "Backgrounds/Horses_Meadow",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[119].begin();  }],
+});
+
+Game.Scenes.SixPart[119] = new Scene({
+  text: `
+    - Я больше предпочитаю мелких животных. Кошки, к примеру, очень грациозные создания, - Тесла немного замялся, но все же продолжил развивать мысль. - Знаешь, в детстве у меня был кот по имени Мачак. В один из вечеров, он отдыхал у меня на коленях, и я начал гладить его. 
+            `,
+  background: "Persons/Nicola",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[120].begin();  }],
+});
+
+Game.Scenes.SixPart[120] = new Scene({
+  text: `
+    - Но неожиданно его спина стала полоской света, а моя рука будто бы произвела поток потрескивающих искр, словно я был неким колдуном. Тогда мама впервые объяснила мне значение слова электричество. Это чудо буквально лишило меня дара речи. И конечно же оставило свой след. 
+            `,
+  background: "Persons/Nicola",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[121].begin();  }],
+});
+
+Game.Scenes.SixPart[121] = new Scene({
+  text: `
+    - А теперь я стою перед тобой, полный решимости и далее совершать открытия. И не только в этой области. 
+    <p>“До сих пор не могу поверить, что слушаю рассказы легенды вот так вот…Просто и не напрягаясь.” 
+    <p>И я захотела: 
+            `,
+  background: "Persons/Nicola",
+  buttontext: [
+    'Не нарушать идиллию',
+    'Поддержать его стремления',
+    '',
+  ],
+  buttonaction: [
+    () => { Game.Scenes.SixPart[122].begin();  },
+    () => { Game.Scenes.SixPart[123].begin(); Game.message('Никола ценит ваши теплые слова'); Game.Stats.Nicola.add(1)},
+  ],
+});
+
+Game.Scenes.SixPart[122] = new Scene({
+  text: `
+    Никола продолжил свой монолог. Было сказано много слов, в какой-то степени даже откровений. Мне не хотелось больше ничего говорить. Достаточно просто стоять рядом с ним и наслаждаться моментом. 
+            `,
+  background: "Persons/Nicola",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[127].begin();  }],
+});
+
+Game.Scenes.SixPart[123] = new Scene({
+  text: `
+    - Никола, никогда не сдавайся, - воодушевленно произнесла я. - Твоя работа сложна и полна опасностей. Но никто кроме тебя не сможет выполнить ее. 
+    <p>- Спасибо, Катарина. Твои слова всегда вселяли в меня уверенность. И я безмерно этому благодарен. 
+            `,
+  background: "Persons/Nicola",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[127].begin()}],
+  condition: function () {
+    Game.Stats.Study.get >=5 ?
+      this.buttonaction[0] = () => { Game.Scenes.SixPart[124].begin()}
+      :
+      this.buttonaction[0] = () => { Game.Scenes.SixPart[127].begin()}
+  }
+});
+
+Game.Scenes.SixPart[124] = new Scene({
+  text: `
+    - И все-таки ты не до конца честен со мной, - я грустно вздохнула, вспоминая о пристрастиях к азартным играм, о которых упоминается в его биографии. - Ты можешь больше, если перестанешь губить себя. Я не устану это повторять. 
+    <p>Тесла на секунду отвернулся, пытаясь скрыть свои эмоции. Было видно, как эта тема раз за разом приносит ему дискомфорт и буквально загоняет в тупик.
+            `,
+  background: "Persons/Nicola",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[125].begin(); Game.message('Ваши действия могут помочь Тесле избавиться от зависимости'); Game.Stats.HelpTesla.add(1)}],
+});
+
+Game.Scenes.SixPart[126] = new Scene({
+  text: `
+     - В последний раз я проиграл довольно крупную сумму и это заставило меня всерьез задуматься. На что я трачу свой потенциал? 
+      <p>- Спасибо, что не сдаешься и бросаешь вызов трудностям, - произнесла я, с сочувствием глядя на ученого.
+            `,
+  background: "Persons/Nicola",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[127].begin();  }],
+});
+
+Game.Scenes.SixPart[127] = new Scene({
+  text: `
+     Мы немного постояли в тишине, наблюдая, как лошади завершают трапезу. Я поймала себя на мысли, что в такой обстановке я впервые увидела Николу в совершенно другом образе. 
+     <p>Он казался милым маленьким мальчиком, который радуется простым мелочам, которого не преследуют тяготы зависимости или борьбы с несправедливостью Эдисона. 
+            `,
+  background: "Backgrounds/Horses_Meadow",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[128].begin();  }],
+});
+
+Game.Scenes.SixPart[128] = new Scene({
+  text: `
+    Находясь рядом с ним в этот момент, я тоже уловила волны спокойствия, навеянные легким ветром, раскинувшимися перед нами прериями и ритмичным причмокиванием довольных лошадей.
+    <p>Вскоре к нам присоединились остальные компаньоны. Роберт принялся проверять, как закреплены седла и готово ли все к отъезду. 
+            `,
+  background: "Backgrounds/Horses_Meadow",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[129].begin();  }],
+});
+
+Game.Scenes.SixPart[129] = new Scene({
+  text: `
+    Куртис же вдруг обратился ко мне и спросил:
+    <p>- Мисс Джонсон, если вы готовы, то можем отправляться. 
+    <p>- Мне нечего собирать, - я беспокойно стала озираться по сторонам в поисках своих вещей, попутно задаваясь вопросом, были ли они у меня. 
+            `,
+  background: "Backgrounds/Horses_Meadow",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[130].begin();  }],
+  condition: function () {this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`)}
+});
+
+Game.Scenes.SixPart[130] = new Scene({
+  text: `
+    - Я уже загрузил наши вещи, - бросил Роберт, не отвлекаясь от своего занятия. 
+    <p>Мне оставалось лишь благодарно кивнуть. 
+    <p>“Все-таки он слишком идеальный. Ничего не забывает, все время сосредоточен на делах. Разве что исключением является тот момент, когда он пьет алкогольные напитки.” 
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[131].begin()}],
+});
+
+Game.Scenes.SixPart[131] = new Scene({
+  text: `
+    - Прекрасно. Кстати, если вы устали от ворчуна-мужа, можете поехать со мной, ведь к несчастью нам удалось раздобыть только трех лошадей. 
+    <p>- Леонард, - Роберт грозно посмотрел на Куртиса. - Давай без твоих игр. 
+    <p>- Я просто предложил даме альтернативу. Что в этом такого? Есть еще Никола. У вас аж целых трое прекрасных спутников. Выбирайте! 
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[132].begin()}],
+  condition: function () {this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`)}
+});
+
+Game.Scenes.SixPart[132] = new Scene({
+  text: `
+    Я немного растерялась под любопытными взглядами мужчин. 
+    <p>“Но это же просто шалость, верно? Что такого, если я решу поехать не с Робертом, а с кем-то другим? Сами же предложили. Кого выбрать?”
+            `,
+  background: "Backgrounds/Horses_Meadow",
+  buttontext: [
+    'Никола Тесла',
+    'Леонард Куртис',
+    'Роберт Джонсон',
+  ],
+  buttonaction: [
+    () => { Game.Scenes.SixPart[133].begin()},
+    () => { Game.Scenes.SixPart[1000].begin()},
+    () => { Game.Scenes.SixPart[1000].begin()},
+  ],
+
 });Game.Stories.push(
   new Story ({
     name: 'Aurora',
