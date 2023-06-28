@@ -1005,48 +1005,59 @@ class Stat {
 
     /** Эффект вспышки */
     this.Flash = function () {
-      Game.Interface.$('MainField').setAttribute('class', 'flash');
+      Game.Interface.$('MainField').classList.add('flash');
       setTimeout(() => {
-        Game.Interface.$('MainField').setAttribute('class', '');
+        Game.Interface.$('MainField').classList.remove('flash');
       }, 5000);
     }
 
     /** Эффект диско */
     this.Disco = function () {
-      Game.Interface.$('PictureField').setAttribute('class', 'disco');
+      Game.Interface.$('PictureField').classList.add('disco');
     }
 
     /** Эффект диско выключить */
     this.Disco.Stop = function () {
-      Game.Interface.$('PictureField').setAttribute('class', '');
+      Game.Interface.$('PictureField').classList.remove('disco');
     }
 
     /** Эффект понурости */
     this.Gray = function () {
-      Game.Interface.$('MainField').setAttribute('class', 'sad');
+      Game.Interface.$('MainField').classList.add( 'sad');
     }
 
     /** Эффект понурости выключить */
     this.Gray.Stop = function () {
-      Game.Interface.$('MainField').setAttribute('class', '');
+      Game.Interface.$('MainField').classList.remove('sad');
+    }
+
+    /** Эффект яркости */
+    this.Sun = function () {
+      Game.Interface.$('MainField').classList.add('sun');
+    }
+
+    /** Эффект яркости выключить */
+    this.Sun.Stop = function () {
+      Game.Interface.$('MainField').classList.remove('sun');
     }
 
 
     /** Эффект воспоминаний */
     this.Mem = function() {
-      Game.Interface.$('MainField').setAttribute('class', 'memory');
+      Game.Interface.$('MainField').classList.add('memory');
     }
 
     /** Эффект воспоминаний выключить */
     this.Mem.Stop = function (){
-      Game.Interface.$('MainField').setAttribute('class', '');
+      Game.Interface.$('MainField').classList.remove('memory');
     }
 
     /** Выключить эффекты */
     this.DisableAll = function () {
       this.Gray.Stop();
       this.Disco.Stop();
-      this.Mem.Stop()
+      this.Mem.Stop();
+      this.Sun.Stop()
     }
 
   }
@@ -16574,7 +16585,7 @@ Game.Scenes.SixPart[0] = new Scene({
             `,
   background: "Persons/Robert_Pompeii",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.SixPart[1].begin();  }],
+  buttonaction: [() => { Game.Scenes.SixPart[1].begin();}],
   condition: () => {
     Game.Sounds.play('Music','Pompeii');
     Game.message('<i>Помпеи 79 г. н.э.');
@@ -17373,6 +17384,8 @@ Game.Scenes.SixPart[75] = new Scene({
     Game.Scenes.SixPart[76].begin();
     Game.Sounds.play('Music', 'WildWest02');
     Game.Effects.Gray.Stop();
+    Game.Effects.Sun();
+    Game.Effects.Flash();
   }],
 });
 
@@ -17390,6 +17403,14 @@ Game.Scenes.SixPart[77] = new Scene({
   text: `
     Я нехотя села, пытаясь проснуться. На удивление, я чувствовала себя превосходно, словно вчерашние недомогания были кошмарным сном. 
     <p>Оглядевшись, я обратила внимание, во что была одета Катарина: длинная бежевая юбка, легкая белая рубашка с завязанным на шее платком, а также черные высокие сапоги.
+            `,
+  background: "Backgrounds/Camp_Morning",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[86].begin();  }],
+});
+
+Game.Scenes.SixPart[86] = new Scene({
+  text: `
     <p>Рядом красовалась шляпа, подобно той, что носили ковбои в эпоху дикого запада. 
     <p>“Совпадение? С другой стороны, вся эта эпоха длилась вплоть до 1920 года, пока медленными шагами менялся уклад жизни людей. Интересно.” 
             `,
@@ -17506,12 +17527,12 @@ Game.Scenes.SixPart[85] = new Scene({
     'Доброе утро!',
   ],
   buttonaction: [
-    () => { Game.Scenes.SixPart[85].begin();},
-    () => { Game.Scenes.SixPart[85].begin();},
-    () => { Game.Scenes.SixPart[85].begin();},
+    () => { Game.Scenes.SixPart[87].begin();},
+    () => { Game.Scenes.SixPart[87].begin();},
+    () => { Game.Scenes.SixPart[87].begin();},
   ],
   condition: function () {
-    this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`)
+    this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`);
   }
 });Game.Stories.push(
   new Story ({
