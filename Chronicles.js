@@ -837,7 +837,7 @@ class Stat {
                         Game.Interface.$('InfoArticle').setAttribute('class','typewriter');
                         Game.Interface.$('InfoText').innerHTML = this._title;
                         Game.Interface.$('InfoArticle').innerHTML = '<hr>' + this._text;
-                        }, 1000);
+                        }, 300);
             });
             this._tapAction ? this._container.addEventListener('click', () => {this._handleDoubleTap()}) : {}
         }
@@ -17122,7 +17122,7 @@ Game.Scenes.SixPart[51] = new Scene({
 
 Game.Scenes.SixPart[52] = new Scene({
   text: `
-     - Ударилась головешка о камни и полетели искры. Перестали люди боятся этого блага и с тех самых пор, если стукнуть камень о камень, то появится огонь, что не раз потом согреет человека.
+     - Ударилась головешка о камни и полетели искры. Перестали люди бояться этого блага и с тех самых пор, если стукнуть камень о камень, то появится огонь, что не раз потом согреет человека.
             `,
   background: "Backgrounds/Legend_Scene_07",
   buttontext: [''],

@@ -275,8 +275,8 @@
 }
 
 .typewriter{
-    -webkit-animation: text-focus-in 1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
-    animation: text-focus-in 1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+    -webkit-animation: text-focus-in 0.3s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+    animation: text-focus-in 0.3s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
 }
 
 @-webkit-keyframes text-focus-in {
@@ -305,8 +305,8 @@
 }
 
 .typewriter-out{
-    -webkit-animation: text-focus-out 1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
-    animation: text-focus-out 1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+    -webkit-animation: text-focus-out 0.3s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+    animation: text-focus-out 0.3s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
 }
 
 @-webkit-keyframes text-focus-out {
