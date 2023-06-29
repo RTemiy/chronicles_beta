@@ -2304,7 +2304,7 @@ Game.Stats.Robert = new Person({
     story: 'Immortals',
 });
 
-Game.Stats.Curtis = new Person({
+Game.Stats.Curtis = new Choice({
     name: 'Куртис',
     picture: '',
     title: '',
