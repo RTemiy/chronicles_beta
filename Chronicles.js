@@ -18032,7 +18032,7 @@ Game.Scenes.SixPart[124] = new Scene({
             `,
   background: "Persons/Nicola",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.SixPart[125].begin(); Game.message('Ваши действия могут помочь Тесле избавиться от зависимости'); Game.Stats.HelpTesla.add(1)}],
+  buttonaction: [() => { Game.Scenes.SixPart[126].begin(); Game.message('Ваши действия могут помочь Тесле избавиться от зависимости'); Game.Stats.HelpTesla.add(1)}],
 });
 
 Game.Scenes.SixPart[126] = new Scene({
