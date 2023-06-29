@@ -284,8 +284,8 @@ class Interface {
     this.$('Console').addEventListener("keypress", function (event) {
       if (event.key === "Enter") {
         event.preventDefault();
-        eval('Game.' + this.$('Console').value);
-        this.$('Console').value = '';
+        eval('Game.' + Game.Interface.$('Console').value);
+        Game.Interface.$('Console').value = '';
       }
     });
   }
@@ -1335,11 +1335,11 @@ class Scene {
 
     /** Запустить сцену */
     begin() {
-        setTimeout(() => {Game.LastSave.save(this);},250);
         this.setBackground(this.background)
         if (this.condition) this.condition();
         Game.Interface.$('TextField').innerHTML = this.text.replace("$Имя Игрока$", Game.PlayerName);
         this._checkInterface();
+        setTimeout(() => {Game.LastSave.save(this);},250);
         Game.LastSlide.add(this);
     }
 
