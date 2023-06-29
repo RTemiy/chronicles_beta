@@ -16805,7 +16805,7 @@ Game.Scenes.SixPart[20] = new Scene({
             `,
   background: "Persons/Mother_PP",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.SixPart[21].begin(); Game.Sounds.play('Music','Prologue');  }],
+  buttonaction: [() => { Game.Scenes.SixPart[21].begin(); Game.Sounds.play('Music','Prologue'); Game.Effects.Flash();}],
 });
 
 Game.Scenes.SixPart[21] = new Scene({
@@ -16918,6 +16918,7 @@ Game.Scenes.SixPart[30] = new Scene({
   buttonaction: [() => {
     Game.Scenes.SixPart[31].begin();
     Game.message('<i>1899 год, окраины Колорадо-Спрингс');
+    Game.Effects.Flash();
     Game.Effects.Gray();
     Game.Sounds.play('Music','WildWest01');
   }],
@@ -17001,7 +17002,15 @@ Game.Scenes.SixPart[38] = new Scene({
   text: `
     - О чем я и говорю, - Роберт звонко поставил что-то на твердую поверхность. - Наплели тебе с три короба, а ты и рад верить, Куртис. 
     <p>- Нет-нет, - Никола перебил Роберта. - Расскажи, пожалуйста. А вдруг это связано с тем, что мы ищем? 
-    <p>- Может быть и связано, но мы приехали сюда не сказки слушать, - Роберт подлил в пустые стаканы спиртного и отпил, задумчиво подняв голову к звездам. - Но вы правы, возможно, атмосфера и правда располагает к небылицам.
+            `,
+  background: "Backgrounds/Camp_Night",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[146].begin();  }],
+});
+
+Game.Scenes.SixPart[146] = new Scene({
+  text: `
+    - Может быть и связано, но мы приехали сюда не сказки слушать, - Роберт подлил в пустые стаканы спиртного и отпил, задумчиво подняв голову к звездам. - Но вы правы, возможно, атмосфера и правда располагает к небылицам.
             `,
   background: "Backgrounds/Camp_Night",
   buttontext: [''],
@@ -17015,13 +17024,21 @@ Game.Scenes.SixPart[39] = new Scene({
             `,
   background: "Backgrounds/Camp_Night",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.SixPart[40].begin();  }],
+  buttonaction: [() => { Game.Scenes.SixPart[40].begin(); Game.Sounds.play('Music', 'WildWest03')}],
 });
 
 Game.Scenes.SixPart[40] = new Scene({
   text: `
     - В начале сотворения мира, Серый Орел был хранителем солнца, луны, звезд, пресной воды и огня. Мудрый Орел был посланником небес. Так случилось, что он не жаловал людей за их нечистые помыслы, поэтому прятал от них заветные блага, поместив их в каменный диск.
-    <p>– В те далекие времена люди выживали без воды и огня, пока величественная птица бережно хранила свой артефакт скрытым от любопытных глаз. 
+            `,
+  background: "Backgrounds/Legend_Scene_01",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[147].begin();  }],
+});
+
+Game.Scenes.SixPart[147] = new Scene({
+  text: `
+    – В те далекие времена люди выживали без воды и огня, пока величественная птица бережно хранила свой артефакт скрытым от любопытных глаз. 
             `,
   background: "Backgrounds/Legend_Scene_01",
   buttontext: [''],
@@ -17152,7 +17169,7 @@ Game.Scenes.SixPart[54] = new Scene({
             `,
   background: "Backgrounds/Legend_Scene_03",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.SixPart[55].begin();  }],
+  buttonaction: [() => { Game.Scenes.SixPart[55].begin(); Game.Sounds.play('Music', 'WildWest01')}],
 });
 
 Game.Scenes.SixPart[55] = new Scene({
@@ -17438,7 +17455,7 @@ Game.Scenes.SixPart[78] = new Scene({
 
 Game.Scenes.SixPart[79] = new Scene({
   text: `
-    “Как бы это не было романтично, но я все еще не понимаю ради чего затеяно все это приключение. К тому же, второй раз трюк с потерей памяти не пройдет. Что же мне придумать, чтобы не вызывать подозрений?”
+    “Как бы это не было романтично, но я все еще не понимаю ради чего затеяно все это приключение. К тому же, второй раз, трюк с потерей памяти не пройдет. Что же мне придумать, чтобы не вызывать подозрений?”
             `,
   background: "Backgrounds/Camp_Morning",
   buttontext: [''],
@@ -17695,7 +17712,7 @@ Game.Scenes.SixPart[96] = new Scene({
 Game.Scenes.SixPart[97] = new Scene({
   text: `
     - Несчастный…? 
-    <p>- Это мои личные предубеждения. Каждый раз, когда я вынужден отправиться туда, происходит чертовщина. Собственно, как и сейчас. Непонятно только с чем это связано… 
+    <p>- Это мои личные предубеждения. Каждый раз, когда я вынужден отправиться сюда, происходит чертовщина. Собственно, как и сейчас. Непонятно только с чем это связано… 
             `,
   background: "Backgrounds/Camp_Morning",
   buttontext: [''],
@@ -18048,7 +18065,7 @@ Game.Scenes.SixPart[126] = new Scene({
 Game.Scenes.SixPart[127] = new Scene({
   text: `
      Мы немного постояли в тишине, наблюдая, как лошади завершают трапезу. Я поймала себя на мысли, что в такой обстановке я впервые увидела Николу в совершенно другом образе. 
-     <p>Он казался милым маленьким мальчиком, который радуется простым мелочам, которого не преследуют тяготы зависимости или борьбы с несправедливостью Эдисона. 
+     <p>Он казался милым маленьким мальчиком, который радуется простым мелочам и не страдает от тяги к зависимостям или борьбы с несправедливостью Эдисона. 
             `,
   background: "Backgrounds/Horses_Meadow",
   buttontext: [''],
@@ -18249,7 +18266,7 @@ Game.Scenes.SixPart[145] = new Scene({
             `,
   background: "Backgrounds/Colorado",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.SixPart[146].begin()}],
+  buttonaction: [() => { Game.Scenes.SixPart[148].begin()}],
 });Game.Stories.push(
   new Story ({
     name: 'Aurora',
