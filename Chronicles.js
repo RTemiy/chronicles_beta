@@ -2304,6 +2304,14 @@ Game.Stats.Robert = new Person({
     story: 'Immortals',
 });
 
+Game.Stats.Curtis = new Person({
+    name: 'Куртис',
+    picture: '',
+    title: '',
+    text: '',
+    story: 'Immortals',
+});
+
 Game.Stats.Family = new Choice({
     name: 'Семья',
     picture: '',
@@ -18105,8 +18113,8 @@ Game.Scenes.SixPart[132] = new Scene({
   ],
   buttonaction: [
     () => { Game.Scenes.SixPart[133].begin()},
-    () => { Game.Scenes.SixPart[1000].begin()},
-    () => { Game.Scenes.SixPart[1000].begin()},
+    () => { Game.Scenes.SixPart[137].begin()},
+    () => { Game.Scenes.SixPart[141].begin()},
   ],
 });
 
@@ -18148,7 +18156,100 @@ Game.Scenes.SixPart[136] = new Scene({
             `,
   background: "Backgrounds/Horseriding",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.SixPart[1000].begin()}],
+  buttonaction: [() => { Game.Scenes.SixPart[145].begin()}],
+});
+
+Game.Scenes.SixPart[137] = new Scene({
+  text: `
+    Я нерешительным жестом указала на Леонарда, чем вызвала удивленный вгляд Николы и суровый взгляд Роберта. 
+    <p>- Вот так-то, - Куртис положил руку на плечо мужа Катарины. - Не расстраивайся. Желание дамы - закон. 
+            `,
+  background: "Backgrounds/Horseriding",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[138].begin()}],
+  condition: function () {this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`)}
+});
+
+Game.Scenes.SixPart[138] = new Scene({
+  text: `
+    Роберт лишь промолчал и забрался на лошадь:
+    <p>- Выдвигаемся, -  медленно набирая скорость кинул он напоследок.  
+    <p>Куртис, присвистывая от радости, галантно протянул мне руку, помогая забраться на скакуна. 
+            `,
+  background: "Backgrounds/Horseriding",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[139].begin()}],
+  condition: function () {this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`)}
+});
+
+Game.Scenes.SixPart[139] = new Scene({
+  text: `
+    Лучи восходящего солнца окрашивали землю в теплые цвета, придавая окружению живость. Было приятно ощущать прохладу, пришедшую после ночи.
+    <p>Мы скакали по бескрайним прериям, оставляя позади себя только пыль и тишину. В этот момент казалось, что это только наш мир и у нас есть свобода выбирать свой путь.
+            `,
+  background: "Backgrounds/Horseriding",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[140].begin(); Game.message('Куртис был рад прокатиться с вами'); Game.Stats.Curtis.add(1)}],
+});
+
+Game.Scenes.SixPart[140] = new Scene({
+  text: `
+    Я обняла Леонарда за талию и наслаждалась легкими порывами ветра. Куртис держался в седле так, будто бы всю жизнь провел за этим занятием. 
+    <p>Он с легкостью маневрировал, если возникала такая необходимость, даже умудрялся рассказывать интересные факты о местности, которую мы проезжали. 
+    <p>Я ни сколько не пожалела, что выбрала его в качестве своего проводника. 
+            `,
+  background: "Backgrounds/Horseriding",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[145].begin()}],
+});
+
+Game.Scenes.SixPart[141] = new Scene({
+  text: `
+    Я смело указала на своего “мужа”, чем вызвала грустный вздох Леонарда и улыбку Николы.
+    <p>- Что ж, ваше стремление быть всегда рядом с мужем, Катарина, выше всяких похвал, - Куртис забрался на свою лошадь и медленно выдвинулся вперед. 
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[142].begin()}],
+});
+
+Game.Scenes.SixPart[142] = new Scene({
+  text: `
+    Роберт практически никак не отреагировал на мой жест, но на секунду мне показалось, что на его безэмоциальном лице промелькнула легкая ухмылка, будто бы он очень доволен моим выбором. 
+    <p>Он помог мне забраться на лошадь и мы не спеша последовали за нашими компаньонами. 
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[143].begin()}],
+});
+
+Game.Scenes.SixPart[143] = new Scene({
+  text: `
+    Лучи восходящего солнца окрашивали землю в теплые цвета, придавая окружению живость. Было приятно ощущать прохладу, пришедшую после ночи.
+    <p>Мы скакали по бескрайним прериям, оставляя позади себя только пыль и тишину. В этот момент казалось, что это только наш мир и у нас есть свобода выбирать свой путь.
+            `,
+  background: "Backgrounds/Horseriding",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[144].begin(); Game.message('Роберт не сомневался в вашем выборе'); Game.Stats.Robert.add(1)}],
+});
+
+Game.Scenes.SixPart[144] = new Scene({
+  text: `
+    Я обняла Роберта за талию и наслаждалась легкими порывами ветра. Роберт одной рукой придерживал меня и держался в седле спокойно, словно для него это было чем-то обыденным, вроде регулярной езды на автомобиле. 
+    <p>Порой он спрашивал, комфортно ли я себя чувствую, но в целом мы без приключений доскакали до пункта назначения. 
+            `,
+  background: "Backgrounds/Horseriding",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[145].begin()}],
+});
+
+Game.Scenes.SixPart[145] = new Scene({
+  text: `
+    Мужчина помог мне слезть с лошади и передо мной предстал город, который только начинал свой долгий и тернистый путь к урбанизации. 
+            `,
+  background: "Backgrounds/Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[146].begin()}],
 });Game.Stories.push(
   new Story ({
     name: 'Aurora',
