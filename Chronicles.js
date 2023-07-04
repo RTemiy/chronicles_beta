@@ -1052,6 +1052,16 @@ class Stat {
       Game.Interface.$('MainField').classList.remove('memory');
     }
 
+    /** Эффект пьяности */
+    this.Drunk = function () {
+      Game.Interface.$('MainField').classList.add('drunk');
+    }
+
+    /** Эффект пьяности выключить */
+    this.Drunk.Stop = function () {
+      Game.Interface.$('MainField').classList.remove('drunk');
+    }
+
     /** Выключить эффекты */
     this.DisableAll = function () {
       this.Gray.Stop();
@@ -1358,6 +1368,10 @@ class Scene {
                 Game.Interface.$('TextField').setAttribute('class', 'show');
             }, 1000);
         }
+    }
+
+    setAction(action){
+        this.buttonaction[0] = action;
     }
 
     /** Отправная точка проверки элементов слайда */
@@ -1790,6 +1804,7 @@ class Timer{
     const queuePictures = a => {
       pictures[x] = document.createElement('img');
       pictures[x].style.display='none';
+      pictures[x].onerror = function (){ this.src = ROOTPATH + 'pictures/Interface/Unknown.png'}
       pictures[x].src = ROOTPATH + 'pictures/' + a + ".png";
       document.body.appendChild(pictures[x]);
       picturesTotal++;
@@ -2745,6 +2760,13 @@ Game.Achievements.Lake = new Achievement ({
     picture: 'Backgrounds/Lake',
     title: 'Уикэнд',
     text: 'Пройти пятую часть',
+    story: 'Immortals',
+});
+
+Game.Achievements.SixPartEnd = new Achievement ({
+    picture: 'Backgrounds/Saloon',
+    title: 'Дикий-дикий запад',
+    text: 'Пройти шестую часть',
     story: 'Immortals',
 });
 
@@ -17038,7 +17060,7 @@ Game.Scenes.SixPart[40] = new Scene({
 
 Game.Scenes.SixPart[147] = new Scene({
   text: `
-    – В те далекие времена люди выживали без воды и огня, пока величественная птица бережно хранила свой артефакт скрытым от любопытных глаз. 
+    - В те далекие времена люди выживали без воды и огня, пока величественная птица бережно хранила свой артефакт скрытым от любопытных глаз. 
             `,
   background: "Backgrounds/Legend_Scene_01",
   buttontext: [''],
@@ -18002,7 +18024,7 @@ Game.Scenes.SixPart[120] = new Scene({
 Game.Scenes.SixPart[121] = new Scene({
   text: `
     - А теперь я стою перед тобой, полный решимости и далее совершать открытия. И не только в этой области. 
-    <p>“До сих пор не могу поверить, что слушаю рассказы легенды вот так вот…Просто и не напрягаясь.” 
+    <p>“До сих пор не могу поверить, что слушаю рассказы легенды вот так вот… Просто и не напрягаясь.” 
     <p>И я захотела: 
             `,
   background: "Persons/Nicola",
@@ -18267,6 +18289,488 @@ Game.Scenes.SixPart[145] = new Scene({
   background: "Backgrounds/Colorado",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[148].begin()}],
+});
+
+Game.Scenes.SixPart[148] = new Scene({
+  text: `
+    Сейчас же город больше походил на пустыню, где изредка можно было наблюдать личностей довольно сомнительного вида, которые не стеснялись открыто показывать свое оружие и громко голосить песни неприличного содержания.
+            `,
+  background: "Backgrounds/Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[149].begin()}],
+});
+
+Game.Scenes.SixPart[149] = new Scene({
+  text: `
+     Так как подобное зрелище я могла наблюдать разве что в кино или в компьютерных играх, разумеется, было трудно контролировать свои эмоции. Но я наслаждалась, если так можно выразиться, местным колоритом вживую. 
+     <p>Однако мои спутники довольно безэмоционально относились к происходящему, а обычные местные жители и вовсе не обращали на это внимание, неохотно занимаясь своими делами. 
+            `,
+  background: "Backgrounds/Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[150].begin()}],
+});
+
+Game.Scenes.SixPart[150] = new Scene({
+  text: `
+     Леонард привязывал лошадей, когда произнес:
+     <p>- Что ж, дама и господа, добро пожаловать в унылый и несчастный городишко полный несбыточных надежд и всякой швали на улицах. 
+     <p>Я так и не до конца поняла, почему именно так считал Куртис, но на мое счастье разговор между моими спутниками продолжился. 
+            `,
+  background: "Backgrounds/Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[151].begin()}],
+  condition: function () {this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`)}
+});
+
+Game.Scenes.SixPart[151] = new Scene({
+  text: `
+     - Ты все еще продолжаешь делиться своими предубеждениями? - Роберт недовольно фыркнул. - Не забывай. Нам просто нужно взять необходимое и уехать. 
+    <p>- Сам же понимаешь, все не так просто, - Леонард пожал плечами. 
+    <p>- Нечего надумывать. По крайне мере раньше времени. 
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[152].begin()}],
+});
+
+Game.Scenes.SixPart[152] = new Scene({
+  text: `
+     Я уже немного узнала о нашем путешествии, но, решилась расспросить больше о цели визита в город:
+     <p>- А что, собственно, происходит? Что не так с этим городом?
+            `,
+  background: "Backgrounds/Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[153].begin()}],
+});
+
+Game.Scenes.SixPart[153] = new Scene({
+  text: `
+     - Не здесь, - он указал на здание. - Там располагается местный салун и по совместительству наше временное проживание. Все дальнейшие беседы можно провести там, а заодно и отдохнуть после дороги. 
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[154].begin()}],
+});
+
+Game.Scenes.SixPart[154] = new Scene({
+  text: `
+     С этим никто спорить не стал. Взяв все необходимые вещи с лошадей, мы двинулись на место.
+            `,
+  background: "Backgrounds/Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[155].begin(); Game.Sounds.play('Music', 'Saloon')}],
+});
+
+Game.Scenes.SixPart[155] = new Scene({
+  text: `
+     Внутри, на удивление, царила тишина и спокойствие. Бармен усиленно натирал стаканы, которые, казалось, уже не спасти, а в углу за круглым столом несколько мужчин перекидывались в карты. 
+            `,
+  background: "Backgrounds/Saloon",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[156].begin()}],
+});
+
+Game.Scenes.SixPart[156] = new Scene({
+  text: `
+     На лестнице, что вела на второй этаж, стояли две женщины довольно вульгарного вида. При виде нашей компании они стали активно перешептываться и мило улыбаться, но не решались пока подходить. 
+            `,
+  background: "Backgrounds/Saloon",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[157].begin()}],
+});
+
+Game.Scenes.SixPart[157] = new Scene({
+  text: `
+     Мы же не стали мешкать и сели за первый попавшийся стол. Несколько моих компаньонов отправились к бармену, чтобы сделать заказ.
+            `,
+  background: "Backgrounds/Saloon",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[159].begin()}],
+  condition: function () {
+    Game.Stats.DrinkAtParty.get >=1 ? this.setAction(()=> {Game.Scenes.SixPart[158].begin()})
+      :
+      this.setAction(()=> {Game.Scenes.SixPart[159].begin()})
+  }
+});
+
+Game.Scenes.SixPart[158] = new Scene({
+  text: `
+     На принесенном ими подносе стояло несколько стаканов с предполагаемым виски и сопутствующими закусками, а также обычная немного мутноватая вода. 
+     <p>Я охотно потянулась к стакану с алкоголем, так как мне было очень любопытно вкусить напиток того времени. 
+     <p>“Хоть это не первый опыт, но уверена, что у Роберта был дорогущий алкоголь. Что же пьют в более приземленном заведении?” 
+            `,
+  background: "Backgrounds/Saloon",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[160].begin()}],
+});
+
+Game.Scenes.SixPart[159] = new Scene({
+  text: `
+     На принесенном ими подносе стояло несколько стаканов с предполагаемым виски и сопутствующими закусками, а также обычная немного мутноватая вода.
+     <p>Пить алкоголь совсем не хотелось, к тому же - это было лишним. Но в условиях такой жары - жидкость была необходима и я без энтузиазма потянулась к стакану с водой.
+            `,
+  background: "Backgrounds/Saloon",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[160].begin()}],
+});
+
+Game.Scenes.SixPart[160] = new Scene({
+  text: `
+      Леонард поднялся первым и занес стакан вверх, проговаривая:
+      <p>- За нашу успешную экспедицию! 
+      <p>Все крикнули дружное: “Ура!” и выпили напитки.
+            `,
+  background: "Backgrounds/Saloon",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[161].begin()}],
+  condition: function () {this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`)}
+});
+
+Game.Scenes.SixPart[161] = new Scene({
+  text: `
+     После небольшого отдыха и перекуса, я все же решила вернуться к ранее заданному вопросу и аккуратно намекнула об этом своим спутникам. 
+            `,
+  background: "Backgrounds/Saloon",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[162].begin()}],
+});
+
+Game.Scenes.SixPart[162] = new Scene({
+  text: `
+     - Я думаю, Катарина имеет право знать хоть какие-то детали. Вы не против?
+     <p>Остальные утвердительно кивнули и Тесла начал свой рассказ:
+     <p>- Этот город ничем примечательным не отличается от других похожих городов, которые не желают идти в ногу с прогрессом. 
+            `,
+  background: "Persons/Nicola",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[163].begin()}],
+});
+
+Game.Scenes.SixPart[163] = new Scene({
+  text: `
+     - Однако несколько лет назад, когда люди в очередной раз повадились раздобыть золота, начали копать шахту, находящуюся к северу отсюда. Там произошел любопытный инцидент - все шахтеры исчезли. Бесследно.
+            `,
+  background: "Backgrounds/Mine",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[164].begin()}],
+});
+
+Game.Scenes.SixPart[164] = new Scene({
+  text: `
+     Тесла выпил залпом напиток и продолжил:
+      <p>- Спустя некоторое время жители стали жаловаться на аномалии. Странное поведение погоды. Ураганные ветра, град в середине лета…
+            `,
+  background: "Backgrounds/Mine",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[165].begin()}],
+});
+
+Game.Scenes.SixPart[165] = new Scene({
+  text: `
+     - Поговаривают, что шахтеры обнаружили древнюю пещеру с таинственным артефактом, который способен изменять само время и пространство.
+            `,
+  background: "Backgrounds/Mine",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[166].begin()}],
+});
+
+Game.Scenes.SixPart[166] = new Scene({
+  text: `
+     - Я позволю себе вставить ремарку, - Роберт перебил Теслу. - Но это всего лишь легенда. И погодные явления могут быть не связаны с какой-то там шахтой и последующими открытиями.
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[167].begin()}],
+});
+
+Game.Scenes.SixPart[167] = new Scene({
+  text: `
+     - Ты неисправим, - Никола задумался. - Но мы не будем сейчас разглагольствовать, что там было правдой, а что вымыслом. Ведь пропали люди. При чем никто не смог обнаружить даже останков. 
+      <p>- И казалось бы, почему туда так рвется человек науки? - Куртис ехидно улыбнулся. - Уж не за всемогущим ли артефактом?
+            `,
+  background: "Persons/Nicola",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[168].begin()}],
+});
+
+Game.Scenes.SixPart[168] = new Scene({
+  text: `
+      - Хороший вопрос. Наш друг - мечтатель и авантюрист, - Роберт отпил виски и стал присматриваться к окружению.
+      <p>Тесла выглядел немного поникшим и одновременно смущенным, но все же не сдавался и продолжил:
+      <p>- До сих пор не понимаю, зачем ты, Роберт, отправился в это путешествие, раз ни во что не веришь. 
+            `,
+  background: "Persons/Nicola",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[169].begin()}],
+});
+
+Game.Scenes.SixPart[169] = new Scene({
+  text: `
+      - Я не говорю, что совсем не верю. Скорее пытаюсь всему найти логическое объяснение. Да и как я могу оставить вас, дурней, без помощи. К тому же, Катарина очень хотела посмотреть город, - Роберт проницательно посмотрел на меня. - И, разумеется, я уже упоминал, что мне надо встретиться с братом. 
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[170].begin()}],
+});
+
+Game.Scenes.SixPart[170] = new Scene({
+  text: `
+      Мои спутники переглянулись, явно довольствуясь услышанным. Все понимали, каким бы вредным Роберт не казался, его желание всегда быть рядом и помочь - искренне. 
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[171].begin()}],
+});
+
+Game.Scenes.SixPart[171] = new Scene({
+  text: `
+      Я немного отвлеклась от разговора, чтобы поразмышлять.
+      <p>"Катарина хотела увидеть город? Был ли в этом какой-то скрытый смысл? Может, это все связано с катастрофой города? Или она преследовала свои цели? И что за брат? Надеюсь, он не окажется одним из моих знакомых."
+            `,
+  background: "Backgrounds/Saloon",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[172].begin()}],
+});
+
+Game.Scenes.SixPart[172] = new Scene({
+  text: `
+      - Кстати, - решил уточнить Куртис. - Напомни, где твой брат будет ждать нас? 
+      <p>- Когда мы закончим все свои дела, то обратно в Ньй-Йорк вернемся на поезде. А у него как раз в Колорадо-Спрингс была запланирована встреча. По переписке с ним я понял, что мы как раз должны будем пересечься на вокзале.
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[173].begin()}],
+});
+
+Game.Scenes.SixPart[173] = new Scene({
+  text: `
+      Я решила, что пришло время финального вопроса и спросила у Теслы:
+      <p>- Так конечная цель - этот загадочный артефакт?
+            `,
+  background: "Persons/Nicola",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[174].begin()}],
+});
+
+Game.Scenes.SixPart[174] = new Scene({
+  text: `
+      - И да и нет. Возможно, сама пещера, если мы, конечно, раздобудем более точные координаты и будет нашей конечной целью, - Никола застучал пальцами по столу. -  Как ты знаешь, я одержим идеей того, что человек может контролировать время. И я должен цепляться за любую надежду. Пусть и действительно такую мнимую. 
+            `,
+  background: "Persons/Nicola",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[175].begin()}],
+});
+
+Game.Scenes.SixPart[175] = new Scene({
+  text: `
+      - Координаты будут, об этом можно не волноваться, - уверенно произнес Роберт. - Местный шериф обязан мне. И если все пройдет по плану, то завтра он вернется в город. 
+      <p>- Но разве все это не держится в строжайшем секрете? - засомневался Тесла.
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[176].begin()}],
+});
+
+Game.Scenes.SixPart[176] = new Scene({
+  text: `
+      - Держится. Но долг этого человека велик. Как он сам упоминал: “Никакой жизни не хватит, чтобы расплатиться.” Поэтому я предложил координаты в обмен на то, что он больше мне ничего не будет должен. 
+      <p>- Справедливый ты человек, Роберт, - заметил Куртис. 
+      <p>Роберт не привык принимать похвалу, поэтому он лишь кивнул и молча отпил из стакана.
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[178].begin()}],
+});
+
+Game.Scenes.SixPart[178] = new Scene({
+  text: `
+      - Мисс Джонсон, - Леонард обратил на меня слегка затуманенный взгляд. - Как вы думаете, все, что здесь происходит, действительно связано с мистикой?
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[179].begin()}],
+  condition: function () {this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`)}
+});
+
+Game.Scenes.SixPart[179] = new Scene({
+  text: `
+      "Вопрос любопытный. Не могу отделаться от чувства, что это путешествие крутится вокруг чего-то загадочного. Однако, в то же время, это больше похоже на сказку. Что ответить?"
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [
+    'Всему есть логическое объяснение',
+    'Не хочется об этом думать',
+    'Это может быть правдой',
+  ],
+  buttonaction: [
+    () => { Game.Scenes.SixPart[179].begin(); Game.message('Вы склонны сомневаться в правдивости легенды'); Game.Stats.EagleLegend.add(-1)},
+    () => { Game.Scenes.SixPart[183].begin(); Game.message('Вы склонны быть равнодушной к происходящему')},
+    () => { Game.Scenes.SixPart[185].begin(); Game.message('Вы склонны верить во что-то мистическое'); Game.Stats.EagleLegend.add(1)},
+  ],
+  condition: function () {this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`)}
+});
+
+Game.Scenes.SixPart[180] = new Scene({
+  text: `
+      - Склонна полагать, что вера в некую легенду должна служить весомым доказательством. 
+      <p>- Я не сомневался в тебе, дорогая, - Роберт легонько погладил меня по голове, явно испытывая гордость.
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[181].begin()}],
+  condition: function () {this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`)}
+});
+
+Game.Scenes.SixPart[181] = new Scene({
+  text: `
+      - Я тоже не склонен верить в подобное, - Тесла скучающее подпер подбородок кулаком. - Но если всю жизнь быть такими скептиками, есть риск потерять шанс на открытие, которое изменит человечество. 
+      <p>- Забавно, - ухмыльнулся Роберт. - И это говорит человек, который не знает, когда нужно остановиться. 
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[182].begin()}],
+  condition: function () {this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`)}
+});
+
+Game.Scenes.SixPart[182] = new Scene({
+  text: `
+      - Роберт, - Куртис угрожающе взглянул на охотника. - Это уже слишком. 
+      <p>- Ничего, - Никола отмахнулся. - Это же правда. Чего стыдиться? Думаю, именно непреклонность делает меня особенным.
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[187].begin()}],
+  condition: function () {this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`)}
+});
+
+Game.Scenes.SixPart[183] = new Scene({
+  text: `
+      - В конце концов, нам важно достигнуть своей цели. А что стояло за истоками, лично мне - все равно. 
+      <p>- Нейтралитет. Поддерживаю, - Куртис поднял стакан вверх. - Это самая удобная позиция. Особенно в контексте наблюдателя.
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[184].begin()}],
+  condition: function () {this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`)}
+});
+
+Game.Scenes.SixPart[184] = new Scene({
+  text: `
+      - Может быть иногда это и правда счастье, - улыбнулся Тесла. - Быть в неведении. 
+      <p>- Вполне себе, - размышлял Роберт.
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[187].begin()}],
+  condition: function () {this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`)}
+});
+
+Game.Scenes.SixPart[185] = new Scene({
+  text: `
+      - Мы многое не знаем об этом мире, поэтому мне кажется, что отрицать эту историю - было бы не совсем правильно. 
+      - Я рад, что среди вас, джентльмены и леди, мне достался наипрекраснейший соратник, - Тесла тепло улыбнулся мне.
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[186].begin()}],
+  condition: function () {this.setBackground(`Persons/Curtis_0${Game.Stats.CurtisAppearance.get}`)}
+});
+
+Game.Scenes.SixPart[186] = new Scene({
+  text: `
+      - Два мечтателя, - тяжело вздохнул, но слегка улыбнулся Роберт.
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[187].begin()}],
+});
+
+Game.Scenes.SixPart[187] = new Scene({
+  text: `
+      После увлекательного разговора каждый пребывал в своих мыслях. 
+      <p>Однако я обратила внимание, что Роберт все время куда-то косился и озирался по сторонам. Пытаясь проследить направление его взгляда, я увидела нескольких мужчин за барной стойкой, которые на первый взгляд были весьма не примечательны. 
+            `,
+  background: "Backgrounds/Saloon",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[188].begin()}],
+});
+
+Game.Scenes.SixPart[188] = new Scene({
+  text: `
+      Роберт наклонился к нам поближе и прошептал:
+      <p>- Отправимся на недолгую прогулку?       
+      <p>Куртис осторожно перевел взгляд на незнакомцев, а Тесла немного нервно заметил:
+      <p>- Давайте не будем терять времени.
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[199].begin()}],
+});
+
+Game.Scenes.SixPart[199] = new Scene({
+  text: `
+      Но мы не смогли уйти, так как заметив, что мы собираемся, двое довольно крупных мужчин подошли и один из них произнес:
+      <p>- Что такие разодетые путешественники забыли в нашем захолустном городишке? А девушка то, слишком хороша для такой дыры...
+            `,
+  background: "Backgrounds/Saloon",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[200].begin()}],
+});
+
+Game.Scenes.SixPart[200] = new Scene({
+  text: `
+      - А вот это, господа, вас явно не касается, - Роберт не сводил взгляд с подошедших. - Мы вам никак не мешали и вы, будьте добры, идите своей дорогой. 
+      <p>От одного из собеседников сильно разило алкоголем, другой - выглядел будто бы хитрый лис, замышляющий очередную пакость.
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[201].begin()}],
+});
+
+Game.Scenes.SixPart[201] = new Scene({
+  text: `
+      - Как грубо! Мы всего лишь хотели повеселиться, - будто бы ненароком, но было очевидно, что специально, он показал кобуру с револьвером внутри. - К тому же с вами такая очаровательная дама…
+            `,
+  background: "Backgrounds/Saloon",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[202].begin()}],
+});
+
+Game.Scenes.SixPart[202] = new Scene({
+  text: `
+      - Мы приняли к сведению, - Роберт сжал кулаки при упоминании меня. - Но мы хотели бы продолжить общение в сугубо своей компании. 
+      <p>Мужчины недовольно помотали головой, но кажется, что не собирались уходить. 
+      <p>- Это просто надо перетерпеть, - шептал Леонард Роберту. - Они жалкие провокаторы. Держи себя в руках. 
+            `,
+  background: "Persons/Robert_Colorado",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[203].begin()}],
+});
+
+Game.Scenes.SixPart[203] = new Scene({
+  text: `
+      -Так что же? Хотите продолжим разговор на улице? - спросил пьяный мужчина и подмигнул мне. 
+      <p>Внутри зарождалась паника, так как у этих бандитов может быть на уме все что угодно.      
+      <p>В те времена во многих уголках Америки еще царило беззаконие, а значит у многих были развязаны руки. 
+            `,
+  background: "Backgrounds/Saloon",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[204].begin(); Game.Achievements.SecondPartCompleted.unlock() }],
+});
+
+Game.Scenes.SixPart[204] = new Scene({
+  text: `
+      Напряжение в воздухе росло. Роберт был готов обнажить оружие. Еще секунда и мужчины бросятся друг на друга. Запах пороха, гнева и алкоголя. Все перемешалось, а от страха сжималось сердце. 
+      <p>“Неужели драки не избежать?”
+            `,
+  background: "Backgrounds/Saloon",
+  buttontext: [''],
+  buttonaction: [
+    () => {
+    Game.Scenes.Features[100].begin();
+    Game.Progress.save("SevenPart");
+  }
+  ],
 });Game.Stories.push(
   new Story ({
     name: 'Aurora',
