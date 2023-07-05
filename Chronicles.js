@@ -18610,7 +18610,7 @@ Game.Scenes.SixPart[179] = new Scene({
     'Это может быть правдой',
   ],
   buttonaction: [
-    () => { Game.Scenes.SixPart[179].begin(); Game.message('Вы склонны сомневаться в правдивости легенды'); Game.Stats.EagleLegend.add(-1)},
+    () => { Game.Scenes.SixPart[180].begin(); Game.message('Вы склонны сомневаться в правдивости легенды'); Game.Stats.EagleLegend.add(-1)},
     () => { Game.Scenes.SixPart[183].begin(); Game.message('Вы склонны быть равнодушной к происходящему')},
     () => { Game.Scenes.SixPart[185].begin(); Game.message('Вы склонны верить во что-то мистическое'); Game.Stats.EagleLegend.add(1)},
   ],
@@ -18774,6 +18774,7 @@ Game.Scenes.SixPart[204] = new Scene({
   buttontext: [''],
   buttonaction: [
     () => {
+    Game.Sounds.play('Music', 'Scarlett');
     Game.Scenes.Features[100].begin();
     Game.Progress.save("SevenPart");
   }
