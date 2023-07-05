@@ -16655,7 +16655,7 @@ Game.Scenes.SixPart[4] = new Scene({
   text: `
     На земле лежала та самая девушка, что так отчаянно молилась богам в мое прошлое перемещение. Все ее тело было покрыто маленькими порезами, а сама она пребывала в полусознательном состоянии. 
             `,
-  background: "Persons/Goddess",
+  background: "Persons/Goddess_Scars",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[5].begin();  }],
 });
@@ -16665,7 +16665,7 @@ Game.Scenes.SixPart[5] = new Scene({
     Гай опустился рядом с ней на колени, проверил пульс, а затем взял на руки и произнес: 
     <p>- Я позабочусь об этой девушке. Моя матушка - лекарь. Освободите дорогу!
             `,
-  background: "Persons/Goddess",
+  background: "Persons/Goddess_Scars",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[6].begin();  }],
 });
@@ -16675,7 +16675,7 @@ Game.Scenes.SixPart[6] = new Scene({
     Никто и не посмел возразить. Все лишь хватали себя за голову, проговаривая:
     <p>- О, милостивый Юпитер! Не гневайся на нас. Спаси грешную душу. 
             `,
-  background: "Persons/Goddess",
+  background: "Persons/Goddess_Scars",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[7].begin();  }],
 });
@@ -16736,7 +16736,7 @@ Game.Scenes.SixPart[12] = new Scene({
     Гай аккуратно положил девушку на скамью. Ее бледное лицо озарило несколько солнечных лучей, а глаза невольно зашевелились от яркого света.
     <p>- Вот так вот. Ты не должна засыпать, - мужчина отошел от девушки и громко крикнул. - Матушка! 
             `,
-  background: "Persons/Goddess",
+  background: "Persons/Goddess_Scars",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[13].begin();  }],
 });
