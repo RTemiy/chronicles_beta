@@ -2765,7 +2765,7 @@ Game.Achievements.Lake = new Achievement ({
 
 Game.Achievements.SixPartEnd = new Achievement ({
     picture: 'Backgrounds/Saloon',
-    title: 'Дикий-дикий запад',
+    title: 'Добро пожаловать в Колорадо-Спрингс',
     text: 'Пройти шестую часть',
     story: 'Immortals',
 });
