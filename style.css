@@ -1550,7 +1550,7 @@ creator>p {
     border: 1px solid rgba(170, 170, 170, 0.315);
 }
 disc {
-    padding-top: 35%;
+    padding-top: 45%;
     z-index: 5;
     background-repeat: repeat;
     background-origin: initial;
@@ -1560,7 +1560,7 @@ disc {
 }
 
 disc>p {
-    margin: 25px auto auto auto;
+    margin: 15px auto auto auto;
     font-size: 70%;
     width: 360px;
     text-align: center;
@@ -1585,7 +1585,7 @@ disc>p {
 }
 
 disc>progress {
-    margin-top: 25px;
+    margin-top: 10px;
 }
 
 
