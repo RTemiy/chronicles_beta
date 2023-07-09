@@ -17142,7 +17142,7 @@ Game.Scenes.SixPart[48] = new Scene({
 Game.Scenes.SixPart[49] = new Scene({
   text: `
      - Голос внутри стал яростнее: «Как ты смеешь оценивать Богов, мальчишка!»
-     <p>И вдруг диск зашипел, затрещал и из сердцевины начало исходить свечение. Ворон испугался и выронил диск.
+     И вдруг диск зашипел, затрещал и из сердцевины начало исходить свечение. Ворон испугался и выронил диск.
             `,
   background: "Backgrounds/Legend_Scene_06",
   buttontext: [''],
@@ -18619,7 +18619,7 @@ Game.Scenes.SixPart[179] = new Scene({
 
 Game.Scenes.SixPart[180] = new Scene({
   text: `
-      - Склонна полагать, что вера в некую легенду должна служить весомым доказательством. 
+      - Склонна полагать, что вера в некую легенду не должна служить весомым доказательством. 
       <p>- Я не сомневался в тебе, дорогая, - Роберт легонько погладил меня по голове, явно испытывая гордость.
             `,
   background: "Persons/Robert_Colorado",
@@ -18762,7 +18762,7 @@ Game.Scenes.SixPart[203] = new Scene({
             `,
   background: "Backgrounds/Saloon",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.SixPart[204].begin(); Game.Achievements.SecondPartCompleted.unlock() }],
+  buttonaction: [() => { Game.Scenes.SixPart[204].begin(); Game.Achievements.SixPartEnd.unlock(); }],
 });
 
 Game.Scenes.SixPart[204] = new Scene({
