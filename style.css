@@ -1575,8 +1575,11 @@ disc>p {
 #percent{
     font-size: 75%;
     padding: 0;
-    margin: auto;
+    margin: 10px auto auto auto;
     text-align: center;
+    color: white;
+    text-shadow:  1px 1px 3px black;
+    -webkit-text-stroke: 0.3px black;
 }
 
 .lsgif{
@@ -1584,8 +1587,21 @@ disc>p {
     height: 35px;
 }
 
-disc>progress {
+#StartGameLoadingProgress {
     margin-top: 10px;
+    border: 1px grey solid;
+    border-radius: 5px;
+    height: 10px;
+}
+
+#StartGameLoadingProgress::-webkit-progress-bar{
+    background-color: transparent;
+    border: 0;
+}
+
+#StartGameLoadingProgress::-webkit-progress-value {
+    background-color: rgba(57, 255, 119, 0.4) !important;
+    border-radius: 5px;
 }
 
 
