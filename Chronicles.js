@@ -16900,7 +16900,26 @@ Game.Scenes.SixPart[26] = new Scene({
             `,
   background: "Persons/Stranger",
   buttontext: [''],
-  buttonaction: [() => { Game.Scenes.SixPart[27].begin();  }],
+  buttonaction: [() => { Game.Scenes.SixPart[205].begin();  }],
+});
+
+Game.Scenes.SixPart[205] = new Scene({
+  text: `
+    Передо мной возникла уже знакомая потрепанная дверь, которую я видела, когда первый раз перемещалась в Нью-Йорк. 
+    <p>Но на этот раз мне виделись бескрайние пустынные просторы, а палящее солнце нещадно просачивалось сквозь портал, одаривая своими лучами.
+            `,
+  background: "Backgrounds/WildWest_Portal",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[206].begin();  }],
+});
+
+Game.Scenes.SixPart[206] = new Scene({
+  text: `
+    Я слышала ржание лошадей, задорные крики голосистых мужчин и ощущала легкое дуновение ветерка, пахнущее порохом и алкоголем.
+            `,
+  background: "Backgrounds/WildWest_Portal",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[28].begin();  }],
 });
 
 Game.Scenes.SixPart[27] = new Scene({
@@ -18377,7 +18396,17 @@ Game.Scenes.SixPart[154] = new Scene({
 
 Game.Scenes.SixPart[155] = new Scene({
   text: `
-     Внутри, на удивление, царила тишина и спокойствие. Бармен усиленно натирал стаканы, которые, казалось, уже не спасти, а в углу за круглым столом несколько мужчин перекидывались в карты. 
+     Из салуна раздавалась ненавязчивая веселая музыка, некий молодой парнишка задорно играл на пианино, создавая необходимую атмосферу. Чувствовалась разница между пребыванием в городе и здесь. 
+     <p>Мне казалось, что я на секунду забыла о разрухе и унынии, с которыми мы столкнулись по прибытии. В этом заведении царили свои законы и порядки. 
+            `,
+  background: "Backgrounds/Saloon",
+  buttontext: [''],
+  buttonaction: [() => { Game.Scenes.SixPart[210].begin()}],
+});
+
+Game.Scenes.SixPart[210] = new Scene({
+  text: `
+     Оглядывая помещение, я также увидела, как бармен усиленно натирал стаканы, которые, казалось, уже не спасти, а в углу за круглым столом несколько мужчин перекидывались в карты. 
             `,
   background: "Backgrounds/Saloon",
   buttontext: [''],
