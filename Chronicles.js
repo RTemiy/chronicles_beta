@@ -17492,7 +17492,7 @@ Game.Scenes.SixPart[86] = new Scene({
 Game.Scenes.SixPart[78] = new Scene({
   text: `
     Затем я перевела взгляд на сам лагерь, где мужчины прошлой ночью так интересно беседовали. 
-    <p>Несколько бревен, почти потухший костер, рядом с которым было разбросано несколько железных кружек. 
+    <p>Несколько бревен, почти потухший костер, рядом с которым были разбросаны железные кружки. 
     <p>Никого из моих спутников не было видно. Это дало мне передышку и время подумать над дальнейшими шагами. 
             `,
   background: "Backgrounds/Camp_Morning",
@@ -18738,7 +18738,8 @@ Game.Scenes.SixPart[187] = new Scene({
   buttonaction: [() => { Game.Scenes.SixPart[188].begin()}],
   condition: function (){
     Game.Stats.EagleLegend.get >=2 ? Game.Achievements.FirstBelieveLegend.unlock() :
-      Game.Stats.EagleLegend.get <=-2 ? Game.Achievements.FirstBelieveLegend.unlock() : {}
+      Game.Stats.EagleLegend.get === 0 ? Game.Achievements.FirstBelieveLegend.unlock() : {}
+        Game.Stats.EagleLegend.get <=-2 ? Game.Achievements.FirstBelieveLegend.unlock() : {}
   }
 });
 
