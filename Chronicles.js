@@ -18738,7 +18738,7 @@ Game.Scenes.SixPart[187] = new Scene({
   buttonaction: [() => { Game.Scenes.SixPart[188].begin()}],
   condition: function (){
     Game.Stats.EagleLegend.get >=2 ? Game.Achievements.FirstBelieveLegend.unlock() :
-      Game.Stats.EagleLegend.get === 0 ? Game.Achievements.FirstBelieveLegend.unlock() : {}
+      Game.Stats.EagleLegend.get === 0 ? Game.Achievements.FirstBelieveLegend.unlock() : 
         Game.Stats.EagleLegend.get <=-2 ? Game.Achievements.FirstBelieveLegend.unlock() : {}
   }
 });
