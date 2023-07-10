@@ -2763,6 +2763,13 @@ Game.Achievements.Lake = new Achievement ({
     story: 'Immortals',
 });
 
+Game.Achievements.FirstBelieveLegend = new Achievement ({
+    picture: 'Backgrounds/Legend_Scene_01',
+    title: 'Я не сойду с пути',
+    text: 'Придерживаться единого мнения о легенде',
+    story: 'Immortals',
+});
+
 Game.Achievements.SixPartEnd = new Achievement ({
     picture: 'Backgrounds/Saloon',
     title: 'Добро пожаловать в Колорадо-Спрингс',
@@ -18700,6 +18707,10 @@ Game.Scenes.SixPart[187] = new Scene({
   background: "Backgrounds/Saloon",
   buttontext: [''],
   buttonaction: [() => { Game.Scenes.SixPart[188].begin()}],
+  condition: function (){
+    Game.Stats.EagleLegend.get >=2 ? Game.Achievements.FirstBelieveLegend.unlock() :
+      Game.Stats.EagleLegend.get <=-2 ? Game.Achievements.FirstBelieveLegend.unlock() : {}
+  }
 });
 
 Game.Scenes.SixPart[188] = new Scene({
