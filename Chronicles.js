@@ -1,3 +1,19 @@
+/**
+ *
+ * @source: https://github.com/RTemiy/Chronicles/
+ *
+ * @licstart The following is the entire license notice for the
+ *  JavaScript code in this page.
+ *
+ * Copyright (C) 2023 Artemiy "RTemiy" G.
+ *
+ * The JavaScript code in this page is provided under CC BY-NC 3.0 license
+ * https://creativecommons.org/licenses/by-nc/3.0/legalcode
+ *
+ * @licend The above is the entire license notice for the JavaScript code in this page.
+ *
+ */
+
 class Interface {
   constructor() {
     this._elements = {};
