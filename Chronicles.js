@@ -1,19 +1,3 @@
-/**
- *
- * @source: https://github.com/RTemiy/Chronicles/
- *
- * @licstart The following is the entire license notice for the
- *  JavaScript code in this page.
- *
- * Copyright (C) 2023 Artemiy "RTemiy" G.
- *
- * The JavaScript code in this page is provided under CC BY-NC 3.0 license
- * https://creativecommons.org/licenses/by-nc/3.0/legalcode
- *
- * @licend The above is the entire license notice for the JavaScript code in this page.
- *
- */
-
 class Interface {
   constructor() {
     this._elements = {};
@@ -72,7 +56,15 @@ class Interface {
 
     this.add('#continuebutton','ContinueButton',
       ()=>{
-        this.closeopen('MenuField','MainField');
+        this.$('PartField').style.display = 'none';
+        this.$('FavouritesField').style.display = 'none';
+        this.$('ChapterField').style.display = 'none';
+        this.$('CreatorsField').style.display = 'none';
+        this.$('AchievementsField').style.display = 'none';
+        this.$('SettingsField').style.display = 'none';
+        this.$('StoriesField').style.display = 'none';
+        this.$('MenuField').style.display = 'none';
+        this.$('MainField').style.display = 'block';
         Game.Sounds.resumeAll();
       });
 
@@ -82,14 +74,15 @@ class Interface {
 
     this.add('#stories','StoriesField');
 
-    this.add('#storiesbackbutton', 'StoriesBackButton',
-      () => {
-        this.closeopen('StoriesField','MenuField');
-      });
-
     this.add('#saves', 'SavesButton',
       () => {
-        this.closeopen('MenuField','StoriesField')
+        this.$('FavouritesField').style.display = 'none';
+        this.$('PartField').style.display = 'none';
+        this.$('ChapterField').style.display = 'none';
+        this.$('CreatorsField').style.display = 'none';
+        this.$('AchievementsField').style.display = 'none';
+        this.$('SettingsField').style.display = 'none';
+        this.$('StoriesField').style.display = 'block';
       });
 
     this.add('#partf','PartField');
@@ -101,11 +94,18 @@ class Interface {
     this.add('#sf', 'SettingsField');
 
     this.add('#settingsb', 'SettingsButton', () => {
-      this.closeopen('MenuField','SettingsField')
+      this.$('FavouritesField').style.display = 'none';
+      this.$('PartField').style.display = 'none';
+      this.$('ChapterField').style.display = 'none';
+      this.$('StoriesField').style.display = 'none';
+      this.$('CreatorsField').style.display = 'none';
+      this.$('AchievementsField').style.display = 'none';
+      this.$('SettingsField').style.display = 'block';
     });
 
     this.add('#acptsett', 'AcceptSettingsButton', () => {
-      this.closeopen('SettingsField','MenuField');
+      this.$('SettingsField').style.display = 'none';
+      this.$('StoriesField').style.display = 'block';
       Game.Settings.set();
     });
 
@@ -124,16 +124,14 @@ class Interface {
 
     this.add('#achb', 'AchievementsButton',
       () => {
-        this.closeopen('MenuField','AchievementsField');
-        this.$('AchievementsBackButton').onclick = () => {
-          this.closeopen('AchievementsField', 'MenuField')
-        }
+        this.$('FavouritesField').style.display = 'none';
+        this.$('PartField').style.display = 'none';
+        this.$('ChapterField').style.display = 'none';
+        this.$('StoriesField').style.display = 'none';
+        this.$('SettingsField').style.display = 'none';
+        this.$('CreatorsField').style.display = 'none';
+        this.$('AchievementsField').style.display = 'block';
         revealAchievs();
-      });
-
-    this.add('#achbb', 'AchievementsBackButton',
-      () => {
-        this.closeopen('AchievementsField','MenuField')
       });
 
     this.add('#achievs_immortals', 'AchievementsImmortals',
@@ -156,12 +154,13 @@ class Interface {
 
     this.add('#crb', 'CreatorsButton',
       () => {
-        this.closeopen('MenuField','CreatorsField');
-      });
-
-    this.add('#cbb', 'CreatorsBackButton',
-      () => {
-        this.closeopen('CreatorsField','MenuField')
+        this.$('FavouritesField').style.display = 'none';
+        this.$('PartField').style.display = 'none';
+        this.$('ChapterField').style.display = 'none';
+        this.$('StoriesField').style.display = 'none';
+        this.$('SettingsField').style.display = 'none';
+        this.$('AchievementsField').style.display = 'none';
+        this.$('CreatorsField').style.display = 'block';
       });
 
     this.add('#RTemiy', 'RTemiyHiddenButton',
@@ -177,11 +176,14 @@ class Interface {
 
     this.add('#favouritesb', 'MenuFavouritesButton', () => {
       Game.Favourites.addAllPersons();
-      this.closeopen('MenuField','FavouritesField');
-    });
-
-    this.add('#favbb', 'FavouritesBackButton', () => {
-      this.closeopen('FavouritesField','MenuField');
+      this.$('FavouritesField').style.display = 'none';
+      this.$('PartField').style.display = 'none';
+      this.$('ChapterField').style.display = 'none';
+      this.$('StoriesField').style.display = 'none';
+      this.$('SettingsField').style.display = 'none';
+      this.$('AchievementsField').style.display = 'none';
+      this.$('CreatorsField').style.display = 'none';
+      this.$('FavouritesField').style.display = 'block';
     });
 
     this.add('#favcoins', 'FavouriteCoins');
@@ -234,11 +236,9 @@ class Interface {
 
     this.add('#goach', 'GoAchievementsButton',
       () => {
+        this.$('MenuField').style.display = 'flex';
         this.closeopen('MainField','AchievementsField');
         this.$('InventoryField').setAttribute('class','fade-out');
-        this.$('AchievementsBackButton').onclick = () => {
-          this.closeopen('AchievementsField', 'MainField');
-        }
         revealAchievs();
       });
 
@@ -282,7 +282,10 @@ class Interface {
 
     this.add('#backmb', 'BackToMenuButton',
       () => {
-        this.closeopen('MainField','MenuField');
+
+        this.$('MainField').style.display = 'none';
+        this.$('MenuField').style.display = 'flex';
+        this.$('StoriesField').style.display = 'block';
         this.$('ContinueButton').style.display="block";
         this.$('InventoryField').setAttribute(`class`,`fade-out`);
         Game.Sounds.pauseAll();
@@ -1187,7 +1190,15 @@ class Last_Save {
     if (localStorage.getItem('LastSave' + '_Played')=='1'){
       Game.Interface.$('LastSaveButton').onclick =  () =>{
         this.load();
-        Game.Interface.closeopen('MenuField','MainField');
+        Game.Interface.$('FavouritesField').style.display = 'none';
+        Game.Interface.$('PartField').style.display = 'none';
+        Game.Interface.$('ChapterField').style.display = 'none';
+        Game.Interface.$('CreatorsField').style.display = 'none';
+        Game.Interface.$('AchievementsField').style.display = 'none';
+        Game.Interface.$('SettingsField').style.display = 'none';
+        Game.Interface.$('StoriesField').style.display = 'none';
+        Game.Interface.$('MenuField').style.display = 'none';
+        Game.Interface.$('MainField').style.display = 'block';
         Game.Interface.$('LastSaveButton').style.display='none';
       }
     }
@@ -1719,7 +1730,7 @@ class Timer{
           document.getElementsByTagName('disc')[0].setAttribute('class', 'fade-out');
           setTimeout(() => {
             document.getElementsByTagName('disc')[0].style.display='none';
-            this.Interface.$('MenuField').style.display='block';
+            this.Interface.$('MenuField').style.display='flex';
           }, 1000);
         }, 1000);
       });
@@ -1873,9 +1884,9 @@ class Timer{
   }
 
   initFavourites(){
-  /*Game.Progress.loadFavourites();
+    Game.Progress.loadFavourites();
     Game.Favourites.checkDates();
-    Game.Progress.saveFavourites();*/
+    Game.Progress.saveFavourites();
   }
 
   /** Присвоение номера сцене в зависимости от индекса массива*/

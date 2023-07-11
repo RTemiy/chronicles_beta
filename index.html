@@ -3,10 +3,10 @@
 
 <head>
     <link rel="icon" href="favicon.png">
-
+<!--
         <link rel="canonical" href="https://rtemiy.github.io/Chronicles/"/>
         <link rel="manifest" href="/Chronicles/manifest.webmanifest">
-
+-->
     <meta charset="utf-8">
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width,height=device-height, initial-scale=1; user-scalable=0;">
@@ -60,23 +60,17 @@
 </disc>
 <!-- Menu -->
 <me id="me">
-
-    <MenuTitle>Chronicles</MenuTitle>
-    <button id='continuebutton'>Продолжить игру</button>
-    <button id='lastsavebutton'>Продолжить игру</button>
-    <button id='saves'>Истории</button>
-    <button style="display: none" id='favouritesb'>Фавориты</button>
-    <button id='settingsb'>Настройки</button>
-    <button id='achb'>Достижения</button>
-    <button id='crb'>Создатели</button>
-    <!-- Logo -->
-    <img src="pictures/Interface/MVA.png"></img>
+    <button id='saves'>📚</button>
+    <button id='favouritesb'>🔮</button>
+    <button id='continuebutton'>▶️</button>
+    <button id='lastsavebutton'>▶️</button>
+    <button id='settingsb'>⚙️</button>
+    <button id='achb'>🏆</button>
 </me>
 
 <!-- Stories -->
 
 <stories id="stories">
-    <button id="storiesbackbutton"></button>
 </stories>
 
 
@@ -95,7 +89,6 @@
         <input id='ZI' type="range" min="10" max="150" step="5" value="100">
     </div>
 
-    <button id='acptsett'></button>
     <div class="settings__container">
         <div class="settings__block">
             <p>Звук выключить/включить</p>
@@ -127,13 +120,20 @@
     <div class="settings__container">
         <div class="settings__block"><a href="mailto:mvagamesofficial@gmail.com">Помощь | Сотрудничество</a></div>
     </div>
+
+    <button id='acptsett'>Сохранить настройки</button>
+
+    <button id='crb'>Создатели</button>
+
     <button id="dsb">Удалить все сохранения и
         настройки</button>
 </sf>
 
 <!-- Creators Screen -->
 <creators id='creators'>
-    <button id='cbb'></button>
+
+    <!-- Logo -->
+    <img style="margin: auto; width: 150px" src="pictures/Interface/MVA.png"/>
 
     <creator>
         <name>Вероника</name>
@@ -165,7 +165,6 @@
 
 <!-- Achievements -->
 <achievs id="achievs">
-    <button id="achbb"></button>
     <p id="achievsamount"></p>
     <button class="storybutton" id="achievs_immortals">Бессмертные</button>
     <button class="storybutton" id="achievs_aurora">Аврора</button>
@@ -173,7 +172,6 @@
 
 <!-- Favourites Screen -->
 <favourites id="favours">
-    <button id="favbb"></button>
     <div id="favcoins"></div>
     <div class="favcoinhelp"> Получайте 🪙 за ежедневное посещение фаворитов!</div>
     <div id="favtrophymes" class="trophymeshide">
@@ -270,16 +268,16 @@
     <button id='#button' name="button" type="submit">Send</button>
 </form>
 
-
+<!--
 <script>
     if ("serviceWorker" in navigator) {
         navigator.serviceWorker
-          .register("/Chronicles/sw.js?v=2", { scope: "/Chronicles/" })
+          .register("/Chronicles/sw.js?v=1", { scope: "/Chronicles/" })
           .catch((error) => {
               console.error(`Registration failed with ${error}`);
           })}
 </script>
-
+-->
 
     <script type="module" src="Chronicles.js"></script>
 
