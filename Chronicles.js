@@ -239,6 +239,8 @@ class Interface {
         this.$('MenuField').style.display = 'flex';
         this.closeopen('MainField','AchievementsField');
         this.$('InventoryField').setAttribute('class','fade-out');
+        this.$('ContinueButton').style.display="block";
+        this.$('LastSaveButton').style.display='none';
         revealAchievs();
       });
 
@@ -287,9 +289,10 @@ class Interface {
         this.$('MenuField').style.display = 'flex';
         this.$('StoriesField').style.display = 'block';
         this.$('ContinueButton').style.display="block";
+        this.$('LastSaveButton').style.display='none';
         this.$('InventoryField').setAttribute(`class`,`fade-out`);
         Game.Sounds.pauseAll();
-        this.$('LastSaveButton').style.display='none';
+
       });
 
 //Dev
@@ -1742,6 +1745,7 @@ class Timer{
    * @param {string} part Код части
    */
   LoadScreen (part) {
+    Game.Interface.$('MenuField').style.display = 'none';
     localStorage.setItem('LastSave_LS', part);
     this.LastSlide.refresh();
     setTimeout(() => {
