@@ -1490,12 +1490,6 @@ favourites{
     background-color: #0000;
     overflow-y: auto;
 }
-
-stories{
-    max-height: calc(100vh - 50px);
-    background-color: #0000;
-    overflow-y: auto;
-}
 creator {
     backdrop-filter: blur(20px) saturate(45%);
     -webkit-backdrop-filter: blur(20px) saturate(45%);
@@ -1942,7 +1936,7 @@ me{
     position: fixed;
     display: flex;
     flex-direction: row;
-    height: 100px;
+    height: 90px;
     width: 100vw;
     bottom: 0;
     z-index: 2;
@@ -1972,7 +1966,7 @@ me>div{
 }
 
 me>div:hover{
-    filter: brightness(0.8);
+    filter: brightness(0.7);
 }
 
 me>div>img>{
@@ -2163,6 +2157,49 @@ form{
 sf>button:last-of-type{
     margin-top: 35px;
 }
+stories{
+    max-height: calc(100vh - 50px);
+    background-color: #0000;
+    overflow: hidden;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+stories>part {
+    display: inline-block;
+    height: auto;
+    width: 100vw;
+    max-width: 400px;
+    background: none;
+    border-radius: 0;
+    margin: 35% auto 0 auto;
+}
+
+
+stories>part>img {
+    width: 90vw;
+    max-width: 400px;
+    height: auto;
+    border-radius: 0;
+}
+
+stories>button{
+    margin-left: 0;
+    width: 50px;
+    height: 25px;
+    z-index: 5;
+    position: fixed;
+    background-image: url(pictures/Interface/arrow.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    border-radius: 0px 10px 10px 0px;
+    border: 1px solid rgba(170, 170, 170, 0.315);
+}
+
+stories>button:active{
+    outline: solid 1px white;
+}
+
 part {
     margin: auto;
     margin-bottom: 20px;
@@ -2181,22 +2218,6 @@ part {
 
 part:active{
     background-color: rgba(255, 255, 255, 0.09);
-}
-
-stories>part {
-    height: auto;
-    width: 100vw;
-    max-width: 400px;
-    background: none;
-    border-radius: 0;
-}
-
-
-stories>part>img {
-    width: 80vw;
-    max-width: 400px;
-    height: auto;
-    border-radius: 0;
 }
 
 part>button {
@@ -2223,31 +2244,6 @@ part>img {
     border-radius: 90px;
     padding-top: 15px;
     transition: all 1s ease-in-out;
-}
-
-stories>part{
-    margin: 25px auto 0 auto;
-}
-
-stories>part:last-of-type{
-    margin-bottom: 100px;
-}
-
-stories>button{
-    margin-left: 0;
-    width: 50px;
-    height: 25px;
-    z-index: 5;
-    position: fixed;
-    background-image: url(pictures/Interface/arrow.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    border-radius: 0px 10px 10px 0px;
-    border: 1px solid rgba(170, 170, 170, 0.315);
-}
-
-stories>button:active{
-    outline: solid 1px white;
 }
 
 partf>button{
