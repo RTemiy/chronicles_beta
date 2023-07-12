@@ -1975,7 +1975,8 @@ me>div>img>{
 }
 
 me>div>p{
-    font-size: 60%;
+    letter-spacing: 0.1px;
+    font-size: 50%;
 }
 
 #continuebutton{
